@@ -1,0 +1,11 @@
+﻿<Window xmlns="https://github.com/perspex"
+        xmlns:local="clr-namespace:MatrixPanAndZoomDemo.Perspex;assembly=MatrixPanAndZoomDemo.Perspex"
+        Title="MainWindow" Height="600" Width="600">
+    <Grid>
+        <local:UIElementZoomManager Background="DarkGray">
+            <Canvas Name="canvas" Background="LightGray" Width="300" Height="300">
+                <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
+            </Canvas>
+        </local:UIElementZoomManager>
+    </Grid>
+</Window>
