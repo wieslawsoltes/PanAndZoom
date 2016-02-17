@@ -6,7 +6,7 @@
         UseLayoutRounding="True" SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display"
         Title="MainWindow" Height="600" Width="600">
     <Grid Background="SlateBlue">
-        <StackPanel Margin="4" HorizontalAlignment="Center">
+        <StackPanel Background="#1FFFFFFF" Margin="4" HorizontalAlignment="Center" VerticalAlignment="Top">
             <TextBlock Text="E - Extent" Foreground="WhiteSmoke" FontSize="11"/>
             <TextBlock Text="F - Fill" Foreground="WhiteSmoke" FontSize="11"/>
             <TextBlock Text="R - Reset" Foreground="WhiteSmoke" FontSize="11"/>
