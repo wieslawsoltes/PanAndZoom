@@ -106,6 +106,7 @@ namespace MatrixPanAndZoomDemo.Wpf
 
         private void PanTo(Point point)
         {
+            System.Diagnostics.Debug.Print(string.Format("{0},{1}", point.X, point.Y));
             Point delta = new Point(point.X - _previous.X, point.Y - _previous.Y);
             _previous = new Point(point.X, point.Y);
             _pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
