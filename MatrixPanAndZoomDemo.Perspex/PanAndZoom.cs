@@ -81,7 +81,7 @@ namespace MatrixPanAndZoomDemo.Perspex
             }
         }
 
-        private void ZoomAsTo(double zoom, Point point)
+        private void ZoomTo(double zoom, Point point)
         {
             _matrix = MatrixHelper.ScaleAtPrepend(_matrix, zoom, zoom, point.X, point.Y);
 
@@ -90,7 +90,7 @@ namespace MatrixPanAndZoomDemo.Perspex
 
         private void ZoomDeltaTo(double delta, Point point)
         {
-            ZoomAsTo(delta > 0 ? _zoomSpeed : 1 / _zoomSpeed, point);
+            ZoomTo(delta > 0 ? _zoomSpeed : 1 / _zoomSpeed, point);
         }
 
         private void StartPan(Point point)
