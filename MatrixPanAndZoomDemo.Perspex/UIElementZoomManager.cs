@@ -136,7 +136,7 @@ namespace MatrixPanAndZoomDemo.Perspex
                 double eh = _element.Bounds.Height;
                 double zx = pw / ew;
                 double zy = ph / eh;
-                
+
                 _matrix = MatrixHelper.ScaleAt(zx, zy, ew / 2.0, eh / 2.0);
 
                 Invalidate();
