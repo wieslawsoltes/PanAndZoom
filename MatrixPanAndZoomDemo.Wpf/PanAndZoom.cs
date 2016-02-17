@@ -81,6 +81,7 @@ namespace MatrixPanAndZoomDemo.Wpf
         {
             if (_element != null)
             {
+                _element.RenderTransformOrigin = new Point(0, 0);
                 _element.RenderTransform = new MatrixTransform(_matrix);
                 _element.InvalidateVisual();
             }
@@ -101,21 +102,21 @@ namespace MatrixPanAndZoomDemo.Wpf
         private void StartPan(Point point)
         {
             _pan = new Point();
-            _previous = point;
+            _previous = new Point(point.X, point.Y);
         }
 
         private void PanTo(Point point)
         {
-            System.Diagnostics.Debug.Print(string.Format("{0},{1}", point.X, point.Y));
             Point delta = new Point(point.X - _previous.X, point.Y - _previous.Y);
             _previous = new Point(point.X, point.Y);
+
             _pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
             _matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
- 
+
             Invalidate();
         }
 
-        private void Fit()
+        private void Extent()
         {
             if (_element != null)
             {
@@ -195,15 +196,21 @@ namespace MatrixPanAndZoomDemo.Wpf
 
         private void Element_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Z)
+            if (e.Key == Key.E)
+            {
+                Extent();
+            }
+
+            if (e.Key == Key.F)
+            {
+                Fill();
+            }
+
+            if (e.Key == Key.R)
             {
                 Reset();
             }
 
-            if (e.Key == Key.X)
-            {
-                Fit();
-            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace MatrixPanAndZoomDemo.Perspex
     {
         private Control _element;
         private double _zoomSpeed = 1.2;
-        private Point _pan;
+        //private Point _pan;
         private Point _previous;
         private Matrix _matrix = MatrixHelper.Identity;
 
@@ -75,6 +75,7 @@ namespace MatrixPanAndZoomDemo.Perspex
         {
             if (_element != null)
             {
+                _element.TransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
                 _element.RenderTransform = new MatrixTransform(_matrix);
                 _element.InvalidateVisual();
             }
@@ -94,22 +95,23 @@ namespace MatrixPanAndZoomDemo.Perspex
 
         private void StartPan(Point point)
         {
-            _pan = new Point();
-            _previous = point;
+            //_pan = new Point();
+            _previous = new Point(point.X, point.Y);
         }
 
         private void PanTo(Point point)
         {
-            System.Diagnostics.Debug.Print(string.Format("{0},{1}", point.X, point.Y));
             Point delta = new Point(point.X - _previous.X, point.Y - _previous.Y);
             _previous = new Point(point.X, point.Y);
-            _pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
-            _matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
+
+            //_pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
+            //_matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
+            _matrix = MatrixHelper.TranslatePrepend(_matrix, delta.X, delta.Y);
 
             Invalidate();
         }
 
-        private void Fit()
+        private void Extent()
         {
             if (_element != null)
             {
@@ -206,14 +208,19 @@ namespace MatrixPanAndZoomDemo.Perspex
 
         private void Element_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Z)
+            if (e.Key == Key.E)
             {
-                Reset();
+                Extent();
             }
 
-            if (e.Key == Key.X)
+            if (e.Key == Key.F)
             {
-                Fit();
+                Fill();
+            }
+
+            if (e.Key == Key.R)
+            {
+                Reset();
             }
         }
     }
