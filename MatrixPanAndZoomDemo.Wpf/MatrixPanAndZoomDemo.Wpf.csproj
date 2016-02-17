@@ -57,7 +57,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="MatrixHelper.cs" />
-    <Compile Include="UIElementZoomManager.cs" />
+    <Compile Include="PanAndZoom.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -1,28 +1,41 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+﻿using Perspex;
+using Perspex.Controls;
+using Perspex.Input;
+using Perspex.Media;
+using System;
 
-namespace MatrixPanAndZoomDemo.Wpf
+namespace MatrixPanAndZoomDemo.Perspex
 {
-    public class UIElementZoomManager : Border
+    public class PanAndZoom : Border
     {
-        private UIElement _element;
+        private Control _element;
         private double _zoomSpeed = 1.2;
         private Point _pan;
         private Point _previous;
         private Matrix _matrix = Matrix.Identity;
 
-        public UIElementZoomManager()
+        public PanAndZoom()
             : base()
         {
             Focusable = true;
             Background = Brushes.Transparent;
-            Unloaded += UIElementZoomManager_Unloaded;
+            DetachedFromVisualTree += UIElementZoomManager_DetachedFromVisualTree;
+
+            this.GetObservable(ChildProperty).Subscribe(value =>
+            {
+                if (value != null && value != _element && _element != null)
+                {
+                    Unload();
+                }
+
+                if (value != null && value != _element)
+                {
+                    Initialize(value);
+                }
+            });
         }
 
-        private void UIElementZoomManager_Unloaded(object sender, RoutedEventArgs e)
+        private void UIElementZoomManager_DetachedFromVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
             if (_element != null)
             {
@@ -30,35 +43,16 @@ namespace MatrixPanAndZoomDemo.Wpf
             }
         }
 
-        public override UIElement Child
-        {
-            get { return base.Child; }
-            set
-            {
-                if (value != null && value != _element && _element != null)
-                {
-                    Unload();
-                }
-
-                base.Child = value;
-
-                if (value != null && value != _element)
-                {
-                    Initialize(value);
-                }
-            }
-        }
-
-        private void Initialize(UIElement element)
+        private void Initialize(Control element)
         {
             if (element != null)
             {
                 _element = element;
                 this.Focus();
-                this.PreviewMouseWheel += Element_PreviewMouseWheel;
-                this.PreviewMouseRightButtonDown += Element_PreviewMouseRightButtonDown;
-                this.PreviewMouseRightButtonUp += Element_PreviewMouseRightButtonUp;
-                this.PreviewMouseMove += Element_PreviewMouseMove;
+                this.PointerWheelChanged += Element_PointerWheelChanged;
+                this.PointerPressed += Element_PointerPressed;
+                this.PointerReleased += Element_PointerReleased;
+                this.PointerMoved += Element_PointerMoved;
                 this.KeyDown += Element_KeyDown;
             }
         }
@@ -67,10 +61,10 @@ namespace MatrixPanAndZoomDemo.Wpf
         {
             if (_element != null)
             {
-                this.PreviewMouseWheel -= Element_PreviewMouseWheel;
-                this.PreviewMouseRightButtonDown -= Element_PreviewMouseRightButtonDown;
-                this.PreviewMouseRightButtonUp -= Element_PreviewMouseRightButtonUp;
-                this.PreviewMouseMove -= Element_PreviewMouseMove;
+                this.PointerWheelChanged -= Element_PointerWheelChanged;
+                this.PointerPressed -= Element_PointerPressed;
+                this.PointerReleased -= Element_PointerReleased;
+                this.PointerMoved -= Element_PointerMoved;
                 this.KeyDown -= Element_KeyDown;
                 _element.RenderTransform = null;
                 _element = null;
@@ -93,7 +87,7 @@ namespace MatrixPanAndZoomDemo.Wpf
             Invalidate();
         }
 
-        private void ZoomDeltaTo(int delta, Point point)
+        private void ZoomDeltaTo(double delta, Point point)
         {
             ZoomAsTo(delta > 0 ? _zoomSpeed : 1 / _zoomSpeed, point);
         }
@@ -110,7 +104,7 @@ namespace MatrixPanAndZoomDemo.Wpf
             _previous = new Point(point.X, point.Y);
             _pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
             _matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
- 
+
             Invalidate();
         }
 
@@ -118,10 +112,10 @@ namespace MatrixPanAndZoomDemo.Wpf
         {
             if (_element != null)
             {
-                double pw = this.RenderSize.Width;
-                double ph = this.RenderSize.Height;
-                double ew = _element.RenderSize.Width;
-                double eh = _element.RenderSize.Height;
+                double pw = this.Bounds.Width;
+                double ph = this.Bounds.Height;
+                double ew = _element.Bounds.Width;
+                double eh = _element.Bounds.Height;
                 double zx = pw / ew;
                 double zy = ph / eh;
                 double zoom = Math.Min(zx, zy);
@@ -136,10 +130,10 @@ namespace MatrixPanAndZoomDemo.Wpf
         {
             if (_element != null)
             {
-                double pw = this.RenderSize.Width;
-                double ph = this.RenderSize.Height;
-                double ew = _element.RenderSize.Width;
-                double eh = _element.RenderSize.Height;
+                double pw = this.Bounds.Width;
+                double ph = this.Bounds.Height;
+                double ew = _element.Bounds.Width;
+                double eh = _element.Bounds.Height;
                 double zx = pw / ew;
                 double zy = ph / eh;
 
@@ -156,36 +150,57 @@ namespace MatrixPanAndZoomDemo.Wpf
             Invalidate();
         }
 
-        private void Element_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        private void Element_PointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
             if (_element != null)
             {
                 Point point = e.GetPosition(_element);
-                ZoomDeltaTo(e.Delta, point);
+                ZoomDeltaTo(e.Delta.Y, point);
             }
         }
 
-        private void Element_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private bool _captured = false;
+
+        private void Element_PointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            switch (e.MouseButton)
+            {
+                case MouseButton.Right:
+                    {
+                        if (_element != null)
+                        {
+                            Point point = e.GetPosition(_element);
+                            StartPan(point);
+                            //e.Device.Capture(_element);
+                            _captured = true;
+                        }
+                    }
+                    break;
+            }
+        }
+
+        private void Element_PointerReleased(object sender, PointerReleasedEventArgs e)
         {
             if (_element != null)
             {
-                Point point = e.GetPosition(_element);
-                StartPan(point);
-                _element.CaptureMouse();
+                switch (e.MouseButton)
+                {
+                    case MouseButton.Right:
+                        {
+                            if (_element != null && _captured == true/*e.Device.Captured == _element*/)
+                            {
+                                //e.Device.Capture(null);
+                                _captured = false;
+                            }
+                        }
+                        break;
+                }
             }
         }
 
-        private void Element_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private void Element_PointerMoved(object sender, PointerEventArgs e)
         {
-            if (_element != null)
-            {
-                _element.ReleaseMouseCapture();
-            }
-        }
-
-        private void Element_PreviewMouseMove(object sender, MouseEventArgs e)
-        {
-            if (_element != null && _element.IsMouseCaptured)
+            if (_element != null && _captured == true/*e.Device.Captured == _element*/)
             {
                 Point point = e.GetPosition(_element);
                 PanTo(point);
@@ -201,7 +216,7 @@ namespace MatrixPanAndZoomDemo.Wpf
 
             if (e.Key == Key.X)
             {
-                Fit();
+                Fill();
             }
         }
     }
