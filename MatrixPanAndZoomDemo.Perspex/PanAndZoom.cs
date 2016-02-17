@@ -159,8 +159,6 @@ namespace MatrixPanAndZoomDemo.Perspex
             }
         }
 
-        private bool _captured = false;
-
         private void Element_PointerPressed(object sender, PointerPressedEventArgs e)
         {
             switch (e.MouseButton)
@@ -171,8 +169,7 @@ namespace MatrixPanAndZoomDemo.Perspex
                         {
                             Point point = e.GetPosition(_element);
                             StartPan(point);
-                            //e.Device.Capture(_element);
-                            _captured = true;
+                            e.Device.Capture(_element);
                         }
                     }
                     break;
@@ -187,10 +184,9 @@ namespace MatrixPanAndZoomDemo.Perspex
                 {
                     case MouseButton.Right:
                         {
-                            if (_element != null && _captured == true/*e.Device.Captured == _element*/)
+                            if (_element != null && e.Device.Captured == _element)
                             {
-                                //e.Device.Capture(null);
-                                _captured = false;
+                                e.Device.Capture(null);
                             }
                         }
                         break;
@@ -200,7 +196,7 @@ namespace MatrixPanAndZoomDemo.Perspex
 
         private void Element_PointerMoved(object sender, PointerEventArgs e)
         {
-            if (_element != null && _captured == true/*e.Device.Captured == _element*/)
+            if (_element != null && e.Device.Captured == _element)
             {
                 Point point = e.GetPosition(_element);
                 PanTo(point);
