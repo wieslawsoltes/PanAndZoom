@@ -100,15 +100,10 @@ namespace MatrixPanAndZoomDemo.Perspex
 
         private void PanTo(Point point)
         {
-            //Point delta = point - _previous;
             Point delta = new Point(point.X - _previous.X, point.Y - _previous.Y);
-            //System.Diagnostics.Debug.Print("delta " + delta);
             _previous = new Point(point.X, point.Y);
-            //_pan = _pan + delta;
             _pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
-            System.Diagnostics.Debug.Print("pan " + _pan);
             _matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
-            //_matrix = MatrixHelper.Translation(_pan.X, _pan.Y);
 
             Invalidate();
         }
@@ -150,7 +145,7 @@ namespace MatrixPanAndZoomDemo.Perspex
 
         private void Reset()
         {
-            _matrix = Matrix.Identity;
+            _matrix = MatrixHelper.Identity;
 
             Invalidate();
         }

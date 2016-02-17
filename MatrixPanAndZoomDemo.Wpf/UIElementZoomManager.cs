@@ -88,7 +88,7 @@ namespace MatrixPanAndZoomDemo.Wpf
 
         private void ZoomAsTo(double zoom, Point point)
         {
-            _matrix.ScaleAtPrepend(zoom, zoom, point.X, point.Y);
+            _matrix = MatrixHelper.ScaleAtPrepend(_matrix, zoom, zoom, point.X, point.Y);
 
             Invalidate();
         }
@@ -106,15 +106,9 @@ namespace MatrixPanAndZoomDemo.Wpf
 
         private void PanTo(Point point)
         {
-            //Vector delta = point - _previous;
             Point delta = new Point(point.X - _previous.X, point.Y - _previous.Y);
-            //System.Diagnostics.Debug.Print("delta " + delta);
             _previous = new Point(point.X, point.Y);
-            //System.Diagnostics.Debug.Print("pan1 " + _pan);
-            //_pan = _pan + delta;
             _pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
-            System.Diagnostics.Debug.Print("pan2 " + _pan);
-            //_matrix.TranslatePrepend(_pan.X, _pan.Y);
             _matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
  
             Invalidate();
@@ -132,8 +126,7 @@ namespace MatrixPanAndZoomDemo.Wpf
                 double zy = ph / eh;
                 double zoom = Math.Min(zx, zy);
 
-                _matrix = Matrix.Identity;
-                _matrix.ScaleAt(zoom, zoom, ew / 2.0, eh / 2.0);
+                _matrix = MatrixHelper.ScaleAt(zoom, zoom, ew / 2.0, eh / 2.0);
 
                 Invalidate();
             }
@@ -150,8 +143,7 @@ namespace MatrixPanAndZoomDemo.Wpf
                 double zx = pw / ew;
                 double zy = ph / eh;
 
-                _matrix = Matrix.Identity;
-                _matrix.ScaleAt(zx, zy, ew / 2.0, eh / 2.0);
+                _matrix = MatrixHelper.ScaleAt(zx, zy, ew / 2.0, eh / 2.0);
 
                 Invalidate();
             }
@@ -159,7 +151,7 @@ namespace MatrixPanAndZoomDemo.Wpf
 
         private void Reset()
         {
-            _matrix = Matrix.Identity;
+            _matrix = MatrixHelper.Identity;
 
             Invalidate();
         }
