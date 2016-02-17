@@ -12,7 +12,7 @@ namespace MatrixPanAndZoomDemo.Perspex
         private double _zoomSpeed = 1.2;
         private Point _pan;
         private Point _previous;
-        private Matrix _matrix = Matrix.Identity;
+        private Matrix _matrix = MatrixHelper.Identity;
 
         public PanAndZoom()
             : base()
