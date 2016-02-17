@@ -216,7 +216,7 @@ namespace MatrixPanAndZoomDemo.Perspex
 
             if (e.Key == Key.X)
             {
-                Fill();
+                Fit();
             }
         }
     }
