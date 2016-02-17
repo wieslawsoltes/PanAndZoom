@@ -106,11 +106,17 @@ namespace MatrixPanAndZoomDemo.Wpf
 
         private void PanTo(Point point)
         {
-            Vector delta = point - _previous;
-            _previous = point;
-            _pan = _pan + delta;
-            _matrix.TranslatePrepend(_pan.X, _pan.Y);
-
+            //Vector delta = point - _previous;
+            Point delta = new Point(point.X - _previous.X, point.Y - _previous.Y);
+            //System.Diagnostics.Debug.Print("delta " + delta);
+            _previous = new Point(point.X, point.Y);
+            //System.Diagnostics.Debug.Print("pan1 " + _pan);
+            //_pan = _pan + delta;
+            _pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
+            System.Diagnostics.Debug.Print("pan2 " + _pan);
+            //_matrix.TranslatePrepend(_pan.X, _pan.Y);
+            _matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
+ 
             Invalidate();
         }
 
