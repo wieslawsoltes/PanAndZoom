@@ -17,21 +17,6 @@ namespace MatrixPanAndZoomDemo.Perspex
             return Translation(offsetX, offsetY) * matrix;
         }
 
-        public static Matrix Rotation(double angle, Vector center)
-        {
-            return
-                Matrix.CreateTranslation(-center)
-                * Matrix.CreateRotation(angle)
-                * Matrix.CreateTranslation(center);
-        }
-
-        public static Point TransformPoint(Matrix matrix, Point point)
-        {
-            return new Point(
-                (point.X * matrix.M11) + (point.Y * matrix.M21) + matrix.M31,
-                (point.X * matrix.M12) + (point.Y * matrix.M22) + matrix.M32);
-        }
-
         public static Matrix ScaleAt(double scaleX, double scaleY, double centerX, double centerY)
         {
             //Point center = new Point(centerX, centerY);
@@ -49,6 +34,22 @@ namespace MatrixPanAndZoomDemo.Perspex
             //    * Matrix.CreateTranslation(center)
             //    * matrix;
             return new Matrix(scaleX, 0, 0, scaleY, centerX - scaleX * centerX, centerY - scaleY * centerY) * matrix;
+        }
+
+
+        public static Matrix Rotation(double angle, Vector center)
+        {
+            return
+                Matrix.CreateTranslation(-center)
+                * Matrix.CreateRotation(angle)
+                * Matrix.CreateTranslation(center);
+        }
+
+        public static Point TransformPoint(Matrix matrix, Point point)
+        {
+            return new Point(
+                (point.X * matrix.M11) + (point.Y * matrix.M21) + matrix.M31,
+                (point.X * matrix.M12) + (point.Y * matrix.M22) + matrix.M32);
         }
     }
 }
