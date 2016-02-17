@@ -21,14 +21,8 @@ namespace MatrixPanAndZoomDemo.Perspex
             Background = Brushes.Transparent;
             DetachedFromVisualTree += UIElementZoomManager_DetachedFromVisualTree;
 
-            ChildProperty.Changed.Subscribe(e =>
+            this.GetObservable(ChildProperty).Subscribe(value =>
             {
-                var value = e.NewValue as Control;
-
-                System.Diagnostics.Debug.Print("Border Child Type: " + e.NewValue.GetType());
-                if (!(value is Canvas))
-                    return;
-
                 if (value != null && value != _element && _element != null)
                 {
                     Unload();
