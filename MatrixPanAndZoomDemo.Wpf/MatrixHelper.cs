@@ -7,10 +7,7 @@ namespace MatrixPanAndZoomDemo.Wpf
     {
         public static Matrix Translation(double offsetX, double offsetY)
         {
-            var result = Matrix.Identity;
-            result.OffsetX = offsetX;
-            result.OffsetY = offsetY;
-            return result;
+            return new Matrix(1.0, 0.0, 0.0, 1.0, offsetX, offsetY);
         }
         
         public static Matrix TranslatePrepend(Matrix matrix, double offsetX, double offsetY)
