@@ -1,9 +1,19 @@
-﻿using System;
+﻿//#define SKIA_WIN
+//#define SKIA_GTK
+using System;
 using Perspex;
 using Perspex.Controls;
 using Perspex.Diagnostics;
 using Perspex.Themes.Default;
 using Perspex.Markup.Xaml;
+#if SKIA_WIN
+using Perspex.Win32;
+using Perspex.Skia;
+#endif
+#if SKIA_GTK
+using Perspex.Gtk;
+using Perspex.Skia;
+#endif
 
 namespace MatrixPanAndZoomDemo.Perspex
 {
@@ -12,7 +22,15 @@ namespace MatrixPanAndZoomDemo.Perspex
         public App()
         {
             RegisterServices();
+#if SKIA_WIN
+            Win32Platform.Initialize();
+            SkiaPlatform.Initialize();
+#elif SKIA_GTK
+            GtkPlatform.Initialize();
+            SkiaPlatform.Initialize();
+#else
             InitializeSubsystems((int)Environment.OSVersion.Platform);
+#endif
             Styles = new DefaultTheme();
             PerspexXamlLoader.Load(this);
         }
