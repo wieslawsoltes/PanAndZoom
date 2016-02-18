@@ -104,6 +104,7 @@ namespace MatrixPanAndZoomDemo.Perspex
             Point delta = new Point(point.X - _previous.X, point.Y - _previous.Y);
             _previous = new Point(point.X, point.Y);
 
+            // Pan is not working when using '_pan = _pan + delta' calculation.
             //_pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
             //_matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
             _matrix = MatrixHelper.TranslatePrepend(_matrix, delta.X, delta.Y);
