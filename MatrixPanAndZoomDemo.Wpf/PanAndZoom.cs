@@ -55,11 +55,11 @@ namespace MatrixPanAndZoomDemo.Wpf
             {
                 _element = element;
                 this.Focus();
-                this.PreviewMouseWheel += Element_PreviewMouseWheel;
-                this.PreviewMouseRightButtonDown += Element_PreviewMouseRightButtonDown;
-                this.PreviewMouseRightButtonUp += Element_PreviewMouseRightButtonUp;
-                this.PreviewMouseMove += Element_PreviewMouseMove;
-                this.KeyDown += Element_KeyDown;
+                this.PreviewMouseWheel += Border_PreviewMouseWheel;
+                this.PreviewMouseRightButtonDown += Border_PreviewMouseRightButtonDown;
+                this.PreviewMouseRightButtonUp += Border_PreviewMouseRightButtonUp;
+                this.PreviewMouseMove += Border_PreviewMouseMove;
+                this.KeyDown += Border_KeyDown;
             }
         }
 
@@ -67,11 +67,11 @@ namespace MatrixPanAndZoomDemo.Wpf
         {
             if (_element != null)
             {
-                this.PreviewMouseWheel -= Element_PreviewMouseWheel;
-                this.PreviewMouseRightButtonDown -= Element_PreviewMouseRightButtonDown;
-                this.PreviewMouseRightButtonUp -= Element_PreviewMouseRightButtonUp;
-                this.PreviewMouseMove -= Element_PreviewMouseMove;
-                this.KeyDown -= Element_KeyDown;
+                this.PreviewMouseWheel -= Border_PreviewMouseWheel;
+                this.PreviewMouseRightButtonDown -= Border_PreviewMouseRightButtonDown;
+                this.PreviewMouseRightButtonUp -= Border_PreviewMouseRightButtonUp;
+                this.PreviewMouseMove -= Border_PreviewMouseMove;
+                this.KeyDown -= Border_KeyDown;
                 _element.RenderTransform = null;
                 _element = null;
             }
@@ -158,7 +158,7 @@ namespace MatrixPanAndZoomDemo.Wpf
             Invalidate();
         }
 
-        private void Element_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        private void Border_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (_element != null)
             {
@@ -167,7 +167,7 @@ namespace MatrixPanAndZoomDemo.Wpf
             }
         }
 
-        private void Element_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void Border_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (_element != null)
             {
@@ -177,7 +177,7 @@ namespace MatrixPanAndZoomDemo.Wpf
             }
         }
 
-        private void Element_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private void Border_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (_element != null)
             {
@@ -185,7 +185,7 @@ namespace MatrixPanAndZoomDemo.Wpf
             }
         }
 
-        private void Element_PreviewMouseMove(object sender, MouseEventArgs e)
+        private void Border_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (_element != null && _element.IsMouseCaptured)
             {
@@ -194,7 +194,7 @@ namespace MatrixPanAndZoomDemo.Wpf
             }
         }
 
-        private void Element_KeyDown(object sender, KeyEventArgs e)
+        private void Border_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.E)
             {

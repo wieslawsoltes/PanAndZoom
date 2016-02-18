@@ -49,10 +49,10 @@ namespace MatrixPanAndZoomDemo.Perspex
             {
                 _element = element;
                 this.Focus();
-                this.PointerWheelChanged += Element_PointerWheelChanged;
-                this.PointerPressed += Element_PointerPressed;
-                this.PointerReleased += Element_PointerReleased;
-                this.PointerMoved += Element_PointerMoved;
+                this.PointerWheelChanged += Border_PointerWheelChanged;
+                this.PointerPressed += Border_PointerPressed;
+                this.PointerReleased += Border_PointerReleased;
+                this.PointerMoved += Border_PointerMoved;
                 this.KeyDown += Element_KeyDown;
             }
         }
@@ -61,10 +61,10 @@ namespace MatrixPanAndZoomDemo.Perspex
         {
             if (_element != null)
             {
-                this.PointerWheelChanged -= Element_PointerWheelChanged;
-                this.PointerPressed -= Element_PointerPressed;
-                this.PointerReleased -= Element_PointerReleased;
-                this.PointerMoved -= Element_PointerMoved;
+                this.PointerWheelChanged -= Border_PointerWheelChanged;
+                this.PointerPressed -= Border_PointerPressed;
+                this.PointerReleased -= Border_PointerReleased;
+                this.PointerMoved -= Border_PointerMoved;
                 this.KeyDown -= Element_KeyDown;
                 _element.RenderTransform = null;
                 _element = null;
@@ -153,7 +153,7 @@ namespace MatrixPanAndZoomDemo.Perspex
             Invalidate();
         }
 
-        private void Element_PointerWheelChanged(object sender, PointerWheelEventArgs e)
+        private void Border_PointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
             if (_element != null)
             {
@@ -162,7 +162,7 @@ namespace MatrixPanAndZoomDemo.Perspex
             }
         }
 
-        private void Element_PointerPressed(object sender, PointerPressedEventArgs e)
+        private void Border_PointerPressed(object sender, PointerPressedEventArgs e)
         {
             switch (e.MouseButton)
             {
@@ -179,7 +179,7 @@ namespace MatrixPanAndZoomDemo.Perspex
             }
         }
 
-        private void Element_PointerReleased(object sender, PointerReleasedEventArgs e)
+        private void Border_PointerReleased(object sender, PointerReleasedEventArgs e)
         {
             if (_element != null)
             {
@@ -197,7 +197,7 @@ namespace MatrixPanAndZoomDemo.Perspex
             }
         }
 
-        private void Element_PointerMoved(object sender, PointerEventArgs e)
+        private void Border_PointerMoved(object sender, PointerEventArgs e)
         {
             if (_element != null && e.Device.Captured == _element)
             {
