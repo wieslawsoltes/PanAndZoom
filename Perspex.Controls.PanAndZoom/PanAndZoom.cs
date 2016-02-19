@@ -62,7 +62,7 @@ namespace Perspex.Controls.PanAndZoom
                 this.PointerPressed += Border_PointerPressed;
                 this.PointerReleased += Border_PointerReleased;
                 this.PointerMoved += Border_PointerMoved;
-                this.KeyDown += Element_KeyDown;
+                this.KeyDown += Border_KeyDown;
             }
         }
 
@@ -74,7 +74,7 @@ namespace Perspex.Controls.PanAndZoom
                 this.PointerPressed -= Border_PointerPressed;
                 this.PointerReleased -= Border_PointerReleased;
                 this.PointerMoved -= Border_PointerMoved;
-                this.KeyDown -= Element_KeyDown;
+                this.KeyDown -= Border_KeyDown;
                 _element.RenderTransform = null;
                 _element = null;
             }
@@ -141,7 +141,7 @@ namespace Perspex.Controls.PanAndZoom
             }
         }
 
-        private void Element_KeyDown(object sender, KeyEventArgs e)
+        private void Border_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.E && _element != null)
             {
