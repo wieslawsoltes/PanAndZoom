@@ -6,10 +6,13 @@ using System.Windows.Media;
 
 namespace MatrixPanAndZoomDemo.Wpf
 {
+    public enum AutoFitMode { None, Reset, Extent, Fill }
+    
     public class PanAndZoom : Border
     {
         private UIElement _element;
         private double _zoomSpeed = 1.2;
+        private AutoFitMode _autoFitModde = AutoFitMode.None;
         private Point _pan;
         private Point _previous;
         private Matrix _matrix = MatrixHelper.Identity;
@@ -116,36 +119,36 @@ namespace MatrixPanAndZoomDemo.Wpf
             Invalidate();
         }
 
-        private void Extent()
+        private void Extent(Size panelSize, Size elementSize)
         {
             if (_element != null)
             {
-                double pw = this.RenderSize.Width;
-                double ph = this.RenderSize.Height;
-                double ew = _element.RenderSize.Width;
-                double eh = _element.RenderSize.Height;
+                double pw = panelSize.Width;
+                double ph = panelSize.Height;
+                double ew = elementSize.Width;
+                double eh = elementSize.Height;
                 double zx = pw / ew;
                 double zy = ph / eh;
                 double zoom = Math.Min(zx, zy);
 
-                _matrix = MatrixHelper.ScaleAt(zoom, zoom, ew / 2.0, eh / 2.0);
+                _matrix = MatrixHelper.ScaleAt(zoom, zoom, ew > pw ? 0.0 : ew / 2.0, eh > ph ? 0.0 : eh / 2.0);
 
                 Invalidate();
             }
         }
 
-        private void Fill()
+        private void Fill(Size panelSize, Size elementSize)
         {
             if (_element != null)
             {
-                double pw = this.RenderSize.Width;
-                double ph = this.RenderSize.Height;
-                double ew = _element.RenderSize.Width;
-                double eh = _element.RenderSize.Height;
+                double pw = panelSize.Width;
+                double ph = panelSize.Height;
+                double ew = elementSize.Width;
+                double eh = elementSize.Height;
                 double zx = pw / ew;
                 double zy = ph / eh;
 
-                _matrix = MatrixHelper.ScaleAt(zx, zy, ew / 2.0, eh / 2.0);
+                _matrix = MatrixHelper.ScaleAt(zx, zy, ew > pw ? 0.0 : ew / 2.0, eh > ph ? 0.0 : eh / 2.0);
 
                 Invalidate();
             }
@@ -196,21 +199,41 @@ namespace MatrixPanAndZoomDemo.Wpf
 
         private void Border_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.E)
+            if (e.Key == Key.E && _element != null)
             {
-                Extent();
+                Extent(this.RenderSize, _element.RenderSize);
             }
 
-            if (e.Key == Key.F)
+            if (e.Key == Key.F && _element != null)
             {
-                Fill();
+                Fill(this.RenderSize, _element.RenderSize);
             }
 
-            if (e.Key == Key.R)
+            if (e.Key == Key.R && _element != null)
             {
                 Reset();
             }
-
+        }
+        
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            if (_element != null)
+            {
+                switch (_autoFitModde) 
+                {
+                    case AutoFitMode.Reset: 
+                        Reset();
+                        break;
+                    case AutoFitMode.Extent:
+                        Extent(this.RenderSize, _element.RenderSize);
+                        break;
+                    case AutoFitMode.Fill:
+                        Fill(this.RenderSize, _element.RenderSize);
+                        break;
+                }
+            }
+            
+            return base.ArrangeOverride(finalSize);
         }
     }
 }
