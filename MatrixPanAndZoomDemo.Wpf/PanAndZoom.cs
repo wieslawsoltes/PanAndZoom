@@ -7,7 +7,7 @@ using System.Windows.Media;
 namespace MatrixPanAndZoomDemo.Wpf
 {
     public enum AutoFitMode { None, Reset, Extent, Fill }
-    
+
     public class PanAndZoom : Border
     {
         private UIElement _element;
@@ -214,14 +214,14 @@ namespace MatrixPanAndZoomDemo.Wpf
                 Reset();
             }
         }
-        
+
         protected override Size ArrangeOverride(Size finalSize)
         {
             if (_element != null)
             {
-                switch (_autoFitModde) 
+                switch (_autoFitModde)
                 {
-                    case AutoFitMode.Reset: 
+                    case AutoFitMode.Reset:
                         Reset();
                         break;
                     case AutoFitMode.Extent:
@@ -232,7 +232,7 @@ namespace MatrixPanAndZoomDemo.Wpf
                         break;
                 }
             }
-            
+
             return base.ArrangeOverride(finalSize);
         }
     }

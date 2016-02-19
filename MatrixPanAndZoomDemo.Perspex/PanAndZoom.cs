@@ -7,7 +7,7 @@ using System;
 namespace MatrixPanAndZoomDemo.Perspex
 {
     public enum AutoFitMode { None, Reset, Extent, Fill }
-    
+
     public class PanAndZoom : Border
     {
         private Control _element;
@@ -159,7 +159,7 @@ namespace MatrixPanAndZoomDemo.Perspex
         {
             return MatrixHelper.TransformPoint(matrix.Invert(), point);
         }
-        
+
         private void Border_PointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
             if (_element != null)
@@ -233,14 +233,14 @@ namespace MatrixPanAndZoomDemo.Perspex
                 Reset();
             }
         }
-        
+
         protected override Size ArrangeOverride(Size finalSize)
         {
             if (_element != null)
             {
-                switch (_autoFitModde) 
+                switch (_autoFitModde)
                 {
-                    case AutoFitMode.Reset: 
+                    case AutoFitMode.Reset:
                         Reset();
                         break;
                     case AutoFitMode.Extent:
