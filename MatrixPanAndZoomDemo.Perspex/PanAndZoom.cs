@@ -6,10 +6,13 @@ using System;
 
 namespace MatrixPanAndZoomDemo.Perspex
 {
+    public enum AutoFitMode { None, Reset, Extent, Fill }
+    
     public class PanAndZoom : Border
     {
         private Control _element;
         private double _zoomSpeed = 1.2;
+        private AutoFitMode _autoFitModde = AutoFitMode.None;
         private Point _pan;
         private Point _previous;
         private Matrix _matrix = MatrixHelper.Identity;
@@ -110,32 +113,32 @@ namespace MatrixPanAndZoomDemo.Perspex
             Invalidate();
         }
 
-        private void Extent()
+        private void Extent(Rect panelSize, Rect elementSize)
         {
             if (_element != null)
             {
-                double pw = this.Bounds.Width;
-                double ph = this.Bounds.Height;
-                double ew = _element.Bounds.Width;
-                double eh = _element.Bounds.Height;
+                double pw = panelSize.Width;
+                double ph = panelSize.Height;
+                double ew = elementSize.Width;
+                double eh = elementSize.Height;
                 double zx = pw / ew;
                 double zy = ph / eh;
                 double zoom = Math.Min(zx, zy);
 
-                _matrix = MatrixHelper.ScaleAt(zoom, zoom, ew / 2.0, eh / 2.0);
+                _matrix = MatrixHelper.ScaleAt(zoom, zoom, ew > pw ? 0.0 : ew / 2.0, eh > ph ? 0.0 : eh / 2.0);
 
                 Invalidate();
             }
         }
 
-        private void Fill()
+        private void Fill(Rect panelSize, Rect elementSize)
         {
             if (_element != null)
             {
-                double pw = this.Bounds.Width;
-                double ph = this.Bounds.Height;
-                double ew = _element.Bounds.Width;
-                double eh = _element.Bounds.Height;
+                double pw = panelSize.Width;
+                double ph = panelSize.Height;
+                double ew = elementSize.Width;
+                double eh = elementSize.Height;
                 double zx = pw / ew;
                 double zy = ph / eh;
 
@@ -215,20 +218,41 @@ namespace MatrixPanAndZoomDemo.Perspex
 
         private void Element_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.E)
+            if (e.Key == Key.E && _element != null)
             {
-                Extent();
+                Extent(this.Bounds, _element.Bounds);
             }
 
-            if (e.Key == Key.F)
+            if (e.Key == Key.F && _element != null)
             {
-                Fill();
+                Fill(this.Bounds, _element.Bounds);
             }
 
-            if (e.Key == Key.R)
+            if (e.Key == Key.R && _element != null)
             {
                 Reset();
             }
+        }
+        
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            if (_element != null)
+            {
+                switch (_autoFitModde) 
+                {
+                    case AutoFitMode.Reset: 
+                        Reset();
+                        break;
+                    case AutoFitMode.Extent:
+                        Extent(new Rect(0.0, 0.0, finalSize.Width, finalSize.Height), _element.Bounds);
+                        break;
+                    case AutoFitMode.Fill:
+                        Fill(new Rect(0.0, 0.0, finalSize.Width, finalSize.Height), _element.Bounds);
+                        break;
+                }
+            }
+
+            return base.ArrangeOverride(finalSize);
         }
     }
 }
