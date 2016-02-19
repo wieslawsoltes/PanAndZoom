@@ -1,7 +1,7 @@
 ﻿<Window x:Class="MatrixPanAndZoomDemo.Wpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:MatrixPanAndZoomDemo.Wpf"
+        xmlns:paz="clr-namespace:Wpf.Controls.PanAndZoom;assembly=Wpf.Controls.PanAndZoom"
         WindowStartupLocation="CenterScreen"
         UseLayoutRounding="True" SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display"
         Title="MainWindow" Height="640" Width="640">
@@ -24,10 +24,10 @@
             <TextBlock Text="Mouse Wheel - Zoom to Point" Foreground="WhiteSmoke" FontSize="11"/>
             <TextBlock Text="Mouse Right Button Down - Pan" Foreground="WhiteSmoke" FontSize="11"/>
         </StackPanel>
-        <local:PanAndZoom AutoFitMode="None" ZoomSpeed="1.2" ClipToBounds="True" Background="DarkGray" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="1">
+        <paz:PanAndZoom AutoFitMode="None" ZoomSpeed="1.2" ClipToBounds="True" Background="DarkGray" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="1">
             <Canvas x:Name="canvas" Background="LightGray" Width="300" Height="300">
                 <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
             </Canvas>
-        </local:PanAndZoom>
+        </paz:PanAndZoom>
     </Grid>
 </Window>

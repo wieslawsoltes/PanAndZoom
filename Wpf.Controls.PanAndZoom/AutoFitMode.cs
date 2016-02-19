@@ -1,5 +1,5 @@
 ﻿
-namespace MatrixPanAndZoomDemo.Perspex
+namespace Wpf.Controls.PanAndZoom
 {
     public enum AutoFitMode
     {

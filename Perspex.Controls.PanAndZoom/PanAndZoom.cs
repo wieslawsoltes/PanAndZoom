@@ -4,7 +4,7 @@ using Perspex.Input;
 using Perspex.Media;
 using System;
 
-namespace MatrixPanAndZoomDemo.Perspex
+namespace Perspex.Controls.PanAndZoom
 {
     public class PanAndZoom : Border
     {

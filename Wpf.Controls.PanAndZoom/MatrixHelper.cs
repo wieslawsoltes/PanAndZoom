@@ -1,10 +1,11 @@
-﻿using Perspex;
-using System;
+﻿using System;
+using System.Windows;
+using System.Windows.Media;
 
-namespace MatrixPanAndZoomDemo.Perspex
+namespace Wpf.Controls.PanAndZoom
 {
     /// <summary>
-    /// Perspex Matrix helper methods.
+    /// WPF Matrix helper methods.
     /// </summary>
     public static class MatrixHelper
     {
@@ -130,8 +131,8 @@ namespace MatrixPanAndZoomDemo.Perspex
         public static Point TransformPoint(Matrix matrix, Point point)
         {
             return new Point(
-                (point.X * matrix.M11) + (point.Y * matrix.M21) + matrix.M31,
-                (point.X * matrix.M12) + (point.Y * matrix.M22) + matrix.M32);
+                (point.X * matrix.M11) + (point.Y * matrix.M21) + matrix.OffsetX,
+                (point.X * matrix.M12) + (point.Y * matrix.M22) + matrix.OffsetY);
         }
     }
 }

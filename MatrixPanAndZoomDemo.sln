@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixPanAndZoomDemo.Wpf", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixPanAndZoomDemo.Perspex", "MatrixPanAndZoomDemo.Perspex\MatrixPanAndZoomDemo.Perspex.csproj", "{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perspex.Controls.PanAndZoom", "Perspex.Controls.PanAndZoom\Perspex.Controls.PanAndZoom.csproj", "{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wpf.Controls.PanAndZoom", "Wpf.Controls.PanAndZoom\Wpf.Controls.PanAndZoom.csproj", "{886A4D83-333F-4AE6-A99E-9A32053F13C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{886A4D83-333F-4AE6-A99E-9A32053F13C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{886A4D83-333F-4AE6-A99E-9A32053F13C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{886A4D83-333F-4AE6-A99E-9A32053F13C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{886A4D83-333F-4AE6-A99E-9A32053F13C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
