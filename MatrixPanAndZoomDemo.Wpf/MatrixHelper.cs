@@ -18,6 +18,11 @@ namespace MatrixPanAndZoomDemo.Wpf
             return Translate(offsetX, offsetY) * matrix;
         }
 
+        public static Matrix Scale(double scaleX, double scaleY)
+        {
+            return new Matrix(scaleX, 0, 0, scaleY, 0.0, 0.0);
+        }
+
         public static Matrix ScaleAt(double scaleX, double scaleY, double centerX, double centerY)
         {
             return new Matrix(scaleX, 0, 0, scaleY, centerX - scaleX * centerX, centerY - scaleY * centerY);
