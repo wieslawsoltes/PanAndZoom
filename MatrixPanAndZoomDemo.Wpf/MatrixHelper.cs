@@ -30,7 +30,7 @@ namespace MatrixPanAndZoomDemo.Wpf
 
         public static Matrix ScaleAtPrepend(Matrix matrix, double scaleX, double scaleY, double centerX, double centerY)
         {
-            return new Matrix(scaleX, 0, 0, scaleY, centerX - scaleX * centerX, centerY - scaleY * centerY) * matrix;
+            return ScaleAt(scaleX, scaleY, centerX, centerY) * matrix;
         }
 
         public static Matrix Rotation(double radians)
