@@ -39,6 +39,11 @@ namespace MatrixPanAndZoomDemo.Perspex
             return new Matrix(cos, sin, -sin, cos, 0, 0);
         }
 
+        public static Matrix Rotation(double angle, double centerX, double centerY)
+        {
+            return Translate(-centerX, -centerY) * Rotation(angle) * Translate(centerX, centerY);
+        }
+
         public static Matrix Rotation(double angle, Vector center)
         {
             return Translate(-center.X, -center.Y) * Rotation(angle) * Translate(center.X, center.Y);
