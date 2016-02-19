@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixPanAndZoomDemo.Wpf", "MatrixPanAndZoomDemo.Wpf\MatrixPanAndZoomDemo.Wpf.csproj", "{B2B6562E-FFCA-4571-A59C-359A45A07FF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfDemo", "samples\WpfDemo\WpfDemo.csproj", "{B2B6562E-FFCA-4571-A59C-359A45A07FF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixPanAndZoomDemo.Perspex", "MatrixPanAndZoomDemo.Perspex\MatrixPanAndZoomDemo.Perspex.csproj", "{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerspexDemo", "samples\PerspexDemo\PerspexDemo.csproj", "{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perspex.Controls.PanAndZoom", "Perspex.Controls.PanAndZoom\Perspex.Controls.PanAndZoom.csproj", "{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perspex.Controls.PanAndZoom", "src\Perspex.Controls.PanAndZoom\Perspex.Controls.PanAndZoom.csproj", "{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wpf.Controls.PanAndZoom", "Wpf.Controls.PanAndZoom\Wpf.Controls.PanAndZoom.csproj", "{886A4D83-333F-4AE6-A99E-9A32053F13C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wpf.Controls.PanAndZoom", "src\Wpf.Controls.PanAndZoom\Wpf.Controls.PanAndZoom.csproj", "{886A4D83-333F-4AE6-A99E-9A32053F13C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{BDB2F017-80B3-40D2-84A5-F006D4886B1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +38,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B2B6562E-FFCA-4571-A59C-359A45A07FF0} = {BDB2F017-80B3-40D2-84A5-F006D4886B1A}
+		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903} = {BDB2F017-80B3-40D2-84A5-F006D4886B1A}
 	EndGlobalSection
 EndGlobal

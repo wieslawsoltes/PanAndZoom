@@ -1,6 +1,4 @@
-﻿using Perspex;
-using Perspex.Controls;
-using Perspex.Input;
+﻿using Perspex.Input;
 using Perspex.Media;
 using System;
 
@@ -62,7 +60,6 @@ namespace Perspex.Controls.PanAndZoom
                 this.PointerPressed += Border_PointerPressed;
                 this.PointerReleased += Border_PointerReleased;
                 this.PointerMoved += Border_PointerMoved;
-                this.KeyDown += Border_KeyDown;
             }
         }
 
@@ -74,7 +71,6 @@ namespace Perspex.Controls.PanAndZoom
                 this.PointerPressed -= Border_PointerPressed;
                 this.PointerReleased -= Border_PointerReleased;
                 this.PointerMoved -= Border_PointerMoved;
-                this.KeyDown -= Border_KeyDown;
                 _element.RenderTransform = null;
                 _element = null;
             }
@@ -138,30 +134,6 @@ namespace Perspex.Controls.PanAndZoom
                 Point point = e.GetPosition(_element);
                 point = FixInvalidPointPosition(_matrix, point);
                 PanTo(point);
-            }
-        }
-
-        private void Border_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.E && _element != null)
-            {
-                Extent();
-            }
-
-            if (e.Key == Key.F && _element != null)
-            {
-                Fill();
-            }
-
-            if (e.Key == Key.R && _element != null)
-            {
-                Reset();
-            }
-
-            if (e.Key == Key.T)
-            {
-                ToggleAutoFitMode();
-                AutoFit();
             }
         }
 
@@ -295,12 +267,12 @@ namespace Perspex.Controls.PanAndZoom
             Invalidate();
         }
 
-        private void Extent()
+        public void Extent()
         {
             Extent(this.Bounds, _element.Bounds);
         }
 
-        private void Fill()
+        public void Fill()
         {
             Fill(this.Bounds, _element.Bounds);
         }

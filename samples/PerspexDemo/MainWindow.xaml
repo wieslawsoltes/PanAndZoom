@@ -1,9 +1,9 @@
-﻿<Window x:Class="MatrixPanAndZoomDemo.Perspex.MainWindow"
+﻿<Window x:Class="PerspexDemo.MainWindow"
         xmlns="https://github.com/perspex"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:paz="clr-namespace:Perspex.Controls.PanAndZoom;assembly=Perspex.Controls.PanAndZoom"
         UseLayoutRounding="True"
-        Title="MainWindow" Height="640" Width="640">
+        Title="PanAndZoom Perspex Demo" Height="640" Width="640">
     <Grid Background="SlateBlue" RowDefinitions="Auto,*,24" ColumnDefinitions="50,*,50">
         <StackPanel Background="#1FFFFFFF" Margin="4" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1">
             <TextBlock Text="E - Extent" Foreground="WhiteSmoke" FontSize="11"/>
@@ -13,8 +13,8 @@
             <TextBlock Text="Mouse Wheel - Zoom to Point" Foreground="WhiteSmoke" FontSize="11"/>
             <TextBlock Text="Mouse Right Button Down - Pan" Foreground="WhiteSmoke" FontSize="11"/>
         </StackPanel>
-        <paz:PanAndZoom AutoFitMode="None" ZoomSpeed="1.2" ClipToBounds="True" Background="DarkGray" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="1">
-            <Canvas Name="canvas" Background="LightGray" Width="300" Height="300">
+        <paz:PanAndZoom Name="panAndZoom" AutoFitMode="None" ZoomSpeed="1.2" ClipToBounds="True" Background="DarkGray" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="1">
+            <Canvas Background="LightGray" Width="300" Height="300">
                 <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
             </Canvas>
         </paz:PanAndZoom>

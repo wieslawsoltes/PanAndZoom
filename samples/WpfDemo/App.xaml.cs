@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace MatrixPanAndZoomDemo.Wpf
+namespace WpfDemo
 {
     public partial class App : Application
     {

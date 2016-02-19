@@ -68,7 +68,6 @@ namespace Wpf.Controls.PanAndZoom
                 this.PreviewMouseRightButtonDown += Border_PreviewMouseRightButtonDown;
                 this.PreviewMouseRightButtonUp += Border_PreviewMouseRightButtonUp;
                 this.PreviewMouseMove += Border_PreviewMouseMove;
-                this.KeyDown += Border_KeyDown;
             }
         }
 
@@ -80,7 +79,6 @@ namespace Wpf.Controls.PanAndZoom
                 this.PreviewMouseRightButtonDown -= Border_PreviewMouseRightButtonDown;
                 this.PreviewMouseRightButtonUp -= Border_PreviewMouseRightButtonUp;
                 this.PreviewMouseMove -= Border_PreviewMouseMove;
-                this.KeyDown -= Border_KeyDown;
                 _element.RenderTransform = null;
                 _element = null;
             }
@@ -119,30 +117,6 @@ namespace Wpf.Controls.PanAndZoom
             {
                 Point point = e.GetPosition(_element);
                 PanTo(point);
-            }
-        }
-
-        private void Border_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.E && _element != null)
-            {
-                Extent();
-            }
-
-            if (e.Key == Key.F && _element != null)
-            {
-                Fill();
-            }
-
-            if (e.Key == Key.R && _element != null)
-            {
-                Reset();
-            }
-
-            if (e.Key == Key.T)
-            {
-                ToggleAutoFitMode();
-                AutoFit();
             }
         }
 
