@@ -32,6 +32,11 @@ namespace MatrixPanAndZoomDemo.Perspex
             return ScaleAt(scaleX, scaleY, centerX, centerY) * matrix;
         }
 
+        public static Matrix Skew(float angleX, float angleY)
+        {
+            return new Matrix(1.0, Math.Tan(angleX), Math.Tan(angleY), 1.0, 0.0, 0.0);
+        }
+
         public static Matrix Rotation(double radians)
         {
             double cos = Math.Cos(radians);
