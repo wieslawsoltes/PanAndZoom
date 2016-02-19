@@ -169,7 +169,7 @@ namespace MatrixPanAndZoomDemo.Perspex
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            if (_element != null && _element.IsArrangeValid && _element.IsMeasureValid)
+            if (_element != null && _element.IsMeasureValid)
             {
                 AutoFit(new Rect(0.0, 0.0, finalSize.Width, finalSize.Height), _element.Bounds);
             }

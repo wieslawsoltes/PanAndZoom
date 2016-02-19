@@ -150,7 +150,7 @@ namespace MatrixPanAndZoomDemo.Wpf
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            if (_element != null && _element.IsArrangeValid && _element.IsMeasureValid)
+            if (_element != null && _element.IsMeasureValid)
             {
                 AutoFit(finalSize, _element.RenderSize);
             }
