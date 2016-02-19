@@ -6,8 +6,6 @@ using System;
 
 namespace MatrixPanAndZoomDemo.Perspex
 {
-    public enum AutoFitMode { None, Extent, Fill }
-
     public class PanAndZoom : Border
     {
         private Control _element;

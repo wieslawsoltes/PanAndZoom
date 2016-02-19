@@ -6,8 +6,6 @@ using System.Windows.Media;
 
 namespace MatrixPanAndZoomDemo.Wpf
 {
-    public enum AutoFitMode { None, Extent, Fill }
-
     public class PanAndZoom : Border
     {
         private UIElement _element;

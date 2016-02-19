@@ -172,6 +172,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoFitMode.cs" />
     <Compile Include="MatrixHelper.cs" />
     <Compile Include="PanAndZoom.cs" />
     <EmbeddedResource Include="App.xaml" />
