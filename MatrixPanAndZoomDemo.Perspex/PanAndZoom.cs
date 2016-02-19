@@ -227,8 +227,10 @@ namespace MatrixPanAndZoomDemo.Perspex
                 double zx = pw / ew;
                 double zy = ph / eh;
                 double zoom = Math.Min(zx, zy);
+                double cx = ew / 2.0;
+                double cy = eh / 2.0;
 
-                _matrix = MatrixHelper.ScaleAt(zoom, zoom, ew / 2.0, eh / 2.0);
+                _matrix = MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
 
                 Invalidate();
             }

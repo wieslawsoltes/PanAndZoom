@@ -208,8 +208,10 @@ namespace MatrixPanAndZoomDemo.Wpf
                 double zx = pw / ew;
                 double zy = ph / eh;
                 double zoom = Math.Min(zx, zy);
+                double cx = ew >= pw ? 0.0 : ew / 2.0;
+                double cy = eh >= ph ? 0.0 : eh / 2.0;
 
-                _matrix = MatrixHelper.ScaleAt(zoom, zoom, ew > pw ? 0.0 : ew / 2.0, eh > ph ? 0.0 : eh / 2.0);
+                _matrix = MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
 
                 Invalidate();
             }
