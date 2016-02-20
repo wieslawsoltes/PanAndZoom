@@ -76,17 +76,12 @@ namespace Perspex.Controls.PanAndZoom
             }
         }
 
-        public static Point FixInvalidPointPosition(Matrix matrix, Point point)
-        {
-            return MatrixHelper.TransformPoint(matrix.Invert(), point);
-        }
-
         private void Border_PointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
             if (_element != null)
             {
                 Point point = e.GetPosition(_element);
-                point = FixInvalidPointPosition(_matrix, point);
+                point = FixInvalidPointPosition(point);
                 ZoomDeltaTo(e.Delta.Y, point);
             }
         }
@@ -100,7 +95,7 @@ namespace Perspex.Controls.PanAndZoom
                         if (_element != null)
                         {
                             Point point = e.GetPosition(_element);
-                            point = FixInvalidPointPosition(_matrix, point);
+                            point = FixInvalidPointPosition(point);
                             StartPan(point);
                             e.Device.Capture(_element);
                         }
@@ -132,7 +127,7 @@ namespace Perspex.Controls.PanAndZoom
             if (_element != null && e.Device.Captured == _element)
             {
                 Point point = e.GetPosition(_element);
-                point = FixInvalidPointPosition(_matrix, point);
+                point = FixInvalidPointPosition(point);
                 PanTo(point);
             }
         }
@@ -283,6 +278,11 @@ namespace Perspex.Controls.PanAndZoom
             {
                 AutoFit(this.Bounds, _element.Bounds);
             }
+        }
+
+        public Point FixInvalidPointPosition(Point point)
+        {
+            return MatrixHelper.TransformPoint(_matrix.Invert(), point);
         }
     }
 }
