@@ -17,8 +17,8 @@ namespace Perspex.Controls.PanAndZoom
         /// <summary>
         /// Creates a translation matrix using the specified offsets.
         /// </summary>
-        /// <param name="x">X-coordinate offset.</param>
-        /// <param name="y">Y-coordinate offset.</param>
+        /// <param name="offsetX">X-coordinate offset.</param>
+        /// <param name="offsetY">Y-coordinate offset.</param>
         /// <returns>The created translation matrix.</returns>
         public static Matrix Translate(double offsetX, double offsetY)
         {
@@ -28,9 +28,9 @@ namespace Perspex.Controls.PanAndZoom
         /// <summary>
         /// Prepends a translation around the center of provided matrix.
         /// </summary>
-        /// <param name="matrix">The matrix to prepend translation.</param
-        /// <param name="x">X-coordinate offset.</param>
-        /// <param name="y">Y-coordinate offset.</param>
+        /// <param name="matrix">The matrix to prepend translation.</param>
+        /// <param name="offsetX">X-coordinate offset.</param>
+        /// <param name="offsetY">Y-coordinate offset.</param>
         /// <returns>The created translation matrix.</returns>
         public static Matrix TranslatePrepend(Matrix matrix, double offsetX, double offsetY)
         {
@@ -80,7 +80,7 @@ namespace Perspex.Controls.PanAndZoom
         /// </summary>
         /// <param name="angleX">Angle of skew along the X-axis in radians.</param>
         /// <param name="angleY">Angle of skew along the Y-axis in radians.</param>
-        /// <param name="result">When the method completes, contains the created skew matrix.</param>
+        /// <returns>When the method completes, contains the created skew matrix.</returns>
         public static Matrix Skew(float angleX, float angleY)
         {
             return new Matrix(1.0, Math.Tan(angleX), Math.Tan(angleY), 1.0, 0.0, 0.0);
@@ -89,7 +89,7 @@ namespace Perspex.Controls.PanAndZoom
         /// <summary>
         /// Creates a matrix that rotates.
         /// </summary>
-        /// <param name="angle">Angle of rotation in radians. Angles are measured clockwise when looking along the rotation axis.</param>
+        /// <param name="radians">Angle of rotation in radians. Angles are measured clockwise when looking along the rotation axis.</param>
         /// <returns>The created rotation matrix.</returns>
         public static Matrix Rotation(double radians)
         {
