@@ -2,7 +2,6 @@
 using Perspex;
 using Perspex.Controls;
 using Perspex.Diagnostics;
-using Perspex.Themes.Default;
 using Perspex.Markup.Xaml;
 
 namespace PerspexDemo
@@ -13,7 +12,6 @@ namespace PerspexDemo
         {
             RegisterServices();
             InitializeSubsystems((int)Environment.OSVersion.Platform);
-            Styles = new DefaultTheme();
             PerspexXamlLoader.Load(this);
         }
 
