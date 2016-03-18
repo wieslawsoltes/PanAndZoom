@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using static System.Math;
 
 namespace Wpf.Controls.PanAndZoom
 {
@@ -16,6 +17,8 @@ namespace Wpf.Controls.PanAndZoom
         public double ZoomSpeed { get; set; }
 
         public AutoFitMode AutoFitMode { get; set; }
+
+        public Action<double, double, double, double> InvalidatedChild { get; set; }
 
         public PanAndZoom()
             : base()
@@ -124,7 +127,7 @@ namespace Wpf.Controls.PanAndZoom
         {
             if (_element != null && _element.IsMeasureValid)
             {
-                AutoFit(finalSize, _element.RenderSize);
+                AutoFit(this.DesiredSize, _element.DesiredSize);
             }
 
             return base.ArrangeOverride(finalSize);
@@ -134,6 +137,7 @@ namespace Wpf.Controls.PanAndZoom
         {
             if (_element != null)
             {
+                this.InvalidatedChild?.Invoke(_matrix.M11, _matrix.M12, _matrix.OffsetX, _matrix.OffsetY);
                 _element.RenderTransformOrigin = new Point(0, 0);
                 _element.RenderTransform = new MatrixTransform(_matrix);
                 _element.InvalidateVisual();
@@ -179,13 +183,11 @@ namespace Wpf.Controls.PanAndZoom
                 double eh = elementSize.Height;
                 double zx = pw / ew;
                 double zy = ph / eh;
-                double zoom = Math.Min(zx, zy);
-                double dx = (pw - (ew * zoom)) / 2.0;
-                double dy = (ph - (eh * zoom)) / 2.0;
-                double ox = dx - Math.Max(0, (pw - ew) / 2.0);
-                double oy = dy - Math.Max(0, (ph - eh) / 2.0);
+                double zoom = Min(zx, zy);
+                double cx = ew / 2.0;
+                double cy = eh / 2.0;
 
-                _matrix = MatrixHelper.Scale(zoom, zoom) * MatrixHelper.Translate(ox, oy);
+                _matrix = MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
 
                 Invalidate();
             }
@@ -202,7 +204,7 @@ namespace Wpf.Controls.PanAndZoom
                 double zx = pw / ew;
                 double zy = ph / eh;
 
-                _matrix = MatrixHelper.ScaleAt(zx, zy, ew > pw ? 0.0 : ew / 2.0, eh > ph ? 0.0 : eh / 2.0);
+                _matrix = MatrixHelper.ScaleAt(zx, zy, ew / 2.0, eh / 2.0);
 
                 Invalidate();
             }
@@ -254,19 +256,19 @@ namespace Wpf.Controls.PanAndZoom
 
         public void Extent()
         {
-            Extent(this.RenderSize, _element.RenderSize);
+            Extent(this.DesiredSize, _element.RenderSize);
         }
 
         public void Fill()
         {
-            Fill(this.RenderSize, _element.RenderSize);
+            Fill(this.DesiredSize, _element.RenderSize);
         }
 
         public void AutoFit()
         {
             if (_element != null)
             {
-                AutoFit(this.RenderSize, _element.RenderSize);
+                AutoFit(this.DesiredSize, _element.RenderSize);
             }
         }
     }

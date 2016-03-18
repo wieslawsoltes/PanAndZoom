@@ -1,27 +1,54 @@
-﻿using Perspex.Input;
+﻿using Perspex.Data;
+using Perspex.Input;
 using Perspex.Media;
 using System;
+using static System.Math;
 
 namespace Perspex.Controls.PanAndZoom
 {
     public class PanAndZoom : Border
     {
-        private Control _element;
+        private static AutoFitMode[] _autoFitModes = (AutoFitMode[])Enum.GetValues(typeof(AutoFitMode));
+
+        public static AutoFitMode[] AutoFitModes
+        {
+            get { return _autoFitModes; }
+        }
+
+        private IControl _element;
         private Point _pan;
         private Point _previous;
         private Matrix _matrix;
 
-        public double ZoomSpeed { get; set; }
+        public Action<double, double, double, double> InvalidatedChild { get; set; }
 
-        public AutoFitMode AutoFitMode { get; set; }
+        public static PerspexProperty<double> ZoomSpeedProperty =
+            PerspexProperty.Register<PanAndZoom, double>("ZoomSpeed", 1.2, false, BindingMode.TwoWay);
+
+        public double ZoomSpeed
+        {
+            get { return GetValue(ZoomSpeedProperty); }
+            set { SetValue(ZoomSpeedProperty, value); }
+        }
+
+        public static PerspexProperty<AutoFitMode> AutoFitModeProperty =
+            PerspexProperty.Register<PanAndZoom, AutoFitMode>("AutoFitMode", AutoFitMode.Extent, false, BindingMode.TwoWay);
+
+        public AutoFitMode AutoFitMode
+        {
+            get { return GetValue(AutoFitModeProperty); }
+            set { SetValue(AutoFitModeProperty, value); }
+        }
+
+        static PanAndZoom()
+        {
+            AffectsArrange(ZoomSpeedProperty, AutoFitModeProperty);
+        }
 
         public PanAndZoom()
             : base()
         {
             _matrix = MatrixHelper.Identity;
-
-            ZoomSpeed = 1.2;
-            AutoFitMode = AutoFitMode.None;
 
             Focusable = true;
             Background = Brushes.Transparent;
@@ -50,12 +77,11 @@ namespace Perspex.Controls.PanAndZoom
             }
         }
 
-        private void Initialize(Control element)
+        private void Initialize(IControl element)
         {
             if (element != null)
             {
                 _element = element;
-                this.Focus();
                 this.PointerWheelChanged += Border_PointerWheelChanged;
                 this.PointerPressed += Border_PointerPressed;
                 this.PointerReleased += Border_PointerReleased;
@@ -134,18 +160,21 @@ namespace Perspex.Controls.PanAndZoom
 
         protected override Size ArrangeOverride(Size finalSize)
         {
+            var size = base.ArrangeOverride(finalSize);
+
             if (_element != null && _element.IsMeasureValid)
             {
                 AutoFit(new Rect(0.0, 0.0, finalSize.Width, finalSize.Height), _element.Bounds);
             }
 
-            return base.ArrangeOverride(finalSize);
+            return size;
         }
 
         public void Invalidate()
         {
             if (_element != null)
             {
+                this.InvalidatedChild?.Invoke(_matrix.M11, _matrix.M12, _matrix.M31, _matrix.M32);
                 _element.TransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
                 _element.RenderTransform = new MatrixTransform(_matrix);
                 _element.InvalidateVisual();
@@ -191,7 +220,7 @@ namespace Perspex.Controls.PanAndZoom
                 double eh = elementSize.Height;
                 double zx = pw / ew;
                 double zy = ph / eh;
-                double zoom = Math.Min(zx, zy);
+                double zoom = Min(zx, zy);
                 double cx = ew / 2.0;
                 double cy = eh / 2.0;
 
