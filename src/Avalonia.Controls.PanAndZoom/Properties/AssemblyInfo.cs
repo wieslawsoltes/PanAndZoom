@@ -1,11 +1,11 @@
 ﻿using System.Resources;
 using System.Reflection;
 
-[assembly: AssemblyTitle("Perspex.Controls.PanAndZoom")]
+[assembly: AssemblyTitle("Avalonia.Controls.PanAndZoom")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Wiesław Šoltés")]
-[assembly: AssemblyProduct("Perspex.Controls.PanAndZoom")]
+[assembly: AssemblyProduct("Avalonia.Controls.PanAndZoom")]
 [assembly: AssemblyCopyright("Copyright © Wiesław Šoltés 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -1,10 +1,10 @@
-﻿using Perspex;
+﻿using Avalonia;
 using System;
 
-namespace Perspex.Controls.PanAndZoom
+namespace Avalonia.Controls.PanAndZoom
 {
     /// <summary>
-    /// Perspex Matrix helper methods.
+    /// Avalonia Matrix helper methods.
     /// </summary>
     public static class MatrixHelper
     {

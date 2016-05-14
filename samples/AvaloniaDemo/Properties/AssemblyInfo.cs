@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("PerspexDemo")]
+[assembly: AssemblyTitle("AvaloniaDemo")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Wiesław Šoltés")]
-[assembly: AssemblyProduct("PerspexDemo")]
+[assembly: AssemblyProduct("AvaloniaDemo")]
 [assembly: AssemblyCopyright("Copyright © Wiesław Šoltés 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

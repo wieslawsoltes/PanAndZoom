@@ -1,10 +1,10 @@
 ﻿using System;
-using Perspex;
-using Perspex.Controls;
-using Perspex.Diagnostics;
-using Perspex.Markup.Xaml;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Diagnostics;
+using Avalonia.Markup.Xaml;
 
-namespace PerspexDemo
+namespace AvaloniaDemo
 {
     class App : Application
     {
@@ -12,7 +12,7 @@ namespace PerspexDemo
         {
             RegisterServices();
             InitializeSubsystems((int)Environment.OSVersion.Platform);
-            PerspexXamlLoader.Load(this);
+            AvaloniaXamlLoader.Load(this);
         }
 
         static void Main(string[] args)

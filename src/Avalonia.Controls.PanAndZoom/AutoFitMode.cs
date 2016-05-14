@@ -1,5 +1,5 @@
 ﻿
-namespace Perspex.Controls.PanAndZoom
+namespace Avalonia.Controls.PanAndZoom
 {
     public enum AutoFitMode
     {

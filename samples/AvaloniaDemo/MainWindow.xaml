@@ -1,9 +1,9 @@
-﻿<Window x:Class="PerspexDemo.MainWindow"
-        xmlns="https://github.com/perspex"
+﻿<Window x:Class="AvaloniaDemo.MainWindow"
+        xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:paz="clr-namespace:Perspex.Controls.PanAndZoom;assembly=Perspex.Controls.PanAndZoom"
+        xmlns:paz="clr-namespace:Avalonia.Controls.PanAndZoom;assembly=Avalonia.Controls.PanAndZoom"
         UseLayoutRounding="True"
-        Title="PanAndZoom Perspex Demo" Height="640" Width="640">
+        Title="PanAndZoom Avalonia Demo" Height="640" Width="640">
     <Grid Background="SlateBlue" RowDefinitions="Auto,*,24" ColumnDefinitions="50,*,50">
         <StackPanel Background="#1FFFFFFF" Margin="4" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1">
             <TextBlock Text="E - Extent" Foreground="WhiteSmoke" FontSize="11"/>

@@ -1,10 +1,10 @@
-﻿using Perspex.Data;
-using Perspex.Input;
-using Perspex.Media;
+﻿using Avalonia.Data;
+using Avalonia.Input;
+using Avalonia.Media;
 using System;
 using static System.Math;
 
-namespace Perspex.Controls.PanAndZoom
+namespace Avalonia.Controls.PanAndZoom
 {
     public class PanAndZoom : Border
     {
@@ -22,8 +22,8 @@ namespace Perspex.Controls.PanAndZoom
 
         public Action<double, double, double, double> InvalidatedChild { get; set; }
 
-        public static PerspexProperty<double> ZoomSpeedProperty =
-            PerspexProperty.Register<PanAndZoom, double>("ZoomSpeed", 1.2, false, BindingMode.TwoWay);
+        public static AvaloniaProperty<double> ZoomSpeedProperty =
+            AvaloniaProperty.Register<PanAndZoom, double>("ZoomSpeed", 1.2, false, BindingMode.TwoWay);
 
         public double ZoomSpeed
         {
@@ -31,8 +31,8 @@ namespace Perspex.Controls.PanAndZoom
             set { SetValue(ZoomSpeedProperty, value); }
         }
 
-        public static PerspexProperty<AutoFitMode> AutoFitModeProperty =
-            PerspexProperty.Register<PanAndZoom, AutoFitMode>("AutoFitMode", AutoFitMode.Extent, false, BindingMode.TwoWay);
+        public static AvaloniaProperty<AutoFitMode> AutoFitModeProperty =
+            AvaloniaProperty.Register<PanAndZoom, AutoFitMode>("AutoFitMode", AutoFitMode.Extent, false, BindingMode.TwoWay);
 
         public AutoFitMode AutoFitMode
         {

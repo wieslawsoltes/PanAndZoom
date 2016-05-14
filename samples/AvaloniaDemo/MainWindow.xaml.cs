@@ -1,9 +1,9 @@
-﻿using Perspex.Controls;
-using Perspex.Controls.PanAndZoom;
-using Perspex.Input;
-using Perspex.Markup.Xaml;
+﻿using Avalonia.Controls;
+using Avalonia.Controls.PanAndZoom;
+using Avalonia.Input;
+using Avalonia.Markup.Xaml;
 
-namespace PerspexDemo
+namespace AvaloniaDemo
 {
     public class MainWindow : Window
     {
@@ -20,7 +20,7 @@ namespace PerspexDemo
 
         private void InitializeComponent()
         {
-            PerspexXamlLoader.Load(this);
+            AvaloniaXamlLoader.Load(this);
         }
 
         private void PanAndZoom_KeyDown(object sender, KeyEventArgs e)
