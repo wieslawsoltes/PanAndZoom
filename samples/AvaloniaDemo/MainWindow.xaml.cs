@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.PanAndZoom;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
@@ -12,7 +13,7 @@ namespace AvaloniaDemo
         public MainWindow()
         {
             this.InitializeComponent();
-            App.AttachDevTools(this);
+            this.AttachDevTools();
 
             panAndZoom = this.Find<PanAndZoom>("panAndZoom");
             panAndZoom.KeyDown += PanAndZoom_KeyDown;
