@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Avalonia.Controls.PanAndZoom</id>
+    <version>#VERSION#</version>
+    <authors>wieslaw.soltes</authors>
+    <owners>wieslaw.soltes</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/wieslawsoltes/MatrixPanAndZoomDemo/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Easily add pan and zoom functionality to your Avalonia apps using PanAndZoom control.</description>
+    <releaseNotes>Initial alpha release.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Avalonia Pan Zoom Control C# Xaml</tags>
+    <dependencies>
+      <dependency id="Serilog" version="1.5.14" />
+      <dependency id="Splat" version="1.6.2" />
+      <dependency id="Sprache" version="2.0.0.50" />
+      <dependency id="System.Reactive" version="3.0.0" />
+      <dependency id="System.Reactive.Core" version="3.0.0" />
+      <dependency id="System.Reactive.Interfaces" version="3.0.0" />
+      <dependency id="System.Reactive.Linq" version="3.0.0" />
+      <dependency id="System.Reactive.PlatformServices" version="3.0.0" />
+      <dependency id="Avalonia" version="0.2.0.1697-alpha" />
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Wpf.Controls.PanAndZoom</id>
+    <version>#VERSION#</version>
+    <authors>wieslaw.soltes</authors>
+    <owners>wieslaw.soltes</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/wieslawsoltes/MatrixPanAndZoomDemo/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Easily add pan and zoom functionality to your WPF apps using PanAndZoom control.</description>
+    <releaseNotes>Initial alpha release.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>WPF Pan Zoom Control C# Xaml</tags>
+  </metadata>
+</package>
