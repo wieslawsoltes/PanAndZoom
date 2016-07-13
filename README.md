@@ -45,6 +45,183 @@ You can install the package for `WPF` based projects like this:
 
 * [GitHub source code repository.](https://github.com/wieslawsoltes/MatrixPanAndZoomDemo)
 
+## Using PanAndZoom
+
+### Avalonia
+
+`MainWindow.xaml`
+```XAML
+<Window x:Class="AvaloniaDemo.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:paz="clr-namespace:Avalonia.Controls.PanAndZoom;assembly=Avalonia.Controls.PanAndZoom"
+        UseLayoutRounding="True"
+        Title="PanAndZoom Avalonia Demo" Height="640" Width="640">
+    <Grid Background="SlateBlue" RowDefinitions="Auto,*,24" ColumnDefinitions="50,*,50">
+        <StackPanel Background="#1FFFFFFF" Margin="4" 
+                    HorizontalAlignment="Center" VerticalAlignment="Top" 
+                    Grid.Row="0" Grid.Column="1">
+            <TextBlock Text="E - Extent" Foreground="WhiteSmoke" FontSize="11"/>
+            <TextBlock Text="F - Fill" Foreground="WhiteSmoke" FontSize="11"/>
+            <TextBlock Text="R - Reset" Foreground="WhiteSmoke" FontSize="11"/>
+            <TextBlock Text="T - Toggle AutoFitMode" Foreground="WhiteSmoke" FontSize="11"/>
+            <TextBlock Text="Mouse Wheel - Zoom to Point" Foreground="WhiteSmoke" FontSize="11"/>
+            <TextBlock Text="Mouse Right Button Down - Pan" Foreground="WhiteSmoke" FontSize="11"/>
+        </StackPanel>
+        <paz:PanAndZoom Name="panAndZoom" AutoFitMode="None" ZoomSpeed="1.2" 
+                        ClipToBounds="True" Background="DarkGray" 
+                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+                        Grid.Row="1" Grid.Column="1">
+            <Canvas Background="LightGray" Width="300" Height="300">
+                <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
+            </Canvas>
+        </paz:PanAndZoom>
+    </Grid>
+</Window>
+```
+
+`MainWindow.xaml.cs`
+```C#
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.PanAndZoom;
+using Avalonia.Input;
+using Avalonia.Markup.Xaml;
+
+namespace AvaloniaDemo
+{
+    public class MainWindow : Window
+    {
+        private PanAndZoom panAndZoom;
+
+        public MainWindow()
+        {
+            this.InitializeComponent();
+            this.AttachDevTools();
+
+            panAndZoom = this.Find<PanAndZoom>("panAndZoom");
+            panAndZoom.KeyDown += PanAndZoom_KeyDown;
+        }
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
+        }
+
+        private void PanAndZoom_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.E)
+            {
+                panAndZoom.Extent();
+            }
+
+            if (e.Key == Key.F)
+            {
+                panAndZoom.Fill();
+            }
+
+            if (e.Key == Key.R)
+            {
+                panAndZoom.Reset();
+            }
+
+            if (e.Key == Key.T)
+            {
+                panAndZoom.ToggleAutoFitMode();
+                panAndZoom.AutoFit();
+            }
+        }
+    }
+}
+```
+
+### WPF
+
+`MainWindow.xaml`
+```XAML
+<Window x:Class="WpfDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:paz="clr-namespace:Wpf.Controls.PanAndZoom;assembly=Wpf.Controls.PanAndZoom"
+        WindowStartupLocation="CenterScreen"
+        UseLayoutRounding="True" SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display"
+        Title="PanAndZoom WPF Demo" Height="640" Width="640">
+    <Grid Background="SlateBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="24"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="50"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Background="#1FFFFFFF" Margin="4" 
+                    HorizontalAlignment="Center" VerticalAlignment="Top" 
+                    Grid.Row="0" Grid.Column="1">
+            <TextBlock Text="E - Extent" Foreground="WhiteSmoke" FontSize="11"/>
+            <TextBlock Text="F - Fill" Foreground="WhiteSmoke" FontSize="11"/>
+            <TextBlock Text="R - Reset" Foreground="WhiteSmoke" FontSize="11"/>
+            <TextBlock Text="T - Toggle AutoFitMode" Foreground="WhiteSmoke" FontSize="11"/>
+            <TextBlock Text="Mouse Wheel - Zoom to Point" Foreground="WhiteSmoke" FontSize="11"/>
+            <TextBlock Text="Mouse Right Button Down - Pan" Foreground="WhiteSmoke" FontSize="11"/>
+        </StackPanel>
+        <paz:PanAndZoom x:Name="panAndZoom" AutoFitMode="None" ZoomSpeed="1.2" ClipToBounds="True" 
+                        Background="DarkGray" 
+                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+                        Grid.Row="1" Grid.Column="1">
+            <Canvas Background="LightGray" Width="300" Height="300">
+                <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
+            </Canvas>
+        </paz:PanAndZoom>
+    </Grid>
+</Window>
+```
+
+`MainWindow.xaml.cs`
+```C#
+using System.Windows;
+using System.Windows.Input;
+
+namespace WpfDemo
+{
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            panAndZoom.KeyDown += PanAndZoom_KeyDown;
+        }
+
+        private void PanAndZoom_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.E)
+            {
+                panAndZoom.Extent();
+            }
+
+            if (e.Key == Key.F)
+            {
+                panAndZoom.Fill();
+            }
+
+            if (e.Key == Key.R)
+            {
+                panAndZoom.Reset();
+            }
+
+            if (e.Key == Key.T)
+            {
+                panAndZoom.ToggleAutoFitMode();
+                panAndZoom.AutoFit();
+            }
+        }
+    }
+}
+```
+
 ## License
 
 PanAndZoom is licensed under the [MIT license](LICENSE.TXT).
