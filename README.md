@@ -2,6 +2,7 @@
 
 [![Gitter](https://badges.gitter.im/wieslawsoltes/MatrixPanAndZoomDemo.svg)](https://gitter.im/wieslawsoltes/MatrixPanAndZoomDemo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Build status](https://ci.appveyor.com/api/projects/status/2l6o2ondbbn6mmwh/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/matrixpanandzoomdemo/branch/master)
+[![Build Status](https://travis-ci.org/wieslawsoltes/MatrixPanAndZoomDemo.svg?branch=master)](https://travis-ci.org/wieslawsoltes/MatrixPanAndZoomDemo)
 
 PanAndZoom control for WPF and Avalonia
 
