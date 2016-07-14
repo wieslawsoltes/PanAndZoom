@@ -13,6 +13,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wpf.Controls.PanAndZoom", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{BDB2F017-80B3-40D2-84A5-F006D4886B1A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{202555ED-7CDB-4015-80DD-98C080B0CC54}"
+	ProjectSection(SolutionItems) = preProject
+		nuget\build-appveyor.ps1 = nuget\build-appveyor.ps1
+		nuget\build-version.ps1 = nuget\build-version.ps1
+		nuget\build.ps1 = nuget\build.ps1
+		nuget\include.ps1 = nuget\include.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "template", "template", "{CC475771-4D34-4BCF-B21B-589456985054}"
+	ProjectSection(SolutionItems) = preProject
+		nuget\template\Avalonia.Controls.PanAndZoom.nuspec = nuget\template\Avalonia.Controls.PanAndZoom.nuspec
+		nuget\template\Wpf.Controls.PanAndZoom.nuspec = nuget\template\Wpf.Controls.PanAndZoom.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +56,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B2B6562E-FFCA-4571-A59C-359A45A07FF0} = {BDB2F017-80B3-40D2-84A5-F006D4886B1A}
 		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903} = {BDB2F017-80B3-40D2-84A5-F006D4886B1A}
+		{CC475771-4D34-4BCF-B21B-589456985054} = {202555ED-7CDB-4015-80DD-98C080B0CC54}
 	EndGlobalSection
 EndGlobal
