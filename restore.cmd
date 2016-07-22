@@ -4,7 +4,7 @@ set maxRetries=5
 
 :RESTORE
 
-nuget restore PanAndZoom.sln -source "https://www.nuget.org/api/v2/;https://www.myget.org/F/avalonia-ci/api/v2"
+nuget restore PanAndZoom.sln
 
 IF NOT ERRORLEVEL 1 GOTO :EOF
 
