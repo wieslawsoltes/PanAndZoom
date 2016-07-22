@@ -1,5 +1,5 @@
 ﻿using Avalonia;
-using System;
+using static System.Math;
 
 namespace Avalonia.Controls.PanAndZoom
 {
@@ -83,7 +83,7 @@ namespace Avalonia.Controls.PanAndZoom
         /// <returns>When the method completes, contains the created skew matrix.</returns>
         public static Matrix Skew(float angleX, float angleY)
         {
-            return new Matrix(1.0, Math.Tan(angleX), Math.Tan(angleY), 1.0, 0.0, 0.0);
+            return new Matrix(1.0, Tan(angleX), Tan(angleY), 1.0, 0.0, 0.0);
         }
 
         /// <summary>
@@ -93,8 +93,8 @@ namespace Avalonia.Controls.PanAndZoom
         /// <returns>The created rotation matrix.</returns>
         public static Matrix Rotation(double radians)
         {
-            double cos = Math.Cos(radians);
-            double sin = Math.Sin(radians);
+            double cos = Cos(radians);
+            double sin = Sin(radians);
             return new Matrix(cos, sin, -sin, cos, 0, 0);
         }
 
