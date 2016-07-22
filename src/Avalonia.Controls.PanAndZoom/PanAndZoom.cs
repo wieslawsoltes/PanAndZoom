@@ -23,16 +23,16 @@ namespace Avalonia.Controls.PanAndZoom
         public Action<double, double, double, double> InvalidatedChild { get; set; }
 
         public static AvaloniaProperty<double> ZoomSpeedProperty =
-            AvaloniaProperty.Register<PanAndZoom, double>("ZoomSpeed", 1.2, false, BindingMode.TwoWay);
+            AvaloniaProperty.Register<PanAndZoom, double>(nameof(ZoomSpeed), 1.2, false, BindingMode.TwoWay);
+
+        public static AvaloniaProperty<AutoFitMode> AutoFitModeProperty =
+            AvaloniaProperty.Register<PanAndZoom, AutoFitMode>(nameof(AutoFitMode), AutoFitMode.Extent, false, BindingMode.TwoWay);
 
         public double ZoomSpeed
         {
             get { return GetValue(ZoomSpeedProperty); }
             set { SetValue(ZoomSpeedProperty, value); }
         }
-
-        public static AvaloniaProperty<AutoFitMode> AutoFitModeProperty =
-            AvaloniaProperty.Register<PanAndZoom, AutoFitMode>("AutoFitMode", AutoFitMode.Extent, false, BindingMode.TwoWay);
 
         public AutoFitMode AutoFitMode
         {
