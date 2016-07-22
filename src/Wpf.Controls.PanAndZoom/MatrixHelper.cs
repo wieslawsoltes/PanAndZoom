@@ -1,6 +1,8 @@
-﻿using System;
+﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System.Windows;
 using System.Windows.Media;
+using static System.Math;
 
 namespace Wpf.Controls.PanAndZoom
 {
@@ -84,7 +86,7 @@ namespace Wpf.Controls.PanAndZoom
         /// <returns>When the method completes, contains the created skew matrix.</returns>
         public static Matrix Skew(float angleX, float angleY)
         {
-            return new Matrix(1.0, Math.Tan(angleX), Math.Tan(angleY), 1.0, 0.0, 0.0);
+            return new Matrix(1.0, Tan(angleX), Tan(angleY), 1.0, 0.0, 0.0);
         }
 
         /// <summary>
@@ -94,8 +96,8 @@ namespace Wpf.Controls.PanAndZoom
         /// <returns>The created rotation matrix.</returns>
         public static Matrix Rotation(double radians)
         {
-            double cos = Math.Cos(radians);
-            double sin = Math.Sin(radians);
+            double cos = Cos(radians);
+            double sin = Sin(radians);
             return new Matrix(cos, sin, -sin, cos, 0, 0);
         }
 
