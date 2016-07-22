@@ -47,6 +47,8 @@ You can install the package for `WPF` based projects like this:
 
 ## Using PanAndZoom
 
+You can also use custom xmlns definition for `ZoomBorder` control: `xmlns:paz="https://github.com/panandzoom"`.
+
 ### Avalonia
 
 `MainWindow.xaml`
@@ -54,7 +56,7 @@ You can install the package for `WPF` based projects like this:
 <Window x:Class="AvaloniaDemo.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:paz="https://github.com/panandzoom"
+        xmlns:paz="clr-namespace:Avalonia.Controls.PanAndZoom;assembly=Avalonia.Controls.PanAndZoom"
         UseLayoutRounding="True"
         Title="PanAndZoom Avalonia Demo" Height="640" Width="640">
     <Grid Background="SlateBlue" RowDefinitions="Auto,*,24" ColumnDefinitions="50,*,50">
@@ -142,7 +144,7 @@ namespace AvaloniaDemo
 <Window x:Class="WpfDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:paz="https://github.com/panandzoom"
+        xmlns:paz="clr-namespace:Wpf.Controls.PanAndZoom;assembly=Wpf.Controls.PanAndZoom"
         WindowStartupLocation="CenterScreen"
         UseLayoutRounding="True" SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display"
         Title="PanAndZoom WPF Demo" Height="640" Width="640">
