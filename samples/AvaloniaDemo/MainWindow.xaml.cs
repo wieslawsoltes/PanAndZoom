@@ -10,15 +10,15 @@ namespace AvaloniaDemo
 {
     public class MainWindow : Window
     {
-        private PanAndZoom panAndZoom;
+        private ZoomBorder zoomBorder;
 
         public MainWindow()
         {
             this.InitializeComponent();
             this.AttachDevTools();
 
-            panAndZoom = this.Find<PanAndZoom>("panAndZoom");
-            panAndZoom.KeyDown += PanAndZoom_KeyDown;
+            zoomBorder = this.Find<ZoomBorder>("zoomBorder");
+            zoomBorder.KeyDown += ZoomBorder_KeyDown;
         }
 
         private void InitializeComponent()
@@ -26,27 +26,27 @@ namespace AvaloniaDemo
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void PanAndZoom_KeyDown(object sender, KeyEventArgs e)
+        private void ZoomBorder_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.E)
             {
-                panAndZoom.Extent();
+                zoomBorder.Extent();
             }
 
             if (e.Key == Key.F)
             {
-                panAndZoom.Fill();
+                zoomBorder.Fill();
             }
 
             if (e.Key == Key.R)
             {
-                panAndZoom.Reset();
+                zoomBorder.Reset();
             }
 
             if (e.Key == Key.T)
             {
-                panAndZoom.ToggleAutoFitMode();
-                panAndZoom.AutoFit();
+                zoomBorder.ToggleAutoFitMode();
+                zoomBorder.AutoFit();
             }
         }
     }

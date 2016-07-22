@@ -36,7 +36,7 @@
   <ItemGroup>
     <Compile Include="AutoFitMode.cs" />
     <Compile Include="MatrixHelper.cs" />
-    <Compile Include="PanAndZoom.cs" />
+    <Compile Include="ZoomBorder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

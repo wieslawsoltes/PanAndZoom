@@ -8,7 +8,7 @@ using static System.Math;
 
 namespace Avalonia.Controls.PanAndZoom
 {
-    public class PanAndZoom : Border
+    public class ZoomBorder : Border
     {
         private static AutoFitMode[] _autoFitModes = (AutoFitMode[])Enum.GetValues(typeof(AutoFitMode));
 
@@ -25,10 +25,10 @@ namespace Avalonia.Controls.PanAndZoom
         public Action<double, double, double, double> InvalidatedChild { get; set; }
 
         public static AvaloniaProperty<double> ZoomSpeedProperty =
-            AvaloniaProperty.Register<PanAndZoom, double>(nameof(ZoomSpeed), 1.2, false, BindingMode.TwoWay);
+            AvaloniaProperty.Register<ZoomBorder, double>(nameof(ZoomSpeed), 1.2, false, BindingMode.TwoWay);
 
         public static AvaloniaProperty<AutoFitMode> AutoFitModeProperty =
-            AvaloniaProperty.Register<PanAndZoom, AutoFitMode>(nameof(AutoFitMode), AutoFitMode.Extent, false, BindingMode.TwoWay);
+            AvaloniaProperty.Register<ZoomBorder, AutoFitMode>(nameof(AutoFitMode), AutoFitMode.Extent, false, BindingMode.TwoWay);
 
         public double ZoomSpeed
         {
@@ -42,12 +42,12 @@ namespace Avalonia.Controls.PanAndZoom
             set { SetValue(AutoFitModeProperty, value); }
         }
 
-        static PanAndZoom()
+        static ZoomBorder()
         {
             AffectsArrange(ZoomSpeedProperty, AutoFitModeProperty);
         }
 
-        public PanAndZoom()
+        public ZoomBorder()
             : base()
         {
             _matrix = MatrixHelper.Identity;

@@ -68,14 +68,14 @@ You can install the package for `WPF` based projects like this:
             <TextBlock Text="Mouse Wheel - Zoom to Point" Foreground="WhiteSmoke" FontSize="11"/>
             <TextBlock Text="Mouse Right Button Down - Pan" Foreground="WhiteSmoke" FontSize="11"/>
         </StackPanel>
-        <paz:PanAndZoom Name="panAndZoom" AutoFitMode="None" ZoomSpeed="1.2" 
+        <paz:ZoomBorder Name="zoomBorder" AutoFitMode="None" ZoomSpeed="1.2" 
                         ClipToBounds="True" Background="DarkGray" 
                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
                         Grid.Row="1" Grid.Column="1">
             <Canvas Background="LightGray" Width="300" Height="300">
                 <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
             </Canvas>
-        </paz:PanAndZoom>
+        </paz:ZoomBorder>
     </Grid>
 </Window>
 ```
@@ -92,15 +92,15 @@ namespace AvaloniaDemo
 {
     public class MainWindow : Window
     {
-        private PanAndZoom panAndZoom;
+        private ZoomBorder zoomBorder;
 
         public MainWindow()
         {
             this.InitializeComponent();
             this.AttachDevTools();
 
-            panAndZoom = this.Find<PanAndZoom>("panAndZoom");
-            panAndZoom.KeyDown += PanAndZoom_KeyDown;
+            zoomBorder = this.Find<ZoomBorder>("zoomBorder");
+            zoomBorder.KeyDown += ZoomBorder_KeyDown;
         }
 
         private void InitializeComponent()
@@ -108,27 +108,27 @@ namespace AvaloniaDemo
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void PanAndZoom_KeyDown(object sender, KeyEventArgs e)
+        private void ZoomBorder_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.E)
             {
-                panAndZoom.Extent();
+                zoomBorder.Extent();
             }
 
             if (e.Key == Key.F)
             {
-                panAndZoom.Fill();
+                zoomBorder.Fill();
             }
 
             if (e.Key == Key.R)
             {
-                panAndZoom.Reset();
+                zoomBorder.Reset();
             }
 
             if (e.Key == Key.T)
             {
-                panAndZoom.ToggleAutoFitMode();
-                panAndZoom.AutoFit();
+                zoomBorder.ToggleAutoFitMode();
+                zoomBorder.AutoFit();
             }
         }
     }
@@ -167,14 +167,14 @@ namespace AvaloniaDemo
             <TextBlock Text="Mouse Wheel - Zoom to Point" Foreground="WhiteSmoke" FontSize="11"/>
             <TextBlock Text="Mouse Right Button Down - Pan" Foreground="WhiteSmoke" FontSize="11"/>
         </StackPanel>
-        <paz:PanAndZoom x:Name="panAndZoom" AutoFitMode="None" ZoomSpeed="1.2" ClipToBounds="True" 
+        <paz:ZoomBorder x:Name="zoomBorder" AutoFitMode="None" ZoomSpeed="1.2" ClipToBounds="True" 
                         Background="DarkGray" 
                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
                         Grid.Row="1" Grid.Column="1">
             <Canvas Background="LightGray" Width="300" Height="300">
                 <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
             </Canvas>
-        </paz:PanAndZoom>
+        </paz:ZoomBorder>
     </Grid>
 </Window>
 ```
@@ -192,30 +192,30 @@ namespace WpfDemo
         {
             InitializeComponent();
 
-            panAndZoom.KeyDown += PanAndZoom_KeyDown;
+            zoomBorder.KeyDown += ZoomBorder_KeyDown;
         }
 
-        private void PanAndZoom_KeyDown(object sender, KeyEventArgs e)
+        private void ZoomBorder_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.E)
             {
-                panAndZoom.Extent();
+                zoomBorder.Extent();
             }
 
             if (e.Key == Key.F)
             {
-                panAndZoom.Fill();
+                zoomBorder.Fill();
             }
 
             if (e.Key == Key.R)
             {
-                panAndZoom.Reset();
+                zoomBorder.Reset();
             }
 
             if (e.Key == Key.T)
             {
-                panAndZoom.ToggleAutoFitMode();
-                panAndZoom.AutoFit();
+                zoomBorder.ToggleAutoFitMode();
+                zoomBorder.AutoFit();
             }
         }
     }

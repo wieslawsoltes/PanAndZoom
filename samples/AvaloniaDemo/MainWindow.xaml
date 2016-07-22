@@ -17,13 +17,13 @@
             <TextBlock Text="Mouse Wheel - Zoom to Point" Foreground="WhiteSmoke" FontSize="11"/>
             <TextBlock Text="Mouse Right Button Down - Pan" Foreground="WhiteSmoke" FontSize="11"/>
         </StackPanel>
-        <paz:PanAndZoom Name="panAndZoom" AutoFitMode="None" ZoomSpeed="1.2" 
+        <paz:ZoomBorder Name="zoomBorder" AutoFitMode="None" ZoomSpeed="1.2" 
                         ClipToBounds="True" Background="DarkGray" 
                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
                         Grid.Row="1" Grid.Column="1">
             <Canvas Background="LightGray" Width="300" Height="300">
                 <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
             </Canvas>
-        </paz:PanAndZoom>
+        </paz:ZoomBorder>
     </Grid>
 </Window>

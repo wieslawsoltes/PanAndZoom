@@ -9,7 +9,7 @@ using static System.Math;
 
 namespace Wpf.Controls.PanAndZoom
 {
-    public class PanAndZoom : Border
+    public class ZoomBorder : Border
     {
         private UIElement _element;
         private Point _pan;
@@ -22,7 +22,7 @@ namespace Wpf.Controls.PanAndZoom
 
         public Action<double, double, double, double> InvalidatedChild { get; set; }
 
-        public PanAndZoom()
+        public ZoomBorder()
             : base()
         {
             _matrix = MatrixHelper.Identity;
