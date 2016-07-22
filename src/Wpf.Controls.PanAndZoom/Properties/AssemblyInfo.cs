@@ -3,6 +3,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Markup;
 
 [assembly: AssemblyTitle("Wpf.Controls.PanAndZoom")]
 [assembly: AssemblyDescription("")]
@@ -17,3 +18,6 @@ using System.Windows;
 [assembly: AssemblyVersion("0.1.0.0")]
 [assembly: AssemblyFileVersion("0.1.0.0")]
 [assembly: AssemblyInformationalVersion("0.1.0-alpha")]
+
+[assembly: XmlnsPrefix("https://github.com/panandzoom", "paz")]
+[assembly: XmlnsDefinition("https://github.com/panandzoom", "Wpf.Controls.PanAndZoom")]

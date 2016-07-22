@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System.Resources;
 using System.Reflection;
+using Avalonia.Metadata;
 
 [assembly: AssemblyTitle("Avalonia.Controls.PanAndZoom")]
 [assembly: AssemblyDescription("")]
@@ -15,3 +16,5 @@ using System.Reflection;
 [assembly: AssemblyVersion("0.1.0.0")]
 [assembly: AssemblyFileVersion("0.1.0.0")]
 [assembly: AssemblyInformationalVersion("0.1.0-alpha")]
+
+[assembly: XmlnsDefinition("https://github.com/panandzoom", "Avalonia.Controls.PanAndZoom")]
