@@ -21,7 +21,7 @@
       <dependency id="System.Reactive.Interfaces" version="3.0.0" />
       <dependency id="System.Reactive.Linq" version="3.0.0" />
       <dependency id="System.Reactive.PlatformServices" version="3.0.0" />
-      <dependency id="Avalonia" version="0.2.0.1835-alpha" />
+      <dependency id="Avalonia" version="0.2.0.1837-alpha" />
     </dependencies>
   </metadata>
 </package>
