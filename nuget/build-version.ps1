@@ -26,7 +26,7 @@ foreach($pkg in $Packages)
 
 foreach($pkg in $Packages)
 {
-    .\nuget pack $pkg\$pkg.nuspec
+    nuget.exe pack $pkg\$pkg.nuspec
 }
 
 foreach($pkg in $Packages)
