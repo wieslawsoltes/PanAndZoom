@@ -12,7 +12,7 @@ PanAndZoom control for WPF and Avalonia
 
 PanAndZoom is delivered as a NuGet package.
 
-You can find the packages here [NuGet](https://www.nuget.org/packages/PanAndZoom/) or by using nightly build feed:
+You can find the packages here [NuGet for Avalonia](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom/) and here[NuGet for WPF](https://www.nuget.org/packages/Wpf.Controls.PanAndZoom/) or by using nightly build feed:
 * Add `https://www.myget.org/F/panandzoom-nightly/api/v2` to your package sources
 * Update your package using `PanAndZoom` feed
 
@@ -38,7 +38,7 @@ You can install the package for `WPF` based projects like this:
 
 ### Package Sources
 
-* https://www.nuget.org/api/v2/
+* https://api.nuget.org/v3/index.json
 * https://www.myget.org/F/panandzoom-nightly/api/v2
 
 ## Resources
