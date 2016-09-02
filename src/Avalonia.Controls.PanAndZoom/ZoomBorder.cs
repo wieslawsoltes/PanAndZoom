@@ -8,10 +8,16 @@ using static System.Math;
 
 namespace Avalonia.Controls.PanAndZoom
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ZoomBorder : Border
     {
         private static AutoFitMode[] _autoFitModes = (AutoFitMode[])Enum.GetValues(typeof(AutoFitMode));
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static AutoFitMode[] AutoFitModes
         {
             get { return _autoFitModes; }
@@ -22,20 +28,35 @@ namespace Avalonia.Controls.PanAndZoom
         private Point _previous;
         private Matrix _matrix;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Action<double, double, double, double> InvalidatedChild { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static AvaloniaProperty<double> ZoomSpeedProperty =
             AvaloniaProperty.Register<ZoomBorder, double>(nameof(ZoomSpeed), 1.2, false, BindingMode.TwoWay);
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static AvaloniaProperty<AutoFitMode> AutoFitModeProperty =
             AvaloniaProperty.Register<ZoomBorder, AutoFitMode>(nameof(AutoFitMode), AutoFitMode.Extent, false, BindingMode.TwoWay);
 
+        /// <summary>
+        /// 
+        /// </summary>
         public double ZoomSpeed
         {
             get { return GetValue(ZoomSpeedProperty); }
             set { SetValue(ZoomSpeedProperty, value); }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public AutoFitMode AutoFitMode
         {
             get { return GetValue(AutoFitModeProperty); }
@@ -47,6 +68,9 @@ namespace Avalonia.Controls.PanAndZoom
             AffectsArrange(ZoomSpeedProperty, AutoFitModeProperty);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public ZoomBorder()
             : base()
         {
@@ -160,6 +184,11 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="finalSize"></param>
+        /// <returns></returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
             var size = base.ArrangeOverride(finalSize);
@@ -172,6 +201,9 @@ namespace Avalonia.Controls.PanAndZoom
             return size;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Invalidate()
         {
             if (_element != null)
@@ -183,6 +215,11 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="zoom"></param>
+        /// <param name="point"></param>
         public void ZoomTo(double zoom, Point point)
         {
             _matrix = MatrixHelper.ScaleAtPrepend(_matrix, zoom, zoom, point.X, point.Y);
@@ -190,17 +227,30 @@ namespace Avalonia.Controls.PanAndZoom
             Invalidate();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="delta"></param>
+        /// <param name="point"></param>
         public void ZoomDeltaTo(double delta, Point point)
         {
             ZoomTo(delta > 0 ? ZoomSpeed : 1 / ZoomSpeed, point);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="point"></param>
         public void StartPan(Point point)
         {
             _pan = new Point();
             _previous = new Point(point.X, point.Y);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="point"></param>
         public void PanTo(Point point)
         {
             Point delta = new Point(point.X - _previous.X, point.Y - _previous.Y);
@@ -212,6 +262,11 @@ namespace Avalonia.Controls.PanAndZoom
             Invalidate();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="panelSize"></param>
+        /// <param name="elementSize"></param>
         public void Extent(Rect panelSize, Rect elementSize)
         {
             if (_element != null)
@@ -232,6 +287,11 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="panelSize"></param>
+        /// <param name="elementSize"></param>
         public void Fill(Rect panelSize, Rect elementSize)
         {
             if (_element != null)
@@ -249,6 +309,11 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="panelSize"></param>
+        /// <param name="elementSize"></param>
         public void AutoFit(Rect panelSize, Rect elementSize)
         {
             if (_element != null)
@@ -270,6 +335,9 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void ToggleAutoFitMode()
         {
             switch (AutoFitMode)
@@ -286,6 +354,9 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Reset()
         {
             _matrix = MatrixHelper.Identity;
@@ -293,16 +364,25 @@ namespace Avalonia.Controls.PanAndZoom
             Invalidate();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Extent()
         {
             Extent(this.Bounds, _element.Bounds);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Fill()
         {
             Fill(this.Bounds, _element.Bounds);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void AutoFit()
         {
             if (_element != null)
@@ -311,6 +391,11 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
         public Point FixInvalidPointPosition(Point point)
         {
             return MatrixHelper.TransformPoint(_matrix.Invert(), point);

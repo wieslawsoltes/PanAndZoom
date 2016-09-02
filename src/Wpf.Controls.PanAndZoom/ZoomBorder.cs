@@ -9,6 +9,9 @@ using static System.Math;
 
 namespace Wpf.Controls.PanAndZoom
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ZoomBorder : Border
     {
         private UIElement _element;
@@ -16,12 +19,24 @@ namespace Wpf.Controls.PanAndZoom
         private Point _previous;
         private Matrix _matrix;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public double ZoomSpeed { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public AutoFitMode AutoFitMode { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Action<double, double, double, double> InvalidatedChild { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public ZoomBorder()
             : base()
         {
@@ -44,6 +59,9 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override UIElement Child
         {
             get { return base.Child; }
@@ -125,6 +143,11 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="finalSize"></param>
+        /// <returns></returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
             if (_element != null && _element.IsMeasureValid)
@@ -135,6 +158,9 @@ namespace Wpf.Controls.PanAndZoom
             return base.ArrangeOverride(finalSize);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Invalidate()
         {
             if (_element != null)
@@ -146,6 +172,11 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="zoom"></param>
+        /// <param name="point"></param>
         public void ZoomTo(double zoom, Point point)
         {
             _matrix = MatrixHelper.ScaleAtPrepend(_matrix, zoom, zoom, point.X, point.Y);
@@ -153,17 +184,30 @@ namespace Wpf.Controls.PanAndZoom
             Invalidate();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="delta"></param>
+        /// <param name="point"></param>
         public void ZoomDeltaTo(int delta, Point point)
         {
             ZoomTo(delta > 0 ? ZoomSpeed : 1 / ZoomSpeed, point);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="point"></param>
         public void StartPan(Point point)
         {
             _pan = new Point();
             _previous = new Point(point.X, point.Y);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="point"></param>
         public void PanTo(Point point)
         {
             Point delta = new Point(point.X - _previous.X, point.Y - _previous.Y);
@@ -175,6 +219,11 @@ namespace Wpf.Controls.PanAndZoom
             Invalidate();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="panelSize"></param>
+        /// <param name="elementSize"></param>
         public void Extent(Size panelSize, Size elementSize)
         {
             if (_element != null)
@@ -195,6 +244,11 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="panelSize"></param>
+        /// <param name="elementSize"></param>
         public void Fill(Size panelSize, Size elementSize)
         {
             if (_element != null)
@@ -212,6 +266,11 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="panelSize"></param>
+        /// <param name="elementSize"></param>
         public void AutoFit(Size panelSize, Size elementSize)
         {
             if (_element != null)
@@ -233,6 +292,9 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void ToggleAutoFitMode()
         {
             switch (AutoFitMode)
@@ -249,6 +311,9 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Reset()
         {
             _matrix = MatrixHelper.Identity;
@@ -256,16 +321,25 @@ namespace Wpf.Controls.PanAndZoom
             Invalidate();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Extent()
         {
             Extent(this.DesiredSize, _element.RenderSize);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Fill()
         {
             Fill(this.DesiredSize, _element.RenderSize);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void AutoFit()
         {
             if (_element != null)

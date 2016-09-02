@@ -3,10 +3,24 @@
 
 namespace Avalonia.Controls.PanAndZoom
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public enum AutoFitMode
     {
+        /// <summary>
+        /// 
+        /// </summary>
         None,
+
+        /// <summary>
+        /// 
+        /// </summary>
         Extent,
+
+        /// <summary>
+        /// 
+        /// </summary>
         Fill
     }
 }
