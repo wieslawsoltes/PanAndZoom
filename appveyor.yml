@@ -16,15 +16,6 @@ after_test:
 - ps: nuget\build-appveyor.ps1
 artifacts:
   - path: nuget\*.nupkg
-deploy:
-- provider: GitHub
-  tag: $(appveyor_build_version)
-  release: $(appveyor_build_version)
-  auth_token:
-    secure: 6jHUhHqAmyx5NOZWctCi0A72lGgaGxhT5tRWnBNMz1JYHOgg1PEID1DFEG1jiQeO
-  prerelease: true
-  on:
-    branch: master
 notifications:
 - provider: Webhook
   url: https://webhooks.gitter.im/e/e218b20fbce5dbb16ebc
