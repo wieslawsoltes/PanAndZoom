@@ -1,23 +1,28 @@
-os: Visual Studio 2015
+image: Visual Studio 2015
 platform:
 - Any CPU
 configuration:
 - Release
 environment:
-  myget_key:
+  NUGET_API_KEY:
+    secure: iSkm19DNdKOLxxCvHiaKikWXy25ZMwGBKpv+EgEprliGl0qX5HtKohLmwJsLnx5O
+  NUGET_API_URL: https://www.nuget.org/api/v2/package
+  MYGET_API_KEY:
     secure: xhYvrWYPHdNI+mQD+f4Zu3baL7fqW+nO/hYXJdN070Lej8wpa6gfrLi1NGtnQlAs
+  MYGET_API_URL: https://www.myget.org/F/panandzoom-nightly/api/v2/package
 before_build:
-- cmd: restore.cmd
-build:
-  project: PanAndZoom.sln
-  verbosity: minimal
-after_test:
-- ps: nuget\build-appveyor.ps1
+- cmd: git submodule update --init
+build_script:
+- ps: .\build.ps1 -Target "AppVeyor" -Platform "$env:platform" -Configuration "$env:configuration"
+test: off
 notifications:
 - provider: Webhook
   url: https://webhooks.gitter.im/e/10eae6c97c798881e37d
+  method: POST
   on_build_success: true
   on_build_failure: true
   on_build_status_changed: true
 artifacts:
-  - path: nuget\*.nupkg
+  - path: artifacts\test-results\*.xml
+  - path: artifacts\nuget\*.nupkg
+  - path: artifacts\zip\*.zip

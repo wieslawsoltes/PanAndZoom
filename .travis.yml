@@ -4,15 +4,8 @@ os:
   - osx
 mono:
   - latest
-solution: PanAndZoom.mono.sln
-before_install:
-  - mkdir -p .nuget
-  - wget -O .nuget/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y gtk-sharp2 ; fi
-  - mono .nuget/nuget.exe restore PanAndZoom.mono.sln -source "https://www.nuget.org/api/v2/;https://www.myget.org/F/avalonia-ci/api/v2"
 script:
-  - xbuild /p:Configuration=Release PanAndZoom.mono.sln
+  - ./build.sh --target "Travis" --platform "Mono" --configuration "Release"
 notifications:
   email: false
   webhooks:

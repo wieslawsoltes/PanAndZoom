@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfDemo", "samples\WpfDemo\WpfDemo.csproj", "{B2B6562E-FFCA-4571-A59C-359A45A07FF0}"
 EndProject
@@ -11,44 +11,61 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.Controls.PanAndZoo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wpf.Controls.PanAndZoom", "src\Wpf.Controls.PanAndZoom\Wpf.Controls.PanAndZoom.csproj", "{886A4D83-333F-4AE6-A99E-9A32053F13C8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{BDB2F017-80B3-40D2-84A5-F006D4886B1A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{BDB2F017-80B3-40D2-84A5-F006D4886B1A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{202555ED-7CDB-4015-80DD-98C080B0CC54}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3FBE9035-8FFD-447D-949A-8E63AF15B89A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6E241F85-FE51-47E5-B9C2-50AAA7FEC499}"
 	ProjectSection(SolutionItems) = preProject
-		nuget\build-appveyor.ps1 = nuget\build-appveyor.ps1
-		nuget\build-version.ps1 = nuget\build-version.ps1
-		nuget\build.ps1 = nuget\build.ps1
-		nuget\include.ps1 = nuget\include.ps1
+		.travis.yml = .travis.yml
+		appveyor.yml = appveyor.yml
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		build.sh = build.sh
+		NuGet.Config = NuGet.Config
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "template", "template", "{CC475771-4D34-4BCF-B21B-589456985054}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{C553DF5D-FD44-477C-B74A-C109D3A87A5A}"
 	ProjectSection(SolutionItems) = preProject
-		nuget\template\Avalonia.Controls.PanAndZoom.nuspec = nuget\template\Avalonia.Controls.PanAndZoom.nuspec
-		nuget\template\Wpf.Controls.PanAndZoom.nuspec = nuget\template\Wpf.Controls.PanAndZoom.nuspec
+		src\Shared\SharedAssemblyInfo.cs = src\Shared\SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|Mono = Debug|Mono
 		Release|Any CPU = Release|Any CPU
+		Release|Mono = Release|Mono
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B2B6562E-FFCA-4571-A59C-359A45A07FF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B2B6562E-FFCA-4571-A59C-359A45A07FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2B6562E-FFCA-4571-A59C-359A45A07FF0}.Debug|Mono.ActiveCfg = Debug|Any CPU
 		{B2B6562E-FFCA-4571-A59C-359A45A07FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2B6562E-FFCA-4571-A59C-359A45A07FF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2B6562E-FFCA-4571-A59C-359A45A07FF0}.Release|Mono.ActiveCfg = Release|Any CPU
 		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Debug|Mono.ActiveCfg = Debug|Any CPU
+		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Debug|Mono.Build.0 = Debug|Any CPU
 		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Release|Mono.ActiveCfg = Release|Any CPU
+		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}.Release|Mono.Build.0 = Release|Any CPU
 		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Debug|Mono.ActiveCfg = Debug|Any CPU
+		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Debug|Mono.Build.0 = Debug|Any CPU
 		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Release|Mono.ActiveCfg = Release|Any CPU
+		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0}.Release|Mono.Build.0 = Release|Any CPU
 		{886A4D83-333F-4AE6-A99E-9A32053F13C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{886A4D83-333F-4AE6-A99E-9A32053F13C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{886A4D83-333F-4AE6-A99E-9A32053F13C8}.Debug|Mono.ActiveCfg = Debug|Any CPU
 		{886A4D83-333F-4AE6-A99E-9A32053F13C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{886A4D83-333F-4AE6-A99E-9A32053F13C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{886A4D83-333F-4AE6-A99E-9A32053F13C8}.Release|Mono.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +73,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B2B6562E-FFCA-4571-A59C-359A45A07FF0} = {BDB2F017-80B3-40D2-84A5-F006D4886B1A}
 		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903} = {BDB2F017-80B3-40D2-84A5-F006D4886B1A}
-		{CC475771-4D34-4BCF-B21B-589456985054} = {202555ED-7CDB-4015-80DD-98C080B0CC54}
+		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0} = {3FBE9035-8FFD-447D-949A-8E63AF15B89A}
+		{886A4D83-333F-4AE6-A99E-9A32053F13C8} = {3FBE9035-8FFD-447D-949A-8E63AF15B89A}
 	EndGlobalSection
 EndGlobal

@@ -226,3 +226,10 @@ Dependencies/Serializer.ProtoBuf.Generate/Serializer/*.dll
 #docfx
 _site
 api
+
+#################
+## Cake
+#################
+tools/
+.nuget
+artifacts/
