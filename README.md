@@ -47,7 +47,7 @@ You can install the package for `WPF` based projects like this:
 
 ## Resources
 
-* [GitHub source code repository.](https://github.com/wieslawsoltes/MatrixPanAndZoomDemo)
+* [GitHub source code repository.](https://github.com/PanAndZoom/PanAndZoom)
 
 ## Using PanAndZoom
 
