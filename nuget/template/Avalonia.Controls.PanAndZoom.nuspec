@@ -6,7 +6,7 @@
     <authors>wieslaw.soltes</authors>
     <owners>wieslaw.soltes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <projectUrl>https://github.com/wieslawsoltes/MatrixPanAndZoomDemo/</projectUrl>
+    <projectUrl>https://github.com/PanAndZoom/PanAndZoom/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Easily add pan and zoom functionality to your Avalonia apps using PanAndZoom control.</description>
     <releaseNotes>Initial alpha release.</releaseNotes>
