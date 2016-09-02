@@ -13,3 +13,11 @@ install:
   - mono .nuget/nuget.exe restore PanAndZoom.mono.sln -source "https://www.nuget.org/api/v2/;https://www.myget.org/F/avalonia-ci/api/v2"
 script:
   - xbuild /p:Configuration=Release PanAndZoom.mono.sln
+notifications:
+  email: false
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/211462170f90107c5a41
+    on_success: change
+    on_failure: always
+    on_start: never
