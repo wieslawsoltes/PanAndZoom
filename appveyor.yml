@@ -15,7 +15,7 @@ after_test:
 - ps: nuget\build-appveyor.ps1
 notifications:
 - provider: Webhook
-  url: https://webhooks.gitter.im/e/e218b20fbce5dbb16ebc
+  url: https://webhooks.gitter.im/e/10eae6c97c798881e37d
   on_build_success: true
   on_build_failure: true
   on_build_status_changed: true
