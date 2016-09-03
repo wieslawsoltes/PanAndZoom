@@ -220,9 +220,6 @@ pip-log.txt
 # MonoDevelop
 *.userprefs
 
-#ProtoBuf generated serializers
-Dependencies/Serializer.ProtoBuf.Generate/Serializer/*.dll
-
 #docfx
 _site
 api
