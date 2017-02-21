@@ -35,7 +35,7 @@ var configuration = Argument("configuration", "Release");
 // CONFIGURATION
 ///////////////////////////////////////////////////////////////////////////////
 
-var MainRepo = "PanAndZoom/PanAndZoom";
+var MainRepo = "wieslawsoltes/PanAndZoom";
 var MasterBranch = "master";
 var AssemblyInfoPath = File("./src/Shared/SharedAssemblyInfo.cs");
 var ReleasePlatform = "Any CPU";
