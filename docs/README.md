@@ -1,9 +1,5 @@
 # PanAndZoom Controls Documentation
 
-* [API Reference](http://matrixpanandzoom.github.io/)
-
-## Building
-
 Download and unzip `docfx.zip` into `Documentation` folder from [DocFX project site](https://github.com/dotnet/docfx/releases).
 
 **Step 1.** To create `_site` documentation folder run build script
