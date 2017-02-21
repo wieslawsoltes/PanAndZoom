@@ -10,7 +10,7 @@ notifications:
   email: false
   webhooks:
     urls:
-      - https://webhooks.gitter.im/e/211462170f90107c5a41
+      - https://webhooks.gitter.im/e/d0e395ef26e692da2c73
     on_success: change
     on_failure: always
     on_start: never
