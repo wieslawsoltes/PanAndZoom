@@ -2,14 +2,14 @@
 // ADDINS
 ///////////////////////////////////////////////////////////////////////////////
 
-#addin "nuget:?package=Polly&version=4.2.0"
+#addin "nuget:?package=Polly&version=5.0.6"
 #addin "nuget:?package=NuGet.Core&version=2.12.0"
 
 ///////////////////////////////////////////////////////////////////////////////
 // TOOLS
 ///////////////////////////////////////////////////////////////////////////////
 
-#tool "nuget:?package=xunit.runner.console&version=2.1.0"
+#tool "nuget:https://dotnet.myget.org/F/nuget-build/?package=NuGet.CommandLine&version=4.3.0-beta1-2361&prerelease"
 
 ///////////////////////////////////////////////////////////////////////////////
 // USINGS
@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Polly;
 using NuGet;
 
@@ -103,22 +104,28 @@ var buildDirs =
 ///////////////////////////////////////////////////////////////////////////////
 
 // Key: Package Id
-// Value is Tuple where Item1: Package Version, Item2: The packages.config file path.
+// Value is Tuple where Item1: Package Version, Item2: The *.csproj file path.
 var packageVersions = new Dictionary<string, IList<Tuple<string,string>>>();
 
-System.IO.Directory.EnumerateFiles(((DirectoryPath)Directory("./src")).FullPath, "packages.config", SearchOption.AllDirectories).ToList().ForEach(fileName =>
-{
-    var file = new PackageReferenceFile(fileName);
-    foreach (PackageReference packageReference in file.GetPackageReferences())
+System.IO.Directory.EnumerateFiles(((DirectoryPath)Directory("./src")).FullPath, "*.csproj", SearchOption.AllDirectories)
+    .ToList()
+    .ForEach(fileName => {
+    var xdoc = XDocument.Load(fileName);
+    foreach (var reference in xdoc.Descendants().Where(x => x.Name.LocalName == "PackageReference"))
     {
+        var name = reference.Attribute("Include").Value;
+        var versionAttribute = reference.Attribute("Version");
+        var packageVersion = versionAttribute != null 
+            ? versionAttribute.Value 
+            : reference.Elements().First(x=>x.Name.LocalName == "Version").Value;
         IList<Tuple<string, string>> versions;
-        packageVersions.TryGetValue(packageReference.Id, out versions);
+        packageVersions.TryGetValue(name, out versions);
         if (versions == null)
         {
             versions = new List<Tuple<string, string>>();
-            packageVersions[packageReference.Id] = versions;
+            packageVersions[name] = versions;
         }
-        versions.Add(Tuple.Create(packageReference.Version.ToString(), fileName));
+        versions.Add(Tuple.Create(packageVersion, fileName));
     }
 });
 
@@ -284,12 +291,14 @@ Task("Restore-NuGet-Packages")
             if(isRunningOnWindows)
             {
                 NuGetRestore(MSBuildSolution, new NuGetRestoreSettings {
+                    ToolPath = "./tools/NuGet.CommandLine/tools/NuGet.exe",
                     ToolTimeout = TimeSpan.FromMinutes(toolTimeout)
                 });
             }
             else
             {
                 NuGetRestore(XBuildSolution, new NuGetRestoreSettings {
+                    ToolPath = "./tools/NuGet.CommandLine/tools/NuGet.exe",
                     ToolTimeout = TimeSpan.FromMinutes(toolTimeout)
                 });
             }
@@ -304,6 +313,7 @@ Task("Build")
     {
         MSBuild(MSBuildSolution, settings => {
             settings.SetConfiguration(configuration);
+            settings.UseToolVersion(MSBuildToolVersion.VS2017);
             settings.WithProperty("Platform", "\"" + platform + "\"");
             settings.SetVerbosity(Verbosity.Minimal);
         });
@@ -312,40 +322,15 @@ Task("Build")
     {
         XBuild(XBuildSolution, settings => {
             settings.SetConfiguration(configuration);
+            settings.UseToolVersion(XBuildToolVersion.Default);
             settings.WithProperty("Platform", "\"" + platform + "\"");
             settings.SetVerbosity(Verbosity.Minimal);
         });
     }
 });
 
-Task("Run-Unit-Tests")
-    .IsDependentOn("Build")
-    .Does(() =>
-{
-    string pattern = "./tests/**/bin/" + dirSuffix + "/*.UnitTests.dll";
-
-    if (isPlatformAnyCPU || isPlatformX86)
-    {
-        XUnit2(pattern, new XUnit2Settings { 
-            ToolPath = "./tools/xunit.runner.console/tools/xunit.console.x86.exe",
-            OutputDirectory = testResultsDir,
-            XmlReportV1 = true,
-            NoAppDomain = true
-        });
-    }
-    else
-    {
-        XUnit2(pattern, new XUnit2Settings { 
-            ToolPath = "./tools/xunit.runner.console/tools/xunit.console.exe",
-            OutputDirectory = testResultsDir,
-            XmlReportV1 = true,
-            NoAppDomain = true
-        });
-    }
-});
-
 Task("Create-NuGet-Packages")
-    .IsDependentOn("Run-Unit-Tests")
+    .IsDependentOn("Build")
     .Does(() =>
 {
     foreach(var nuspec in nuspecNuGetSettings)
@@ -435,9 +420,6 @@ Task("Default")
 Task("AppVeyor")
   .IsDependentOn("Publish-MyGet")
   .IsDependentOn("Publish-NuGet");
-
-Task("Travis")
-  .IsDependentOn("Run-Unit-Tests");
 
 ///////////////////////////////////////////////////////////////////////////////
 // EXECUTE
