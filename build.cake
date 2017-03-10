@@ -178,14 +178,14 @@ var nuspecNuGetAvalonia = new NuGetPackSettings()
     Files = new []
     {
         // netstandard1.1
-        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/Avalonia.Controls.PanAndZoom.dll", Target = "lib/netstandard1.1" },
-        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/Avalonia.Controls.PanAndZoom.xml", Target = "lib/netstandard1.1" },
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/netstandard1.1/" + "Avalonia.Controls.PanAndZoom.dll", Target = "lib/netstandard1.1" },
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/netstandard1.1/" + "Avalonia.Controls.PanAndZoom.xml", Target = "lib/netstandard1.1" },
         // net45
-        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/Avalonia.Controls.PanAndZoom.dll", Target = "lib/net45" },
-        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/Avalonia.Controls.PanAndZoom.xml", Target = "lib/net45" },
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/netstandard1.1/" + "Avalonia.Controls.PanAndZoom.dll", Target = "lib/net45" },
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/netstandard1.1/" + "Avalonia.Controls.PanAndZoom.xml", Target = "lib/net45" },
         // netcoreapp1.0
-        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/Avalonia.Controls.PanAndZoom.dll", Target = "lib/netcoreapp1.0" },
-        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/Avalonia.Controls.PanAndZoom.xml", Target = "lib/netcoreapp1.0" }
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/netstandard1.1/" + "Avalonia.Controls.PanAndZoom.dll", Target = "lib/netcoreapp1.0" },
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/netstandard1.1/" + "Avalonia.Controls.PanAndZoom.xml", Target = "lib/netcoreapp1.0" }
     },
     BasePath = Directory("./"),
     OutputDirectory = nugetRoot
