@@ -162,7 +162,7 @@ var nuspecNuGetAvalonia = new NuGetPackSettings()
     Dependencies = new []
     {
         // Avalonia
-        new NuSpecDependency { Id = "Avalonia", Version = AvaloniaVersion }
+        new NuSpecDependency { Id = "Avalonia", Version = AvaloniaVersion },
         //.NET Core
         new NuSpecDependency() { Id = "System.Threading.ThreadPool", TargetFramework = "netcoreapp1.0", Version = "4.3.0" },
         new NuSpecDependency() { Id = "NETStandard.Library", TargetFramework = "netcoreapp1.0", Version = "1.6.0" },
