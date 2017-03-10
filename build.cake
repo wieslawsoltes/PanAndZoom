@@ -161,12 +161,24 @@ var nuspecNuGetAvalonia = new NuGetPackSettings()
     Tags = new [] { "Avalonia", "Pan", "Zoom", "Control", "Xaml", "Managed", "C#" },
     Dependencies = new []
     {
+        // Avalonia
         new NuSpecDependency { Id = "Avalonia", Version = AvaloniaVersion }
+        //.NET Core
+        new NuSpecDependency() { Id = "System.Threading.ThreadPool", TargetFramework = "netcoreapp1.0", Version = "4.3.0" },
+        new NuSpecDependency() { Id = "NETStandard.Library", TargetFramework = "netcoreapp1.0", Version = "1.6.0" },
+        new NuSpecDependency() { Id = "Microsoft.NETCore.Portable.Compatibility", TargetFramework = "netcoreapp1.0", Version = "1.0.1" }
     },
     Files = new []
     {
-        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/Avalonia.Controls.PanAndZoom.dll", Target = "lib/portable-windows8+net45" },
-        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/Avalonia.Controls.PanAndZoom.xml", Target = "lib/portable-windows8+net45" }
+        // netstandard1.1
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/Avalonia.Controls.PanAndZoom.dll", Target = "lib/netstandard1.1" },
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/Avalonia.Controls.PanAndZoom.xml", Target = "lib/netstandard1.1" },
+        // net45
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/Avalonia.Controls.PanAndZoom.dll", Target = "lib/net45" },
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/Avalonia.Controls.PanAndZoom.xml", Target = "lib/net45" },
+        // netcoreapp1.0
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/Avalonia.Controls.PanAndZoom.dll", Target = "lib/netcoreapp1.0" },
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/Avalonia.Controls.PanAndZoom.xml", Target = "lib/netcoreapp1.0" }
     },
     BasePath = Directory("./"),
     OutputDirectory = nugetRoot
@@ -188,6 +200,7 @@ var nuspecNuGetWpf = new NuGetPackSettings()
     Tags = new [] { "WPF", "Pan", "Zoom", "Control", "Xaml", "Managed", "C#" },
     Files = new []
     {
+        // net45
         new NuSpecContent { Source = "src/Wpf.Controls.PanAndZoom/bin/" + dirSuffix + "/Wpf.Controls.PanAndZoom.dll", Target = "lib/net45" },
         new NuSpecContent { Source = "src/Wpf.Controls.PanAndZoom/bin/" + dirSuffix + "/Wpf.Controls.PanAndZoom.xml", Target = "lib/net45" }
     },
