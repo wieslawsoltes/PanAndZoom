@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfDemo", "samples\WpfDemo\WpfDemo.csproj", "{B2B6562E-FFCA-4571-A59C-359A45A07FF0}"
 EndProject
@@ -16,18 +16,41 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3FBE9035-8FFD-447D-949A-8E63AF15B89A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6E241F85-FE51-47E5-B9C2-50AAA7FEC499}"
-	ProjectSection(SolutionItems) = preProject
-		.travis.yml = .travis.yml
-		appveyor.yml = appveyor.yml
-		build.cake = build.cake
-		build.ps1 = build.ps1
-		build.sh = build.sh
-		NuGet.Config = NuGet.Config
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{C553DF5D-FD44-477C-B74A-C109D3A87A5A}"
 	ProjectSection(SolutionItems) = preProject
 		src\Shared\SharedAssemblyInfo.cs = src\Shared\SharedAssemblyInfo.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{670F5FF3-999F-450B-8F31-8AB62A43DCEF}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.TXT = LICENSE.TXT
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{E16CD9A4-AA47-4440-9EB7-B9E8E59EBFC5}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet.Config = NuGet.Config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{D83B9ECD-F143-4A6C-AFD7-F961174D824C}"
+	ProjectSection(SolutionItems) = preProject
+		build\Avalonia.Desktop.props = build\Avalonia.Desktop.props
+		build\Avalonia.props = build\Avalonia.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cake", "cake", "{C372CFD6-AFFD-4E88-9F47-9AB24E20B91A}"
+	ProjectSection(SolutionItems) = preProject
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		build.sh = build.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ci", "ci", "{32DB24AD-BD3C-4F4B-B44D-75C488A04142}"
+	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
+		_config.yml = _config.yml
+		appveyor.yml = appveyor.yml
 	EndProjectSection
 EndProject
 Global
@@ -75,5 +98,10 @@ Global
 		{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903} = {BDB2F017-80B3-40D2-84A5-F006D4886B1A}
 		{D63B15F1-48A2-4B21-9FD1-B014C98FA2D0} = {3FBE9035-8FFD-447D-949A-8E63AF15B89A}
 		{886A4D83-333F-4AE6-A99E-9A32053F13C8} = {3FBE9035-8FFD-447D-949A-8E63AF15B89A}
+		{670F5FF3-999F-450B-8F31-8AB62A43DCEF} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
+		{E16CD9A4-AA47-4440-9EB7-B9E8E59EBFC5} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
+		{D83B9ECD-F143-4A6C-AFD7-F961174D824C} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
+		{C372CFD6-AFFD-4E88-9F47-9AB24E20B91A} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
+		{32DB24AD-BD3C-4F4B-B44D-75C488A04142} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
 	EndGlobalSection
 EndGlobal

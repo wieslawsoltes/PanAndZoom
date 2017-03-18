@@ -60,27 +60,8 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.4.1-build2859-alpha" />
-    <PackageReference Include="Avalonia.Cairo" Version="0.4.1-build2859-alpha" />
-    <PackageReference Include="Avalonia.Direct2D1" Version="0.4.1-build2859-alpha" />
-    <PackageReference Include="Avalonia.Gtk" Version="0.4.1-build2859-alpha" />
-    <PackageReference Include="Avalonia.Win32" Version="0.4.1-build2859-alpha" />
-    <PackageReference Include="Serilog" Version="2.4.0" />
-    <PackageReference Include="Serilog.Sinks.Trace" Version="2.1.0" />
-    <PackageReference Include="SharpDX" Version="3.1.1" />
-    <PackageReference Include="SharpDX.Direct2D1" Version="3.1.1" />
-    <PackageReference Include="SharpDX.Direct3D11" Version="3.1.1" />
-    <PackageReference Include="SharpDX.DXGI" Version="3.1.1" />
-    <PackageReference Include="Splat" Version="2.0.0" />
-    <PackageReference Include="Sprache" Version="2.1.0" />
-    <PackageReference Include="System.Reactive" Version="3.0.0" />
-    <PackageReference Include="System.Reactive.Core" Version="3.0.0" />
-    <PackageReference Include="System.Reactive.Interfaces" Version="3.0.0" />
-    <PackageReference Include="System.Reactive.Linq" Version="3.0.0" />
-    <PackageReference Include="System.Reactive.PlatformServices" Version="3.0.0" />
-    <PackageReference Include="System.Reactive.Windows.Threading" Version="3.0.0" />
-  </ItemGroup>
+  <Import Project="$(MSBuildThisFileDirectory)..\..\build\Avalonia.props" />
+  <Import Project="$(MSBuildThisFileDirectory)..\..\build\Avalonia.Desktop.props" />
   <ItemGroup>
     <ProjectReference Include="..\..\src\Avalonia.Controls.PanAndZoom\Avalonia.Controls.PanAndZoom.csproj">
       <Project>{d63b15f1-48a2-4b21-9fd1-b014c98fa2d0}</Project>
