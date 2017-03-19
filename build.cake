@@ -40,7 +40,6 @@ var AssemblyInfoPath = File("./src/Shared/SharedAssemblyInfo.cs");
 var ReleasePlatform = "Any CPU";
 var ReleaseConfiguration = "Release";
 var MSBuildSolution = "./PanAndZoom.sln";
-var XBuildSolution = "./PanAndZoom.sln";
 
 ///////////////////////////////////////////////////////////////////////////////
 // PARAMETERS
@@ -287,13 +286,6 @@ Task("Restore-NuGet-Packages")
                     ToolTimeout = TimeSpan.FromMinutes(toolTimeout)
                 });
             }
-            else
-            {
-                NuGetRestore(XBuildSolution, new NuGetRestoreSettings {
-                    ToolPath = "./tools/NuGet.CommandLine/tools/NuGet.exe",
-                    ToolTimeout = TimeSpan.FromMinutes(toolTimeout)
-                });
-            }
         });
 });
 
@@ -306,15 +298,6 @@ Task("Build")
         MSBuild(MSBuildSolution, settings => {
             settings.SetConfiguration(configuration);
             settings.UseToolVersion(MSBuildToolVersion.VS2017);
-            settings.WithProperty("Platform", "\"" + platform + "\"");
-            settings.SetVerbosity(Verbosity.Minimal);
-        });
-    }
-    else
-    {
-        XBuild(XBuildSolution, settings => {
-            settings.SetConfiguration(configuration);
-            settings.UseToolVersion(XBuildToolVersion.Default);
             settings.WithProperty("Platform", "\"" + platform + "\"");
             settings.SetVerbosity(Verbosity.Minimal);
         });
