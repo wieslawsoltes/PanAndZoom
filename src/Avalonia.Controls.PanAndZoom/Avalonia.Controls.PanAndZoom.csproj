@@ -31,5 +31,6 @@
     </Compile>
     <Compile Include="**\*.cs" Exclude="obj\**" />
   </ItemGroup>
+  <Import Project="$(MSBuildThisFileDirectory)..\..\build\Rx.props" />
   <Import Project="$(MSBuildThisFileDirectory)..\..\build\Avalonia.props" />
 </Project>

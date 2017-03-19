@@ -60,14 +60,15 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
-  <Import Project="$(MSBuildThisFileDirectory)..\..\build\Avalonia.props" />
-  <Import Project="$(MSBuildThisFileDirectory)..\..\build\Avalonia.Desktop.props" />
   <ItemGroup>
     <ProjectReference Include="..\..\src\Avalonia.Controls.PanAndZoom\Avalonia.Controls.PanAndZoom.csproj">
       <Project>{d63b15f1-48a2-4b21-9fd1-b014c98fa2d0}</Project>
       <Name>Avalonia.Controls.PanAndZoom</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="$(MSBuildThisFileDirectory)..\..\build\Rx.props" />
+  <Import Project="$(MSBuildThisFileDirectory)..\..\build\Avalonia.props" />
+  <Import Project="$(MSBuildThisFileDirectory)..\..\build\Avalonia.Desktop.props" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildThisFileDirectory)..\Shared\nuget.workaround.targets" />
 </Project>
