@@ -1,0 +1,13 @@
+language: csharp
+os:
+  - linux
+  - osx
+dist: trusty
+sudo: required
+mono:
+  - latest
+dotnet: 1.0.1
+script:
+  - cd src/Avalonia.Controls.PanAndZoom
+  - dotnet restore
+  - dotnet build
