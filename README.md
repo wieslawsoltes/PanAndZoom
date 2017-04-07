@@ -3,6 +3,8 @@
 [![Gitter](https://badges.gitter.im/wieslawsoltes/PanAndZoom.svg)](https://gitter.im/wieslawsoltes/PanAndZoom?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/mbwd4i983lkc15c0/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/panandzoom/branch/master)
+[![Build Status](https://travis-ci.org/wieslawsoltes/PanAndZoom.svg?branch=master)](https://travis-ci.org/wieslawsoltes/PanAndZoom)
+[![CircleCI](https://circleci.com/gh/wieslawsoltes/PanAndZoom/tree/master.svg?style=svg)](https://circleci.com/gh/wieslawsoltes/PanAndZoom/tree/master)
 
 [![NuGet](https://img.shields.io/nuget/v/Avalonia.Controls.PanAndZoom.svg)](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom)
 [![MyGet](https://img.shields.io/myget/panandzoom-nightly/vpre/Avalonia.Controls.PanAndZoom.svg?label=myget)](https://www.myget.org/gallery/panandzoom-nightly) 
