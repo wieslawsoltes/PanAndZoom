@@ -1,9 +1,11 @@
+version: '{build}'
 image: Visual Studio 2017
-platform:
-- Any CPU
-configuration:
-- Release
+skip_branch_with_pr: true
+configuration: Release
+platform: Any CPU
 environment:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
   NUGET_API_KEY:
     secure: iSkm19DNdKOLxxCvHiaKikWXy25ZMwGBKpv+EgEprliGl0qX5HtKohLmwJsLnx5O
   NUGET_API_URL: https://www.nuget.org/api/v2/package
