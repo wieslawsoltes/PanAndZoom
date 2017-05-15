@@ -2,14 +2,8 @@
 // ADDINS
 ///////////////////////////////////////////////////////////////////////////////
 
-#addin "nuget:?package=Polly&version=5.0.6"
-#addin "nuget:?package=NuGet.Core&version=2.12.0"
-
-///////////////////////////////////////////////////////////////////////////////
-// TOOLS
-///////////////////////////////////////////////////////////////////////////////
-
-#tool "nuget:https://dotnet.myget.org/F/nuget-build/?package=NuGet.CommandLine&version=4.3.0-preview1-3980&prerelease"
+#addin "nuget:?package=Polly&version=5.1.0"
+#addin "nuget:?package=NuGet.Core&version=2.14.0"
 
 ///////////////////////////////////////////////////////////////////////////////
 // USINGS
@@ -279,7 +273,6 @@ Task("Restore-NuGet-Packages")
             if(isRunningOnWindows)
             {
                 NuGetRestore(MSBuildSolution, new NuGetRestoreSettings {
-                    ToolPath = "./tools/NuGet.CommandLine/tools/NuGet.exe",
                     ToolTimeout = TimeSpan.FromMinutes(toolTimeout)
                 });
             }
