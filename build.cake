@@ -149,8 +149,8 @@ var nuspecNuGetAvalonia = new NuGetPackSettings()
 {
     Id = "Avalonia.Controls.PanAndZoom",
     Version = version,
-    Authors = new [] { "wieslaw.soltes" },
-    Owners = new [] { "wieslaw.soltes" },
+    Authors = new [] { "wieslawsoltes" },
+    Owners = new [] { "wieslawsoltes" },
     LicenseUrl = new Uri("http://opensource.org/licenses/MIT"),
     ProjectUrl = new Uri("https://github.com/wieslawsoltes/PanAndZoom/"),
     RequireLicenseAcceptance = false,
@@ -177,8 +177,8 @@ var nuspecNuGetWpf = new NuGetPackSettings()
 {
     Id = "Wpf.Controls.PanAndZoom",
     Version = version,
-    Authors = new [] { "wieslaw.soltes" },
-    Owners = new [] { "wieslaw.soltes" },
+    Authors = new [] { "wieslawsoltes" },
+    Owners = new [] { "wieslawsoltes" },
     LicenseUrl = new Uri("http://opensource.org/licenses/MIT"),
     ProjectUrl = new Uri("https://github.com/wieslawsoltes/PanAndZoom/"),
     RequireLicenseAcceptance = false,
