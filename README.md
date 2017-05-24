@@ -33,15 +33,15 @@ You can install the package for `WPF` based projects like this:
 
 ### Package Dependencies
 
-* Avalonia
-* System.Reactive
-* System.Reactive.Core
-* System.Reactive.Interfaces
-* System.Reactive.Linq
-* System.Reactive.PlatformServices
-* Serilog
-* Splat
-* Sprache
+* [Avalonia](https://www.nuget.org/packages/Avalonia/)
+* [System.Reactive](https://www.nuget.org/packages/System.Reactive/)
+* [System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/)
+* [System.Reactive.Interfaces](https://www.nuget.org/packages/System.Reactive.Interfaces/)
+* [System.Reactive.Linq](https://www.nuget.org/packages/System.Reactive.Linq/)
+* [System.Reactive.PlatformServices](https://www.nuget.org/packages/System.Reactive.PlatformServices/)
+* [Serilog](https://www.nuget.org/packages/Serilog/)
+* [Splat](https://www.nuget.org/packages/Splat/)
+* [Sprache](https://www.nuget.org/packages/Sprache/)
 
 ### Package Sources
 
