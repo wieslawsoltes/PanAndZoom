@@ -25,6 +25,7 @@ namespace Wpf.Controls.PanAndZoom
         private Point _pan;
         private Point _previous;
         private Matrix _matrix;
+        private bool _isPanning;
 
         /// <summary>
         /// 
@@ -75,6 +76,7 @@ namespace Wpf.Controls.PanAndZoom
         public ZoomBorder()
             : base()
         {
+            _isPanning = false;
             _matrix = MatrixHelper.Identity;
 
             ZoomSpeed = 1.2;
@@ -144,7 +146,7 @@ namespace Wpf.Controls.PanAndZoom
 
         private void Border_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (_element != null)
+            if (_element != null && Mouse.Captured == null)
             {
                 Point point = e.GetPosition(_element);
                 ZoomDeltaTo(e.Delta, point);
@@ -154,27 +156,29 @@ namespace Wpf.Controls.PanAndZoom
 
         private void Border_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (_element != null)
+            if (_element != null && Mouse.Captured == null && _isPanning == false)
             {
                 Point point = e.GetPosition(_element);
                 StartPan(point);
                 _element.CaptureMouse();
                 e.Handled = true;
+                _isPanning = true;
             }
         }
 
         private void Border_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (_element != null)
+            if (_element != null && _element.IsMouseCaptured == true && _isPanning == true)
             {
                 _element.ReleaseMouseCapture();
                 e.Handled = true;
+                _isPanning = false;
             }
         }
 
         private void Border_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (_element != null && _element.IsMouseCaptured)
+            if (_element != null && _element.IsMouseCaptured == true && _isPanning == true)
             {
                 Point point = e.GetPosition(_element);
                 PanTo(point);

@@ -24,6 +24,7 @@ namespace Avalonia.Controls.PanAndZoom
         private Point _pan;
         private Point _previous;
         private Matrix _matrix;
+        private bool _isPanning;
 
         /// <summary>
         /// 
@@ -71,6 +72,7 @@ namespace Avalonia.Controls.PanAndZoom
         public ZoomBorder()
             : base()
         {
+            _isPanning = false;
             _matrix = MatrixHelper.Identity;
 
             Focusable = true;
@@ -142,13 +144,14 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 case MouseButton.Right:
                     {
-                        if (_element != null && e.Device.Captured == null)
+                        if (_element != null && e.Device.Captured == null && _isPanning == false)
                         {
                             Point point = e.GetPosition(_element);
                             point = FixInvalidPointPosition(point);
                             StartPan(point);
                             e.Device.Capture(_element);
                             e.Handled = true;
+                            _isPanning = true;
                         }
                     }
                     break;
@@ -163,10 +166,11 @@ namespace Avalonia.Controls.PanAndZoom
                 {
                     case MouseButton.Right:
                         {
-                            if (_element != null && e.Device.Captured == _element)
+                            if (_element != null && e.Device.Captured == _element && _isPanning == true)
                             {
                                 e.Device.Capture(null);
                                 e.Handled = true;
+                                _isPanning = false;
                             }
                         }
                         break;
@@ -176,7 +180,7 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Border_PointerMoved(object sender, PointerEventArgs e)
         {
-            if (_element != null && e.Device.Captured == _element)
+            if (_element != null && e.Device.Captured == _element && _isPanning == true)
             {
                 Point point = e.GetPosition(_element);
                 point = FixInvalidPointPosition(point);
