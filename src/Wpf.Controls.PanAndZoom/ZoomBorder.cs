@@ -320,9 +320,6 @@ namespace Wpf.Controls.PanAndZoom
             {
                 switch (AutoFitMode)
                 {
-                    case AutoFitMode.None:
-                        Reset();
-                        break;
                     case AutoFitMode.Extent:
                         Extent(panelSize, elementSize);
                         break;
