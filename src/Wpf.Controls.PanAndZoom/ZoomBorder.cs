@@ -14,6 +14,13 @@ namespace Wpf.Controls.PanAndZoom
     /// </summary>
     public class ZoomBorder : Border
     {
+        private static AutoFitMode[] _autoFitModes = (AutoFitMode[])Enum.GetValues(typeof(AutoFitMode));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static AutoFitMode[] AutoFitModes => _autoFitModes;
+
         private UIElement _element;
         private Point _pan;
         private Point _previous;
