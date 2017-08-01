@@ -18,10 +18,7 @@ namespace Avalonia.Controls.PanAndZoom
         /// <summary>
         /// 
         /// </summary>
-        public static AutoFitMode[] AutoFitModes
-        {
-            get { return _autoFitModes; }
-        }
+        public static AutoFitMode[] AutoFitModes => _autoFitModes;
 
         private IControl _element;
         private Point _pan;
