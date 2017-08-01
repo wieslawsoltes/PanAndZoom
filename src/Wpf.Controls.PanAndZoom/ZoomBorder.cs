@@ -150,7 +150,7 @@ namespace Wpf.Controls.PanAndZoom
             {
                 Point point = e.GetPosition(_element);
                 ZoomDeltaTo(e.Delta, point);
-                e.Handled = true;
+                //e.Handled = true;
             }
         }
 
@@ -161,7 +161,7 @@ namespace Wpf.Controls.PanAndZoom
                 Point point = e.GetPosition(_element);
                 StartPan(point);
                 _element.CaptureMouse();
-                e.Handled = true;
+                //e.Handled = true;
                 _isPanning = true;
             }
         }
@@ -171,7 +171,7 @@ namespace Wpf.Controls.PanAndZoom
             if (_element != null && _element.IsMouseCaptured == true && _isPanning == true)
             {
                 _element.ReleaseMouseCapture();
-                e.Handled = true;
+                //e.Handled = true;
                 _isPanning = false;
             }
         }
@@ -182,7 +182,7 @@ namespace Wpf.Controls.PanAndZoom
             {
                 Point point = e.GetPosition(_element);
                 PanTo(point);
-                e.Handled = true;
+                //e.Handled = true;
             }
         }
 

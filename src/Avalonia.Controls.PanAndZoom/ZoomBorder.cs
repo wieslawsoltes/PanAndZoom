@@ -134,7 +134,7 @@ namespace Avalonia.Controls.PanAndZoom
                 Point point = e.GetPosition(_element);
                 point = FixInvalidPointPosition(point);
                 ZoomDeltaTo(e.Delta.Y, point);
-                e.Handled = true;
+                //e.Handled = true;
             }
         }
 
@@ -150,7 +150,7 @@ namespace Avalonia.Controls.PanAndZoom
                             point = FixInvalidPointPosition(point);
                             StartPan(point);
                             e.Device.Capture(_element);
-                            e.Handled = true;
+                            //e.Handled = true;
                             _isPanning = true;
                         }
                     }
@@ -169,7 +169,7 @@ namespace Avalonia.Controls.PanAndZoom
                             if (_element != null && e.Device.Captured == _element && _isPanning == true)
                             {
                                 e.Device.Capture(null);
-                                e.Handled = true;
+                                //e.Handled = true;
                                 _isPanning = false;
                             }
                         }
@@ -185,7 +185,7 @@ namespace Avalonia.Controls.PanAndZoom
                 Point point = e.GetPosition(_element);
                 point = FixInvalidPointPosition(point);
                 PanTo(point);
-                e.Handled = true;
+                //e.Handled = true;
             }
         }
 
