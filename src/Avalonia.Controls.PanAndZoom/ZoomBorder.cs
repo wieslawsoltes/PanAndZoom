@@ -33,18 +33,6 @@ namespace Avalonia.Controls.PanAndZoom
         /// <summary>
         /// 
         /// </summary>
-        public static AvaloniaProperty<double> ZoomSpeedProperty =
-            AvaloniaProperty.Register<ZoomBorder, double>(nameof(ZoomSpeed), 1.2, false, BindingMode.TwoWay);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static AvaloniaProperty<AutoFitMode> AutoFitModeProperty =
-            AvaloniaProperty.Register<ZoomBorder, AutoFitMode>(nameof(AutoFitMode), AutoFitMode.Extent, false, BindingMode.TwoWay);
-
-        /// <summary>
-        /// 
-        /// </summary>
         public double ZoomSpeed
         {
             get { return GetValue(ZoomSpeedProperty); }
@@ -59,6 +47,18 @@ namespace Avalonia.Controls.PanAndZoom
             get { return GetValue(AutoFitModeProperty); }
             set { SetValue(AutoFitModeProperty, value); }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static AvaloniaProperty<double> ZoomSpeedProperty =
+            AvaloniaProperty.Register<ZoomBorder, double>(nameof(ZoomSpeed), 1.2, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static AvaloniaProperty<AutoFitMode> AutoFitModeProperty =
+            AvaloniaProperty.Register<ZoomBorder, AutoFitMode>(nameof(AutoFitMode), AutoFitMode.Extent, false, BindingMode.TwoWay);
 
         static ZoomBorder()
         {
