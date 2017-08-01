@@ -127,7 +127,7 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Border_PointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            if (_element != null)
+            if (_element != null && e.Device.Captured == null)
             {
                 Point point = e.GetPosition(_element);
                 point = FixInvalidPointPosition(point);
@@ -141,7 +141,7 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 case MouseButton.Right:
                     {
-                        if (_element != null)
+                        if (_element != null && e.Device.Captured == null)
                         {
                             Point point = e.GetPosition(_element);
                             point = FixInvalidPointPosition(point);
