@@ -29,17 +29,45 @@ namespace Wpf.Controls.PanAndZoom
         /// <summary>
         /// 
         /// </summary>
-        public double ZoomSpeed { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public AutoFitMode AutoFitMode { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public Action<double, double, double, double> InvalidatedChild { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double ZoomSpeed
+        {
+            get { return (double)GetValue(ZoomSpeedProperty); }
+            set { SetValue(ZoomSpeedProperty, value); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public AutoFitMode AutoFitMode
+        {
+            get { return (AutoFitMode)GetValue(AutoFitModeProperty); }
+            set { SetValue(AutoFitModeProperty, value); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty ZoomSpeedProperty =
+            DependencyProperty.Register(
+                nameof(ZoomSpeed),
+                typeof(double),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(1.2, FrameworkPropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty AutoFitModeProperty =
+            DependencyProperty.Register(
+                nameof(AutoFitMode),
+                typeof(AutoFitMode),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(AutoFitMode.Extent, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// 
