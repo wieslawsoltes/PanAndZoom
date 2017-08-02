@@ -144,7 +144,7 @@ namespace Wpf.Controls.PanAndZoom
             if (_element != null && Mouse.Captured == null)
             {
                 Point point = e.GetPosition(_element);
-                ZoomDeltaTo(e.Delta, point.X, point.Y);
+                ZoomDeltaTo((double)e.Delta, point.X, point.Y);
             }
         }
 
@@ -215,7 +215,7 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <inheritdoc/>
-        public void ZoomDeltaTo(int delta, double x, double y)
+        public void ZoomDeltaTo(double delta, double x, double y)
         {
             ZoomTo(delta > 0 ? ZoomSpeed : 1 / ZoomSpeed, x, y);
         }
