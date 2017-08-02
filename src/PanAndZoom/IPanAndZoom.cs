@@ -7,7 +7,7 @@ namespace PanAndZoom
     /// <summary>
     /// Defines pan and zoom contract.
     /// </summary>
-    public class IPandAndZoom
+    public class IPanAndZoom
     {
         /// <summary>
         /// Gets or sets invalidate action for border child element.
