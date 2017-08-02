@@ -10,14 +10,14 @@ using static System.Math;
 namespace Wpf.Controls.PanAndZoom
 {
     /// <summary>
-    /// 
+    /// Pan and zoom control for WPF.
     /// </summary>
     public class ZoomBorder : Border
     {
         private static AutoFitMode[] _autoFitModes = (AutoFitMode[])Enum.GetValues(typeof(AutoFitMode));
 
         /// <summary>
-        /// 
+        /// Gets available auto-fit modes.
         /// </summary>
         public static AutoFitMode[] AutoFitModes => _autoFitModes;
 
@@ -28,12 +28,12 @@ namespace Wpf.Controls.PanAndZoom
         private bool _isPanning;
 
         /// <summary>
-        /// 
+        /// Gets or sets invalidate action for border child element.
         /// </summary>
         public Action<double, double, double, double> InvalidatedChild { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets zoom speed ratio.
         /// </summary>
         public double ZoomSpeed
         {
@@ -42,7 +42,7 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Gets or sets auto-fit mode.
         /// </summary>
         public AutoFitMode AutoFitMode
         {
@@ -51,7 +51,7 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Identifies the <seealso cref="ZoomSpeed"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomSpeedProperty =
             DependencyProperty.Register(
@@ -61,7 +61,7 @@ namespace Wpf.Controls.PanAndZoom
                 new FrameworkPropertyMetadata(1.2, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
-        /// 
+        /// Identifies the <seealso cref="AutoFitMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AutoFitModeProperty =
             DependencyProperty.Register(
@@ -71,7 +71,7 @@ namespace Wpf.Controls.PanAndZoom
                 new FrameworkPropertyMetadata(AutoFitMode.Extent, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="ZoomBorder"/> class.
         /// </summary>
         public ZoomBorder()
             : base()
@@ -97,7 +97,7 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Gets or sets single child of a <see cref="ZoomBorder"/> control.
         /// </summary>
         public override UIElement Child
         {
@@ -187,10 +187,10 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Arranges the control's child.
         /// </summary>
-        /// <param name="finalSize"></param>
-        /// <returns></returns>
+        /// <param name="finalSize">The size allocated to the control.</param>
+        /// <returns>The space taken.</returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
             if (_element != null && _element.IsMeasureValid)
@@ -202,7 +202,7 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Invalidate child element.
         /// </summary>
         public void Invalidate()
         {
@@ -216,10 +216,10 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom to provided zoom ratio and provided center point.
         /// </summary>
-        /// <param name="zoom"></param>
-        /// <param name="point"></param>
+        /// <param name="zoom">The zoom ratio.</param>
+        /// <param name="point">The center point.</param>
         public void ZoomTo(double zoom, Point point)
         {
             _matrix = MatrixHelper.ScaleAtPrepend(_matrix, zoom, zoom, point.X, point.Y);
@@ -228,19 +228,19 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom to provided zoom delta ratio and provided center point.
         /// </summary>
-        /// <param name="delta"></param>
-        /// <param name="point"></param>
+        /// <param name="delta">The zoom delta ratio.</param>
+        /// <param name="point">The center point.</param>
         public void ZoomDeltaTo(int delta, Point point)
         {
             ZoomTo(delta > 0 ? ZoomSpeed : 1 / ZoomSpeed, point);
         }
 
         /// <summary>
-        /// 
+        /// Set pan origin.
         /// </summary>
-        /// <param name="point"></param>
+        /// <param name="point">The pan origin position.</param>
         public void StartPan(Point point)
         {
             _pan = new Point();
@@ -248,9 +248,9 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Pan control to provided position.
         /// </summary>
-        /// <param name="point"></param>
+        /// <param name="point">The pan destination position.</param>
         public void PanTo(Point point)
         {
             Point delta = new Point(point.X - _previous.X, point.Y - _previous.Y);
@@ -263,10 +263,10 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom and pan to panel extents while maintaining aspect ratio.
         /// </summary>
-        /// <param name="panelSize"></param>
-        /// <param name="elementSize"></param>
+        /// <param name="panelSize">The panel size.</param>
+        /// <param name="elementSize">The element size.</param>
         public void Extent(Size panelSize, Size elementSize)
         {
             if (_element != null)
@@ -288,10 +288,10 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom and pan to fill panel.
         /// </summary>
-        /// <param name="panelSize"></param>
-        /// <param name="elementSize"></param>
+        /// <param name="panelSize">The panel size.</param>
+        /// <param name="elementSize">The element size.</param>
         public void Fill(Size panelSize, Size elementSize)
         {
             if (_element != null)
@@ -310,10 +310,10 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom and pan child elemnt inside panel using auto-fit mode.
         /// </summary>
-        /// <param name="panelSize"></param>
-        /// <param name="elementSize"></param>
+        /// <param name="panelSize">The panel size.</param>
+        /// <param name="elementSize">The element size.</param>
         public void AutoFit(Size panelSize, Size elementSize)
         {
             if (_element != null)
@@ -333,7 +333,7 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Set next auto-fit mode.
         /// </summary>
         public void ToggleAutoFitMode()
         {
@@ -352,7 +352,7 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Reset pan and zoom matrix.
         /// </summary>
         public void Reset()
         {
@@ -362,7 +362,7 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom and pan to panel extents while maintaining aspect ratio.
         /// </summary>
         public void Extent()
         {
@@ -370,7 +370,7 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom and pan to fill panel.
         /// </summary>
         public void Fill()
         {
@@ -378,7 +378,7 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom and pan child elemnt inside panel using auto-fit mode.
         /// </summary>
         public void AutoFit()
         {
