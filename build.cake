@@ -188,7 +188,8 @@ var nuspecNuGetAvalonia = new NuGetPackSettings()
     Tags = new [] { "Avalonia", "Pan", "Zoom", "Control", "Xaml", "Managed", "C#" },
     Dependencies = new []
     {
-        new NuSpecDependency { Id = "Avalonia", Version = AvaloniaVersion },
+        new NuSpecDependency { Id = "PanAndZoom", Version = version },
+        new NuSpecDependency { Id = "Avalonia", Version = AvaloniaVersion }
     },
     Files = new []
     {
@@ -214,6 +215,10 @@ var nuspecNuGetWpf = new NuGetPackSettings()
     Description = "Easily add pan and zoom functionality to your WPF apps using PanAndZoom control.",
     Copyright = "Copyright 2017",
     Tags = new [] { "WPF", "Pan", "Zoom", "Control", "Xaml", "Managed", "C#" },
+    Dependencies = new []
+    {
+        new NuSpecDependency { Id = "PanAndZoom", Version = version }
+    },
     Files = new []
     {
         // net45
