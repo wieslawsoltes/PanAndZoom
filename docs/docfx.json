@@ -4,6 +4,7 @@
       "src": [
         {
           "files": [
+            "/src/PanAndZoom/PanAndZoom.csproj",
             "/src/Avalonia.Controls.PanAndZoom/Avalonia.Controls.PanAndZoom.csproj",
             "/src/Wpf.Controls.PanAndZoom/Wpf.Controls.PanAndZoom.csproj"
           ],
