@@ -79,6 +79,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\PanAndZoom\PanAndZoom.csproj">
+      <Project>{d9471709-d4ea-433a-a56c-eff936331e9f}</Project>
+      <Name>PanAndZoom</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Wpf.Controls.PanAndZoom\Wpf.Controls.PanAndZoom.csproj">
       <Project>{886a4d83-333f-4ae6-a99e-9a32053f13c8}</Project>
       <Name>Wpf.Controls.PanAndZoom</Name>
