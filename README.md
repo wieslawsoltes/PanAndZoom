@@ -42,6 +42,7 @@ You can install the package for `WPF` based projects like this:
 * [Serilog](https://www.nuget.org/packages/Serilog/)
 * [Splat](https://www.nuget.org/packages/Splat/)
 * [Sprache](https://www.nuget.org/packages/Sprache/)
+* [System.ValueTuple](https://www.nuget.org/packages/System.ValueTuple/)
 
 ### Package Sources
 
@@ -53,8 +54,6 @@ You can install the package for `WPF` based projects like this:
 * [GitHub source code repository.](https://github.com/wieslawsoltes/PanAndZoom)
 
 ## Using PanAndZoom
-
-You can also use custom xmlns definition for `ZoomBorder` control: `xmlns:paz="https://github.com/panandzoom"`.
 
 ### Avalonia
 
