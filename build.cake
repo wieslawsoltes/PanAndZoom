@@ -145,6 +145,33 @@ var AvaloniaVersion = packageVersions["Avalonia"].FirstOrDefault().Item1;
 
 Information("Package: Avalonia, version: {0}", AvaloniaVersion);
 
+var nuspecNuGet = new NuGetPackSettings()
+{
+    Id = "PanAndZoom",
+    Version = version,
+    Authors = new [] { "wieslawsoltes" },
+    Owners = new [] { "wieslawsoltes" },
+    LicenseUrl = new Uri("http://opensource.org/licenses/MIT"),
+    ProjectUrl = new Uri("https://github.com/wieslawsoltes/PanAndZoom/"),
+    RequireLicenseAcceptance = false,
+    Symbols = false,
+    NoPackageAnalysis = true,
+    Description = "Easily add pan and zoom functionality to your Avalonia apps using PanAndZoom control.",
+    Copyright = "Copyright 2017",
+    Tags = new [] { "Pan", "Zoom", "Control", "Xaml", "Managed", "C#" },
+    Files = new []
+    {
+        // netstandard1.1
+        new NuSpecContent { Source = "src/PanAndZoom/bin/" + dirSuffix + "/netstandard1.1/" + "PanAndZoom.dll", Target = "lib/netstandard1.1" },
+        new NuSpecContent { Source = "src/PanAndZoom/bin/" + dirSuffix + "/netstandard1.1/" + "PanAndZoom.xml", Target = "lib/netstandard1.1" },
+        // net45
+        new NuSpecContent { Source = "src/PanAndZoom/bin/" + dirSuffix + "/PanAndZoom.dll", Target = "lib/net45" },
+        new NuSpecContent { Source = "src/PanAndZoom/bin/" + dirSuffix + "/PanAndZoom.xml", Target = "lib/net45" }
+    },
+    BasePath = Directory("./"),
+    OutputDirectory = nugetRoot
+};
+
 var nuspecNuGetAvalonia = new NuGetPackSettings()
 {
     Id = "Avalonia.Controls.PanAndZoom",
@@ -199,6 +226,7 @@ var nuspecNuGetWpf = new NuGetPackSettings()
 
 var nuspecNuGetSettings = new List<NuGetPackSettings>();
 
+nuspecNuGetSettings.Add(nuspecNuGet);
 nuspecNuGetSettings.Add(nuspecNuGetAvalonia);
 nuspecNuGetSettings.Add(nuspecNuGetWpf);
 
