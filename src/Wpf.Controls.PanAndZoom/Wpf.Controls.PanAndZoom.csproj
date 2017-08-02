@@ -44,4 +44,7 @@
     </Compile>
     <Compile Include="**\*.cs" Exclude="obj\**" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PanAndZoom\PanAndZoom.csproj" />
+  </ItemGroup>
 </Project>
