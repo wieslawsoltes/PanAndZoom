@@ -5,6 +5,7 @@ using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Media;
 using static System.Math;
+using PanAndZoom;
 
 namespace Avalonia.Controls.PanAndZoom
 {
