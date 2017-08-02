@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using static System.Math;
+using PanAndZoom;
 
 namespace Wpf.Controls.PanAndZoom
 {
