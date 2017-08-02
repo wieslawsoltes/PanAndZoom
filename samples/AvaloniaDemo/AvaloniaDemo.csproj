@@ -64,6 +64,10 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\PanAndZoom\PanAndZoom.csproj">
+      <Project>{d9471709-d4ea-433a-a56c-eff936331e9f}</Project>
+      <Name>PanAndZoom</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Avalonia.Controls.PanAndZoom\Avalonia.Controls.PanAndZoom.csproj">
       <Project>{d63b15f1-48a2-4b21-9fd1-b014c98fa2d0}</Project>
       <Name>Avalonia.Controls.PanAndZoom</Name>
