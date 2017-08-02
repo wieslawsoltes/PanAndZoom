@@ -9,14 +9,14 @@ using static System.Math;
 namespace Avalonia.Controls.PanAndZoom
 {
     /// <summary>
-    /// 
+    /// Pan and zoom control for Avalonia.
     /// </summary>
     public class ZoomBorder : Border
     {
         private static AutoFitMode[] _autoFitModes = (AutoFitMode[])Enum.GetValues(typeof(AutoFitMode));
 
         /// <summary>
-        /// 
+        /// Gets available auto-fit modes.
         /// </summary>
         public static AutoFitMode[] AutoFitModes => _autoFitModes;
 
@@ -27,12 +27,12 @@ namespace Avalonia.Controls.PanAndZoom
         private bool _isPanning;
 
         /// <summary>
-        /// 
+        /// Gets or sets invalidate action for border child element.
         /// </summary>
         public Action<double, double, double, double> InvalidatedChild { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets zoom speed ratio.
         /// </summary>
         public double ZoomSpeed
         {
@@ -41,7 +41,7 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Gets or sets auto-fir mode.
         /// </summary>
         public AutoFitMode AutoFitMode
         {
@@ -50,13 +50,13 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Identifies the <seealso cref="ZoomSpeed"/> avalonia property.
         /// </summary>
         public static AvaloniaProperty<double> ZoomSpeedProperty =
             AvaloniaProperty.Register<ZoomBorder, double>(nameof(ZoomSpeed), 1.2, false, BindingMode.TwoWay);
 
         /// <summary>
-        /// 
+        /// Identifies the <seealso cref="AutoFitMode"/> avalonia property.
         /// </summary>
         public static AvaloniaProperty<AutoFitMode> AutoFitModeProperty =
             AvaloniaProperty.Register<ZoomBorder, AutoFitMode>(nameof(AutoFitMode), AutoFitMode.Extent, false, BindingMode.TwoWay);
@@ -67,7 +67,7 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="ZoomBorder"/> class.
         /// </summary>
         public ZoomBorder()
             : base()
@@ -190,10 +190,10 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Arranges the control's child.
         /// </summary>
-        /// <param name="finalSize"></param>
-        /// <returns></returns>
+        /// <param name="finalSize">The size allocated to the control.</param>
+        /// <returns>The space taken.</returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
             var size = base.ArrangeOverride(finalSize);
@@ -207,7 +207,7 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Invalidate child element.
         /// </summary>
         public void Invalidate()
         {
@@ -221,10 +221,10 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom to provided zoom ratio and provided center point.
         /// </summary>
-        /// <param name="zoom"></param>
-        /// <param name="point"></param>
+        /// <param name="zoom">The zoom ratio.</param>
+        /// <param name="point">The center point.</param>
         public void ZoomTo(double zoom, Point point)
         {
             _matrix = MatrixHelper.ScaleAtPrepend(_matrix, zoom, zoom, point.X, point.Y);
@@ -233,19 +233,19 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom to provided zoom delta ratio and provided center point.
         /// </summary>
-        /// <param name="delta"></param>
-        /// <param name="point"></param>
+        /// <param name="delta">The zoom delta ratio.</param>
+        /// <param name="point">The center point.</param>
         public void ZoomDeltaTo(double delta, Point point)
         {
             ZoomTo(delta > 0 ? ZoomSpeed : 1 / ZoomSpeed, point);
         }
 
         /// <summary>
-        /// 
+        /// Set pan origin.
         /// </summary>
-        /// <param name="point"></param>
+        /// <param name="point">The pan origin position.</param>
         public void StartPan(Point point)
         {
             _pan = new Point();
@@ -253,9 +253,9 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Pan control to provided position.
         /// </summary>
-        /// <param name="point"></param>
+        /// <param name="point">The pan destination position.</param>
         public void PanTo(Point point)
         {
             Point delta = new Point(point.X - _previous.X, point.Y - _previous.Y);
@@ -268,10 +268,10 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom and pan to panel extents while maintaining aspect ratio.
         /// </summary>
-        /// <param name="panelSize"></param>
-        /// <param name="elementSize"></param>
+        /// <param name="panelSize">The panel size.</param>
+        /// <param name="elementSize">The element size.</param>
         public void Extent(Rect panelSize, Rect elementSize)
         {
             if (_element != null)
@@ -293,10 +293,10 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom and pan to fill panel.
         /// </summary>
-        /// <param name="panelSize"></param>
-        /// <param name="elementSize"></param>
+        /// <param name="panelSize">The panel size.</param>
+        /// <param name="elementSize">The element size.</param>
         public void Fill(Rect panelSize, Rect elementSize)
         {
             if (_element != null)
@@ -315,10 +315,10 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom and pan child elemnt inside panel using auto-fit mode.
         /// </summary>
-        /// <param name="panelSize"></param>
-        /// <param name="elementSize"></param>
+        /// <param name="panelSize">The panel size.</param>
+        /// <param name="elementSize">The element size.</param>
         public void AutoFit(Rect panelSize, Rect elementSize)
         {
             if (_element != null)
@@ -338,7 +338,7 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Toggle next auto-fit mode.
         /// </summary>
         public void ToggleAutoFitMode()
         {
@@ -357,7 +357,7 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Reset pan and zoom matrix.
         /// </summary>
         public void Reset()
         {
@@ -367,7 +367,7 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom and pan to panel extents while maintaining aspect ratio.
         /// </summary>
         public void Extent()
         {
@@ -375,7 +375,7 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom and pan to fill panel.
         /// </summary>
         public void Fill()
         {
@@ -383,7 +383,7 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Zoom and pan child elemnt inside panel using auto-fit mode.
         /// </summary>
         public void AutoFit()
         {
@@ -394,10 +394,10 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// 
+        /// Fix point position using current render transform matrix.
         /// </summary>
-        /// <param name="point"></param>
-        /// <returns></returns>
+        /// <param name="point">The point to fix.</param>
+        /// <returns>The fixed point.</returns>
         public Point FixInvalidPointPosition(Point point)
         {
             return MatrixHelper.TransformPoint(_matrix.Invert(), point);
