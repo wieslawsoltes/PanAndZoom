@@ -10,9 +10,9 @@ jobs:
     steps:
       - checkout
       - run: dotnet restore src/PanAndZoom
-      - run: dotnet build src/PanAndZoom/PanAndZoom.csproj
+      - run: dotnet build src/PanAndZoom/PanAndZoom.csproj -f netstandard1.1
       - run: dotnet restore src/Avalonia.Controls.PanAndZoom
-      - run: dotnet build src/Avalonia.Controls.PanAndZoom/Avalonia.Controls.PanAndZoom.csproj
+      - run: dotnet build src/Avalonia.Controls.PanAndZoom/Avalonia.Controls.PanAndZoom.csproj -f netstandard1.3
     notify:
       webhooks:
         - url: https://webhooks.gitter.im/e/8972de595038714ca5c1
