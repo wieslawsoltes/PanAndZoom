@@ -78,7 +78,7 @@ namespace PanAndZoom
         void Fill(double panelWidth, double panelHeight, double elementWidth, double elementHeight);
 
         /// <summary>
-        /// Zoom and pan child elemnt inside panel using auto-fit mode.
+        /// Zoom and pan child element inside panel using auto-fit mode.
         /// </summary>
         /// <param name="panelWidth">The panel width.</param>
         /// <param name="panelHeight">The panel height.</param>
@@ -107,7 +107,7 @@ namespace PanAndZoom
         void Fill();
 
         /// <summary>
-        /// Zoom and pan child elemnt inside panel using auto-fit mode.
+        /// Zoom and pan child element inside panel using auto-fit mode.
         /// </summary>
         void AutoFit();
     }
