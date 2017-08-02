@@ -9,6 +9,8 @@ jobs:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
     steps:
       - checkout
+      - run: dotnet restore src/PanAndZoom
+      - run: dotnet build src/PanAndZoom/PanAndZoom.csproj
       - run: dotnet restore src/Avalonia.Controls.PanAndZoom
       - run: dotnet build src/Avalonia.Controls.PanAndZoom/Avalonia.Controls.PanAndZoom.csproj
     notify:
