@@ -12,7 +12,7 @@ namespace Avalonia.Controls.PanAndZoom
     /// <summary>
     /// Pan and zoom control for Avalonia.
     /// </summary>
-    public class ZoomBorder : Border
+    public class ZoomBorder : Border, IPanAndZoom
     {
         private static AutoFitMode[] _autoFitModes = (AutoFitMode[])Enum.GetValues(typeof(AutoFitMode));
 
@@ -27,23 +27,17 @@ namespace Avalonia.Controls.PanAndZoom
         private Matrix _matrix;
         private bool _isPanning;
 
-        /// <summary>
-        /// Gets or sets invalidate action for border child element.
-        /// </summary>
+        /// <inheritdoc/>
         public Action<double, double, double, double> InvalidatedChild { get; set; }
 
-        /// <summary>
-        /// Gets or sets zoom speed ratio.
-        /// </summary>
+        /// <inheritdoc/>
         public double ZoomSpeed
         {
             get { return GetValue(ZoomSpeedProperty); }
             set { SetValue(ZoomSpeedProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets auto-fit mode.
-        /// </summary>
+        /// <inheritdoc/>
         public AutoFitMode AutoFitMode
         {
             get { return GetValue(AutoFitModeProperty); }
@@ -134,8 +128,7 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 Point point = e.GetPosition(_element);
                 point = FixInvalidPointPosition(point);
-                ZoomDeltaTo(e.Delta.Y, point);
-                //e.Handled = true;
+                ZoomDeltaTo(e.Delta.Y, point.X, point.Y);
             }
         }
 
@@ -149,9 +142,8 @@ namespace Avalonia.Controls.PanAndZoom
                         {
                             Point point = e.GetPosition(_element);
                             point = FixInvalidPointPosition(point);
-                            StartPan(point);
+                            StartPan(point.X, point.Y);
                             e.Device.Capture(_element);
-                            //e.Handled = true;
                             _isPanning = true;
                         }
                     }
@@ -170,7 +162,6 @@ namespace Avalonia.Controls.PanAndZoom
                             if (_element != null && e.Device.Captured == _element && _isPanning == true)
                             {
                                 e.Device.Capture(null);
-                                //e.Handled = true;
                                 _isPanning = false;
                             }
                         }
@@ -185,8 +176,7 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 Point point = e.GetPosition(_element);
                 point = FixInvalidPointPosition(point);
-                PanTo(point);
-                //e.Handled = true;
+                PanTo(point.X, point.Y);
             }
         }
 
@@ -201,15 +191,17 @@ namespace Avalonia.Controls.PanAndZoom
 
             if (_element != null && _element.IsMeasureValid)
             {
-                AutoFit(new Rect(0.0, 0.0, finalSize.Width, finalSize.Height), _element.Bounds);
+                AutoFit(
+                    finalSize.Width, 
+                    finalSize.Height, 
+                    _element.Bounds.Width,
+                    _element.Bounds.Height);
             }
 
             return size;
         }
 
-        /// <summary>
-        /// Invalidate child element.
-        /// </summary>
+        /// <inheritdoc/>
         public void Invalidate()
         {
             if (_element != null)
@@ -221,126 +213,82 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
-        /// <summary>
-        /// Zoom to provided zoom ratio and provided center point.
-        /// </summary>
-        /// <param name="zoom">The zoom ratio.</param>
-        /// <param name="point">The center point.</param>
-        public void ZoomTo(double zoom, Point point)
+        /// <inheritdoc/>
+        public void ZoomTo(double zoom, double x, double y)
         {
-            _matrix = MatrixHelper.ScaleAtPrepend(_matrix, zoom, zoom, point.X, point.Y);
-
+            _matrix = MatrixHelper.ScaleAtPrepend(_matrix, zoom, zoom, x, y);
             Invalidate();
         }
 
-        /// <summary>
-        /// Zoom to provided zoom delta ratio and provided center point.
-        /// </summary>
-        /// <param name="delta">The zoom delta ratio.</param>
-        /// <param name="point">The center point.</param>
-        public void ZoomDeltaTo(double delta, Point point)
+        /// <inheritdoc/>
+        public void ZoomDeltaTo(double delta, double x, double y)
         {
-            ZoomTo(delta > 0 ? ZoomSpeed : 1 / ZoomSpeed, point);
+            ZoomTo(delta > 0 ? ZoomSpeed : 1 / ZoomSpeed, x, y);
         }
 
-        /// <summary>
-        /// Set pan origin.
-        /// </summary>
-        /// <param name="point">The pan origin position.</param>
-        public void StartPan(Point point)
+        /// <inheritdoc/>
+        public void StartPan(double x, double y)
         {
             _pan = new Point();
-            _previous = new Point(point.X, point.Y);
+            _previous = new Point(x, y);
         }
 
-        /// <summary>
-        /// Pan control to provided position.
-        /// </summary>
-        /// <param name="point">The pan destination position.</param>
-        public void PanTo(Point point)
+        /// <inheritdoc/>
+        public void PanTo(double x, double y)
         {
-            Point delta = new Point(point.X - _previous.X, point.Y - _previous.Y);
-            _previous = new Point(point.X, point.Y);
-
+            Point delta = new Point(x - _previous.X, y - _previous.Y);
+            _previous = new Point(x, y);
             _pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
             _matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
-
             Invalidate();
         }
 
-        /// <summary>
-        /// Zoom and pan to panel extents while maintaining aspect ratio.
-        /// </summary>
-        /// <param name="panelSize">The panel size.</param>
-        /// <param name="elementSize">The element size.</param>
-        public void Extent(Rect panelSize, Rect elementSize)
+        /// <inheritdoc/>
+        public void Extent(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             if (_element != null)
             {
-                double pw = panelSize.Width;
-                double ph = panelSize.Height;
-                double ew = elementSize.Width;
-                double eh = elementSize.Height;
-                double zx = pw / ew;
-                double zy = ph / eh;
+                double zx = panelWidth / elementWidth;
+                double zy = panelHeight / elementHeight;
                 double zoom = Min(zx, zy);
-                double cx = ew / 2.0;
-                double cy = eh / 2.0;
-
+                double cx = elementWidth / 2.0;
+                double cy = elementHeight / 2.0;
                 _matrix = MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
-
                 Invalidate();
             }
         }
 
-        /// <summary>
-        /// Zoom and pan to fill panel.
-        /// </summary>
-        /// <param name="panelSize">The panel size.</param>
-        /// <param name="elementSize">The element size.</param>
-        public void Fill(Rect panelSize, Rect elementSize)
+        /// <inheritdoc/>
+        public void Fill(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             if (_element != null)
             {
-                double pw = panelSize.Width;
-                double ph = panelSize.Height;
-                double ew = elementSize.Width;
-                double eh = elementSize.Height;
-                double zx = pw / ew;
-                double zy = ph / eh;
-
-                _matrix = MatrixHelper.ScaleAt(zx, zy, ew / 2.0, eh / 2.0);
-
+                double zx = panelWidth / elementWidth;
+                double zy = panelHeight / elementHeight;
+                _matrix = MatrixHelper.ScaleAt(zx, zy, elementWidth / 2.0, elementHeight / 2.0);
                 Invalidate();
             }
         }
 
-        /// <summary>
-        /// Zoom and pan child elemnt inside panel using auto-fit mode.
-        /// </summary>
-        /// <param name="panelSize">The panel size.</param>
-        /// <param name="elementSize">The element size.</param>
-        public void AutoFit(Rect panelSize, Rect elementSize)
+        /// <inheritdoc/>
+        public void AutoFit(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             if (_element != null)
             {
                 switch (AutoFitMode)
                 {
                     case AutoFitMode.Extent:
-                        Extent(panelSize, elementSize);
+                        Extent(panelWidth, panelHeight, elementWidth, elementHeight);
                         break;
                     case AutoFitMode.Fill:
-                        Fill(panelSize, elementSize);
+                        Fill(panelWidth, panelHeight, elementWidth, elementHeight);
                         break;
                 }
-
                 Invalidate();
             }
         }
 
-        /// <summary>
-        /// Set next auto-fit mode.
-        /// </summary>
+        /// <inheritdoc/>
         public void ToggleAutoFitMode()
         {
             switch (AutoFitMode)
@@ -357,40 +305,43 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
-        /// <summary>
-        /// Reset pan and zoom matrix.
-        /// </summary>
+        /// <inheritdoc/>
         public void Reset()
         {
             _matrix = MatrixHelper.Identity;
-
             Invalidate();
         }
 
-        /// <summary>
-        /// Zoom and pan to panel extents while maintaining aspect ratio.
-        /// </summary>
+        /// <inheritdoc/>
         public void Extent()
         {
-            Extent(this.Bounds, _element.Bounds);
+            Extent(
+                this.Bounds.Width, 
+                this.Bounds.Height, 
+                _element.Bounds.Width,
+                _element.Bounds.Height);
         }
 
-        /// <summary>
-        /// Zoom and pan to fill panel.
-        /// </summary>
+        /// <inheritdoc/>
         public void Fill()
         {
-            Fill(this.Bounds, _element.Bounds);
+            Fill(
+                this.Bounds.Width, 
+                this.Bounds.Height, 
+                _element.Bounds.Width,
+                _element.Bounds.Height);
         }
 
-        /// <summary>
-        /// Zoom and pan child elemnt inside panel using auto-fit mode.
-        /// </summary>
+        /// <inheritdoc/>
         public void AutoFit()
         {
             if (_element != null)
             {
-                AutoFit(this.Bounds, _element.Bounds);
+                AutoFit(
+                    this.Bounds.Width, 
+                    this.Bounds.Height, 
+                    _element.Bounds.Width,
+                    _element.Bounds.Height);
             }
         }
 
