@@ -66,7 +66,7 @@ namespace PanAndZoom
         /// <param name="panelHeight">The panel height.</param>
         /// <param name="elementWidth">The element width.</param>
         /// <param name="elementHeight">The element height.</param>
-        public void Extent(double panelWidth, double panelHeight, double elementWidth, double elementHeight);
+        void Extent(double panelWidth, double panelHeight, double elementWidth, double elementHeight);
 
         /// <summary>
         /// Zoom and pan to fill panel.
@@ -75,7 +75,7 @@ namespace PanAndZoom
         /// <param name="panelHeight">The panel height.</param>
         /// <param name="elementWidth">The element width.</param>
         /// <param name="elementHeight">The element height.</param>
-        public void Fill(double panelWidth, double panelHeight, double elementWidth, double elementHeight);
+        void Fill(double panelWidth, double panelHeight, double elementWidth, double elementHeight);
 
         /// <summary>
         /// Zoom and pan child elemnt inside panel using auto-fit mode.
@@ -84,7 +84,7 @@ namespace PanAndZoom
         /// <param name="panelHeight">The panel height.</param>
         /// <param name="elementWidth">The element width.</param>
         /// <param name="elementHeight">The element height.</param>
-        public void AutoFit(double panelWidth, double panelHeight, double elementWidth, double elementHeight);
+        void AutoFit(double panelWidth, double panelHeight, double elementWidth, double elementHeight);
 
         /// <summary>
         /// Set next auto-fit mode.
