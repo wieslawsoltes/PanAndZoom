@@ -41,7 +41,7 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// Gets or sets auto-fir mode.
+        /// Gets or sets auto-fit mode.
         /// </summary>
         public AutoFitMode AutoFitMode
         {
@@ -338,7 +338,7 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// Toggle next auto-fit mode.
+        /// Set next auto-fit mode.
         /// </summary>
         public void ToggleAutoFitMode()
         {
