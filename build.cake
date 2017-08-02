@@ -165,8 +165,8 @@ var nuspecNuGet = new NuGetPackSettings()
         new NuSpecContent { Source = "src/PanAndZoom/bin/" + dirSuffix + "/netstandard1.1/" + "PanAndZoom.dll", Target = "lib/netstandard1.1" },
         new NuSpecContent { Source = "src/PanAndZoom/bin/" + dirSuffix + "/netstandard1.1/" + "PanAndZoom.xml", Target = "lib/netstandard1.1" },
         // net45
-        new NuSpecContent { Source = "src/PanAndZoom/bin/" + dirSuffix + "/PanAndZoom.dll", Target = "lib/net45" },
-        new NuSpecContent { Source = "src/PanAndZoom/bin/" + dirSuffix + "/PanAndZoom.xml", Target = "lib/net45" }
+        new NuSpecContent { Source = "src/PanAndZoom/bin/" + dirSuffix + "/net45/" + "PanAndZoom.dll", Target = "lib/net45" },
+        new NuSpecContent { Source = "src/PanAndZoom/bin/" + dirSuffix + "/net45/" + "PanAndZoom.xml", Target = "lib/net45" }
     },
     BasePath = Directory("./"),
     OutputDirectory = nugetRoot
@@ -222,8 +222,8 @@ var nuspecNuGetWpf = new NuGetPackSettings()
     Files = new []
     {
         // net45
-        new NuSpecContent { Source = "src/Wpf.Controls.PanAndZoom/bin/" + dirSuffix + "/Wpf.Controls.PanAndZoom.dll", Target = "lib/net45" },
-        new NuSpecContent { Source = "src/Wpf.Controls.PanAndZoom/bin/" + dirSuffix + "/Wpf.Controls.PanAndZoom.xml", Target = "lib/net45" }
+        new NuSpecContent { Source = "src/Wpf.Controls.PanAndZoom/bin/" + dirSuffix + "/net45/" + "Wpf.Controls.PanAndZoom.dll", Target = "lib/net45" },
+        new NuSpecContent { Source = "src/Wpf.Controls.PanAndZoom/bin/" + dirSuffix + "/net45/" + "Wpf.Controls.PanAndZoom.xml", Target = "lib/net45" }
     },
     BasePath = Directory("./"),
     OutputDirectory = nugetRoot
