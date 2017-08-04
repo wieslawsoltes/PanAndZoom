@@ -279,7 +279,13 @@ namespace Avalonia.Controls.PanAndZoom
         {
             if (_element != null)
             {
-                // TODO: 
+                double zx = panelWidth / elementWidth;
+                double zy = panelHeight / elementHeight;
+                double zoom = Max(zx, zy);
+                double cx = elementWidth / 2.0;
+                double cy = elementHeight / 2.0;
+                _matrix = MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                Invalidate();
             }
         }
 
