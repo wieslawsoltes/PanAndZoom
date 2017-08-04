@@ -15,12 +15,12 @@ namespace Wpf.Controls.PanAndZoom
     /// </summary>
     public class ZoomBorder : Border, IPanAndZoom
     {
-        private static AutoFitMode[] _autoFitModes = (AutoFitMode[])Enum.GetValues(typeof(AutoFitMode));
+        private static StretchMode[] _autoFitModes = (StretchMode[])Enum.GetValues(typeof(StretchMode));
 
         /// <summary>
-        /// Gets available auto-fit modes.
+        /// Gets available stretch modes.
         /// </summary>
-        public static AutoFitMode[] AutoFitModes => _autoFitModes;
+        public static StretchMode[] StretchModes => _autoFitModes;
 
         private UIElement _element;
         private Point _pan;
@@ -39,10 +39,10 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <inheritdoc/>
-        public AutoFitMode AutoFitMode
+        public StretchMode Stretch
         {
-            get { return (AutoFitMode)GetValue(AutoFitModeProperty); }
-            set { SetValue(AutoFitModeProperty, value); }
+            get { return (StretchMode)GetValue(StretchProperty); }
+            set { SetValue(StretchProperty, value); }
         }
 
         /// <summary>
@@ -53,17 +53,17 @@ namespace Wpf.Controls.PanAndZoom
                 nameof(ZoomSpeed),
                 typeof(double),
                 typeof(ZoomBorder),
-                new FrameworkPropertyMetadata(1.2, FrameworkPropertyMetadataOptions.AffectsArrange));
+                new FrameworkPropertyMetadata(1.2, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
-        /// Identifies the <seealso cref="AutoFitMode"/> dependency property.
+        /// Identifies the <seealso cref="Stretch"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty AutoFitModeProperty =
+        public static readonly DependencyProperty StretchProperty =
             DependencyProperty.Register(
-                nameof(AutoFitMode),
-                typeof(AutoFitMode),
+                nameof(Stretch),
+                typeof(StretchMode),
                 typeof(ZoomBorder),
-                new FrameworkPropertyMetadata(AutoFitMode.Extent, FrameworkPropertyMetadataOptions.AffectsArrange));
+                new FrameworkPropertyMetadata(StretchMode.Uniform, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoomBorder"/> class.
@@ -75,7 +75,7 @@ namespace Wpf.Controls.PanAndZoom
             _matrix = MatrixHelper.Identity;
 
             ZoomSpeed = 1.2;
-            AutoFitMode = AutoFitMode.None;
+            Stretch = StretchMode.None;
 
             Focusable = true;
             Background = Brushes.Transparent;
@@ -184,15 +184,18 @@ namespace Wpf.Controls.PanAndZoom
         /// <returns>The space taken.</returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
+            var size = base.ArrangeOverride(finalSize);
+
             if (_element != null && _element.IsMeasureValid)
             {
                 AutoFit(
-                    this.DesiredSize.Width, 
-                    this.DesiredSize.Height, 
-                    _element.DesiredSize.Width, 
+                    size.Width,
+                    size.Height,
+                    _element.DesiredSize.Width,
                     _element.DesiredSize.Height);
             }
-            return base.ArrangeOverride(finalSize);
+
+            return size;
         }
 
         /// <inheritdoc/>
@@ -230,7 +233,9 @@ namespace Wpf.Controls.PanAndZoom
         /// <inheritdoc/>
         public void PanTo(double x, double y)
         {
-            Point delta = new Point(x - _previous.X, y - _previous.Y);
+            double dx = x - _previous.X;
+            double dy = y - _previous.Y;
+            Point delta = new Point(dx, dy);
             _previous = new Point(x, y);
             _pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
             _matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
@@ -238,7 +243,21 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <inheritdoc/>
-        public void Extent(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
+        public void Fill(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
+        {
+            if (_element != null)
+            {
+                double zx = panelWidth / elementWidth;
+                double zy = panelHeight / elementHeight;
+                double cx = elementWidth / 2.0;
+                double cy = elementHeight / 2.0;
+                _matrix = MatrixHelper.ScaleAt(zx, zy, cx, cy);
+                Invalidate();
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Uniform(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             if (_element != null)
             {
@@ -253,14 +272,11 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <inheritdoc/>
-        public void Fill(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
+        public void UniformToFill(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             if (_element != null)
             {
-                double zx = panelWidth / elementWidth;
-                double zy = panelHeight / elementHeight;
-                _matrix = MatrixHelper.ScaleAt(zx, zy, elementWidth / 2.0, elementHeight / 2.0);
-                Invalidate();
+                // TODO: 
             }
         }
 
@@ -269,13 +285,16 @@ namespace Wpf.Controls.PanAndZoom
         {
             if (_element != null)
             {
-                switch (AutoFitMode)
+                switch (Stretch)
                 {
-                    case AutoFitMode.Extent:
-                        Extent(panelWidth, panelHeight, elementWidth, elementHeight);
-                        break;
-                    case AutoFitMode.Fill:
+                    case StretchMode.Fill:
                         Fill(panelWidth, panelHeight, elementWidth, elementHeight);
+                        break;
+                    case StretchMode.Uniform:
+                        Uniform(panelWidth, panelHeight, elementWidth, elementHeight);
+                        break;
+                    case StretchMode.UniformToFill:
+                        UniformToFill(panelWidth, panelHeight, elementWidth, elementHeight);
                         break;
                 }
                 Invalidate();
@@ -283,18 +302,21 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <inheritdoc/>
-        public void ToggleAutoFitMode()
+        public void ToggleStretchMode()
         {
-            switch (AutoFitMode)
+            switch (Stretch)
             {
-                case AutoFitMode.None:
-                    AutoFitMode = AutoFitMode.Extent;
+                case StretchMode.None:
+                    Stretch = StretchMode.Fill;
                     break;
-                case AutoFitMode.Extent:
-                    AutoFitMode = AutoFitMode.Fill;
+                case StretchMode.Fill:
+                    Stretch = StretchMode.Uniform;
                     break;
-                case AutoFitMode.Fill:
-                    AutoFitMode = AutoFitMode.None;
+                case StretchMode.Uniform:
+                    Stretch = StretchMode.UniformToFill;
+                    break;
+                case StretchMode.UniformToFill:
+                    Stretch = StretchMode.None;
                     break;
             }
         }
@@ -307,21 +329,31 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <inheritdoc/>
-        public void Extent()
+        public void Fill()
         {
-            Extent(
-                this.DesiredSize.Width,  
-                this.DesiredSize.Height, 
+            Fill(
+                this.ActualWidth,
+                this.ActualHeight,
                 _element.RenderSize.Width,
                 _element.RenderSize.Height);
         }
 
         /// <inheritdoc/>
-        public void Fill()
+        public void Uniform()
         {
-            Fill(
-                this.DesiredSize.Width,  
-                this.DesiredSize.Height, 
+            Uniform(
+                this.ActualWidth,
+                this.ActualHeight,
+                _element.RenderSize.Width,
+                _element.RenderSize.Height);
+        }
+
+        /// <inheritdoc/>
+        public void UniformToFill()
+        {
+            UniformToFill(
+                this.ActualWidth,
+                this.ActualHeight,
                 _element.RenderSize.Width,
                 _element.RenderSize.Height);
         }
@@ -332,8 +364,8 @@ namespace Wpf.Controls.PanAndZoom
             if (_element != null)
             {
                 AutoFit(
-                    this.DesiredSize.Width,  
-                    this.DesiredSize.Height, 
+                    this.DesiredSize.Width,
+                    this.DesiredSize.Height,
                     _element.RenderSize.Width,
                     _element.RenderSize.Height);
             }

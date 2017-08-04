@@ -28,14 +28,14 @@ namespace AvaloniaDemo
 
         private void ZoomBorder_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.E)
-            {
-                zoomBorder.Extent();
-            }
-
             if (e.Key == Key.F)
             {
                 zoomBorder.Fill();
+            }
+
+            if (e.Key == Key.U)
+            {
+                zoomBorder.Uniform();
             }
 
             if (e.Key == Key.R)
@@ -45,7 +45,7 @@ namespace AvaloniaDemo
 
             if (e.Key == Key.T)
             {
-                zoomBorder.ToggleAutoFitMode();
+                zoomBorder.ToggleStretchMode();
                 zoomBorder.AutoFit();
             }
         }

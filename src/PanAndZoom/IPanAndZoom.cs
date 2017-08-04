@@ -20,9 +20,9 @@ namespace PanAndZoom
         double ZoomSpeed { get; set; }
 
         /// <summary>
-        /// Gets or sets auto-fit mode.
+        /// Gets or sets stretch mode.
         /// </summary>
-        AutoFitMode AutoFitMode { get; set; }
+        StretchMode Stretch { get; set; }
 
         /// <summary>
         /// Invalidate child element.
@@ -60,15 +60,6 @@ namespace PanAndZoom
         void PanTo(double x, double y);
 
         /// <summary>
-        /// Zoom and pan to panel extents while maintaining aspect ratio.
-        /// </summary>
-        /// <param name="panelWidth">The panel width.</param>
-        /// <param name="panelHeight">The panel height.</param>
-        /// <param name="elementWidth">The element width.</param>
-        /// <param name="elementHeight">The element height.</param>
-        void Extent(double panelWidth, double panelHeight, double elementWidth, double elementHeight);
-
-        /// <summary>
         /// Zoom and pan to fill panel.
         /// </summary>
         /// <param name="panelWidth">The panel width.</param>
@@ -78,7 +69,25 @@ namespace PanAndZoom
         void Fill(double panelWidth, double panelHeight, double elementWidth, double elementHeight);
 
         /// <summary>
-        /// Zoom and pan child element inside panel using auto-fit mode.
+        /// Zoom and pan to panel extents while maintaining aspect ratio.
+        /// </summary>
+        /// <param name="panelWidth">The panel width.</param>
+        /// <param name="panelHeight">The panel height.</param>
+        /// <param name="elementWidth">The element width.</param>
+        /// <param name="elementHeight">The element height.</param>
+        void Uniform(double panelWidth, double panelHeight, double elementWidth, double elementHeight);
+
+        /// <summary>
+        /// Zoom and pan to panel extents while maintaining aspect ratio. If aspect of panel is different panel is filled.
+        /// </summary>
+        /// <param name="panelWidth">The panel width.</param>
+        /// <param name="panelHeight">The panel height.</param>
+        /// <param name="elementWidth">The element width.</param>
+        /// <param name="elementHeight">The element height.</param>
+        void UniformToFill(double panelWidth, double panelHeight, double elementWidth, double elementHeight);
+
+        /// <summary>
+        /// Zoom and pan child element inside panel using stretch mode.
         /// </summary>
         /// <param name="panelWidth">The panel width.</param>
         /// <param name="panelHeight">The panel height.</param>
@@ -87,9 +96,9 @@ namespace PanAndZoom
         void AutoFit(double panelWidth, double panelHeight, double elementWidth, double elementHeight);
 
         /// <summary>
-        /// Set next auto-fit mode.
+        /// Set next stretch mode.
         /// </summary>
-        void ToggleAutoFitMode();
+        void ToggleStretchMode();
 
         /// <summary>
         /// Reset pan and zoom matrix.
@@ -97,17 +106,22 @@ namespace PanAndZoom
         void Reset();
 
         /// <summary>
-        /// Zoom and pan to panel extents while maintaining aspect ratio.
-        /// </summary>
-        void Extent();
-
-        /// <summary>
         /// Zoom and pan to fill panel.
         /// </summary>
         void Fill();
 
         /// <summary>
-        /// Zoom and pan child element inside panel using auto-fit mode.
+        /// Zoom and pan to panel extents while maintaining aspect ratio.
+        /// </summary>
+        void Uniform();
+
+        /// <summary>
+        /// Zoom and pan to panel extents while maintaining aspect ratio. If aspect of panel is different panel is filled.
+        /// </summary>
+        void UniformToFill();
+
+        /// <summary>
+        /// Zoom and pan child element inside panel using stretch mode.
         /// </summary>
         void AutoFit();
     }

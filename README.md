@@ -65,23 +65,37 @@ You can install the package for `WPF` based projects like this:
         xmlns:paz="clr-namespace:Avalonia.Controls.PanAndZoom;assembly=Avalonia.Controls.PanAndZoom"
         UseLayoutRounding="True"
         Title="PanAndZoom Avalonia Demo" Height="640" Width="640">
-    <Grid Background="SlateBlue" RowDefinitions="Auto,*,24" ColumnDefinitions="50,*,50">
-        <StackPanel Background="#1FFFFFFF" Margin="4" 
-                    HorizontalAlignment="Center" VerticalAlignment="Top" 
-                    Grid.Row="0" Grid.Column="1">
-            <TextBlock Text="E - Extent" Foreground="WhiteSmoke" FontSize="11"/>
-            <TextBlock Text="F - Fill" Foreground="WhiteSmoke" FontSize="11"/>
-            <TextBlock Text="R - Reset" Foreground="WhiteSmoke" FontSize="11"/>
-            <TextBlock Text="T - Toggle AutoFitMode" Foreground="WhiteSmoke" FontSize="11"/>
-            <TextBlock Text="Mouse Wheel - Zoom to Point" Foreground="WhiteSmoke" FontSize="11"/>
-            <TextBlock Text="Mouse Right Button Down - Pan" Foreground="WhiteSmoke" FontSize="11"/>
+    <Grid RowDefinitions="Auto,12,Auto,12,*,12" ColumnDefinitions="50,*,50">
+        <StackPanel Orientation="Vertical" 
+                    HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">
+            <TextBlock Text="F - Fill"/>
+            <TextBlock Text="U - Uniform"/>
+            <TextBlock Text="R - Reset"/>
+            <TextBlock Text="T - Toggle Stretch Mode"/>
+            <TextBlock Text="Mouse Wheel - Zoom to Point"/>
+            <TextBlock Text="Mouse Right Button Down - Pan"/>
         </StackPanel>
-        <paz:ZoomBorder Name="zoomBorder" AutoFitMode="None" ZoomSpeed="1.2" 
-                        ClipToBounds="True" Background="DarkGray" 
+        <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
+            <TextBlock Text="Stretch:" VerticalAlignment="Center"/>
+            <DropDown Items="{Static paz:ZoomBorder.StretchModes}" 
+                      SelectedItem="{Binding #zoomBorder.Stretch, Mode=TwoWay}" 
+                      Margin="2">
+            </DropDown>
+            <TextBlock Text="ZoomSpeed:" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding #zoomBorder.ZoomSpeed, Mode=TwoWay}" 
+                     TextAlignment="Center" Width="50" Margin="2"/>
+        </StackPanel>
+        <paz:ZoomBorder Name="zoomBorder" Stretch="None" ZoomSpeed="1.2" 
+                        Background="SlateBlue" ClipToBounds="True" Focusable="True"
                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
-                        Grid.Row="1" Grid.Column="1">
+                        Grid.Row="4" Grid.Column="1">
             <Canvas Background="LightGray" Width="300" Height="300">
                 <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
+                <StackPanel Canvas.Left="100" Canvas.Top="200">
+                    <TextBlock Text="Text1" Width="100" Background="Red" Foreground="WhiteSmoke"/>
+                    <TextBlock Text="Text2" Width="100" Background="Red" Foreground="WhiteSmoke"/>
+                </StackPanel>
             </Canvas>
         </paz:ZoomBorder>
     </Grid>
@@ -118,14 +132,14 @@ namespace AvaloniaDemo
 
         private void ZoomBorder_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.E)
-            {
-                zoomBorder.Extent();
-            }
-
             if (e.Key == Key.F)
             {
                 zoomBorder.Fill();
+            }
+
+            if (e.Key == Key.U)
+            {
+                zoomBorder.Uniform();
             }
 
             if (e.Key == Key.R)
@@ -135,7 +149,7 @@ namespace AvaloniaDemo
 
             if (e.Key == Key.T)
             {
-                zoomBorder.ToggleAutoFitMode();
+                zoomBorder.ToggleStretchMode();
                 zoomBorder.AutoFit();
             }
         }
@@ -154,33 +168,50 @@ namespace AvaloniaDemo
         WindowStartupLocation="CenterScreen"
         UseLayoutRounding="True" SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display"
         Title="PanAndZoom WPF Demo" Height="640" Width="640">
-    <Grid Background="SlateBlue">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="12"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="12"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="24"/>
+            <RowDefinition Height="12"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Background="#1FFFFFFF" Margin="4" 
-                    HorizontalAlignment="Center" VerticalAlignment="Top" 
-                    Grid.Row="0" Grid.Column="1">
-            <TextBlock Text="E - Extent" Foreground="WhiteSmoke" FontSize="11"/>
-            <TextBlock Text="F - Fill" Foreground="WhiteSmoke" FontSize="11"/>
-            <TextBlock Text="R - Reset" Foreground="WhiteSmoke" FontSize="11"/>
-            <TextBlock Text="T - Toggle AutoFitMode" Foreground="WhiteSmoke" FontSize="11"/>
-            <TextBlock Text="Mouse Wheel - Zoom to Point" Foreground="WhiteSmoke" FontSize="11"/>
-            <TextBlock Text="Mouse Right Button Down - Pan" Foreground="WhiteSmoke" FontSize="11"/>
+        <StackPanel Orientation="Vertical" 
+                    HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">
+            <TextBlock Text="F - Fill"/>
+            <TextBlock Text="U - Uniform"/>
+            <TextBlock Text="R - Reset"/>
+            <TextBlock Text="T - Toggle Stretch Mode"/>
+            <TextBlock Text="Mouse Wheel - Zoom to Point"/>
+            <TextBlock Text="Mouse Right Button Down - Pan"/>
         </StackPanel>
-        <paz:ZoomBorder x:Name="zoomBorder" AutoFitMode="None" ZoomSpeed="1.2" ClipToBounds="True" 
-                        Background="DarkGray" 
+        <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
+            <TextBlock Text="Stretch:" VerticalAlignment="Center"/>
+            <ComboBox ItemsSource="{Binding ElementName=zoomBorder, Path=StretchModes}" 
+                      SelectedItem="{Binding ElementName=zoomBorder, Path=Stretch}" 
+                      Margin="2">
+            </ComboBox>
+            <TextBlock Text="ZoomSpeed:" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding ElementName=zoomBorder, Path=ZoomSpeed}" 
+                     TextAlignment="Center" Width="50" Margin="2"/>
+        </StackPanel>
+        <paz:ZoomBorder Name="zoomBorder" Stretch="None" ZoomSpeed="1.2" 
+                        Background="SlateBlue" ClipToBounds="True" Focusable="True"
                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
-                        Grid.Row="1" Grid.Column="1">
+                        Grid.Row="4" Grid.Column="1">
             <Canvas Background="LightGray" Width="300" Height="300">
                 <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
+                <StackPanel Canvas.Left="100" Canvas.Top="200">
+                    <TextBlock Text="Text1" Width="100" Background="Red" Foreground="WhiteSmoke"/>
+                    <TextBlock Text="Text2" Width="100" Background="Red" Foreground="WhiteSmoke"/>
+                </StackPanel>
             </Canvas>
         </paz:ZoomBorder>
     </Grid>
@@ -205,14 +236,14 @@ namespace WpfDemo
 
         private void ZoomBorder_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.E)
-            {
-                zoomBorder.Extent();
-            }
-
             if (e.Key == Key.F)
             {
                 zoomBorder.Fill();
+            }
+
+            if (e.Key == Key.U)
+            {
+                zoomBorder.Uniform();
             }
 
             if (e.Key == Key.R)
@@ -222,7 +253,7 @@ namespace WpfDemo
 
             if (e.Key == Key.T)
             {
-                zoomBorder.ToggleAutoFitMode();
+                zoomBorder.ToggleStretchMode();
                 zoomBorder.AutoFit();
             }
         }
