@@ -44,6 +44,13 @@ namespace Wpf.Controls.PanAndZoom
             set { SetValue(StretchProperty, value); }
         }
 
+        /// <inheritdoc/>
+        public bool EnableInput
+        {
+            get { return (bool)GetValue(EnableInputProperty); }
+            set { SetValue(EnableInputProperty, value); }
+        }
+
         /// <summary>
         /// Identifies the <seealso cref="ZoomSpeed"/> dependency property.
         /// </summary>
@@ -63,6 +70,16 @@ namespace Wpf.Controls.PanAndZoom
                 typeof(StretchMode),
                 typeof(ZoomBorder),
                 new FrameworkPropertyMetadata(StretchMode.Uniform, FrameworkPropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// Identifies the <seealso cref="EnableInput"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty EnableInputProperty =
+            DependencyProperty.Register(
+                nameof(EnableInput),
+                typeof(bool),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(true));
 
         /// <summary>
         /// Gets or sets single child of a <see cref="ZoomBorder"/> control.
@@ -123,22 +140,34 @@ namespace Wpf.Controls.PanAndZoom
 
         private void Border_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            Wheel(e);
+            if (EnableInput)
+            {
+                Wheel(e);
+            }
         }
 
         private void Border_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Pressed(e);
+            if (EnableInput)
+            {
+                Pressed(e);
+            }
         }
 
         private void Border_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Released(e);
+            if (EnableInput)
+            {
+                Released(e);
+            }
         }
 
         private void Border_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            Moved(e);
+            if (EnableInput)
+            {
+                Moved(e);
+            }
         }
 
         private void ChildChanged(UIElement element)

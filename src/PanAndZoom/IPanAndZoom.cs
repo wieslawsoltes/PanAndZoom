@@ -25,6 +25,11 @@ namespace PanAndZoom
         StretchMode Stretch { get; set; }
 
         /// <summary>
+        /// Gets or sets flag indicating whether input events are processed.
+        /// </summary>
+        bool EnableInput { get; set; }
+
+        /// <summary>
         /// Invalidate child element.
         /// </summary>
         void Invalidate();

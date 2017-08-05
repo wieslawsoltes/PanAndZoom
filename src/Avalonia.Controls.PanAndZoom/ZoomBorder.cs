@@ -43,6 +43,13 @@ namespace Avalonia.Controls.PanAndZoom
             set { SetValue(StretchProperty, value); }
         }
 
+        /// <inheritdoc/>
+        public bool EnableInput
+        {
+            get { return GetValue(EnableInputProperty); }
+            set { SetValue(EnableInputProperty, value); }
+        }
+
         /// <summary>
         /// Identifies the <seealso cref="ZoomSpeed"/> avalonia property.
         /// </summary>
@@ -54,6 +61,12 @@ namespace Avalonia.Controls.PanAndZoom
         /// </summary>
         public static AvaloniaProperty<StretchMode> StretchProperty =
             AvaloniaProperty.Register<ZoomBorder, StretchMode>(nameof(Stretch), StretchMode.Uniform, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// Identifies the <seealso cref="EnableInput"/> avalonia property.
+        /// </summary>
+        public static AvaloniaProperty<bool> EnableInputProperty =
+            AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableInput), true, false, BindingMode.TwoWay);
 
         static ZoomBorder()
         {
@@ -105,22 +118,34 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Border_PointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            Wheel(e);
+            if (EnableInput)
+            {
+                Wheel(e);
+            }
         }
 
         private void Border_PointerPressed(object sender, PointerPressedEventArgs e)
         {
-            Pressed(e);
+            if (EnableInput)
+            {
+                Pressed(e);
+            }
         }
 
         private void Border_PointerReleased(object sender, PointerReleasedEventArgs e)
         {
-            Released(e);
+            if (EnableInput)
+            {
+                Released(e);
+            }
         }
 
         private void Border_PointerMoved(object sender, PointerEventArgs e)
         {
-            Moved(e);
+            if (EnableInput)
+            {
+                Moved(e);
+            }
         }
 
         private void ChildChanged(IControl element)

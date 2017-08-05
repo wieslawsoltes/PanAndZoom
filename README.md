@@ -85,6 +85,8 @@ You can install the package for `WPF` based projects like this:
             <TextBlock Text="ZoomSpeed:" VerticalAlignment="Center"/>
             <TextBox Text="{Binding #zoomBorder.ZoomSpeed, Mode=TwoWay}" 
                      TextAlignment="Center" Width="50" Margin="2"/>
+            <CheckBox IsChecked="{Binding #zoomBorder.EnableInput}" 
+                      Content="EnableInput" VerticalAlignment="Center"/>
         </StackPanel>
         <paz:ZoomBorder Name="zoomBorder" Stretch="None" ZoomSpeed="1.2" 
                         Background="SlateBlue" ClipToBounds="True" Focusable="True"
@@ -201,6 +203,8 @@ namespace AvaloniaDemo
             <TextBlock Text="ZoomSpeed:" VerticalAlignment="Center"/>
             <TextBox Text="{Binding ElementName=zoomBorder, Path=ZoomSpeed}" 
                      TextAlignment="Center" Width="50" Margin="2"/>
+            <CheckBox IsChecked="{Binding ElementName=zoomBorder, Path=EnableInput}" 
+                      Content="EnableInput" VerticalAlignment="Center"/>
         </StackPanel>
         <paz:ZoomBorder Name="zoomBorder" Stretch="None" ZoomSpeed="1.2" 
                         Background="SlateBlue" ClipToBounds="True" Focusable="True"
