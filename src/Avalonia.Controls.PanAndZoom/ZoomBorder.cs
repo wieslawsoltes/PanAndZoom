@@ -14,18 +14,17 @@ namespace Avalonia.Controls.PanAndZoom
     /// </summary>
     public class ZoomBorder : Border, IPanAndZoom
     {
+        private IControl _element;
+        private Point _pan;
+        private Point _previous;
+        private Matrix _matrix;
+        private bool _isPanning;
         private static StretchMode[] _autoFitModes = (StretchMode[])Enum.GetValues(typeof(StretchMode));
 
         /// <summary>
         /// Gets available stretch modes.
         /// </summary>
         public static StretchMode[] StretchModes => _autoFitModes;
-
-        private IControl _element;
-        private Point _pan;
-        private Point _previous;
-        private Matrix _matrix;
-        private bool _isPanning;
 
         /// <inheritdoc/>
         public Action<double, double, double, double> InvalidatedChild { get; set; }
@@ -75,25 +74,65 @@ namespace Avalonia.Controls.PanAndZoom
 
             DetachedFromVisualTree += PanAndZoom_DetachedFromVisualTree;
 
-            this.GetObservable(ChildProperty).Subscribe(value =>
-            {
-                if (value != null && value != _element && _element != null)
-                {
-                    Unload();
-                }
+            this.GetObservable(ChildProperty).Subscribe(ChildChanged);
+        }
 
-                if (value != null && value != _element)
-                {
-                    Initialize(value);
-                }
-            });
+        /// <summary>
+        /// Arranges the control's child.
+        /// </summary>
+        /// <param name="finalSize">The size allocated to the control.</param>
+        /// <returns>The space taken.</returns>
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            var size = base.ArrangeOverride(finalSize);
+
+            if (_element != null && _element.IsMeasureValid)
+            {
+                AutoFit(
+                    size.Width,
+                    size.Height,
+                    _element.Bounds.Width,
+                    _element.Bounds.Height);
+            }
+
+            return size;
         }
 
         private void PanAndZoom_DetachedFromVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
-            if (_element != null)
+            Unload();
+        }
+
+        private void Border_PointerWheelChanged(object sender, PointerWheelEventArgs e)
+        {
+            Wheel(e);
+        }
+
+        private void Border_PointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            Pressed(e);
+        }
+
+        private void Border_PointerReleased(object sender, PointerReleasedEventArgs e)
+        {
+            Released(e);
+        }
+
+        private void Border_PointerMoved(object sender, PointerEventArgs e)
+        {
+            Moved(e);
+        }
+
+        private void ChildChanged(IControl element)
+        {
+            if (element != null && element != _element && _element != null)
             {
                 Unload();
+            }
+
+            if (element != null && element != _element)
+            {
+                Initialize(element);
             }
         }
 
@@ -122,7 +161,7 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
-        private void Border_PointerWheelChanged(object sender, PointerWheelEventArgs e)
+        private void Wheel(PointerWheelEventArgs e)
         {
             if (_element != null && e.Device.Captured == null)
             {
@@ -132,7 +171,7 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
-        private void Border_PointerPressed(object sender, PointerPressedEventArgs e)
+        private void Pressed(PointerPressedEventArgs e)
         {
             switch (e.MouseButton)
             {
@@ -151,7 +190,7 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
-        private void Border_PointerReleased(object sender, PointerReleasedEventArgs e)
+        private void Released(PointerReleasedEventArgs e)
         {
             if (_element != null)
             {
@@ -170,7 +209,7 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
-        private void Border_PointerMoved(object sender, PointerEventArgs e)
+        private void Moved(PointerEventArgs e)
         {
             if (_element != null && e.Device.Captured == _element && _isPanning == true)
             {
@@ -178,27 +217,6 @@ namespace Avalonia.Controls.PanAndZoom
                 point = FixInvalidPointPosition(point);
                 PanTo(point.X, point.Y);
             }
-        }
-
-        /// <summary>
-        /// Arranges the control's child.
-        /// </summary>
-        /// <param name="finalSize">The size allocated to the control.</param>
-        /// <returns>The space taken.</returns>
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            var size = base.ArrangeOverride(finalSize);
-
-            if (_element != null && _element.IsMeasureValid)
-            {
-                AutoFit(
-                    size.Width,
-                    size.Height,
-                    _element.Bounds.Width,
-                    _element.Bounds.Height);
-            }
-
-            return size;
         }
 
         /// <inheritdoc/>

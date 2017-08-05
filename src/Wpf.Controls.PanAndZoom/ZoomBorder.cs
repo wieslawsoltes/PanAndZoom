@@ -15,18 +15,17 @@ namespace Wpf.Controls.PanAndZoom
     /// </summary>
     public class ZoomBorder : Border, IPanAndZoom
     {
+        private UIElement _element;
+        private Point _pan;
+        private Point _previous;
+        private Matrix _matrix;
+        private bool _isPanning;
         private static StretchMode[] _autoFitModes = (StretchMode[])Enum.GetValues(typeof(StretchMode));
 
         /// <summary>
         /// Gets available stretch modes.
         /// </summary>
         public static StretchMode[] StretchModes => _autoFitModes;
-
-        private UIElement _element;
-        private Point _pan;
-        private Point _previous;
-        private Matrix _matrix;
-        private bool _isPanning;
 
         /// <inheritdoc/>
         public Action<double, double, double, double> InvalidatedChild { get; set; }
@@ -66,6 +65,19 @@ namespace Wpf.Controls.PanAndZoom
                 new FrameworkPropertyMetadata(StretchMode.Uniform, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
+        /// Gets or sets single child of a <see cref="ZoomBorder"/> control.
+        /// </summary>
+        public override UIElement Child
+        {
+            get { return base.Child; }
+            set
+            {
+                base.Child = value;
+                ChildChanged(value);
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ZoomBorder"/> class.
         /// </summary>
         public ZoomBorder()
@@ -83,33 +95,62 @@ namespace Wpf.Controls.PanAndZoom
             Unloaded += PanAndZoom_Unloaded;
         }
 
+        /// <summary>
+        /// Arranges the control's child.
+        /// </summary>
+        /// <param name="finalSize">The size allocated to the control.</param>
+        /// <returns>The space taken.</returns>
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            var size = base.ArrangeOverride(finalSize);
+
+            if (_element != null && _element.IsMeasureValid)
+            {
+                AutoFit(
+                    size.Width,
+                    size.Height,
+                    _element.DesiredSize.Width,
+                    _element.DesiredSize.Height);
+            }
+
+            return size;
+        }
+
         private void PanAndZoom_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (_element != null)
+            Unload();
+        }
+
+        private void Border_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            Wheel(e);
+        }
+
+        private void Border_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Pressed(e);
+        }
+
+        private void Border_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Released(e);
+        }
+
+        private void Border_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            Moved(e);
+        }
+
+        private void ChildChanged(UIElement element)
+        {
+            if (element != null && element != _element && _element != null)
             {
                 Unload();
             }
-        }
 
-        /// <summary>
-        /// Gets or sets single child of a <see cref="ZoomBorder"/> control.
-        /// </summary>
-        public override UIElement Child
-        {
-            get { return base.Child; }
-            set
+            if (element != null && element != _element)
             {
-                if (value != null && value != _element && _element != null)
-                {
-                    Unload();
-                }
-
-                base.Child = value;
-
-                if (value != null && value != _element)
-                {
-                    Initialize(value);
-                }
+                Initialize(element);
             }
         }
 
@@ -139,7 +180,7 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
-        private void Border_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        private void Wheel(MouseWheelEventArgs e)
         {
             if (_element != null && Mouse.Captured == null)
             {
@@ -148,7 +189,7 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
-        private void Border_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void Pressed(MouseButtonEventArgs e)
         {
             if (_element != null && Mouse.Captured == null && _isPanning == false)
             {
@@ -159,7 +200,7 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
-        private void Border_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private void Released(MouseButtonEventArgs e)
         {
             if (_element != null && _element.IsMouseCaptured == true && _isPanning == true)
             {
@@ -168,34 +209,13 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
-        private void Border_PreviewMouseMove(object sender, MouseEventArgs e)
+        private void Moved(MouseEventArgs e)
         {
             if (_element != null && _element.IsMouseCaptured == true && _isPanning == true)
             {
                 Point point = e.GetPosition(_element);
                 PanTo(point.X, point.Y);
             }
-        }
-
-        /// <summary>
-        /// Arranges the control's child.
-        /// </summary>
-        /// <param name="finalSize">The size allocated to the control.</param>
-        /// <returns>The space taken.</returns>
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            var size = base.ArrangeOverride(finalSize);
-
-            if (_element != null && _element.IsMeasureValid)
-            {
-                AutoFit(
-                    size.Width,
-                    size.Height,
-                    _element.DesiredSize.Width,
-                    _element.DesiredSize.Height);
-            }
-
-            return size;
         }
 
         /// <inheritdoc/>
