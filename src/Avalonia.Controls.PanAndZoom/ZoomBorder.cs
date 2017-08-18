@@ -85,6 +85,7 @@ namespace Avalonia.Controls.PanAndZoom
             Focusable = true;
             Background = Brushes.Transparent;
 
+            AttachedToVisualTree += PanAndZoom_AttachedToVisualTree;
             DetachedFromVisualTree += PanAndZoom_DetachedFromVisualTree;
 
             this.GetObservable(ChildProperty).Subscribe(ChildChanged);
@@ -109,6 +110,11 @@ namespace Avalonia.Controls.PanAndZoom
             }
 
             return size;
+        }
+
+        private void PanAndZoom_AttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
+        {
+            ChildChanged(base.Child);
         }
 
         private void PanAndZoom_DetachedFromVisualTree(object sender, VisualTreeAttachmentEventArgs e)
