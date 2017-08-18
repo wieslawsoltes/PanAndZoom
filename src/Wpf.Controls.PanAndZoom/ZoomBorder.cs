@@ -109,6 +109,7 @@ namespace Wpf.Controls.PanAndZoom
             Focusable = true;
             Background = Brushes.Transparent;
 
+            Loaded += PanAndZoom_Loaded;
             Unloaded += PanAndZoom_Unloaded;
         }
 
@@ -131,6 +132,11 @@ namespace Wpf.Controls.PanAndZoom
             }
 
             return size;
+        }
+
+        private void PanAndZoom_Loaded(object sender, RoutedEventArgs e)
+        {
+            ChildChanged(base.Child);
         }
 
         private void PanAndZoom_Unloaded(object sender, RoutedEventArgs e)
