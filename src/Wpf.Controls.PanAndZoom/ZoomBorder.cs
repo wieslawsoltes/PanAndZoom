@@ -101,8 +101,7 @@ namespace Wpf.Controls.PanAndZoom
         public ZoomBorder()
             : base()
         {
-            _isPanning = false;
-            _matrix = MatrixHelper.Identity;
+            Defaults();
 
             ZoomSpeed = 1.2;
             Stretch = StretchMode.None;
@@ -112,6 +111,12 @@ namespace Wpf.Controls.PanAndZoom
 
             Loaded += PanAndZoom_Loaded;
             Unloaded += PanAndZoom_Unloaded;
+        }
+
+        private void Defaults()
+        {
+            _isPanning = false;
+            _matrix = MatrixHelper.Identity;
         }
 
         /// <summary>
@@ -137,12 +142,14 @@ namespace Wpf.Controls.PanAndZoom
 
         private void PanAndZoom_Loaded(object sender, RoutedEventArgs e)
         {
+            Debug.WriteLine($"Loaded: {this.Name}");
             ChildChanged(base.Child);
         }
 
         private void PanAndZoom_Unloaded(object sender, RoutedEventArgs e)
         {
-            Unload();
+            Debug.WriteLine($"Unloaded: {this.Name}");
+            DetachElement();
         }
 
         private void Border_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -181,19 +188,20 @@ namespace Wpf.Controls.PanAndZoom
         {
             if (element != null && element != _element && _element != null)
             {
-                Unload();
+                DetachElement();
             }
 
             if (element != null && element != _element)
             {
-                Initialize(element);
+                AttachElement(element);
             }
         }
 
-        private void Initialize(UIElement element)
+        private void AttachElement(UIElement element)
         {
             if (element != null)
             {
+                Defaults();
                 _element = element;
                 this.Focus();
                 this.PreviewMouseWheel += Border_PreviewMouseWheel;
@@ -203,7 +211,7 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
-        private void Unload()
+        private void DetachElement()
         {
             if (_element != null)
             {
@@ -213,6 +221,7 @@ namespace Wpf.Controls.PanAndZoom
                 this.PreviewMouseMove -= Border_PreviewMouseMove;
                 _element.RenderTransform = null;
                 _element = null;
+                Defaults();
             }
         }
 

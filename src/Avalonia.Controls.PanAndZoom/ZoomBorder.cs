@@ -80,8 +80,7 @@ namespace Avalonia.Controls.PanAndZoom
         public ZoomBorder()
             : base()
         {
-            _isPanning = false;
-            _matrix = MatrixHelper.Identity;
+            Defaults();
 
             Focusable = true;
             Background = Brushes.Transparent;
@@ -90,6 +89,12 @@ namespace Avalonia.Controls.PanAndZoom
             DetachedFromVisualTree += PanAndZoom_DetachedFromVisualTree;
 
             this.GetObservable(ChildProperty).Subscribe(ChildChanged);
+        }
+
+        private void Defaults()
+        {
+            _isPanning = false;
+            _matrix = MatrixHelper.Identity;
         }
 
         /// <summary>
@@ -115,12 +120,14 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void PanAndZoom_AttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
+            Debug.WriteLine($"AttachedToVisualTree: {this.Name}");
             ChildChanged(base.Child);
         }
 
         private void PanAndZoom_DetachedFromVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
-            Unload();
+            Debug.WriteLine($"DetachedFromVisualTree: {this.Name}");
+            DetachElement();
         }
 
         private void Border_PointerWheelChanged(object sender, PointerWheelEventArgs e)
@@ -159,19 +166,20 @@ namespace Avalonia.Controls.PanAndZoom
         {
             if (element != null && element != _element && _element != null)
             {
-                Unload();
+                DetachElement();
             }
 
             if (element != null && element != _element)
             {
-                Initialize(element);
+                AttachElement(element);
             }
         }
 
-        private void Initialize(IControl element)
+        private void AttachElement(IControl element)
         {
             if (element != null)
             {
+                Defaults();
                 _element = element;
                 this.PointerWheelChanged += Border_PointerWheelChanged;
                 this.PointerPressed += Border_PointerPressed;
@@ -180,7 +188,7 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
-        private void Unload()
+        private void DetachElement()
         {
             if (_element != null)
             {
@@ -190,6 +198,7 @@ namespace Avalonia.Controls.PanAndZoom
                 this.PointerMoved -= Border_PointerMoved;
                 _element.RenderTransform = null;
                 _element = null;
+                Defaults();
             }
         }
 
