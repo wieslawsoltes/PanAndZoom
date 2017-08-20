@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using static System.Math;
 using PanAndZoom;
+using System.Diagnostics;
 
 namespace Wpf.Controls.PanAndZoom
 {
@@ -258,6 +259,7 @@ namespace Wpf.Controls.PanAndZoom
         {
             if (_element != null)
             {
+                Debug.WriteLine($"Zoom: {_matrix.M11} {_matrix.M12} Offset: {_matrix.OffsetX} {_matrix.OffsetY}");
                 this.InvalidatedChild?.Invoke(_matrix.M11, _matrix.M12, _matrix.OffsetX, _matrix.OffsetY);
                 _element.RenderTransformOrigin = new Point(0, 0);
                 _element.RenderTransform = new MatrixTransform(_matrix);
@@ -300,6 +302,7 @@ namespace Wpf.Controls.PanAndZoom
         /// <inheritdoc/>
         public void Fill(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
+            Debug.WriteLine($"Fill: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element != null)
             {
                 double zx = panelWidth / elementWidth;
@@ -314,6 +317,7 @@ namespace Wpf.Controls.PanAndZoom
         /// <inheritdoc/>
         public void Uniform(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
+            Debug.WriteLine($"Uniform: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element != null)
             {
                 double zx = panelWidth / elementWidth;
@@ -329,6 +333,7 @@ namespace Wpf.Controls.PanAndZoom
         /// <inheritdoc/>
         public void UniformToFill(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
+            Debug.WriteLine($"UniformToFill: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element != null)
             {
                 double zx = panelWidth / elementWidth;
@@ -344,6 +349,7 @@ namespace Wpf.Controls.PanAndZoom
         /// <inheritdoc/>
         public void AutoFit(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
+            Debug.WriteLine($"AutoFit: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element != null)
             {
                 switch (Stretch)
