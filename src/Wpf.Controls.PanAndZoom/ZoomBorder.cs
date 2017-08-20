@@ -128,8 +128,8 @@ namespace Wpf.Controls.PanAndZoom
                 AutoFit(
                     size.Width,
                     size.Height,
-                    _element.DesiredSize.Width,
-                    _element.DesiredSize.Height);
+                    _element.RenderSize.Width,
+                    _element.RenderSize.Height);
             }
 
             return size;
@@ -399,8 +399,8 @@ namespace Wpf.Controls.PanAndZoom
         public void Fill()
         {
             Fill(
-                this.ActualWidth,
-                this.ActualHeight,
+                this.RenderSize.Width,
+                this.RenderSize.Height,
                 _element.RenderSize.Width,
                 _element.RenderSize.Height);
         }
@@ -409,8 +409,8 @@ namespace Wpf.Controls.PanAndZoom
         public void Uniform()
         {
             Uniform(
-                this.ActualWidth,
-                this.ActualHeight,
+                this.RenderSize.Width,
+                this.RenderSize.Height,
                 _element.RenderSize.Width,
                 _element.RenderSize.Height);
         }
@@ -419,8 +419,8 @@ namespace Wpf.Controls.PanAndZoom
         public void UniformToFill()
         {
             UniformToFill(
-                this.ActualWidth,
-                this.ActualHeight,
+                this.RenderSize.Width,
+                this.RenderSize.Height,
                 _element.RenderSize.Width,
                 _element.RenderSize.Height);
         }
@@ -431,8 +431,8 @@ namespace Wpf.Controls.PanAndZoom
             if (_element != null)
             {
                 AutoFit(
-                    this.DesiredSize.Width,
-                    this.DesiredSize.Height,
+                    this.RenderSize.Width,
+                    this.RenderSize.Height,
                     _element.RenderSize.Width,
                     _element.RenderSize.Height);
             }
