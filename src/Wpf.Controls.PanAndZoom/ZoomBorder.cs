@@ -307,9 +307,20 @@ namespace Wpf.Controls.PanAndZoom
             {
                 double zx = panelWidth / elementWidth;
                 double zy = panelHeight / elementHeight;
-                double cx = elementWidth / 2.0;
-                double cy = elementHeight / 2.0;
-                _matrix = MatrixHelper.ScaleAt(zx, zy, cx, cy);
+                double cx = elementWidth < panelWidth ? elementWidth / 2.0 : 0.0;
+                double cy = elementHeight < panelHeight ? elementHeight / 2.0 : 0.0;
+                if (elementWidth > panelWidth && elementHeight > panelHeight)
+                {
+                    cx = (panelWidth - elementWidth * zx) / 2.0;
+                    cy = (panelHeight - elementHeight * zy) / 2.0;
+                    _matrix = MatrixHelper.ScaleAt(zx, zy, 0.0, 0.0);
+                    _matrix.OffsetX = cx;
+                    _matrix.OffsetY = cy;
+                }
+                else
+                {
+                    _matrix = MatrixHelper.ScaleAt(zx, zy, cx, cy);
+                }
                 Invalidate();
             }
         }
@@ -323,9 +334,20 @@ namespace Wpf.Controls.PanAndZoom
                 double zx = panelWidth / elementWidth;
                 double zy = panelHeight / elementHeight;
                 double zoom = Min(zx, zy);
-                double cx = elementWidth / 2.0;
-                double cy = elementHeight / 2.0;
-                _matrix = MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                double cx = elementWidth < panelWidth ? elementWidth / 2.0 : 0.0;
+                double cy = elementHeight < panelHeight ? elementHeight / 2.0 : 0.0;
+                if (elementWidth > panelWidth && elementHeight > panelHeight)
+                {
+                    cx = (panelWidth - elementWidth * zoom) / 2.0;
+                    cy = (panelHeight - elementHeight * zoom) / 2.0;
+                    _matrix = MatrixHelper.ScaleAt(zoom, zoom, 0.0, 0.0);
+                    _matrix.OffsetX = cx;
+                    _matrix.OffsetY = cy;
+                }
+                else
+                {
+                    _matrix = MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                }
                 Invalidate();
             }
         }
@@ -339,9 +361,20 @@ namespace Wpf.Controls.PanAndZoom
                 double zx = panelWidth / elementWidth;
                 double zy = panelHeight / elementHeight;
                 double zoom = Max(zx, zy);
-                double cx = elementWidth / 2.0;
-                double cy = elementHeight / 2.0;
-                _matrix = MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                double cx = elementWidth < panelWidth ? elementWidth / 2.0 : 0.0;
+                double cy = elementHeight < panelHeight ? elementHeight / 2.0 : 0.0;
+                if (elementWidth > panelWidth && elementHeight > panelHeight)
+                {
+                    cx = (panelWidth - elementWidth * zoom) / 2.0;
+                    cy = (panelHeight - elementHeight * zoom) / 2.0;
+                    _matrix = MatrixHelper.ScaleAt(zoom, zoom, 0.0, 0.0);
+                    _matrix.OffsetX = cx;
+                    _matrix.OffsetY = cy;
+                }
+                else
+                {
+                    _matrix = MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                }
                 Invalidate();
             }
         }
