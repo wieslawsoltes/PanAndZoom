@@ -60,7 +60,7 @@ namespace Avalonia.Controls.PanAndZoom
         /// <returns>The created scaling matrix.</returns>
         public static Matrix ScaleAt(double scaleX, double scaleY, double centerX, double centerY)
         {
-            return new Matrix(scaleX, 0, 0, scaleY, centerX - scaleX * centerX, centerY - scaleY * centerY);
+            return new Matrix(scaleX, 0, 0, scaleY, centerX - (scaleX * centerX), centerY - (scaleY * centerY));
         }
 
         /// <summary>
