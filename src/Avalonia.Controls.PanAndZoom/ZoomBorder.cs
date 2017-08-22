@@ -305,17 +305,34 @@ namespace Avalonia.Controls.PanAndZoom
             Invalidate();
         }
 
+        private Matrix GetMatrix(double panelWidth, double panelHeight, double elementWidth, double elementHeight, StretchMode mode)
+        {
+            double zx = panelWidth / elementWidth;
+            double zy = panelHeight / elementHeight;
+            double cx = elementWidth / 2.0;
+            double cy = elementHeight / 2.0;
+            double zoom = 1.0;
+            switch (mode)
+            {
+                case StretchMode.Fill:
+                    return MatrixHelper.ScaleAt(zx, zy, cx, cy);
+                case StretchMode.Uniform:
+                    zoom = Min(zx, zy);
+                    return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                case StretchMode.UniformToFill:
+                    zoom = Max(zx, zy);
+                    return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+            }
+            return MatrixHelper.Identity;
+        }
+
         /// <inheritdoc/>
         public void Fill(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             Debug.WriteLine($"Fill: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element != null)
             {
-                double zx = panelWidth / elementWidth;
-                double zy = panelHeight / elementHeight;
-                double cx = elementWidth / 2.0;
-                double cy = elementHeight / 2.0;
-                _matrix = MatrixHelper.ScaleAt(zx, zy, cx, cy);
+                _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Fill);
                 Invalidate();
             }
         }
@@ -326,12 +343,7 @@ namespace Avalonia.Controls.PanAndZoom
             Debug.WriteLine($"Uniform: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element != null)
             {
-                double zx = panelWidth / elementWidth;
-                double zy = panelHeight / elementHeight;
-                double zoom = Min(zx, zy);
-                double cx = elementWidth / 2.0;
-                double cy = elementHeight / 2.0;
-                _matrix = MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Uniform);
                 Invalidate();
             }
         }
@@ -342,12 +354,7 @@ namespace Avalonia.Controls.PanAndZoom
             Debug.WriteLine($"UniformToFill: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element != null)
             {
-                double zx = panelWidth / elementWidth;
-                double zy = panelHeight / elementHeight;
-                double zoom = Max(zx, zy);
-                double cx = elementWidth / 2.0;
-                double cy = elementHeight / 2.0;
-                _matrix = MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.UniformToFill);
                 Invalidate();
             }
         }
@@ -404,31 +411,19 @@ namespace Avalonia.Controls.PanAndZoom
         /// <inheritdoc/>
         public void Fill()
         {
-            Fill(
-                this.Bounds.Width,
-                this.Bounds.Height,
-                _element.Bounds.Width,
-                _element.Bounds.Height);
+            Fill(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
         }
 
         /// <inheritdoc/>
         public void Uniform()
         {
-            Uniform(
-                this.Bounds.Width,
-                this.Bounds.Height,
-                _element.Bounds.Width,
-                _element.Bounds.Height);
+            Uniform(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
         }
 
         /// <inheritdoc/>
         public void UniformToFill()
         {
-            UniformToFill(
-                this.Bounds.Width,
-                this.Bounds.Height,
-                _element.Bounds.Width,
-                _element.Bounds.Height);
+            UniformToFill(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
         }
 
         /// <inheritdoc/>
@@ -436,11 +431,7 @@ namespace Avalonia.Controls.PanAndZoom
         {
             if (_element != null)
             {
-                AutoFit(
-                    this.Bounds.Width,
-                    this.Bounds.Height,
-                    _element.Bounds.Width,
-                    _element.Bounds.Height);
+                AutoFit(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
             }
         }
 

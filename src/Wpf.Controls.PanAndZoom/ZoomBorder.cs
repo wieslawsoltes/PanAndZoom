@@ -308,28 +308,76 @@ namespace Wpf.Controls.PanAndZoom
             Invalidate();
         }
 
+        private Matrix GetMatrix(double panelWidth, double panelHeight, double elementWidth, double elementHeight, StretchMode mode)
+        {
+            double zx = panelWidth / elementWidth;
+            double zy = panelHeight / elementHeight;
+            double cx = elementWidth < panelWidth ? elementWidth / 2.0 : 0.0;
+            double cy = elementHeight < panelHeight ? elementHeight / 2.0 : 0.0;
+            double zoom = 1.0;
+            switch (mode)
+            {
+                case StretchMode.Fill:
+                    {
+                        if (elementWidth > panelWidth && elementHeight > panelHeight)
+                        {
+                            cx = (panelWidth - (elementWidth * zx)) / 2.0;
+                            cy = (panelHeight - (elementHeight * zy)) / 2.0;
+                            var matrix = MatrixHelper.ScaleAt(zx, zy, 0.0, 0.0);
+                            matrix.OffsetX = cx;
+                            matrix.OffsetY = cy;
+                            return matrix;
+                        }
+                        else
+                        {
+                            return MatrixHelper.ScaleAt(zx, zy, cx, cy);
+                        }
+                    }
+                case StretchMode.Uniform:
+                    {
+                        zoom = Min(zx, zy);
+                        if (elementWidth > panelWidth && elementHeight > panelHeight)
+                        {
+                            cx = (panelWidth - (elementWidth * zoom)) / 2.0;
+                            cy = (panelHeight - (elementHeight * zoom)) / 2.0;
+                            var matrix = MatrixHelper.ScaleAt(zoom, zoom, 0.0, 0.0);
+                            matrix.OffsetX = cx;
+                            matrix.OffsetY = cy;
+                            return matrix;
+                        }
+                        else
+                        {
+                            return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                        }
+                    }
+                case StretchMode.UniformToFill:
+                    {
+                        zoom = Max(zx, zy);
+                        if (elementWidth > panelWidth && elementHeight > panelHeight)
+                        {
+                            cx = (panelWidth - (elementWidth * zoom)) / 2.0;
+                            cy = (panelHeight - (elementHeight * zoom)) / 2.0;
+                            var matrix = MatrixHelper.ScaleAt(zoom, zoom, 0.0, 0.0);
+                            matrix.OffsetX = cx;
+                            matrix.OffsetY = cy;
+                            return matrix;
+                        }
+                        else
+                        {
+                            return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                        }
+                    }
+            }
+            return MatrixHelper.Identity;
+        }
+
         /// <inheritdoc/>
         public void Fill(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             Debug.WriteLine($"Fill: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element != null)
             {
-                double zx = panelWidth / elementWidth;
-                double zy = panelHeight / elementHeight;
-                double cx = elementWidth < panelWidth ? elementWidth / 2.0 : 0.0;
-                double cy = elementHeight < panelHeight ? elementHeight / 2.0 : 0.0;
-                if (elementWidth > panelWidth && elementHeight > panelHeight)
-                {
-                    cx = (panelWidth - (elementWidth * zx)) / 2.0;
-                    cy = (panelHeight - (elementHeight * zy)) / 2.0;
-                    _matrix = MatrixHelper.ScaleAt(zx, zy, 0.0, 0.0);
-                    _matrix.OffsetX = cx;
-                    _matrix.OffsetY = cy;
-                }
-                else
-                {
-                    _matrix = MatrixHelper.ScaleAt(zx, zy, cx, cy);
-                }
+                _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Fill);
                 Invalidate();
             }
         }
@@ -340,23 +388,7 @@ namespace Wpf.Controls.PanAndZoom
             Debug.WriteLine($"Uniform: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element != null)
             {
-                double zx = panelWidth / elementWidth;
-                double zy = panelHeight / elementHeight;
-                double zoom = Min(zx, zy);
-                double cx = elementWidth < panelWidth ? elementWidth / 2.0 : 0.0;
-                double cy = elementHeight < panelHeight ? elementHeight / 2.0 : 0.0;
-                if (elementWidth > panelWidth && elementHeight > panelHeight)
-                {
-                    cx = (panelWidth - (elementWidth * zoom)) / 2.0;
-                    cy = (panelHeight - (elementHeight * zoom)) / 2.0;
-                    _matrix = MatrixHelper.ScaleAt(zoom, zoom, 0.0, 0.0);
-                    _matrix.OffsetX = cx;
-                    _matrix.OffsetY = cy;
-                }
-                else
-                {
-                    _matrix = MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
-                }
+                _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Uniform);
                 Invalidate();
             }
         }
@@ -367,23 +399,7 @@ namespace Wpf.Controls.PanAndZoom
             Debug.WriteLine($"UniformToFill: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element != null)
             {
-                double zx = panelWidth / elementWidth;
-                double zy = panelHeight / elementHeight;
-                double zoom = Max(zx, zy);
-                double cx = elementWidth < panelWidth ? elementWidth / 2.0 : 0.0;
-                double cy = elementHeight < panelHeight ? elementHeight / 2.0 : 0.0;
-                if (elementWidth > panelWidth && elementHeight > panelHeight)
-                {
-                    cx = (panelWidth - (elementWidth * zoom)) / 2.0;
-                    cy = (panelHeight - (elementHeight * zoom)) / 2.0;
-                    _matrix = MatrixHelper.ScaleAt(zoom, zoom, 0.0, 0.0);
-                    _matrix.OffsetX = cx;
-                    _matrix.OffsetY = cy;
-                }
-                else
-                {
-                    _matrix = MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
-                }
+                _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.UniformToFill);
                 Invalidate();
             }
         }
@@ -440,31 +456,19 @@ namespace Wpf.Controls.PanAndZoom
         /// <inheritdoc/>
         public void Fill()
         {
-            Fill(
-                this.RenderSize.Width,
-                this.RenderSize.Height,
-                _element.RenderSize.Width,
-                _element.RenderSize.Height);
+            Fill(this.RenderSize.Width, this.RenderSize.Height, _element.RenderSize.Width, _element.RenderSize.Height);
         }
 
         /// <inheritdoc/>
         public void Uniform()
         {
-            Uniform(
-                this.RenderSize.Width,
-                this.RenderSize.Height,
-                _element.RenderSize.Width,
-                _element.RenderSize.Height);
+            Uniform(this.RenderSize.Width, this.RenderSize.Height, _element.RenderSize.Width, _element.RenderSize.Height);
         }
 
         /// <inheritdoc/>
         public void UniformToFill()
         {
-            UniformToFill(
-                this.RenderSize.Width,
-                this.RenderSize.Height,
-                _element.RenderSize.Width,
-                _element.RenderSize.Height);
+            UniformToFill(this.RenderSize.Width, this.RenderSize.Height, _element.RenderSize.Width, _element.RenderSize.Height);
         }
 
         /// <inheritdoc/>
@@ -472,11 +476,7 @@ namespace Wpf.Controls.PanAndZoom
         {
             if (_element != null)
             {
-                AutoFit(
-                    this.RenderSize.Width,
-                    this.RenderSize.Height,
-                    _element.RenderSize.Width,
-                    _element.RenderSize.Height);
+                AutoFit(this.RenderSize.Width, this.RenderSize.Height, _element.RenderSize.Width, _element.RenderSize.Height);
             }
         }
     }
