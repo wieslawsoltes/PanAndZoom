@@ -369,7 +369,6 @@ namespace Avalonia.Controls.PanAndZoom
                     case StretchMode.UniformToFill:
                         UniformToFill(panelWidth, panelHeight, elementWidth, elementHeight);
                         break;
-
                 }
                 Invalidate();
             }
