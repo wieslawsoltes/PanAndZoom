@@ -31,6 +31,25 @@ namespace PanAndZoom
         StretchMode Stretch { get; set; }
 
         /// <summary>
+        /// Gets the zoom ratio for x axis.
+        /// </summary>
+        double ZoomX { get; }
+
+        /// <summary>
+        /// Gets the zoom ratio for y axis.
+        /// </summary>
+        double ZoomY { get; }
+
+        /// <summary>
+        /// Gets the pan offset for x axis.
+        /// </summary>
+        double OffsetX { get; }
+
+        /// <summary>
+        /// Gets the pan offset for y axis.
+        /// </summary>
+        double OffsetY { get; }
+
         /// Gets or sets flag indicating whether input events are processed.
         /// </summary>
         bool EnableInput { get; set; }
