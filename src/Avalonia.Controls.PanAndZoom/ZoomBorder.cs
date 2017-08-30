@@ -45,6 +45,17 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <inheritdoc/>
+        public double ZoomX => _matrix.M11;
+
+        /// <inheritdoc/>
+        public double ZoomY => _matrix.M22;
+
+        /// <inheritdoc/>
+        public double OffsetX => _matrix.M31;
+
+        /// <inheritdoc/>
+        public double OffsetY => _matrix.M32;
+
         public bool EnableInput
         {
             get { return GetValue(EnableInputProperty); }
@@ -265,8 +276,8 @@ namespace Avalonia.Controls.PanAndZoom
         {
             if (_element != null)
             {
-                Debug.WriteLine($"Zoom: {_matrix.M11} {_matrix.M12} Offset: {_matrix.M31} {_matrix.M32}");
-                this.InvalidatedChild?.Invoke(_matrix.M11, _matrix.M12, _matrix.M31, _matrix.M32);
+                Debug.WriteLine($"Zoom: {_matrix.M11} {_matrix.M22} Offset: {_matrix.M31} {_matrix.M32}");
+                this.InvalidatedChild?.Invoke(_matrix.M11, _matrix.M22, _matrix.M31, _matrix.M32);
                 _element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
                 _element.RenderTransform = new MatrixTransform(_matrix);
                 _element.InvalidateVisual();

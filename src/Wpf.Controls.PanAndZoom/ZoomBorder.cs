@@ -46,6 +46,17 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <inheritdoc/>
+        public double ZoomX => _matrix.M11;
+
+        /// <inheritdoc/>
+        public double ZoomY => _matrix.M22;
+
+        /// <inheritdoc/>
+        public double OffsetX => _matrix.OffsetX;
+
+        /// <inheritdoc/>
+        public double OffsetY => _matrix.OffsetY;
+
         public bool EnableInput
         {
             get { return (bool)GetValue(EnableInputProperty); }
@@ -268,8 +279,8 @@ namespace Wpf.Controls.PanAndZoom
         {
             if (_element != null)
             {
-                Debug.WriteLine($"Zoom: {_matrix.M11} {_matrix.M12} Offset: {_matrix.OffsetX} {_matrix.OffsetY}");
-                this.InvalidatedChild?.Invoke(_matrix.M11, _matrix.M12, _matrix.OffsetX, _matrix.OffsetY);
+                Debug.WriteLine($"Zoom: {_matrix.M11} {_matrix.M22} Offset: {_matrix.OffsetX} {_matrix.OffsetY}");
+                this.InvalidatedChild?.Invoke(_matrix.M11, _matrix.M22, _matrix.OffsetX, _matrix.OffsetY);
                 _element.RenderTransformOrigin = new Point(0, 0);
                 _element.RenderTransform = new MatrixTransform(_matrix);
                 _element.InvalidateVisual();
