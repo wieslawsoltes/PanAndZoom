@@ -12,6 +12,12 @@ namespace PanAndZoom
         /// <summary>
         /// Gets or sets invalidate action for border child element.
         /// </summary>
+        /// <remarks>
+        /// First parameter is zoom ratio for x axis.
+        /// Second parameter is zoom ratio for y axis.
+        /// Third parameter is pan offset for x axis.
+        /// Fourth parameter is pan offset for y axis.
+        /// </remarks>
         Action<double, double, double, double> InvalidatedChild { get; set; }
 
         /// <summary>
