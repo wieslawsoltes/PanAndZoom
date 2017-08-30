@@ -45,6 +45,45 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <inheritdoc/>
+        public double ZoomX => _matrix.M11;
+
+        /// <inheritdoc/>
+        public double ZoomY => _matrix.M22;
+
+        /// <inheritdoc/>
+        public double OffsetX => _matrix.M31;
+
+        /// <inheritdoc/>
+        public double OffsetY => _matrix.M32;
+
+        /// <inheritdoc/>
+        public bool EnableConstrains { get; set; }
+
+        /// <inheritdoc/>
+        public double MinZoomX { get; set; }
+
+        /// <inheritdoc/>
+        public double MaxZoomX { get; set; }
+
+        /// <inheritdoc/>
+        public double MinZoomY { get; set; }
+
+        /// <inheritdoc/>
+        public double MaxZoomY { get; set; }
+
+        /// <inheritdoc/>
+        public double MinOffsetX { get; set; }
+
+        /// <inheritdoc/>
+        public double MaxOffsetX { get; set; }
+
+        /// <inheritdoc/>
+        public double MinOffsetY { get; set; }
+
+        /// <inheritdoc/>
+        public double MaxOffsetY { get; set; }
+
+        /// <inheritdoc/>
         public bool EnableInput
         {
             get { return GetValue(EnableInputProperty); }
@@ -81,6 +120,17 @@ namespace Avalonia.Controls.PanAndZoom
             : base()
         {
             Defaults();
+
+            EnableConstrains = true;
+
+            MinZoomX = double.NegativeInfinity;
+            MaxZoomX = double.PositiveInfinity;
+            MinZoomY = double.NegativeInfinity;
+            MaxZoomY = double.PositiveInfinity;
+            MinOffsetX = double.NegativeInfinity;
+            MaxOffsetX = double.PositiveInfinity;
+            MinOffsetY = double.NegativeInfinity;
+            MaxOffsetY = double.PositiveInfinity;
 
             Focusable = true;
             Background = Brushes.Transparent;
@@ -260,13 +310,37 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
+        private double Constrain(double value, double minimum, double maximum)
+        {
+            if (minimum > maximum)
+                throw new ArgumentException($"Parameter {nameof(minimum)} is greater than {nameof(maximum)}.");
+
+            if (maximum < minimum)
+                throw new ArgumentException($"Parameter {nameof(maximum)} is lower than {nameof(minimum)}.");
+
+            return Math.Min(Math.Max(value, minimum), maximum);
+        }
+
+        private void Constrain()
+        {
+            double zoomX = Constrain(_matrix.M11, MinZoomX, MaxZoomX);
+            double zoomY = Constrain(_matrix.M22, MinZoomY, MaxZoomY);
+            double offsetX = Constrain(_matrix.M31, MinOffsetX, MaxOffsetX);
+            double offsetY = Constrain(_matrix.M32, MinOffsetY, MaxOffsetY);
+            _matrix = new Matrix(zoomX, 0.0, 0.0, zoomY, offsetX, offsetY);
+        }
+
         /// <inheritdoc/>
         public void Invalidate()
         {
             if (_element != null)
             {
-                Debug.WriteLine($"Zoom: {_matrix.M11} {_matrix.M12} Offset: {_matrix.M31} {_matrix.M32}");
-                this.InvalidatedChild?.Invoke(_matrix.M11, _matrix.M12, _matrix.M31, _matrix.M32);
+                if (EnableConstrains == true)
+                {
+                    Constrain();
+                }
+                Debug.WriteLine($"Zoom: {_matrix.M11} {_matrix.M22} Offset: {_matrix.M31} {_matrix.M32}");
+                this.InvalidatedChild?.Invoke(_matrix.M11, _matrix.M22, _matrix.M31, _matrix.M32);
                 _element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
                 _element.RenderTransform = new MatrixTransform(_matrix);
                 _element.InvalidateVisual();

@@ -12,6 +12,12 @@ namespace PanAndZoom
         /// <summary>
         /// Gets or sets invalidate action for border child element.
         /// </summary>
+        /// <remarks>
+        /// First parameter is zoom ratio for x axis.
+        /// Second parameter is zoom ratio for y axis.
+        /// Third parameter is pan offset for x axis.
+        /// Fourth parameter is pan offset for y axis.
+        /// </remarks>
         Action<double, double, double, double> InvalidatedChild { get; set; }
 
         /// <summary>
@@ -23,6 +29,71 @@ namespace PanAndZoom
         /// Gets or sets stretch mode.
         /// </summary>
         StretchMode Stretch { get; set; }
+
+        /// <summary>
+        /// Gets the zoom ratio for x axis.
+        /// </summary>
+        double ZoomX { get; }
+
+        /// <summary>
+        /// Gets the zoom ratio for y axis.
+        /// </summary>
+        double ZoomY { get; }
+
+        /// <summary>
+        /// Gets the pan offset for x axis.
+        /// </summary>
+        double OffsetX { get; }
+
+        /// <summary>
+        /// Gets the pan offset for y axis.
+        /// </summary>
+        double OffsetY { get; }
+
+        /// <summary>
+        /// Gets or sets flag indicating whether zoom ratio and pan offset constrains are applied.
+        /// </summary>
+        bool EnableConstrains { get; set; }
+
+        /// <summary>
+        /// Gets or sets minimum zoom ratio for x axis.
+        /// </summary>
+        double MinZoomX { get; set; }
+
+        /// <summary>
+        /// Gets or sets maximum zoom ratio for x axis.
+        /// </summary>
+        double MaxZoomX { get; set; }
+
+        /// <summary>
+        /// Gets or sets minimum zoom ratio for y axis.
+        /// </summary>
+        double MinZoomY { get; set; }
+
+        /// <summary>
+        /// Gets or sets maximum zoom ratio for y axis.
+        /// </summary>
+        double MaxZoomY { get; set; }
+
+        /// <summary>
+        /// Gets or sets minimum offset for x axis.
+        /// </summary>
+        double MinOffsetX { get; set; }
+
+        /// <summary>
+        /// Gets or sets maximum offset for x axis.
+        /// </summary>
+        double MaxOffsetX { get; set; }
+
+        /// <summary>
+        /// Gets or sets minimum offset for y axis.
+        /// </summary>
+        double MinOffsetY { get; set; }
+
+        /// <summary>
+        /// Gets or sets maximum offset for y axis.
+        /// </summary>
+        double MaxOffsetY { get; set; }
 
         /// <summary>
         /// Gets or sets flag indicating whether input events are processed.
