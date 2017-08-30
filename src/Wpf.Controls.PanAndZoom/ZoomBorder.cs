@@ -114,8 +114,6 @@ namespace Wpf.Controls.PanAndZoom
         {
             Defaults();
 
-            ZoomSpeed = 1.2;
-            Stretch = StretchMode.None;
 
             Focusable = true;
             Background = Brushes.Transparent;
