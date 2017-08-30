@@ -57,6 +57,34 @@ namespace Wpf.Controls.PanAndZoom
         /// <inheritdoc/>
         public double OffsetY => _matrix.OffsetY;
 
+        /// <inheritdoc/>
+        public bool EnableConstrains { get; set; }
+
+        /// <inheritdoc/>
+        public double MinZoomX { get; set; }
+
+        /// <inheritdoc/>
+        public double MaxZoomX { get; set; }
+
+        /// <inheritdoc/>
+        public double MinZoomY { get; set; }
+
+        /// <inheritdoc/>
+        public double MaxZoomY { get; set; }
+
+        /// <inheritdoc/>
+        public double MinOffsetX { get; set; }
+
+        /// <inheritdoc/>
+        public double MaxOffsetX { get; set; }
+
+        /// <inheritdoc/>
+        public double MinOffsetY { get; set; }
+
+        /// <inheritdoc/>
+        public double MaxOffsetY { get; set; }
+
+        /// <inheritdoc/>
         public bool EnableInput
         {
             get { return (bool)GetValue(EnableInputProperty); }
@@ -114,6 +142,16 @@ namespace Wpf.Controls.PanAndZoom
         {
             Defaults();
 
+            EnableConstrains = true;
+
+            MinZoomX = double.NegativeInfinity;
+            MaxZoomX = double.PositiveInfinity;
+            MinZoomY = double.NegativeInfinity;
+            MaxZoomY = double.PositiveInfinity;
+            MinOffsetX = double.NegativeInfinity;
+            MaxOffsetX = double.PositiveInfinity;
+            MinOffsetY = double.NegativeInfinity;
+            MaxOffsetY = double.PositiveInfinity;
 
             Focusable = true;
             Background = Brushes.Transparent;
@@ -272,11 +310,35 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
+        private double Constrain(double value, double minimum, double maximum)
+        {
+            if (minimum > maximum)
+                throw new ArgumentException($"Parameter {nameof(minimum)} is greater than {nameof(maximum)}.");
+
+            if (maximum < minimum)
+                throw new ArgumentException($"Parameter {nameof(maximum)} is lower than {nameof(minimum)}.");
+
+            return Math.Min(Math.Max(value, minimum), maximum);
+        }
+
+        private void Constrain()
+        {
+            double zoomX = Constrain(_matrix.M11, MinZoomX, MaxZoomX);
+            double zoomY = Constrain(_matrix.M22, MinZoomY, MaxZoomY);
+            double offsetX = Constrain(_matrix.OffsetX, MinOffsetX, MaxOffsetX);
+            double offsetY = Constrain(_matrix.OffsetY, MinOffsetY, MaxOffsetY);
+            _matrix = new Matrix(zoomX, 0.0, 0.0, zoomY, offsetX, offsetY);
+        }
+
         /// <inheritdoc/>
         public void Invalidate()
         {
             if (_element != null)
             {
+                if (EnableConstrains == true)
+                {
+                    Constrain();
+                }
                 Debug.WriteLine($"Zoom: {_matrix.M11} {_matrix.M22} Offset: {_matrix.OffsetX} {_matrix.OffsetY}");
                 this.InvalidatedChild?.Invoke(_matrix.M11, _matrix.M22, _matrix.OffsetX, _matrix.OffsetY);
                 _element.RenderTransformOrigin = new Point(0, 0);

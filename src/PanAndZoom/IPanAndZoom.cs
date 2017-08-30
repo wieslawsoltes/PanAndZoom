@@ -50,6 +50,52 @@ namespace PanAndZoom
         /// </summary>
         double OffsetY { get; }
 
+        /// <summary>
+        /// Gets or sets flag indicating whether zoom ratio and pan offset constrains are applied.
+        /// </summary>
+        bool EnableConstrains { get; set; }
+
+        /// <summary>
+        /// Gets or sets minimum zoom ratio for x axis.
+        /// </summary>
+        double MinZoomX { get; set; }
+
+        /// <summary>
+        /// Gets or sets maximum zoom ratio for x axis.
+        /// </summary>
+        double MaxZoomX { get; set; }
+
+        /// <summary>
+        /// Gets or sets minimum zoom ratio for y axis.
+        /// </summary>
+        double MinZoomY { get; set; }
+
+        /// <summary>
+        /// Gets or sets maximum zoom ratio for y axis.
+        /// </summary>
+        double MaxZoomY { get; set; }
+
+        /// <summary>
+        /// Gets or sets minimum offset for x axis.
+        /// </summary>
+        double MinOffsetX { get; set; }
+
+        /// <summary>
+        /// Gets or sets maximum offset for x axis.
+        /// </summary>
+        double MaxOffsetX { get; set; }
+
+        /// <summary>
+        /// Gets or sets minimum offset for y axis.
+        /// </summary>
+        double MinOffsetY { get; set; }
+
+        /// <summary>
+        /// Gets or sets maximum offset for y axis.
+        /// </summary>
+        double MaxOffsetY { get; set; }
+
+        /// <summary>
         /// Gets or sets flag indicating whether input events are processed.
         /// </summary>
         bool EnableInput { get; set; }
