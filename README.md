@@ -264,6 +264,25 @@ namespace WpfDemo
     }
 }
 ```
+### Getting zoom ratio
+
+To get current zoom ratio use `ZoomX` and `ZoomY` properties. 
+
+### Getting pan offset
+
+To get current pan offset use `OffsetX` and `OffsetY` properties. 
+
+### Constrain zoom ratio
+
+To constrain zoom ratio use `MinZoomX`, `MaxZoomX`, `MinZoomY` and `MaxZoomY` properties. 
+
+### Constrain pan offset
+
+To constrain pan offset use `MinOffsetX`, `MaxOffsetX`, `MinOffsetY` and `MaxOffsetY` properties. 
+
+### Enable or disable constrains
+
+To enable or disable contrains use `EnableConstrains` flag.
 
 ## License
 
