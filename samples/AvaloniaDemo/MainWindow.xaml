@@ -14,7 +14,7 @@
             <TextBlock Text="R - Reset"/>
             <TextBlock Text="T - Toggle Stretch Mode"/>
             <TextBlock Text="Mouse Wheel - Zoom to Point"/>
-            <TextBlock Text="Mouse Right Button Down - Pan"/>
+            <TextBlock Text="Mouse Left Button Down - Pan"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
