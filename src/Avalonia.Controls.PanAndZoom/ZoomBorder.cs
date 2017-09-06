@@ -20,6 +20,10 @@ namespace Avalonia.Controls.PanAndZoom
         private Point _previous;
         private Matrix _matrix;
         private bool _isPanning;
+        private double _zoomX = 1.0;
+        private double _zoomY = 1.0;
+        private double _offsetX = 0.0;
+        private double _offsetY = 0.0;
         private static StretchMode[] _autoFitModes = (StretchMode[])Enum.GetValues(typeof(StretchMode));
 
         /// <summary>
@@ -52,43 +56,79 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <inheritdoc/>
-        public double ZoomX => _matrix.M11;
+        public double ZoomX => _zoomX;
 
         /// <inheritdoc/>
-        public double ZoomY => _matrix.M22;
+        public double ZoomY => _zoomY;
 
         /// <inheritdoc/>
-        public double OffsetX => _matrix.M31;
+        public double OffsetX => _offsetX;
 
         /// <inheritdoc/>
-        public double OffsetY => _matrix.M32;
+        public double OffsetY => _offsetY;
 
         /// <inheritdoc/>
-        public bool EnableConstrains { get; set; }
+        public bool EnableConstrains
+        {
+            get => GetValue(EnableConstrainsProperty);
+            set => SetValue(EnableConstrainsProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MinZoomX { get; set; }
+        public double MinZoomX
+        {
+            get => GetValue(MinZoomXProperty);
+            set => SetValue(MinZoomXProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MaxZoomX { get; set; }
+        public double MaxZoomX
+        {
+            get => GetValue(MaxZoomXProperty);
+            set => SetValue(MaxZoomXProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MinZoomY { get; set; }
+        public double MinZoomY
+        {
+            get => GetValue(MinZoomYProperty);
+            set => SetValue(MinZoomYProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MaxZoomY { get; set; }
+        public double MaxZoomY
+        {
+            get => GetValue(MaxZoomYProperty);
+            set => SetValue(MaxZoomYProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MinOffsetX { get; set; }
+        public double MinOffsetX
+        {
+            get => GetValue(MinOffsetXProperty);
+            set => SetValue(MinOffsetXProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MaxOffsetX { get; set; }
+        public double MaxOffsetX
+        {
+            get => GetValue(MaxOffsetXProperty);
+            set => SetValue(MaxOffsetXProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MinOffsetY { get; set; }
+        public double MinOffsetY
+        {
+            get => GetValue(MinOffsetYProperty);
+            set => SetValue(MinOffsetYProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MaxOffsetY { get; set; }
+        public double MaxOffsetY
+        {
+            get => GetValue(MaxOffsetYProperty);
+            set => SetValue(MaxOffsetYProperty, value);
+        }
 
         /// <inheritdoc/>
         public bool EnableInput
@@ -116,6 +156,100 @@ namespace Avalonia.Controls.PanAndZoom
             AvaloniaProperty.Register<ZoomBorder, StretchMode>(nameof(Stretch), StretchMode.Uniform, false, BindingMode.TwoWay);
 
         /// <summary>
+        /// Identifies the <seealso cref="ZoomX"/> avalonia property.
+        /// </summary>
+        public static readonly DirectProperty<ZoomBorder, double> ZoomXProperty =
+            AvaloniaProperty.RegisterDirect<ZoomBorder, double>(
+                nameof(ZoomX),
+                o => o.ZoomX,
+                null,
+                1.0);
+
+        /// <summary>
+        /// Identifies the <seealso cref="ZoomY"/> avalonia property.
+        /// </summary>
+        public static readonly DirectProperty<ZoomBorder, double> ZoomYProperty =
+            AvaloniaProperty.RegisterDirect<ZoomBorder, double>(
+                nameof(ZoomY),
+                o => o.ZoomY,
+                null,
+                1.0);
+
+        /// <summary>
+        /// Identifies the <seealso cref="OffsetX"/> avalonia property.
+        /// </summary>
+        public static readonly DirectProperty<ZoomBorder, double> OffsetXProperty =
+            AvaloniaProperty.RegisterDirect<ZoomBorder, double>(
+                nameof(OffsetX),
+                o => o.OffsetX,
+                null,
+                0.0);
+
+        /// <summary>
+        /// Identifies the <seealso cref="OffsetY"/> avalonia property.
+        /// </summary>
+        public static readonly DirectProperty<ZoomBorder, double> OffsetYProperty =
+            AvaloniaProperty.RegisterDirect<ZoomBorder, double>(
+                nameof(OffsetY),
+                o => o.OffsetY,
+                null,
+                0.0);
+
+        /// <summary>
+        /// Identifies the <seealso cref="EnableConstrains"/> avalonia property.
+        /// </summary>
+        public static AvaloniaProperty<bool> EnableConstrainsProperty =
+            AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableConstrains), true, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// Identifies the <seealso cref="MinZoomX"/> avalonia property.
+        /// </summary>
+        public static AvaloniaProperty<double> MinZoomXProperty =
+            AvaloniaProperty.Register<ZoomBorder, double>(nameof(MinZoomX), double.NegativeInfinity, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// Identifies the <seealso cref="MaxZoomX"/> avalonia property.
+        /// </summary>
+        public static AvaloniaProperty<double> MaxZoomXProperty =
+            AvaloniaProperty.Register<ZoomBorder, double>(nameof(MaxZoomX), double.PositiveInfinity, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// Identifies the <seealso cref="MinZoomY"/> avalonia property.
+        /// </summary>
+        public static AvaloniaProperty<double> MinZoomYProperty =
+            AvaloniaProperty.Register<ZoomBorder, double>(nameof(MinZoomY), double.NegativeInfinity, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// Identifies the <seealso cref="MaxZoomY"/> avalonia property.
+        /// </summary>
+        public static AvaloniaProperty<double> MaxZoomYProperty =
+            AvaloniaProperty.Register<ZoomBorder, double>(nameof(MaxZoomY), double.PositiveInfinity, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// Identifies the <seealso cref="MinOffsetX"/> avalonia property.
+        /// </summary>
+        public static AvaloniaProperty<double> MinOffsetXProperty =
+            AvaloniaProperty.Register<ZoomBorder, double>(nameof(MinOffsetX), double.NegativeInfinity, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// Identifies the <seealso cref="MaxOffsetX"/> avalonia property.
+        /// </summary>
+        public static AvaloniaProperty<double> MaxOffsetXProperty =
+            AvaloniaProperty.Register<ZoomBorder, double>(nameof(MaxOffsetX), double.PositiveInfinity, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// Identifies the <seealso cref="MinOffsetY"/> avalonia property.
+        /// </summary>
+        public static AvaloniaProperty<double> MinOffsetYProperty =
+            AvaloniaProperty.Register<ZoomBorder, double>(nameof(MinOffsetY), double.NegativeInfinity, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// Identifies the <seealso cref="MaxOffsetY"/> avalonia property.
+        /// </summary>
+        public static AvaloniaProperty<double> MaxOffsetYProperty =
+            AvaloniaProperty.Register<ZoomBorder, double>(nameof(MaxOffsetY), double.PositiveInfinity, false, BindingMode.TwoWay);
+
+        /// <summary>
         /// Identifies the <seealso cref="EnableInput"/> avalonia property.
         /// </summary>
         public static AvaloniaProperty<bool> EnableInputProperty =
@@ -123,7 +257,18 @@ namespace Avalonia.Controls.PanAndZoom
 
         static ZoomBorder()
         {
-            AffectsArrange(ZoomSpeedProperty, StretchProperty);
+            AffectsArrange(
+                ZoomSpeedProperty,
+                StretchProperty,
+                EnableConstrainsProperty,
+                MinZoomXProperty,
+                MaxZoomXProperty,
+                MinZoomYProperty,
+                MaxZoomYProperty,
+                MinOffsetXProperty,
+                MaxOffsetXProperty,
+                MinOffsetYProperty,
+                MaxOffsetYProperty);
         }
 
         /// <summary>
@@ -133,17 +278,6 @@ namespace Avalonia.Controls.PanAndZoom
             : base()
         {
             Defaults();
-
-            EnableConstrains = true;
-
-            MinZoomX = double.NegativeInfinity;
-            MaxZoomX = double.PositiveInfinity;
-            MinZoomY = double.NegativeInfinity;
-            MaxZoomY = double.PositiveInfinity;
-            MinOffsetX = double.NegativeInfinity;
-            MaxOffsetX = double.PositiveInfinity;
-            MinOffsetY = double.NegativeInfinity;
-            MaxOffsetY = double.PositiveInfinity;
 
             Focusable = true;
             Background = Brushes.Transparent;
@@ -348,6 +482,18 @@ namespace Avalonia.Controls.PanAndZoom
                     Constrain();
                 }
                 Debug.WriteLine($"Zoom: {_matrix.M11} {_matrix.M22} Offset: {_matrix.M31} {_matrix.M32}");
+                double oldZoomX = _zoomX;
+                double oldZoomY = _zoomY;
+                double oldOffsetX = _offsetX;
+                double oldOffsetY = _offsetY;
+                _zoomX = _matrix.M11;
+                _zoomY = _matrix.M22;
+                _offsetX = _matrix.M31;
+                _offsetY = _matrix.M32;
+                RaisePropertyChanged(ZoomXProperty, oldZoomX, _zoomX);
+                RaisePropertyChanged(ZoomYProperty, oldZoomY, _zoomY);
+                RaisePropertyChanged(OffsetXProperty, oldOffsetX, _offsetX);
+                RaisePropertyChanged(OffsetYProperty, oldOffsetY, _offsetY);
                 this.InvalidatedChild?.Invoke(_matrix.M11, _matrix.M22, _matrix.M31, _matrix.M32);
                 _element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
                 _element.RenderTransform = new MatrixTransform(_matrix);
