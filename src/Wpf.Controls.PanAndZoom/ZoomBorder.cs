@@ -387,7 +387,7 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
-        private void ZoomBorder_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void Border_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (EnableInput)
             {
@@ -401,7 +401,7 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
-        private void ZoomBorder_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        private void Border_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (EnableInput)
             {
@@ -444,8 +444,8 @@ namespace Wpf.Controls.PanAndZoom
                 _element = element;
                 this.Focus();
                 this.PreviewMouseWheel += Border_PreviewMouseWheel;
-                this.PreviewMouseDown += ZoomBorder_PreviewMouseDown;
-                this.PreviewMouseUp += ZoomBorder_PreviewMouseUp;
+                this.PreviewMouseDown += Border_PreviewMouseDown;
+                this.PreviewMouseUp += Border_PreviewMouseUp;
                 this.PreviewMouseMove += Border_PreviewMouseMove;
             }
         }
@@ -455,8 +455,8 @@ namespace Wpf.Controls.PanAndZoom
             if (_element != null)
             {
                 this.PreviewMouseWheel -= Border_PreviewMouseWheel;
-                this.PreviewMouseDown -= ZoomBorder_PreviewMouseDown;
-                this.PreviewMouseUp -= ZoomBorder_PreviewMouseUp;
+                this.PreviewMouseDown -= Border_PreviewMouseDown;
+                this.PreviewMouseUp -= Border_PreviewMouseUp;
                 this.PreviewMouseMove -= Border_PreviewMouseMove;
                 _element.RenderTransform = null;
                 _element = null;
