@@ -21,6 +21,11 @@ namespace PanAndZoom
         Action<double, double, double, double> InvalidatedChild { get; set; }
 
         /// <summary>
+        /// Gets or sets pan input button.
+        /// </summary>
+        ButtonName PanButton { get; set; }
+
+        /// <summary>
         /// Gets or sets zoom speed ratio.
         /// </summary>
         double ZoomSpeed { get; set; }

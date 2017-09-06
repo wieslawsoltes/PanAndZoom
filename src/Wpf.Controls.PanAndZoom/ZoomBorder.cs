@@ -32,6 +32,13 @@ namespace Wpf.Controls.PanAndZoom
         public Action<double, double, double, double> InvalidatedChild { get; set; }
 
         /// <inheritdoc/>
+        public ButtonName PanButton
+        {
+            get => (ButtonName)GetValue(PanButtonProperty);
+            set => SetValue(PanButtonProperty, value);
+        }
+
+        /// <inheritdoc/>
         public double ZoomSpeed
         {
             get { return (double)GetValue(ZoomSpeedProperty); }
@@ -90,6 +97,16 @@ namespace Wpf.Controls.PanAndZoom
             get { return (bool)GetValue(EnableInputProperty); }
             set { SetValue(EnableInputProperty, value); }
         }
+
+        /// <summary>
+        /// Identifies the <seealso cref="PanButton"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty PanButtonProperty =
+            DependencyProperty.Register(
+                nameof(PanButton),
+                typeof(ButtonName),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(ButtonName.Left, FrameworkPropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <seealso cref="ZoomSpeed"/> dependency property.
@@ -207,19 +224,31 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
-        private void Border_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void ZoomBorder_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (EnableInput)
             {
-                Pressed(e);
+                var button = PanButton;
+                if ((e.ChangedButton == MouseButton.Left && button == ButtonName.Left)
+                    || (e.ChangedButton == MouseButton.Right && button == ButtonName.Right)
+                    || (e.ChangedButton == MouseButton.Middle && button == ButtonName.Middle))
+                {
+                    Pressed(e);
+                }
             }
         }
 
-        private void Border_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private void ZoomBorder_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (EnableInput)
             {
-                Released(e);
+                var button = PanButton;
+                if ((e.ChangedButton == MouseButton.Left && button == ButtonName.Left)
+                    || (e.ChangedButton == MouseButton.Right && button == ButtonName.Right)
+                    || (e.ChangedButton == MouseButton.Middle && button == ButtonName.Middle))
+                {
+                    Released(e);
+                }
             }
         }
 
@@ -252,8 +281,8 @@ namespace Wpf.Controls.PanAndZoom
                 _element = element;
                 this.Focus();
                 this.PreviewMouseWheel += Border_PreviewMouseWheel;
-                this.PreviewMouseRightButtonDown += Border_PreviewMouseRightButtonDown;
-                this.PreviewMouseRightButtonUp += Border_PreviewMouseRightButtonUp;
+                this.PreviewMouseDown += ZoomBorder_PreviewMouseDown;
+                this.PreviewMouseUp += ZoomBorder_PreviewMouseUp;
                 this.PreviewMouseMove += Border_PreviewMouseMove;
             }
         }
@@ -263,8 +292,8 @@ namespace Wpf.Controls.PanAndZoom
             if (_element != null)
             {
                 this.PreviewMouseWheel -= Border_PreviewMouseWheel;
-                this.PreviewMouseRightButtonDown -= Border_PreviewMouseRightButtonDown;
-                this.PreviewMouseRightButtonUp -= Border_PreviewMouseRightButtonUp;
+                this.PreviewMouseDown -= ZoomBorder_PreviewMouseDown;
+                this.PreviewMouseUp -= ZoomBorder_PreviewMouseUp;
                 this.PreviewMouseMove -= Border_PreviewMouseMove;
                 _element.RenderTransform = null;
                 _element = null;

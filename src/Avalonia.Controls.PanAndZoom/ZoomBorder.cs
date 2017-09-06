@@ -31,17 +31,24 @@ namespace Avalonia.Controls.PanAndZoom
         public Action<double, double, double, double> InvalidatedChild { get; set; }
 
         /// <inheritdoc/>
+        public ButtonName PanButton
+        {
+            get => GetValue(PanButtonProperty);
+            set => SetValue(PanButtonProperty, value);
+        }
+
+        /// <inheritdoc/>
         public double ZoomSpeed
         {
-            get { return GetValue(ZoomSpeedProperty); }
-            set { SetValue(ZoomSpeedProperty, value); }
+            get => GetValue(ZoomSpeedProperty);
+            set => SetValue(ZoomSpeedProperty, value);
         }
 
         /// <inheritdoc/>
         public StretchMode Stretch
         {
-            get { return GetValue(StretchProperty); }
-            set { SetValue(StretchProperty, value); }
+            get => GetValue(StretchProperty);
+            set => SetValue(StretchProperty, value);
         }
 
         /// <inheritdoc/>
@@ -86,9 +93,15 @@ namespace Avalonia.Controls.PanAndZoom
         /// <inheritdoc/>
         public bool EnableInput
         {
-            get { return GetValue(EnableInputProperty); }
-            set { SetValue(EnableInputProperty, value); }
+            get => GetValue(EnableInputProperty);
+            set => SetValue(EnableInputProperty, value);
         }
+
+        /// <summary>
+        /// Identifies the <seealso cref="PanButton"/> avalonia property.
+        /// </summary>
+        public static AvaloniaProperty<ButtonName> PanButtonProperty =
+            AvaloniaProperty.Register<ZoomBorder, ButtonName>(nameof(PanButton), ButtonName.Left, false, BindingMode.TwoWay);
 
         /// <summary>
         /// Identifies the <seealso cref="ZoomSpeed"/> avalonia property.
@@ -192,7 +205,13 @@ namespace Avalonia.Controls.PanAndZoom
         {
             if (EnableInput)
             {
-                Pressed(e);
+                var button = PanButton;
+                if ((e.MouseButton == MouseButton.Left && button == ButtonName.Left)
+                    || (e.MouseButton == MouseButton.Right && button == ButtonName.Right)
+                    || (e.MouseButton == MouseButton.Middle && button == ButtonName.Middle))
+                {
+                    Pressed(e);
+                }
             }
         }
 
@@ -200,7 +219,13 @@ namespace Avalonia.Controls.PanAndZoom
         {
             if (EnableInput)
             {
-                Released(e);
+                var button = PanButton;
+                if ((e.MouseButton == MouseButton.Left && button == ButtonName.Left)
+                    || (e.MouseButton == MouseButton.Right && button == ButtonName.Right)
+                    || (e.MouseButton == MouseButton.Middle && button == ButtonName.Middle))
+                {
+                    Released(e);
+                }
             }
         }
 
@@ -264,39 +289,22 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Pressed(PointerPressedEventArgs e)
         {
-            switch (e.MouseButton)
+            if (_element != null && e.Device.Captured == null && _isPanning == false)
             {
-                case MouseButton.Right:
-                    {
-                        if (_element != null && e.Device.Captured == null && _isPanning == false)
-                        {
-                            Point point = e.GetPosition(_element);
-                            point = FixInvalidPointPosition(point);
-                            StartPan(point.X, point.Y);
-                            e.Device.Capture(_element);
-                            _isPanning = true;
-                        }
-                    }
-                    break;
+                Point point = e.GetPosition(_element);
+                point = FixInvalidPointPosition(point);
+                StartPan(point.X, point.Y);
+                e.Device.Capture(_element);
+                _isPanning = true;
             }
         }
 
         private void Released(PointerReleasedEventArgs e)
         {
-            if (_element != null)
+            if (_element != null && e.Device.Captured == _element && _isPanning == true)
             {
-                switch (e.MouseButton)
-                {
-                    case MouseButton.Right:
-                        {
-                            if (_element != null && e.Device.Captured == _element && _isPanning == true)
-                            {
-                                e.Device.Capture(null);
-                                _isPanning = false;
-                            }
-                        }
-                        break;
-                }
+                e.Device.Capture(null);
+                _isPanning = false;
             }
         }
 
