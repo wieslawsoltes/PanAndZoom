@@ -41,61 +41,97 @@ namespace Wpf.Controls.PanAndZoom
         /// <inheritdoc/>
         public double ZoomSpeed
         {
-            get { return (double)GetValue(ZoomSpeedProperty); }
-            set { SetValue(ZoomSpeedProperty, value); }
+            get => (double)GetValue(ZoomSpeedProperty);
+            set => SetValue(ZoomSpeedProperty, value);
         }
 
         /// <inheritdoc/>
         public StretchMode Stretch
         {
-            get { return (StretchMode)GetValue(StretchProperty); }
-            set { SetValue(StretchProperty, value); }
+            get => (StretchMode)GetValue(StretchProperty);
+            set => SetValue(StretchProperty, value);
         }
 
         /// <inheritdoc/>
-        public double ZoomX => _matrix.M11;
+        public double ZoomX => (double)GetValue(ZoomXProperty);
 
         /// <inheritdoc/>
-        public double ZoomY => _matrix.M22;
+        public double ZoomY => (double)GetValue(ZoomXProperty);
 
         /// <inheritdoc/>
-        public double OffsetX => _matrix.OffsetX;
+        public double OffsetX => (double)GetValue(OffsetXProperty);
 
         /// <inheritdoc/>
-        public double OffsetY => _matrix.OffsetY;
+        public double OffsetY => (double)GetValue(OffsetYProperty);
 
         /// <inheritdoc/>
-        public bool EnableConstrains { get; set; }
+        public bool EnableConstrains
+        {
+            get => (bool)GetValue(EnableConstrainsProperty);
+            set => SetValue(EnableConstrainsProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MinZoomX { get; set; }
+        public double MinZoomX
+        {
+            get => (double)GetValue(MinZoomXProperty);
+            set => SetValue(MinZoomXProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MaxZoomX { get; set; }
+        public double MaxZoomX
+        {
+            get => (double)GetValue(MaxZoomXProperty);
+            set => SetValue(MaxZoomXProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MinZoomY { get; set; }
+        public double MinZoomY
+        {
+            get => (double)GetValue(MinZoomYProperty);
+            set => SetValue(MinZoomYProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MaxZoomY { get; set; }
+        public double MaxZoomY
+        {
+            get => (double)GetValue(MaxZoomYProperty);
+            set => SetValue(MaxZoomYProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MinOffsetX { get; set; }
+        public double MinOffsetX
+        {
+            get => (double)GetValue(MinOffsetXProperty);
+            set => SetValue(MinOffsetXProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MaxOffsetX { get; set; }
+        public double MaxOffsetX
+        {
+            get => (double)GetValue(MaxOffsetXProperty);
+            set => SetValue(MaxOffsetXProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MinOffsetY { get; set; }
+        public double MinOffsetY
+        {
+            get => (double)GetValue(MinOffsetYProperty);
+            set => SetValue(MinOffsetYProperty, value);
+        }
 
         /// <inheritdoc/>
-        public double MaxOffsetY { get; set; }
+        public double MaxOffsetY
+        {
+            get => (double)GetValue(MaxOffsetYProperty);
+            set => SetValue(MaxOffsetYProperty, value);
+        }
 
         /// <inheritdoc/>
         public bool EnableInput
         {
-            get { return (bool)GetValue(EnableInputProperty); }
-            set { SetValue(EnableInputProperty, value); }
+            get => (bool)GetValue(EnableInputProperty);
+            set => SetValue(EnableInputProperty, value);
         }
 
         /// <summary>
@@ -128,6 +164,144 @@ namespace Wpf.Controls.PanAndZoom
                 typeof(ZoomBorder),
                 new FrameworkPropertyMetadata(StretchMode.Uniform, FrameworkPropertyMetadataOptions.AffectsArrange));
 
+        internal static readonly DependencyPropertyKey ZoomXPropertyKey =
+            DependencyProperty.RegisterReadOnly(
+                nameof(ZoomX),
+                typeof(double),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.None));
+
+        internal static readonly DependencyPropertyKey ZoomYPropertyKey =
+            DependencyProperty.RegisterReadOnly(
+                nameof(ZoomY),
+                typeof(double),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.None));
+
+        internal static readonly DependencyPropertyKey OffsetXPropertyKey =
+            DependencyProperty.RegisterReadOnly(
+                nameof(OffsetX),
+                typeof(double),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.None));
+
+        internal static readonly DependencyPropertyKey OffsetYPropertyKey =
+            DependencyProperty.RegisterReadOnly(
+                nameof(OffsetY),
+                typeof(double),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <seealso cref="ZoomX"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomXProperty = ZoomXPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Identifies the <seealso cref="ZoomY"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomYProperty = ZoomYPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Identifies the <seealso cref="OffsetX"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty OffsetXProperty = OffsetXPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Identifies the <seealso cref="OffsetY"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty OffsetYProperty = OffsetYPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Identifies the <seealso cref="EnableConstrains"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty EnableConstrainsProperty =
+            DependencyProperty.Register(
+                nameof(EnableConstrains),
+                typeof(bool),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <seealso cref="MinZoomX"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MinZoomXProperty =
+            DependencyProperty.Register(
+                nameof(MinZoomX),
+                typeof(double),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(double.NegativeInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <seealso cref="MaxZoomX"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MaxZoomXProperty =
+            DependencyProperty.Register(
+                nameof(MaxZoomX),
+                typeof(double),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <seealso cref="MinZoomY"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MinZoomYProperty =
+            DependencyProperty.Register(
+                nameof(MinZoomY),
+                typeof(double),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(double.NegativeInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <seealso cref="MaxZoomY"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MaxZoomYProperty =
+            DependencyProperty.Register(
+                nameof(MaxZoomY),
+                typeof(double),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <seealso cref="MinOffsetX"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MinOffsetXProperty =
+            DependencyProperty.Register(
+                nameof(MinOffsetX),
+                typeof(double),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(double.NegativeInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <seealso cref="MaxOffsetX"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MaxOffsetXProperty =
+            DependencyProperty.Register(
+                nameof(MaxOffsetX),
+                typeof(double),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <seealso cref="MinOffsetY"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MinOffsetYProperty =
+            DependencyProperty.Register(
+                nameof(MinOffsetY),
+                typeof(double),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(double.NegativeInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <seealso cref="MaxOffsetY"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MaxOffsetYProperty =
+            DependencyProperty.Register(
+                nameof(MaxOffsetY),
+                typeof(double),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
         /// <summary>
         /// Identifies the <seealso cref="EnableInput"/> dependency property.
         /// </summary>
@@ -158,17 +332,6 @@ namespace Wpf.Controls.PanAndZoom
             : base()
         {
             Defaults();
-
-            EnableConstrains = true;
-
-            MinZoomX = double.NegativeInfinity;
-            MaxZoomX = double.PositiveInfinity;
-            MinZoomY = double.NegativeInfinity;
-            MaxZoomY = double.PositiveInfinity;
-            MinOffsetX = double.NegativeInfinity;
-            MaxOffsetX = double.PositiveInfinity;
-            MinOffsetY = double.NegativeInfinity;
-            MaxOffsetY = double.PositiveInfinity;
 
             Focusable = true;
             Background = Brushes.Transparent;
@@ -369,6 +532,10 @@ namespace Wpf.Controls.PanAndZoom
                     Constrain();
                 }
                 Debug.WriteLine($"Zoom: {_matrix.M11} {_matrix.M22} Offset: {_matrix.OffsetX} {_matrix.OffsetY}");
+                SetValue(ZoomXPropertyKey, _matrix.M11);
+                SetValue(ZoomYPropertyKey, _matrix.M22);
+                SetValue(OffsetXPropertyKey, _matrix.OffsetX);
+                SetValue(OffsetYPropertyKey, _matrix.OffsetY);
                 this.InvalidatedChild?.Invoke(_matrix.M11, _matrix.M22, _matrix.OffsetX, _matrix.OffsetY);
                 _element.RenderTransformOrigin = new Point(0, 0);
                 _element.RenderTransform = new MatrixTransform(_matrix);
