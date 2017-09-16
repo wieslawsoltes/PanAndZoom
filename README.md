@@ -77,6 +77,11 @@ You can install the package for `WPF` based projects like this:
         </StackPanel>
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
+            <TextBlock Text="PanButton:" VerticalAlignment="Center"/>
+            <DropDown Items="{Static paz:ZoomBorder.ButtonNames}" 
+                      SelectedItem="{Binding #zoomBorder.PanButton, Mode=TwoWay}" 
+                      Margin="2">
+            </DropDown>
             <TextBlock Text="Stretch:" VerticalAlignment="Center"/>
             <DropDown Items="{Static paz:ZoomBorder.StretchModes}" 
                       SelectedItem="{Binding #zoomBorder.Stretch, Mode=TwoWay}" 
@@ -195,6 +200,11 @@ namespace AvaloniaDemo
         </StackPanel>
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
+            <TextBlock Text="PanButton:" VerticalAlignment="Center"/>
+            <ComboBox ItemsSource="{Binding ElementName=zoomBorder, Path=ButtonNames}" 
+                      SelectedItem="{Binding ElementName=zoomBorder, Path=PanButton}" 
+                      Margin="2">
+            </ComboBox>
             <TextBlock Text="Stretch:" VerticalAlignment="Center"/>
             <ComboBox ItemsSource="{Binding ElementName=zoomBorder, Path=StretchModes}" 
                       SelectedItem="{Binding ElementName=zoomBorder, Path=Stretch}" 
