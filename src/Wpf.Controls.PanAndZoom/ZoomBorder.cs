@@ -22,11 +22,17 @@ namespace Wpf.Controls.PanAndZoom
         private Matrix _matrix;
         private bool _isPanning;
         private static StretchMode[] _autoFitModes = (StretchMode[])Enum.GetValues(typeof(StretchMode));
+        private static ButtonName[] _buttonNames = (ButtonName[])Enum.GetValues(typeof(ButtonName));
 
         /// <summary>
         /// Gets available stretch modes.
         /// </summary>
         public static StretchMode[] StretchModes => _autoFitModes;
+
+        /// <summary>
+        /// Gets available button names.
+        /// </summary>
+        public static ButtonName[] ButtonNames => _buttonNames;
 
         /// <inheritdoc/>
         public Action<double, double, double, double> InvalidatedChild { get; set; }
