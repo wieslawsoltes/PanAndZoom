@@ -32,6 +32,11 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
+            <TextBlock Text="PanButton:" VerticalAlignment="Center"/>
+            <ComboBox ItemsSource="{Binding ElementName=zoomBorder, Path=ButtonNames}" 
+                      SelectedItem="{Binding ElementName=zoomBorder, Path=PanButton}" 
+                      Margin="2">
+            </ComboBox>
             <TextBlock Text="Stretch:" VerticalAlignment="Center"/>
             <ComboBox ItemsSource="{Binding ElementName=zoomBorder, Path=StretchModes}" 
                       SelectedItem="{Binding ElementName=zoomBorder, Path=Stretch}" 
