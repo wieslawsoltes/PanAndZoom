@@ -8,7 +8,7 @@ env:
 sudo: required
 mono:
   - latest
-dotnet: 1.0.1
+dotnet: 2.0.0
 script:
   - cd src/Avalonia.Controls.PanAndZoom
   - dotnet restore
