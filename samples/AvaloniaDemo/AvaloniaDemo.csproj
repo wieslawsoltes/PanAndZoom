@@ -76,5 +76,6 @@
   <Import Project="$(MSBuildThisFileDirectory)..\..\build\Rx.props" />
   <Import Project="$(MSBuildThisFileDirectory)..\..\build\Avalonia.props" />
   <Import Project="$(MSBuildThisFileDirectory)..\..\build\Avalonia.Desktop.props" />
+  <Import Project="$(MSBuildThisFileDirectory)..\..\build\NetFX.props" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
