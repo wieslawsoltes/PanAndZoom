@@ -33,6 +33,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildThisFileDirectory)..\..\build\Rx.props" />
   <Import Project="$(MSBuildThisFileDirectory)..\..\build\Avalonia.props" />
+  <Import Project="$(MSBuildThisFileDirectory)..\..\build\NetFX.props" />
   <ItemGroup>
     <ProjectReference Include="..\PanAndZoom\PanAndZoom.csproj" />
   </ItemGroup>

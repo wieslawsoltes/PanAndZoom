@@ -31,4 +31,5 @@
     </Compile>
     <Compile Include="**\*.cs" Exclude="obj\**" />
   </ItemGroup>
+  <Import Project="$(MSBuildThisFileDirectory)..\..\build\NetFX.props" />
 </Project>
