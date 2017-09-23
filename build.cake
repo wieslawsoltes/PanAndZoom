@@ -195,7 +195,10 @@ var nuspecNuGetAvalonia = new NuGetPackSettings()
     {
         // netstandard2.0
         new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/netstandard2.0/" + "Avalonia.Controls.PanAndZoom.dll", Target = "lib/netstandard2.0" },
-        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/netstandard2.0/" + "Avalonia.Controls.PanAndZoom.xml", Target = "lib/netstandard2.0" }
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/netstandard2.0/" + "Avalonia.Controls.PanAndZoom.xml", Target = "lib/netstandard2.0" },
+        // net461
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/net461/" + "Avalonia.Controls.PanAndZoom.dll", Target = "lib/net461" },
+        new NuSpecContent { Source = "src/Avalonia.Controls.PanAndZoom/bin/" + dirSuffix + "/net461/" + "Avalonia.Controls.PanAndZoom.xml", Target = "lib/net461" }
     },
     BasePath = Directory("./"),
     OutputDirectory = nugetRoot
