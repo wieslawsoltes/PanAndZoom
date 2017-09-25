@@ -12,4 +12,4 @@ dotnet: 2.0.0
 script:
   - cd src/Avalonia.Controls.PanAndZoom
   - dotnet restore
-  - dotnet build
+  - dotnet build -f netstandard2.0
