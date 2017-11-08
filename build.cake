@@ -56,6 +56,7 @@ var netCoreProjects = netCoreApps.Select(name =>
         Framework = XmlPeek(string.Format("{0}/{1}/{1}.csproj", netCoreAppsRoot, name), "//*[local-name()='TargetFramework']/text()"),
         Runtimes = XmlPeek(string.Format("{0}/{1}/{1}.csproj", netCoreAppsRoot, name), "//*[local-name()='RuntimeIdentifiers']/text()").Split(';')
     }).ToList();
+
 ///////////////////////////////////////////////////////////////////////////////
 // .NET Core UnitTests
 ///////////////////////////////////////////////////////////////////////////////
