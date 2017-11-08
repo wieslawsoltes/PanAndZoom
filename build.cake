@@ -332,6 +332,7 @@ Task("Build")
             settings.UseToolVersion(MSBuildToolVersion.VS2017);
             settings.WithProperty("Platform", "\"" + platform + "\"");
             settings.SetVerbosity(Verbosity.Minimal);
+            settings.SetMaxCpuCount(0);
         });
     }
 });
