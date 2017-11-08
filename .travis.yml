@@ -10,7 +10,12 @@ mono:
   - latest
 dotnet: 2.0.0
 script:
-  - dotnet restore src/PanAndZoom
-  - dotnet build src/PanAndZoom/PanAndZoom.csproj -f netstandard2.0
-  - dotnet restore src/Avalonia.Controls.PanAndZoom
-  - dotnet build src/Avalonia.Controls.PanAndZoom/Avalonia.Controls.PanAndZoom.csproj -f netstandard2.0
+  - ./build.sh --target "Travis" --platform "Any CPU" --configuration "Release"
+notifications:
+  email: false
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/6ef347bda74add05c258
+    on_success: change
+    on_failure: always
+    on_start: never
