@@ -10,7 +10,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #tool "nuget:?package=NuGet.CommandLine&version=4.3.0"
-
+#tool "nuget:?package=xunit.runner.console&version=2.3.1"
+    
 ///////////////////////////////////////////////////////////////////////////////
 // USINGS
 ///////////////////////////////////////////////////////////////////////////////
@@ -367,6 +368,29 @@ Task("Build")
             settings.SetVerbosity(Verbosity.Minimal);
             settings.SetMaxCpuCount(0);
         });
+    }
+});
+
+Task("Run-Unit-Tests")
+    .IsDependentOn("Build")
+    .Does(() =>
+{
+    if(!isRunningOnWindows)
+       return;
+    var assemblies = GetFiles("./tests/**/bin/" + dirSuffix + "/" + UnitTestsFramework + "/*.UnitTests.dll");
+    var settings = new XUnit2Settings { 
+        ToolPath = (isPlatformAnyCPU || isPlatformX86) ? 
+            Context.Tools.Resolve("xunit.console.x86.exe") :
+            Context.Tools.Resolve("xunit.console.exe"),
+        OutputDirectory = testResultsDir,
+        XmlReportV1 = true,
+        NoAppDomain = true,
+        Parallelism = ParallelismOption.None,
+        ShadowCopy = false
+    };
+    foreach (var assembly in assemblies)
+    {
+        XUnit2(assembly.FullPath, settings);
     }
 });
 
