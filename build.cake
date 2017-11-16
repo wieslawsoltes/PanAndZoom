@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #addin "nuget:?package=Polly&version=5.3.1"
-#addin "nuget:?package=NuGet.Core&version=2.14.0"
+#addin "nuget:?package=PackageReferenceEditor&version=0.0.3"
 
 ///////////////////////////////////////////////////////////////////////////////		
 // TOOLS		
@@ -20,8 +20,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using PackageReferenceEditor;
 using Polly;
-using NuGet;
 
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -137,52 +137,13 @@ var buildDirs =
 // NUGET NUSPECS
 ///////////////////////////////////////////////////////////////////////////////
 
-// Key: Package Id
-// Value is Tuple where Item1: Package Version, Item2: The *.csproj/*.props file path.
-var packageVersions = new Dictionary<string, IList<Tuple<string,string>>>();
+var result = Updater.FindReferences("./build", "*.props", new string[] { });	
 
-System.IO.Directory.EnumerateFiles(((DirectoryPath)Directory("./build")).FullPath, "*.props", SearchOption.AllDirectories)
-    .ToList()
-    .ForEach(fileName => {
-    var xdoc = XDocument.Load(fileName);
-    foreach (var reference in xdoc.Descendants().Where(x => x.Name.LocalName == "PackageReference"))
-    {
-        var name = reference.Attribute("Include").Value;
-        var versionAttribute = reference.Attribute("Version");
-        var packageVersion = versionAttribute != null 
-            ? versionAttribute.Value 
-            : reference.Elements().First(x=>x.Name.LocalName == "Version").Value;
-        IList<Tuple<string, string>> versions;
-        packageVersions.TryGetValue(name, out versions);
-        if (versions == null)
-        {
-            versions = new List<Tuple<string, string>>();
-            packageVersions[name] = versions;
-        }
-        versions.Add(Tuple.Create(packageVersion, fileName));
-    }
-});
-
-Information("Checking installed NuGet package dependencies versions:");
-
-packageVersions.ToList().ForEach(package =>
-{
-    var packageVersion = package.Value.First().Item1;
-    bool isValidVersion = package.Value.All(x => x.Item1 == packageVersion);
-    if (!isValidVersion)
-    {
-        Information("Error: package {0} has multiple versions installed:", package.Key);
-        foreach (var v in package.Value)
-        {
-            Information("{0}, file: {1}", v.Item1, v.Item2);
-        }
-        throw new Exception("Detected multiple NuGet package version installed for different projects.");
-    }
-});
+result.ValidateVersions();
 
 Information("Setting NuGet package dependencies versions:");
 
-var AvaloniaVersion = packageVersions["Avalonia"].FirstOrDefault().Item1;
+var AvaloniaVersion = result.GroupedReferences["Avalonia"].FirstOrDefault().Version;
 
 Information("Package: Avalonia, version: {0}", AvaloniaVersion);
 
