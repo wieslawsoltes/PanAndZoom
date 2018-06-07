@@ -37,36 +37,36 @@ namespace Avalonia.Controls
             var size = base.ArrangeOverride(finalSize);
             if (Child != null && Child.IsMeasureValid)
             {
-                ArrangeOverride(Child, size.Width, size.Height, Child.Bounds.Width, Child.Bounds.Height);
+                ArrangeOverride(Child, size, Child.Bounds);
             }
             return size;
         }
 
-        private void ArrangeOverride(IControl child, double panelWidth, double panelHeight, double elementWidth, double elementHeight)
+        private void ArrangeOverride(IControl child, Size finalSize, Rect childBounds)
         {
             Matrix matrix = Matrix.Identity;
-            double zx = panelWidth / elementWidth;
-            double zy = panelHeight / elementHeight;
-            double cx = elementWidth / 2.0;
-            double cy = elementHeight / 2.0;
+            double scaleX = finalSize.Width / childBounds.Width;
+            double scaleY = finalSize.Height / childBounds.Height;
+            double centerX = childBounds.Width / 2.0;
+            double centerY = childBounds.Height / 2.0;
 
             switch (Stretch)
             {
                 case Stretch.Fill:
                     {
-                        matrix = ScaleAt(zx, zy, cx, cy);
+                        matrix = ScaleAt(scaleX, scaleY, centerX, centerY);
                     }
                     break;
                 case Stretch.Uniform:
                     {
-                        double zoom = Math.Min(zx, zy);
-                        matrix = ScaleAt(zoom, zoom, cx, cy);
+                        double scale = Math.Min(scaleX, scaleY);
+                        matrix = ScaleAt(scale, scale, centerX, centerY);
                     }
                     break;
                 case Stretch.UniformToFill:
                     {
-                        double zoom = Math.Max(zx, zy);
-                        matrix = ScaleAt(zoom, zoom, cx, cy);
+                        double scale = Math.Max(scaleX, scaleY);
+                        matrix = ScaleAt(scale, scale, centerX, centerY);
                     }
                     break;
             }
