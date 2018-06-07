@@ -1,0 +1,31 @@
+﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+namespace Avalonia.Controls
+{
+    /// <summary>
+    /// Describes how content is resized to fill its allocated space.
+    /// </summary>
+    public enum Stretch
+    {
+        /// <summary>
+        /// The content preserves its original size.
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// The content is resized to fill the destination dimensions. The aspect ratio is not preserved.
+        /// </summary>
+        Fill,
+
+        /// <summary>
+        /// The content is resized to fit in the destination dimensions while it preserves its native aspect ratio.
+        /// </summary>
+        Uniform,
+
+        /// <summary>
+        /// The content is resized to fill the destination dimensions while it preserves its native aspect ratio. If the aspect ratio of the destination rectangle differs from the source, the source content is clipped to fit in the destination dimensions.
+        /// </summary>
+        UniformToFill
+    }
+}

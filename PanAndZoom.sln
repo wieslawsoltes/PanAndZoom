@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfDemo", "samples\WpfDemo\WpfDemo.csproj", "{B2B6562E-FFCA-4571-A59C-359A45A07FF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.csproj", "{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.csproj", "{6DB965C2-20A9-4A0A-9A1B-A76A6AC90903}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PanAndZoom", "src\PanAndZoom\PanAndZoom.csproj", "{D9471709-D4EA-433A-A56C-EFF936331E9F}"
 EndProject
@@ -57,6 +57,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ci", "ci", "{32DB24AD-BD3C-
 		appveyor.yml = appveyor.yml
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.Controls.ViewBox", "src\Avalonia.Controls.ViewBox\Avalonia.Controls.ViewBox.csproj", "{35B9AD6F-290C-4932-9900-D51721966E93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,14 @@ Global
 		{886A4D83-333F-4AE6-A99E-9A32053F13C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{886A4D83-333F-4AE6-A99E-9A32053F13C8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{886A4D83-333F-4AE6-A99E-9A32053F13C8}.Release|Mono.ActiveCfg = Release|Any CPU
+		{35B9AD6F-290C-4932-9900-D51721966E93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35B9AD6F-290C-4932-9900-D51721966E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35B9AD6F-290C-4932-9900-D51721966E93}.Debug|Mono.ActiveCfg = Debug|Any CPU
+		{35B9AD6F-290C-4932-9900-D51721966E93}.Debug|Mono.Build.0 = Debug|Any CPU
+		{35B9AD6F-290C-4932-9900-D51721966E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35B9AD6F-290C-4932-9900-D51721966E93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35B9AD6F-290C-4932-9900-D51721966E93}.Release|Mono.ActiveCfg = Release|Any CPU
+		{35B9AD6F-290C-4932-9900-D51721966E93}.Release|Mono.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +126,7 @@ Global
 		{D83B9ECD-F143-4A6C-AFD7-F961174D824C} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
 		{C372CFD6-AFFD-4E88-9F47-9AB24E20B91A} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
 		{32DB24AD-BD3C-4F4B-B44D-75C488A04142} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
+		{35B9AD6F-290C-4932-9900-D51721966E93} = {3FBE9035-8FFD-447D-949A-8E63AF15B89A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81CAD068-E34F-49E9-A78D-B455F3CF2EAC}

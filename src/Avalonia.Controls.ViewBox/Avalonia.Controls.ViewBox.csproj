@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="**\*.cs" Exclude="obj\**" />
+  </ItemGroup>
+  <Import Project="$(MSBuildThisFileDirectory)..\..\build\Rx.props" />
+  <Import Project="$(MSBuildThisFileDirectory)..\..\build\Avalonia.props" />
+  <Import Project="$(MSBuildThisFileDirectory)..\..\build\NetFX.props" />
+</Project>

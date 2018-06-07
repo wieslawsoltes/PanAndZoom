@@ -174,7 +174,7 @@ var nuspecNuGet = new NuGetPackSettings()
     OutputDirectory = nugetRoot
 };
 
-var nuspecNuGetAvalonia = new NuGetPackSettings()
+var nuspecNuGetAvaloniaPanAndZoom = new NuGetPackSettings()
 {
     Id = "Avalonia.Controls.PanAndZoom",
     Version = version,
@@ -205,6 +205,39 @@ var nuspecNuGetAvalonia = new NuGetPackSettings()
     BasePath = Directory("./"),
     OutputDirectory = nugetRoot
 };
+
+
+var nuspecNuGetAvaloniaViewBox = new NuGetPackSettings()
+{
+    Id = "Avalonia.Controls.ViewBox",
+    Version = version,
+    Authors = new [] { "wieslawsoltes" },
+    Owners = new [] { "wieslawsoltes" },
+    LicenseUrl = new Uri("http://opensource.org/licenses/MIT"),
+    ProjectUrl = new Uri("https://github.com/wieslawsoltes/PanAndZoom/"),
+    RequireLicenseAcceptance = false,
+    Symbols = false,
+    NoPackageAnalysis = true,
+    Description = "ViewBox control for Avalonia apps.",
+    Copyright = "Copyright 2018",
+    Tags = new [] { "Avalonia", "ViewBox", "Control", "Xaml", "Managed", "C#" },
+    Dependencies = new []
+    {
+        new NuSpecDependency { Id = "Avalonia", Version = AvaloniaVersion }
+    },
+    Files = new []
+    {
+        // netstandard2.0
+        new NuSpecContent { Source = "src/Avalonia.Controls.ViewBox/bin/" + dirSuffix + "/netstandard2.0/" + "Avalonia.Controls.ViewBox.dll", Target = "lib/netstandard2.0" },
+        new NuSpecContent { Source = "src/Avalonia.Controls.ViewBox/bin/" + dirSuffix + "/netstandard2.0/" + "Avalonia.Controls.ViewBox.xml", Target = "lib/netstandard2.0" },
+        // net461
+        new NuSpecContent { Source = "src/Avalonia.Controls.ViewBox/bin/" + dirSuffix + "/net461/" + "Avalonia.Controls.ViewBox.dll", Target = "lib/net461" },
+        new NuSpecContent { Source = "src/Avalonia.Controls.ViewBox/bin/" + dirSuffix + "/net461/" + "Avalonia.Controls.ViewBox.xml", Target = "lib/net461" }
+    },
+    BasePath = Directory("./"),
+    OutputDirectory = nugetRoot
+};
+
 
 var nuspecNuGetWpf = new NuGetPackSettings()
 {
@@ -237,7 +270,8 @@ var nuspecNuGetWpf = new NuGetPackSettings()
 var nuspecNuGetSettings = new List<NuGetPackSettings>();
 
 nuspecNuGetSettings.Add(nuspecNuGet);
-nuspecNuGetSettings.Add(nuspecNuGetAvalonia);
+nuspecNuGetSettings.Add(nuspecNuGetAvaloniaPanAndZoom);
+nuspecNuGetSettings.Add(nuspecNuGetAvaloniaViewBox);
 nuspecNuGetSettings.Add(nuspecNuGetWpf);
 
 var nugetPackages = nuspecNuGetSettings.Select(nuspec => {
