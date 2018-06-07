@@ -37,59 +37,56 @@ namespace Avalonia.Controls
             var size = base.ArrangeOverride(finalSize);
             if (Child != null && Child.IsMeasureValid)
             {
-                Invalidate(Child, size.Width, size.Height, Child.Bounds.Width, Child.Bounds.Height);
+                ArrangeOverride(Child, size.Width, size.Height, Child.Bounds.Width, Child.Bounds.Height);
             }
             return size;
         }
 
-        private void Invalidate(IControl child, double panelWidth, double panelHeight, double elementWidth, double elementHeight)
+        private void ArrangeOverride(IControl child, double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
-            if (child != null)
+            Matrix matrix = Matrix.Identity;
+            double zx = panelWidth / elementWidth;
+            double zy = panelHeight / elementHeight;
+            double cx = elementWidth / 2.0;
+            double cy = elementHeight / 2.0;
+
+            switch (Stretch)
             {
-                Matrix matrix = Matrix.Identity;
-                double zx = panelWidth / elementWidth;
-                double zy = panelHeight / elementHeight;
-                double cx = elementWidth / 2.0;
-                double cy = elementHeight / 2.0;
-
-                switch (Stretch)
-                {
-                    case Stretch.Fill:
-                        {
-                            matrix = ScaleAt(zx, zy, cx, cy);
-                        }
-                        break;
-                    case Stretch.Uniform:
-                        {
-                            double zoom = Math.Min(zx, zy);
-                            matrix = ScaleAt(zoom, zoom, cx, cy);
-                        }
-                        break;
-                    case Stretch.UniformToFill:
-                        {
-                            double zoom = Math.Max(zx, zy);
-                            matrix = ScaleAt(zoom, zoom, cx, cy);
-                        }
-                        break;
-                }
-
-                if (child.RenderTransform is MatrixTransform transform)
-                {
-                    transform.Matrix = matrix;
-                }
-                else
-                {
-                    child.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
-                    child.RenderTransform = new MatrixTransform(matrix);
-                }
-
-                child.InvalidateVisual();
+                case Stretch.Fill:
+                    {
+                        matrix = ScaleAt(zx, zy, cx, cy);
+                    }
+                    break;
+                case Stretch.Uniform:
+                    {
+                        double zoom = Math.Min(zx, zy);
+                        matrix = ScaleAt(zoom, zoom, cx, cy);
+                    }
+                    break;
+                case Stretch.UniformToFill:
+                    {
+                        double zoom = Math.Max(zx, zy);
+                        matrix = ScaleAt(zoom, zoom, cx, cy);
+                    }
+                    break;
             }
 
-            Matrix ScaleAt(double scaleX, double scaleY, double centerX, double centerY)
+            if (child.RenderTransform is MatrixTransform transform)
             {
-                return new Matrix(scaleX, 0, 0, scaleY, centerX - (scaleX * centerX), centerY - (scaleY * centerY));
-            };
+                transform.Matrix = matrix;
+            }
+            else
+            {
+                child.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
+                child.RenderTransform = new MatrixTransform(matrix);
+            }
+
+            child.InvalidateVisual();
         }
+
+        Matrix ScaleAt(double scaleX, double scaleY, double centerX, double centerY)
+        {
+            return new Matrix(scaleX, 0, 0, scaleY, centerX - (scaleX * centerX), centerY - (scaleY * centerY));
+        };
     }
 }
