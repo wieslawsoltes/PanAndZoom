@@ -11,8 +11,6 @@ namespace Avalonia.Controls
     /// </summary>
     public class ViewBox : Decorator
     {
-        private IControl _element;
-
         /// <summary>
         /// Gets or sets stretch mode.
         /// </summary>
@@ -33,85 +31,59 @@ namespace Avalonia.Controls
             AffectsArrange(StretchProperty);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ViewBox"/> class.
-        /// </summary>
-        public ViewBox()
-            : base()
-        {
-            AttachedToVisualTree += (sender, e) => ChildChanged(base.Child);
-            DetachedFromVisualTree += (sender, e) => DetachElement(); ;
-            this.GetObservable(ChildProperty).Subscribe(ChildChanged);
-        }
-
         /// <inheritdoc/>
         protected override Size ArrangeOverride(Size finalSize)
         {
             var size = base.ArrangeOverride(finalSize);
-            if (_element != null && _element.IsMeasureValid)
+            if (Child != null && Child.IsMeasureValid)
             {
-                Invalidate(size.Width, size.Height, _element.Bounds.Width, _element.Bounds.Height);
+                Invalidate(Child, size.Width, size.Height, Child.Bounds.Width, Child.Bounds.Height);
             }
             return size;
         }
 
-        private void ChildChanged(IControl element)
+        private void Invalidate(IControl child, double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
-            if (element != null && element != _element && _element != null)
-            {
-                DetachElement();
-            }
-
-            if (element != null && element != _element)
-            {
-                AttachElement(element);
-            }
-        }
-
-        private void AttachElement(IControl element)
-        {
-            if (element != null)
-            {
-                _element = element;
-            }
-        }
-
-        private void DetachElement()
-        {
-            if (_element != null)
-            {
-                _element.RenderTransform = null;
-                _element = null;
-            }
-        }
-
-        private void Invalidate(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
-        {
-            if (_element != null)
+            if (child != null)
             {
                 Matrix matrix = Matrix.Identity;
                 double zx = panelWidth / elementWidth;
                 double zy = panelHeight / elementHeight;
                 double cx = elementWidth / 2.0;
                 double cy = elementHeight / 2.0;
-                double zoom = 1.0;
+
                 switch (Stretch)
                 {
                     case Stretch.Fill:
-                        matrix = ScaleAt(zx, zy, cx, cy);
+                        {
+                            matrix = ScaleAt(zx, zy, cx, cy);
+                        }
                         break;
                     case Stretch.Uniform:
-                        zoom = Math.Min(zx, zy);
-                        matrix = ScaleAt(zoom, zoom, cx, cy);
+                        {
+                            double zoom = Math.Min(zx, zy);
+                            matrix = ScaleAt(zoom, zoom, cx, cy);
+                        }
                         break;
                     case Stretch.UniformToFill:
-                        zoom = Math.Max(zx, zy);
-                        matrix = ScaleAt(zoom, zoom, cx, cy);
+                        {
+                            double zoom = Math.Max(zx, zy);
+                            matrix = ScaleAt(zoom, zoom, cx, cy);
+                        }
                         break;
                 }
-                _element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
-                _element.RenderTransform = new MatrixTransform(matrix);
-                _element.InvalidateVisual();
+
+                if (child.RenderTransform is MatrixTransform transform)
+                {
+                    transform.Matrix = matrix;
+                }
+                else
+                {
+                    child.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
+                    child.RenderTransform = new MatrixTransform(matrix);
+                }
+
+                child.InvalidateVisual();
             }
 
             Matrix ScaleAt(double scaleX, double scaleY, double centerX, double centerY)
