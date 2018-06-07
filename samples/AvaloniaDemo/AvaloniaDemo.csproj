@@ -27,6 +27,7 @@
   <Import Project="$(MSBuildThisFileDirectory)..\..\build\Avalonia.Desktop.props" />
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Avalonia.Controls.ViewBox\Avalonia.Controls.ViewBox.csproj" />
     <ProjectReference Include="..\..\src\PanAndZoom\PanAndZoom.csproj" />
     <ProjectReference Include="..\..\src\Avalonia.Controls.PanAndZoom\Avalonia.Controls.PanAndZoom.csproj" />
   </ItemGroup>
