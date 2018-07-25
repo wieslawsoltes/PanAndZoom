@@ -62,7 +62,7 @@ namespace Wpf.Controls.PanAndZoom
         public double ZoomX => (double)GetValue(ZoomXProperty);
 
         /// <inheritdoc/>
-        public double ZoomY => (double)GetValue(ZoomXProperty);
+        public double ZoomY => (double)GetValue(ZoomYProperty);
 
         /// <inheritdoc/>
         public double OffsetX => (double)GetValue(OffsetXProperty);
