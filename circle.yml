@@ -3,16 +3,22 @@ jobs:
   build:
     working_directory: ~/PanAndZoom
     docker:
-      - image: microsoft/dotnet:sdk
+      - image: microsoft/dotnet:2.1.401-sdk
     environment:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
     steps:
       - checkout
-      - run: dotnet restore src/PanAndZoom
-      - run: dotnet build src/PanAndZoom/PanAndZoom.csproj -f netstandard2.0
-      - run: dotnet restore src/Avalonia.Controls.PanAndZoom
-      - run: dotnet build src/Avalonia.Controls.PanAndZoom/Avalonia.Controls.PanAndZoom.csproj -f netstandard2.0
+      - run:
+          name: Install
+          command: |
+            dotnet --info
+            dotnet tool install -g Cake.Tool --version 0.30.0
+      - run:
+          name: Build
+          command: |
+            export PATH="$PATH:$HOME/.dotnet/tools"
+            dotnet cake build.cake --target="CircleCI" --platform="Any CPU" --configuration="Release"
     notify:
       webhooks:
         - url: https://webhooks.gitter.im/e/8972de595038714ca5c1

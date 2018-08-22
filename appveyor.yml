@@ -12,10 +12,15 @@ environment:
   MYGET_API_KEY:
     secure: xhYvrWYPHdNI+mQD+f4Zu3baL7fqW+nO/hYXJdN070Lej8wpa6gfrLi1NGtnQlAs
   MYGET_API_URL: https://www.myget.org/F/panandzoom-nightly/api/v2/package
+install:
+  - if not exist dotnet-sdk-2.1.401-win-x64.exe appveyor DownloadFile https://download.microsoft.com/download/E/8/A/E8AF2EE0-5DDA-4420-A395-D1A50EEFD83E/dotnet-sdk-2.1.401-win-x64.exe -FileName "dotnet-sdk-2.1.401-win-x64.exe"
+  - ps: Start-Process -FilePath "dotnet-sdk-2.1.401-win-x64.exe" -ArgumentList "/quiet" -Wait
+  - cmd: dotnet --info
+  - cmd: dotnet tool install -g Cake.Tool --version 0.30.0
 before_build:
 - cmd: git submodule update --init
 build_script:
-- ps: .\build.ps1 -Target "AppVeyor" -Platform "$env:platform" -Configuration "$env:configuration"
+- cmd: dotnet cake build.cake -Target="AppVeyor" -Platform="%PLATFORM%" -Configuration="%CONFIGURATION%"
 test: off
 notifications:
 - provider: Webhook
@@ -27,3 +32,5 @@ notifications:
 artifacts:
   - path: artifacts\test-results\*.xml
   - path: artifacts\nuget\*.nupkg
+cache:
+  - dotnet-sdk-2.1.401-win-x64.exe
