@@ -540,6 +540,16 @@ Task("CircleCI")
   .IsDependentOn("Run-Unit-Tests-NetCore")
   .IsDependentOn("Build-NetCore");
 
+Task("Azure-Windows")
+  .IsDependentOn("Run-Unit-Tests-NetCore")
+  .IsDependentOn("Build-NetCore");
+
+Task("Azure-macOS")
+  .IsDependentOn("Run-Unit-Tests-NetCore");
+
+Task("Azure-Linux")
+  .IsDependentOn("Run-Unit-Tests-NetCore");
+
 ///////////////////////////////////////////////////////////////////////////////
 // EXECUTE
 ///////////////////////////////////////////////////////////////////////////////
