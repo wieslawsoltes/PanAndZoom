@@ -5,6 +5,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/mbwd4i983lkc15c0/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/panandzoom/branch/master)
 [![Build Status](https://travis-ci.org/wieslawsoltes/PanAndZoom.svg?branch=master)](https://travis-ci.org/wieslawsoltes/PanAndZoom)
 [![CircleCI](https://circleci.com/gh/wieslawsoltes/PanAndZoom/tree/master.svg?style=svg)](https://circleci.com/gh/wieslawsoltes/PanAndZoom/tree/master)
+[![Build Status](https://dev.azure.com/wieslawsoltes/PanAndZoom/_apis/build/status/wieslawsoltes.PanAndZoom)](https://dev.azure.com/wieslawsoltes/PanAndZoom/_build/latest?definitionId=1)
 
 [![NuGet](https://img.shields.io/nuget/v/Avalonia.Controls.PanAndZoom.svg)](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom)
 [![MyGet](https://img.shields.io/myget/panandzoom-nightly/vpre/Avalonia.Controls.PanAndZoom.svg?label=myget)](https://www.myget.org/gallery/panandzoom-nightly) 
