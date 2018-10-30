@@ -10,8 +10,6 @@
 [![NuGet](https://img.shields.io/nuget/v/Avalonia.Controls.PanAndZoom.svg)](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom)
 [![MyGet](https://img.shields.io/myget/panandzoom-nightly/vpre/Avalonia.Controls.PanAndZoom.svg?label=myget)](https://www.myget.org/gallery/panandzoom-nightly) 
 
-[![CodeFactor](https://www.codefactor.io/repository/github/wieslawsoltes/panandzoom/badge)](https://www.codefactor.io/repository/github/wieslawsoltes/panandzoom)
-
 PanAndZoom control for WPF and Avalonia
 
 <a href='https://www.youtube.com/watch?v=dM_cRdEuksU' target='_blank'>![](https://i.ytimg.com/vi/dM_cRdEuksU/hqdefault.jpg)<a/>
