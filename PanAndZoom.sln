@@ -47,18 +47,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{D83B9ECD
 		build\Rx.props = build\Rx.props
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cake", "cake", "{C372CFD6-AFFD-4E88-9F47-9AB24E20B91A}"
-	ProjectSection(SolutionItems) = preProject
-		build.cake = build.cake
-		build.ps1 = build.ps1
-		build.sh = build.sh
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ci", "ci", "{32DB24AD-BD3C-4F4B-B44D-75C488A04142}"
 	ProjectSection(SolutionItems) = preProject
 		.travis.yml = .travis.yml
 		_config.yml = _config.yml
 		appveyor.yml = appveyor.yml
+		azure-pipelines.yml = azure-pipelines.yml
+		circle.yml = circle.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.Controls.ViewBox", "src\Avalonia.Controls.ViewBox\Avalonia.Controls.ViewBox.csproj", "{35B9AD6F-290C-4932-9900-D51721966E93}"
@@ -134,7 +129,6 @@ Global
 		{670F5FF3-999F-450B-8F31-8AB62A43DCEF} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
 		{E16CD9A4-AA47-4440-9EB7-B9E8E59EBFC5} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
 		{D83B9ECD-F143-4A6C-AFD7-F961174D824C} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
-		{C372CFD6-AFFD-4E88-9F47-9AB24E20B91A} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
 		{32DB24AD-BD3C-4F4B-B44D-75C488A04142} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
 		{35B9AD6F-290C-4932-9900-D51721966E93} = {3FBE9035-8FFD-447D-949A-8E63AF15B89A}
 		{10DDB443-E910-47C5-B1C1-1ED769BE9834} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
