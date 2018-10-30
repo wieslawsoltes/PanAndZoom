@@ -28,7 +28,7 @@ namespace Avalonia.Controls
 
         static ViewBox()
         {
-            AffectsArrange(StretchProperty);
+            AffectsArrange<ViewBox>(StretchProperty);
         }
 
         /// <inheritdoc/>
