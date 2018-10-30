@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3FBE9035-8FF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6E241F85-FE51-47E5-B9C2-50AAA7FEC499}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		build.cake = build.cake
 	EndProjectSection
 EndProject
@@ -61,6 +62,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ci", "ci", "{32DB24AD-BD3C-
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.Controls.ViewBox", "src\Avalonia.Controls.ViewBox\Avalonia.Controls.ViewBox.csproj", "{35B9AD6F-290C-4932-9900-D51721966E93}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{10DDB443-E910-47C5-B1C1-1ED769BE9834}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -130,6 +137,7 @@ Global
 		{C372CFD6-AFFD-4E88-9F47-9AB24E20B91A} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
 		{32DB24AD-BD3C-4F4B-B44D-75C488A04142} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
 		{35B9AD6F-290C-4932-9900-D51721966E93} = {3FBE9035-8FFD-447D-949A-8E63AF15B89A}
+		{10DDB443-E910-47C5-B1C1-1ED769BE9834} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81CAD068-E34F-49E9-A78D-B455F3CF2EAC}
