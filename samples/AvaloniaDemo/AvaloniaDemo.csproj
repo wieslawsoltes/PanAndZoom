@@ -9,6 +9,11 @@
     <IsPackable>False</IsPackable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Description>Easily add pan and zoom functionality to your Avalonia apps using PanAndZoom control.</Description>
+    <PackageTags>Pan;Zoom;Control;Xaml;Managed;C#</PackageTags>
+  </PropertyGroup>
+
   <Import Project="..\..\build\Base.props" />
   <Import Project="..\..\build\Rx.props" />
   <Import Project="..\..\build\Avalonia.props" />
