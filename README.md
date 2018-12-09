@@ -2,7 +2,7 @@
 
 [![Gitter](https://badges.gitter.im/wieslawsoltes/PanAndZoom.svg)](https://gitter.im/wieslawsoltes/PanAndZoom?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-[![Build Status](https://dev.azure.com/wieslawsoltes/PanAndZoom/_apis/build/status/wieslawsoltes.PanAndZoom)](https://dev.azure.com/wieslawsoltes/PanAndZoom/_build/latest?definitionId=1)
+[![Build status](https://dev.azure.com/wieslawsoltes/PanAndZoom/_apis/build/status/PanAndZoom)](https://dev.azure.com/wieslawsoltes/PanAndZoom/_build/latest?definitionId=-1)
 
 [![NuGet](https://img.shields.io/nuget/v/Avalonia.Controls.PanAndZoom.svg)](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom)
 [![MyGet](https://img.shields.io/myget/panandzoom-nightly/vpre/Avalonia.Controls.PanAndZoom.svg?label=myget)](https://www.myget.org/gallery/panandzoom-nightly) 
