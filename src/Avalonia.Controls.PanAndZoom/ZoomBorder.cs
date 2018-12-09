@@ -263,7 +263,7 @@ namespace Avalonia.Controls.PanAndZoom
 
         static ZoomBorder()
         {
-            AffectsArrange(
+            AffectsArrange<ZoomBorder>(
                 ZoomSpeedProperty,
                 StretchProperty,
                 EnableConstrainsProperty,
