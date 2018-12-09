@@ -1,13 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFrameworks>net45</TargetFrameworks>
+    <TargetFrameworks>net461</TargetFrameworks>
     <OutputType>Library</OutputType>
     <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+
+  <PropertyGroup>
+    <Description>Easily add pan and zoom functionality to your WPF apps using PanAndZoom control.</Description>
+    <PackageTags>WPF;Pan;Zoom;Control;Xaml;Managed;C#</PackageTags>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\Base.props" />
+
+  <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -20,13 +29,13 @@
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="..\Shared\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="**\*.cs" Exclude="obj\**" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\PanAndZoom\PanAndZoom.csproj" />
   </ItemGroup>
+
 </Project>

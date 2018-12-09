@@ -2,7 +2,6 @@
 
 [![Gitter](https://badges.gitter.im/wieslawsoltes/PanAndZoom.svg)](https://gitter.im/wieslawsoltes/PanAndZoom?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/mbwd4i983lkc15c0/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/panandzoom/branch/master)
 [![Build Status](https://dev.azure.com/wieslawsoltes/PanAndZoom/_apis/build/status/wieslawsoltes.PanAndZoom)](https://dev.azure.com/wieslawsoltes/PanAndZoom/_build/latest?definitionId=1)
 
 [![NuGet](https://img.shields.io/nuget/v/Avalonia.Controls.PanAndZoom.svg)](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom)
