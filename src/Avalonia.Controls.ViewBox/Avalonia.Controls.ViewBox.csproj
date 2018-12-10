@@ -1,19 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>ViewBox control for Avalonia apps.</Description>
+    <PackageTags>Avalonia;ViewBox;Control;Xaml;Managed;C#</PackageTags>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\Base.props" />
+  <Import Project="..\..\build\Rx.props" />
+  <Import Project="..\..\build\Avalonia.props" />
+
   <ItemGroup>
-    <Compile Include="..\Shared\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="**\*.cs" Exclude="obj\**" />
   </ItemGroup>
-  <Import Project="$(MSBuildThisFileDirectory)..\..\build\Rx.props" />
-  <Import Project="$(MSBuildThisFileDirectory)..\..\build\Avalonia.props" />
-  <Import Project="$(MSBuildThisFileDirectory)..\..\build\NetFX.props" />
+
 </Project>

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>False</IsPackable>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\XUnit.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Avalonia.Controls.ViewBox\Avalonia.Controls.ViewBox.csproj" />
+  </ItemGroup>
+
+</Project>

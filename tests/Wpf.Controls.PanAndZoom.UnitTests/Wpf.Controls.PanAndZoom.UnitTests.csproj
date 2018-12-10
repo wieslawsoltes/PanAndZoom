@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>False</IsPackable>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\XUnit.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PanAndZoom\PanAndZoom.csproj" />
+    <ProjectReference Include="..\..\src\Wpf.Controls.PanAndZoom\Wpf.Controls.PanAndZoom.csproj" />
+  </ItemGroup>
+
+</Project>
