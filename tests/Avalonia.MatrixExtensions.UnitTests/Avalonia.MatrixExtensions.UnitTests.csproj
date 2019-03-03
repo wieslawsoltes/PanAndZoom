@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>False</IsPackable>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\XUnit.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Avalonia.MatrixExtensions\Avalonia.MatrixExtensions.csproj" />
+  </ItemGroup>
+
+</Project>

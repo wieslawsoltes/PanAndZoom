@@ -1,13 +1,14 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using static System.Math;
 using PanAndZoom;
-using System.Diagnostics;
+using Wpf.MatrixExtensions;
+using static System.Math;
 
 namespace Wpf.Controls.PanAndZoom
 {
@@ -349,7 +350,7 @@ namespace Wpf.Controls.PanAndZoom
         private void Defaults()
         {
             _isPanning = false;
-            _matrix = MatrixHelper.Identity;
+            _matrix = Matrix.Identity;
         }
 
         /// <summary>
@@ -641,7 +642,7 @@ namespace Wpf.Controls.PanAndZoom
                         }
                     }
             }
-            return MatrixHelper.Identity;
+            return Matrix.Identity;
         }
 
         /// <inheritdoc/>
@@ -722,7 +723,7 @@ namespace Wpf.Controls.PanAndZoom
         /// <inheritdoc/>
         public void Reset()
         {
-            _matrix = MatrixHelper.Identity;
+            _matrix = Matrix.Identity;
             Invalidate();
         }
 

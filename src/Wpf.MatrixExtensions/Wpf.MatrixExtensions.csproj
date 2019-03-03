@@ -11,19 +11,14 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>Easily add pan and zoom functionality to your WPF apps using PanAndZoom control.</Description>
-    <PackageTags>WPF;Pan;Zoom;Control;Xaml;Managed;C#</PackageTags>
+    <Description>WPF matrix extensions.</Description>
+    <PackageTags>WPF;Matrix;Translate;TranslatePrepend;Scale;ScaleAt;ScaleAtPrepend;Skew;Rotation;TransformPoint;Managed;C#"</PackageTags>
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
 
   <ItemGroup>
     <Compile Include="**\*.cs" Exclude="obj\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\PanAndZoom\PanAndZoom.csproj" />
-    <ProjectReference Include="..\Wpf.MatrixExtensions\Wpf.MatrixExtensions.csproj" />
   </ItemGroup>
 
 </Project>

@@ -10,8 +10,6 @@
   <Import Project="..\..\build\XUnit.props" />
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\PanAndZoom\PanAndZoom.csproj" />
-    <ProjectReference Include="..\..\src\Wpf.Controls.PanAndZoom\Wpf.Controls.PanAndZoom.csproj" />
     <ProjectReference Include="..\..\src\Wpf.MatrixExtensions\Wpf.MatrixExtensions.csproj" />
   </ItemGroup>
 

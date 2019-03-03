@@ -1,12 +1,13 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
+using System.Diagnostics;
 using Avalonia.Data;
 using Avalonia.Input;
+using Avalonia.MatrixExtensions;
 using Avalonia.Media;
-using static System.Math;
 using PanAndZoom;
-using System.Diagnostics;
+using static System.Math;
 
 namespace Avalonia.Controls.PanAndZoom
 {
@@ -297,7 +298,7 @@ namespace Avalonia.Controls.PanAndZoom
         private void Defaults()
         {
             _isPanning = false;
-            _matrix = MatrixHelper.Identity;
+            _matrix = Matrix.Identity;
         }
 
         /// <summary>
@@ -554,7 +555,7 @@ namespace Avalonia.Controls.PanAndZoom
                     zoom = Max(zx, zy);
                     return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
             }
-            return MatrixHelper.Identity;
+            return Matrix.Identity;
         }
 
         /// <inheritdoc/>
@@ -635,7 +636,7 @@ namespace Avalonia.Controls.PanAndZoom
         /// <inheritdoc/>
         public void Reset()
         {
-            _matrix = MatrixHelper.Identity;
+            _matrix = Matrix.Identity;
             Invalidate();
         }
 

@@ -4,19 +4,13 @@ using System.Windows;
 using System.Windows.Media;
 using static System.Math;
 
-namespace Wpf.Controls.PanAndZoom
+namespace Wpf.MatrixExtensions
 {
     /// <summary>
     /// WPF Matrix helper methods.
     /// </summary>
     public static class MatrixHelper
     {
-        /// <summary>
-        /// Gets the identity matrix.
-        /// </summary>
-        /// <value>The identity matrix.</value>
-        public static readonly Matrix Identity = new Matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0);
-
         /// <summary>
         /// Creates a translation matrix using the specified offsets.
         /// </summary>

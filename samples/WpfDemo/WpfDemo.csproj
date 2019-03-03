@@ -15,18 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\PanAndZoom\PanAndZoom.csproj" />
     <ProjectReference Include="..\..\src\Wpf.Controls.PanAndZoom\Wpf.Controls.PanAndZoom.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <ProjectReference Include="..\..\src\Wpf.MatrixExtensions\Wpf.MatrixExtensions.csproj" />
   </ItemGroup>
 
 </Project>
