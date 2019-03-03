@@ -422,7 +422,6 @@ namespace Avalonia.Controls.PanAndZoom
             if (_element != null && e.Device.Captured == null)
             {
                 Point point = e.GetPosition(_element);
-                point = FixInvalidPointPosition(point);
                 ZoomDeltaTo(e.Delta.Y, point.X, point.Y);
             }
         }
@@ -432,7 +431,6 @@ namespace Avalonia.Controls.PanAndZoom
             if (_element != null && e.Device.Captured == null && _isPanning == false)
             {
                 Point point = e.GetPosition(_element);
-                point = FixInvalidPointPosition(point);
                 StartPan(point.X, point.Y);
                 e.Device.Capture(_element);
                 _isPanning = true;
@@ -453,7 +451,6 @@ namespace Avalonia.Controls.PanAndZoom
             if (_element != null && e.Device.Captured == _element && _isPanning == true)
             {
                 Point point = e.GetPosition(_element);
-                point = FixInvalidPointPosition(point);
                 PanTo(point.X, point.Y);
             }
         }
@@ -667,16 +664,6 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 AutoFit(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
             }
-        }
-
-        /// <summary>
-        /// Fix point position using current render transform matrix.
-        /// </summary>
-        /// <param name="point">The point to fix.</param>
-        /// <returns>The fixed point.</returns>
-        public Point FixInvalidPointPosition(Point point)
-        {
-            return MatrixHelper.TransformPoint(_matrix.Invert(), point);
         }
     }
 }
