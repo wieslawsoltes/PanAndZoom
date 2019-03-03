@@ -36,8 +36,6 @@ You can install the package for `WPF` based projects like this:
 * [System.Reactive.Linq](https://www.nuget.org/packages/System.Reactive.Linq/)
 * [System.Reactive.PlatformServices](https://www.nuget.org/packages/System.Reactive.PlatformServices/)
 * [Serilog](https://www.nuget.org/packages/Serilog/)
-* [Splat](https://www.nuget.org/packages/Splat/)
-* [Sprache](https://www.nuget.org/packages/Sprache/)
 * [System.ValueTuple](https://www.nuget.org/packages/System.ValueTuple/)
 
 ### Package Sources
