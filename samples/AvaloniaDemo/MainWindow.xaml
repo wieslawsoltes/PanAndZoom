@@ -22,15 +22,15 @@
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
                     <TextBlock Text="PanButton:" VerticalAlignment="Center"/>
-                    <DropDown Items="{x:Static paz:ZoomBorder.ButtonNames}"
+                    <ComboBox Items="{x:Static paz:ZoomBorder.ButtonNames}"
                               SelectedItem="{Binding #zoomBorder.PanButton, Mode=TwoWay}"
                               Margin="2">
-                    </DropDown>
+                    </ComboBox>
                     <TextBlock Text="Stretch:" VerticalAlignment="Center"/>
-                    <DropDown Items="{x:Static paz:ZoomBorder.StretchModes}"
+                    <ComboBox Items="{x:Static paz:ZoomBorder.StretchModes}"
                               SelectedItem="{Binding #zoomBorder.Stretch, Mode=TwoWay}"
                               Margin="2">
-                    </DropDown>
+                    </ComboBox>
                     <TextBlock Text="ZoomSpeed:" VerticalAlignment="Center"/>
                     <TextBox Text="{Binding #zoomBorder.ZoomSpeed, Mode=TwoWay}"
                              TextAlignment="Center" Width="50" Margin="2"/>
