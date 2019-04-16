@@ -106,6 +106,21 @@ namespace PanAndZoom
         bool EnableInput { get; set; }
 
         /// <summary>
+        /// Gets or sets flag indicating whether zoom gesture is enabled.
+        /// </summary>
+        bool EnableGestureZoom { get; set; }
+
+        /// <summary>
+        /// Gets or sets flag indicating whether rotation gesture is enabled.
+        /// </summary>
+        bool EnableGestureRotation { get; set; }
+
+        /// <summary>
+        /// Gets or sets flag indicating whether translation (pan) gesture is enabled.
+        /// </summary>
+        bool EnableGestureTranslation { get; set; }
+
+        /// <summary>
         /// Invalidate child element.
         /// </summary>
         void Invalidate();
