@@ -162,7 +162,6 @@ namespace Wpf.Controls.PanAndZoom
             set => SetValue(EnableGestureTranslationProperty, value);
         }
 
-
         /// <summary>
         /// Identifies the <seealso cref="PanButton"/> dependency property.
         /// </summary>
