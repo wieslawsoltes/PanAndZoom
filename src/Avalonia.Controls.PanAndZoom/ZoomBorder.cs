@@ -144,6 +144,27 @@ namespace Avalonia.Controls.PanAndZoom
             set => SetValue(EnableInputProperty, value);
         }
 
+        /// <inheritdoc/>
+        public bool EnableGestureZoom
+        {
+            get => GetValue(EnableGestureZoomProperty);
+            set => SetValue(EnableGestureZoomProperty, value);
+        }
+
+        /// <inheritdoc/>
+        public bool EnableGestureRotation
+        {
+            get => GetValue(EnableGestureRotationProperty);
+            set => SetValue(EnableGestureRotationProperty, value);
+        }
+
+        /// <inheritdoc/>
+        public bool EnableGestureTranslation
+        {
+            get => GetValue(EnableGestureTranslationProperty);
+            set => SetValue(EnableGestureTranslationProperty, value);
+        }
+
         /// <summary>
         /// Identifies the <seealso cref="PanButton"/> avalonia property.
         /// </summary>
@@ -261,6 +282,24 @@ namespace Avalonia.Controls.PanAndZoom
         /// </summary>
         public static AvaloniaProperty<bool> EnableInputProperty =
             AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableInput), true, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// Identifies the <seealso cref="EnableGestureZoom"/> avalonia property.
+        /// </summary>
+        public static AvaloniaProperty<bool> EnableGestureZoomProperty =
+            AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableGestureZoom), true, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// Identifies the <seealso cref="EnableGestureRotation"/> avalonia property.
+        /// </summary>
+        public static AvaloniaProperty<bool> EnableGestureRotationProperty =
+            AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableGestureRotation), true, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// Identifies the <seealso cref="EnableGestureTranslation"/> avalonia property.
+        /// </summary>
+        public static AvaloniaProperty<bool> EnableGestureTranslationProperty =
+            AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableGestureTranslation), true, false, BindingMode.TwoWay);
 
         static ZoomBorder()
         {

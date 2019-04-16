@@ -141,6 +141,27 @@ namespace Wpf.Controls.PanAndZoom
             set => SetValue(EnableInputProperty, value);
         }
 
+        /// <inheritdoc/>
+        public bool EnableGestureZoom
+        {
+            get => (bool)GetValue(EnableGestureZoomProperty);
+            set => SetValue(EnableGestureZoomProperty, value);
+        }
+
+        /// <inheritdoc/>
+        public bool EnableGestureRotation
+        {
+            get => (bool)GetValue(EnableGestureRotationProperty);
+            set => SetValue(EnableGestureRotationProperty, value);
+        }
+
+        /// <inheritdoc/>
+        public bool EnableGestureTranslation
+        {
+            get => (bool)GetValue(EnableGestureTranslationProperty);
+            set => SetValue(EnableGestureTranslationProperty, value);
+        }
+
         /// <summary>
         /// Identifies the <seealso cref="PanButton"/> dependency property.
         /// </summary>
@@ -320,6 +341,36 @@ namespace Wpf.Controls.PanAndZoom
                 new FrameworkPropertyMetadata(true));
 
         /// <summary>
+        /// Identifies the <seealso cref="EnableGestureZoom"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty EnableGestureZoomProperty =
+            DependencyProperty.Register(
+                nameof(EnableGestureZoom),
+                typeof(bool),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(true));
+
+        /// <summary>
+        /// Identifies the <seealso cref="EnableGestureRotation"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty EnableGestureRotationProperty =
+            DependencyProperty.Register(
+                nameof(EnableGestureRotation),
+                typeof(bool),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(true));
+
+        /// <summary>
+        /// Identifies the <seealso cref="EnableGestureTranslation"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty EnableGestureTranslationProperty =
+            DependencyProperty.Register(
+                nameof(EnableGestureTranslation),
+                typeof(bool),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(true));
+
+        /// <summary>
         /// Gets or sets single child of a <see cref="ZoomBorder"/> control.
         /// </summary>
         public override UIElement Child
@@ -345,6 +396,8 @@ namespace Wpf.Controls.PanAndZoom
 
             Loaded += PanAndZoom_Loaded;
             Unloaded += PanAndZoom_Unloaded;
+
+            IsManipulationEnabled = true;
         }
 
         private void Defaults()
@@ -430,6 +483,44 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
+        private void Border_ManipulationStarting(object sender, ManipulationStartingEventArgs e)
+        {
+            if (EnableInput && _element != null)
+            {
+                e.ManipulationContainer = this;
+            }
+        }
+
+        private void Border_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
+        {
+            if (EnableInput && _element != null)
+            {
+                var deltaManipulation = e.DeltaManipulation;
+                double scale = ((deltaManipulation.Scale.X - 1) * ZoomSpeed) + 1;
+                var matrix = ((MatrixTransform)_element.RenderTransform).Matrix;
+                Point center = new Point(_element.RenderSize.Width / 2, _element.RenderSize.Height / 2);
+                center = matrix.Transform(center);
+
+                if (EnableGestureZoom)
+                {
+                    matrix.ScaleAt(scale, scale, center.X, center.Y);
+                }
+
+                if (EnableGestureRotation)
+                {
+                    matrix.RotateAt(e.DeltaManipulation.Rotation, center.X, center.Y);
+                }
+
+                if (EnableGestureTranslation)
+                {
+                    matrix.Translate(e.DeltaManipulation.Translation.X, e.DeltaManipulation.Translation.Y);
+                }
+
+                 ((MatrixTransform)_element.RenderTransform).Matrix = matrix;
+                e.Handled = true;
+            }
+        }
+
         private void ChildChanged(UIElement element)
         {
             if (element != null && element != _element && _element != null)
@@ -454,6 +545,8 @@ namespace Wpf.Controls.PanAndZoom
                 this.PreviewMouseDown += Border_PreviewMouseDown;
                 this.PreviewMouseUp += Border_PreviewMouseUp;
                 this.PreviewMouseMove += Border_PreviewMouseMove;
+                this.ManipulationStarting += Border_ManipulationStarting;
+                this.ManipulationDelta += Border_ManipulationDelta;
             }
         }
 
@@ -465,6 +558,8 @@ namespace Wpf.Controls.PanAndZoom
                 this.PreviewMouseDown -= Border_PreviewMouseDown;
                 this.PreviewMouseUp -= Border_PreviewMouseUp;
                 this.PreviewMouseMove -= Border_PreviewMouseMove;
+                this.ManipulationStarting -= Border_ManipulationStarting;
+                this.ManipulationDelta -= Border_ManipulationDelta;
                 _element.RenderTransform = null;
                 _element = null;
                 Defaults();
