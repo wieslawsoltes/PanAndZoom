@@ -483,6 +483,44 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
+        private void Border_ManipulationStarting(object sender, ManipulationStartingEventArgs e)
+        {
+            if (EnableInput && _element != null)
+            {
+                e.ManipulationContainer = this;
+            }
+        }
+
+        private void Border_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
+        {
+            if (EnableInput && _element != null)
+            {
+                var deltaManipulation = e.DeltaManipulation;
+                double scale = ((deltaManipulation.Scale.X - 1) * ZoomSpeed) + 1;
+                var matrix = ((MatrixTransform)_element.RenderTransform).Matrix;
+                Point center = new Point(_element.RenderSize.Width / 2, _element.RenderSize.Height / 2);
+                center = matrix.Transform(center);
+
+                if (EnableGestureZoom)
+                {
+                    matrix.ScaleAt(scale, scale, center.X, center.Y);
+                }
+
+                if (EnableGestureRotation)
+                {
+                    matrix.RotateAt(e.DeltaManipulation.Rotation, center.X, center.Y);
+                }
+
+                if (EnableGestureTranslation)
+                {
+                    matrix.Translate(e.DeltaManipulation.Translation.X, e.DeltaManipulation.Translation.Y);
+                }
+
+                 ((MatrixTransform)_element.RenderTransform).Matrix = matrix;
+                e.Handled = true;
+            }
+        }
+
         private void ChildChanged(UIElement element)
         {
             if (element != null && element != _element && _element != null)
@@ -507,6 +545,8 @@ namespace Wpf.Controls.PanAndZoom
                 this.PreviewMouseDown += Border_PreviewMouseDown;
                 this.PreviewMouseUp += Border_PreviewMouseUp;
                 this.PreviewMouseMove += Border_PreviewMouseMove;
+                this.ManipulationStarting += Border_ManipulationStarting;
+                this.ManipulationDelta += Border_ManipulationDelta;
             }
         }
 
@@ -518,6 +558,8 @@ namespace Wpf.Controls.PanAndZoom
                 this.PreviewMouseDown -= Border_PreviewMouseDown;
                 this.PreviewMouseUp -= Border_PreviewMouseUp;
                 this.PreviewMouseMove -= Border_PreviewMouseMove;
+                this.ManipulationStarting -= Border_ManipulationStarting;
+                this.ManipulationDelta -= Border_ManipulationDelta;
                 _element.RenderTransform = null;
                 _element = null;
                 Defaults();
@@ -804,54 +846,6 @@ namespace Wpf.Controls.PanAndZoom
             if (_element != null)
             {
                 AutoFit(this.RenderSize.Width, this.RenderSize.Height, _element.RenderSize.Width, _element.RenderSize.Height);
-            }
-        }
-
-        /// <inheritdoc/>
-        protected override void OnManipulationStarting(ManipulationStartingEventArgs e)
-        {
-            // Set our container to this UserControl which will allow
-            // us to apply the transforms to the UserControl in the other 
-            // Manipulation Events
-            e.ManipulationContainer = this;
-        }
-
-        /// <inheritdoc/>
-        protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
-        {
-            if (_element != null)
-            {
-                var deltaManipulation = e.DeltaManipulation;
-
-                // recompute scale to apply ZoomSpeed
-                double scale = ((deltaManipulation.Scale.X - 1) * ZoomSpeed) + 1;
-
-                var matrix = ((MatrixTransform)_element.RenderTransform).Matrix;
-                // find the old center
-                Point center = new Point(_element.RenderSize.Width / 2, _element.RenderSize.Height / 2);
-                // transform it to take into account transforms from previous manipulations 
-                center = matrix.Transform(center);
-
-                if (EnableGestureZoom)
-                {
-                    //this will be a Zoom. 
-                    matrix.ScaleAt(scale, scale, center.X, center.Y);
-                }
-
-                if (EnableGestureRotation)
-                {
-                    // Rotation 
-                    matrix.RotateAt(e.DeltaManipulation.Rotation, center.X, center.Y);
-                }
-
-                if (EnableGestureTranslation)
-                {
-                    //Translation (pan) 
-                    matrix.Translate(e.DeltaManipulation.Translation.X, e.DeltaManipulation.Translation.Y);
-                }
-
-                ((MatrixTransform)_element.RenderTransform).Matrix = matrix;
-                e.Handled = true;
             }
         }
     }
