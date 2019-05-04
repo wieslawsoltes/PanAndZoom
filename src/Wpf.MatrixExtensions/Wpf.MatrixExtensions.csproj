@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFrameworks>net452;net461;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0;net452;net461</TargetFrameworks>
     <OutputType>Library</OutputType>
     <UseWPF>True</UseWPF>
     <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
+  <Import Project="..\..\build\ReferenceAssemblies.props" />
 
   <ItemGroup>
     <Compile Include="**\*.cs" Exclude="obj\**" />
