@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <PackageId>Avalonia.Controls.PanAndZoom</PackageId>
     <Description>Easily add pan and zoom functionality to your Avalonia apps using PanAndZoom control.</Description>
     <PackageTags>Avalonia;Pan;Zoom;Control;Xaml;Managed;C#"</PackageTags>
   </PropertyGroup>

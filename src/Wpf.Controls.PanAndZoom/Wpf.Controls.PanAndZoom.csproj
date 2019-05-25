@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <PackageId>Wpf.Controls.PanAndZoom</PackageId>
     <Description>Easily add pan and zoom functionality to your WPF apps using PanAndZoom control.</Description>
     <PackageTags>WPF;Pan;Zoom;Control;Xaml;Managed;C#</PackageTags>
   </PropertyGroup>

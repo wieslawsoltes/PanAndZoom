@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <PackageId>Avalonia.Controls.ViewBox</PackageId>
     <Description>ViewBox control for Avalonia apps.</Description>
     <PackageTags>Avalonia;ViewBox;Control;Xaml;Managed;C#</PackageTags>
   </PropertyGroup>

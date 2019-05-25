@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <PackageId>Avalonia.MatrixExtensions</PackageId>
     <Description>Avalonia matrix extensions.</Description>
     <PackageTags>Avalonia;Matrix;Translate;TranslatePrepend;Scale;ScaleAt;ScaleAtPrepend;Skew;Rotation;TransformPoint;Managed;C#"</PackageTags>
   </PropertyGroup>

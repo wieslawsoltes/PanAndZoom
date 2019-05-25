@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <PackageId>Wpf.MatrixExtensions</PackageId>
     <Description>WPF matrix extensions.</Description>
     <PackageTags>WPF;Matrix;Translate;TranslatePrepend;Scale;ScaleAt;ScaleAtPrepend;Skew;Rotation;TransformPoint;Managed;C#"</PackageTags>
   </PropertyGroup>
