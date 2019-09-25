@@ -25,6 +25,7 @@ namespace Avalonia.Controls.PanAndZoom
         private double _zoomY = 1.0;
         private double _offsetX = 0.0;
         private double _offsetY = 0.0;
+        private bool _captured = false;
         private static StretchMode[] _autoFitModes = (StretchMode[])Enum.GetValues(typeof(StretchMode));
         private static ButtonName[] _buttonNames = (ButtonName[])Enum.GetValues(typeof(ButtonName));
 
@@ -338,6 +339,7 @@ namespace Avalonia.Controls.PanAndZoom
         {
             _isPanning = false;
             _matrix = Matrix.Identity;
+            _captured = false;
         }
 
         /// <summary>
@@ -383,38 +385,17 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Border_PointerPressed(object sender, PointerPressedEventArgs e)
         {
-            if (EnableInput)
-            {
-                var button = PanButton;
-                if ((e.MouseButton == MouseButton.Left && button == ButtonName.Left)
-                    || (e.MouseButton == MouseButton.Right && button == ButtonName.Right)
-                    || (e.MouseButton == MouseButton.Middle && button == ButtonName.Middle))
-                {
-                    Pressed(e);
-                }
-            }
+            Pressed(e);
         }
 
         private void Border_PointerReleased(object sender, PointerReleasedEventArgs e)
         {
-            if (EnableInput)
-            {
-                var button = PanButton;
-                if ((e.MouseButton == MouseButton.Left && button == ButtonName.Left)
-                    || (e.MouseButton == MouseButton.Right && button == ButtonName.Right)
-                    || (e.MouseButton == MouseButton.Middle && button == ButtonName.Middle))
-                {
-                    Released(e);
-                }
-            }
+            Released(e);
         }
 
         private void Border_PointerMoved(object sender, PointerEventArgs e)
         {
-            if (EnableInput)
-            {
-                Moved(e);
-            }
+            Moved(e);
         }
 
         private void ChildChanged(IControl element)
@@ -459,7 +440,7 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Wheel(PointerWheelEventArgs e)
         {
-            if (_element != null && e.Device.Captured == null)
+            if (_element != null && _captured == false)
             {
                 Point point = e.GetPosition(_element);
                 ZoomDeltaTo(e.Delta.Y, point.X, point.Y);
@@ -468,30 +449,52 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Pressed(PointerPressedEventArgs e)
         {
-            if (_element != null && e.Device.Captured == null && _isPanning == false)
+            if (EnableInput)
             {
-                Point point = e.GetPosition(_element);
-                StartPan(point.X, point.Y);
-                e.Device.Capture(_element);
-                _isPanning = true;
+                var button = PanButton;
+
+                if ((e.GetPointerPoint(this).Properties.IsLeftButtonPressed && button == ButtonName.Left)
+                    || (e.GetPointerPoint(this).Properties.IsRightButtonPressed && button == ButtonName.Right)
+                    || (e.GetPointerPoint(this).Properties.IsMiddleButtonPressed && button == ButtonName.Middle))
+                {
+                    if (_element != null && _captured == false && _isPanning == false)
+                    {
+                        Point point = e.GetPosition(_element);
+                        StartPan(point.X, point.Y);
+                        _captured = true;
+                        _isPanning = true;
+                    }
+                }
             }
         }
 
         private void Released(PointerReleasedEventArgs e)
         {
-            if (_element != null && e.Device.Captured == _element && _isPanning == true)
+            if (EnableInput)
             {
-                e.Device.Capture(null);
-                _isPanning = false;
+                var button = PanButton;
+                if ((e.GetPointerPoint(this).Properties.IsLeftButtonPressed && button == ButtonName.Left)
+                    || (e.GetPointerPoint(this).Properties.IsRightButtonPressed && button == ButtonName.Right)
+                    || (e.GetPointerPoint(this).Properties.IsMiddleButtonPressed && button == ButtonName.Middle))
+                {
+                    if (_element != null && _captured == true && _isPanning == true)
+                    {
+                        _captured = false;
+                        _isPanning = false;
+                    }
+                }
             }
         }
 
         private void Moved(PointerEventArgs e)
         {
-            if (_element != null && e.Device.Captured == _element && _isPanning == true)
+            if (EnableInput)
             {
-                Point point = e.GetPosition(_element);
-                PanTo(point.X, point.Y);
+                if (_element != null && _captured == true && _isPanning == true)
+                {
+                    Point point = e.GetPosition(_element);
+                    PanTo(point.X, point.Y);
+                }
             }
         }
 
