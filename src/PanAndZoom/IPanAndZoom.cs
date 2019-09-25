@@ -18,7 +18,7 @@ namespace PanAndZoom
         /// Third parameter is pan offset for x axis.
         /// Fourth parameter is pan offset for y axis.
         /// </remarks>
-        Action<double, double, double, double> InvalidatedChild { get; set; }
+        Action<double, double, double, double>? InvalidatedChild { get; set; }
 
         /// <summary>
         /// Gets or sets pan input button.

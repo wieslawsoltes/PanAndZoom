@@ -17,7 +17,7 @@ namespace Wpf.Controls.PanAndZoom
     /// </summary>
     public class ZoomBorder : Border, IPanAndZoom
     {
-        private UIElement _element;
+        private UIElement? _element;
         private Point _pan;
         private Point _previous;
         private Matrix _matrix;
@@ -36,7 +36,7 @@ namespace Wpf.Controls.PanAndZoom
         public static ButtonName[] ButtonNames => _buttonNames;
 
         /// <inheritdoc/>
-        public Action<double, double, double, double> InvalidatedChild { get; set; }
+        public Action<double, double, double, double>? InvalidatedChild { get; set; }
 
         /// <inheritdoc/>
         public ButtonName PanButton
@@ -483,7 +483,7 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
-        private void Border_ManipulationStarting(object sender, ManipulationStartingEventArgs e)
+        private void Border_ManipulationStarting(object? sender, ManipulationStartingEventArgs e)
         {
             if (EnableInput && _element != null)
             {
@@ -491,7 +491,7 @@ namespace Wpf.Controls.PanAndZoom
             }
         }
 
-        private void Border_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
+        private void Border_ManipulationDelta(object? sender, ManipulationDeltaEventArgs e)
         {
             if (EnableInput && _element != null)
             {
@@ -825,19 +825,28 @@ namespace Wpf.Controls.PanAndZoom
         /// <inheritdoc/>
         public void Fill()
         {
-            Fill(this.RenderSize.Width, this.RenderSize.Height, _element.RenderSize.Width, _element.RenderSize.Height);
+            if (_element != null)
+            {
+                Fill(this.RenderSize.Width, this.RenderSize.Height, _element.RenderSize.Width, _element.RenderSize.Height); 
+            }
         }
 
         /// <inheritdoc/>
         public void Uniform()
         {
-            Uniform(this.RenderSize.Width, this.RenderSize.Height, _element.RenderSize.Width, _element.RenderSize.Height);
+            if (_element != null)
+            {
+                Uniform(this.RenderSize.Width, this.RenderSize.Height, _element.RenderSize.Width, _element.RenderSize.Height); 
+            }
         }
 
         /// <inheritdoc/>
         public void UniformToFill()
         {
-            UniformToFill(this.RenderSize.Width, this.RenderSize.Height, _element.RenderSize.Width, _element.RenderSize.Height);
+            if (_element != null)
+            {
+                UniformToFill(this.RenderSize.Width, this.RenderSize.Height, _element.RenderSize.Width, _element.RenderSize.Height); 
+            }
         }
 
         /// <inheritdoc/>

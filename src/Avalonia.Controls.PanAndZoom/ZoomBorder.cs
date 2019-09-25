@@ -16,7 +16,7 @@ namespace Avalonia.Controls.PanAndZoom
     /// </summary>
     public class ZoomBorder : Border, IPanAndZoom
     {
-        private IControl _element;
+        private IControl? _element;
         private Point _pan;
         private Point _previous;
         private Matrix _matrix;
@@ -39,7 +39,7 @@ namespace Avalonia.Controls.PanAndZoom
         public static ButtonName[] ButtonNames => _buttonNames;
 
         /// <inheritdoc/>
-        public Action<double, double, double, double> InvalidatedChild { get; set; }
+        public Action<double, double, double, double>? InvalidatedChild { get; set; }
 
         /// <inheritdoc/>
         public ButtonName PanButton
@@ -682,19 +682,28 @@ namespace Avalonia.Controls.PanAndZoom
         /// <inheritdoc/>
         public void Fill()
         {
-            Fill(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
+            if (_element != null)
+            {
+                Fill(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height); 
+            }
         }
 
         /// <inheritdoc/>
         public void Uniform()
         {
-            Uniform(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
+            if (_element != null)
+            {
+                Uniform(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height); 
+            }
         }
 
         /// <inheritdoc/>
         public void UniformToFill()
         {
-            UniformToFill(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
+            if (_element != null)
+            {
+                UniformToFill(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height); 
+            }
         }
 
         /// <inheritdoc/>
