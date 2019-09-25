@@ -9,16 +9,11 @@ namespace AvaloniaDemo
 {
     internal class Program
     {
-        public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
-                         .UsePlatformDetect()
-                         .LogToDebug();
-
         private static void Main(string[] args)
         {
             try
             {
-                BuildAvaloniaApp().Start<MainWindow>();
+                BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
             }
             catch (Exception ex)
             {
@@ -26,5 +21,10 @@ namespace AvaloniaDemo
                 Debug.WriteLine(ex.StackTrace);
             }
         }
+
+        public static AppBuilder BuildAvaloniaApp()
+            => AppBuilder.Configure<App>()
+                         .UsePlatformDetect()
+                         .LogToDebug();
     }
 }
