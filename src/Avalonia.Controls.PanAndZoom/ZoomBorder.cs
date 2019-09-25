@@ -473,15 +473,11 @@ namespace Avalonia.Controls.PanAndZoom
             if (EnableInput)
             {
                 var button = PanButton;
-                if ((e.GetPointerPoint(this).Properties.IsLeftButtonPressed && button == ButtonName.Left)
-                    || (e.GetPointerPoint(this).Properties.IsRightButtonPressed && button == ButtonName.Right)
-                    || (e.GetPointerPoint(this).Properties.IsMiddleButtonPressed && button == ButtonName.Middle))
+
+                if (_element != null && _captured == true && _isPanning == true)
                 {
-                    if (_element != null && _captured == true && _isPanning == true)
-                    {
-                        _captured = false;
-                        _isPanning = false;
-                    }
+                    _captured = false;
+                    _isPanning = false;
                 }
             }
         }
