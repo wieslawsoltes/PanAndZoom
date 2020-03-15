@@ -365,13 +365,13 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void PanAndZoom_AttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
-            Debug.WriteLine($"AttachedToVisualTree: {this.Name}");
-            ChildChanged(base.Child);
+            Debug.WriteLine($"AttachedToVisualTree: {Name}");
+            ChildChanged(Child);
         }
 
         private void PanAndZoom_DetachedFromVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
-            Debug.WriteLine($"DetachedFromVisualTree: {this.Name}");
+            Debug.WriteLine($"DetachedFromVisualTree: {Name}");
             DetachElement();
         }
 
@@ -417,10 +417,10 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 Defaults();
                 _element = element;
-                this.PointerWheelChanged += Border_PointerWheelChanged;
-                this.PointerPressed += Border_PointerPressed;
-                this.PointerReleased += Border_PointerReleased;
-                this.PointerMoved += Border_PointerMoved;
+                PointerWheelChanged += Border_PointerWheelChanged;
+                PointerPressed += Border_PointerPressed;
+                PointerReleased += Border_PointerReleased;
+                PointerMoved += Border_PointerMoved;
             }
         }
 
@@ -428,10 +428,10 @@ namespace Avalonia.Controls.PanAndZoom
         {
             if (_element != null)
             {
-                this.PointerWheelChanged -= Border_PointerWheelChanged;
-                this.PointerPressed -= Border_PointerPressed;
-                this.PointerReleased -= Border_PointerReleased;
-                this.PointerMoved -= Border_PointerMoved;
+                PointerWheelChanged -= Border_PointerWheelChanged;
+                PointerPressed -= Border_PointerPressed;
+                PointerReleased -= Border_PointerReleased;
+                PointerMoved -= Border_PointerMoved;
                 _element.RenderTransform = null;
                 _element = null;
                 Defaults();
@@ -442,7 +442,7 @@ namespace Avalonia.Controls.PanAndZoom
         {
             if (_element != null && _captured == false)
             {
-                Point point = e.GetPosition(_element);
+                var point = e.GetPosition(_element);
                 ZoomDeltaTo(e.Delta.Y, point.X, point.Y);
             }
         }
@@ -452,14 +452,14 @@ namespace Avalonia.Controls.PanAndZoom
             if (EnableInput)
             {
                 var button = PanButton;
-
-                if ((e.GetPointerPoint(this).Properties.IsLeftButtonPressed && button == ButtonName.Left)
-                    || (e.GetPointerPoint(this).Properties.IsRightButtonPressed && button == ButtonName.Right)
-                    || (e.GetPointerPoint(this).Properties.IsMiddleButtonPressed && button == ButtonName.Middle))
+                var properties = e.GetCurrentPoint(this).Properties;
+                if ((properties.IsLeftButtonPressed && button == ButtonName.Left)
+                    || (properties.IsRightButtonPressed && button == ButtonName.Right)
+                    || (properties.IsMiddleButtonPressed && button == ButtonName.Middle))
                 {
                     if (_element != null && _captured == false && _isPanning == false)
                     {
-                        Point point = e.GetPosition(_element);
+                        var point = e.GetPosition(_element);
                         StartPan(point.X, point.Y);
                         _captured = true;
                         _isPanning = true;
@@ -472,8 +472,6 @@ namespace Avalonia.Controls.PanAndZoom
         {
             if (EnableInput)
             {
-                var button = PanButton;
-
                 if (_element != null && _captured == true && _isPanning == true)
                 {
                     _captured = false;
@@ -488,7 +486,7 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 if (_element != null && _captured == true && _isPanning == true)
                 {
-                    Point point = e.GetPosition(_element);
+                    var point = e.GetPosition(_element);
                     PanTo(point.X, point.Y);
                 }
             }
@@ -502,7 +500,7 @@ namespace Avalonia.Controls.PanAndZoom
             if (maximum < minimum)
                 throw new ArgumentException($"Parameter {nameof(maximum)} is lower than {nameof(minimum)}.");
 
-            return Math.Min(Math.Max(value, minimum), maximum);
+            return Min(Max(value, minimum), maximum);
         }
 
         private void Constrain()
@@ -536,7 +534,7 @@ namespace Avalonia.Controls.PanAndZoom
                 RaisePropertyChanged(ZoomYProperty, oldZoomY, _zoomY);
                 RaisePropertyChanged(OffsetXProperty, oldOffsetX, _offsetX);
                 RaisePropertyChanged(OffsetYProperty, oldOffsetY, _offsetY);
-                this.InvalidatedChild?.Invoke(_matrix.M11, _matrix.M22, _matrix.M31, _matrix.M32);
+                InvalidatedChild?.Invoke(_matrix.M11, _matrix.M22, _matrix.M31, _matrix.M32);
                 _element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
                 _element.RenderTransform = new MatrixTransform(_matrix);
                 _element.InvalidateVisual();
@@ -581,17 +579,20 @@ namespace Avalonia.Controls.PanAndZoom
             double zy = panelHeight / elementHeight;
             double cx = elementWidth / 2.0;
             double cy = elementHeight / 2.0;
-            double zoom = 1.0;
             switch (mode)
             {
                 case StretchMode.Fill:
                     return MatrixHelper.ScaleAt(zx, zy, cx, cy);
                 case StretchMode.Uniform:
-                    zoom = Min(zx, zy);
-                    return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                    {
+                        var zoom = Min(zx, zy);
+                        return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                    }
                 case StretchMode.UniformToFill:
-                    zoom = Max(zx, zy);
-                    return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                    {
+                        var zoom = Max(zx, zy);
+                        return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                    }
             }
             return Matrix.Identity;
         }
@@ -683,7 +684,7 @@ namespace Avalonia.Controls.PanAndZoom
         {
             if (_element != null)
             {
-                Fill(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height); 
+                Fill(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height); 
             }
         }
 
@@ -692,7 +693,7 @@ namespace Avalonia.Controls.PanAndZoom
         {
             if (_element != null)
             {
-                Uniform(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height); 
+                Uniform(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height); 
             }
         }
 
@@ -701,7 +702,7 @@ namespace Avalonia.Controls.PanAndZoom
         {
             if (_element != null)
             {
-                UniformToFill(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height); 
+                UniformToFill(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height); 
             }
         }
 
@@ -710,7 +711,7 @@ namespace Avalonia.Controls.PanAndZoom
         {
             if (_element != null)
             {
-                AutoFit(this.Bounds.Width, this.Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
+                AutoFit(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
             }
         }
     }
