@@ -23,7 +23,7 @@ namespace Avalonia.Controls
         /// <summary>
         /// Identifies the <seealso cref="Stretch"/> avalonia property.
         /// </summary>
-        public static AvaloniaProperty<Stretch> StretchProperty =
+        public static StyledProperty<Stretch> StretchProperty =
             AvaloniaProperty.Register<ViewBox, Stretch>(nameof(Stretch), Stretch.Uniform, false, BindingMode.TwoWay);
 
         static ViewBox()
