@@ -518,6 +518,11 @@ namespace Wpf.Controls.PanAndZoom
 
                  ((MatrixTransform)_element.RenderTransform).Matrix = matrix;
                 e.Handled = true;
+
+                SetValue(ZoomXPropertyKey, matrix.M11);
+                SetValue(ZoomYPropertyKey, matrix.M22);
+                SetValue(OffsetXPropertyKey, matrix.OffsetX);
+                SetValue(OffsetYPropertyKey, matrix.OffsetY);
             }
         }
 
