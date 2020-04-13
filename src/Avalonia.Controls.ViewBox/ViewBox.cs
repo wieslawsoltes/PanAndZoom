@@ -69,6 +69,8 @@ namespace Avalonia.Controls
                         matrix = ScaleAt(scale, scale, centerX, centerY);
                     }
                     break;
+                case Stretch.None:
+                    break;
             }
 
             if (child.RenderTransform is MatrixTransform transform)
