@@ -351,14 +351,16 @@ namespace Avalonia.Controls.PanAndZoom
         {
             var size = base.ArrangeOverride(finalSize);
 
-            if (_element != null && _element.IsMeasureValid)
+            if (_element == null || !_element.IsMeasureValid)
             {
-                AutoFit(
-                    size.Width,
-                    size.Height,
-                    _element.Bounds.Width,
-                    _element.Bounds.Height);
+                return size;
             }
+
+            AutoFit(
+                size.Width,
+                size.Height,
+                _element.Bounds.Width,
+                _element.Bounds.Height);
 
             return size;
         }
@@ -377,10 +379,11 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Border_PointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            if (EnableInput)
+            if (!EnableInput)
             {
-                Wheel(e);
+                return;
             }
+            Wheel(e);
         }
 
         private void Border_PointerPressed(object sender, PointerPressedEventArgs e)
@@ -413,83 +416,92 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void AttachElement(IControl element)
         {
-            if (element != null)
+            if (element == null)
             {
-                Defaults();
-                _element = element;
-                PointerWheelChanged += Border_PointerWheelChanged;
-                PointerPressed += Border_PointerPressed;
-                PointerReleased += Border_PointerReleased;
-                PointerMoved += Border_PointerMoved;
+                return;
             }
+            Defaults();
+            _element = element;
+            PointerWheelChanged += Border_PointerWheelChanged;
+            PointerPressed += Border_PointerPressed;
+            PointerReleased += Border_PointerReleased;
+            PointerMoved += Border_PointerMoved;
         }
 
         private void DetachElement()
         {
-            if (_element != null)
+            if (_element == null)
             {
-                PointerWheelChanged -= Border_PointerWheelChanged;
-                PointerPressed -= Border_PointerPressed;
-                PointerReleased -= Border_PointerReleased;
-                PointerMoved -= Border_PointerMoved;
-                _element.RenderTransform = null;
-                _element = null;
-                Defaults();
+                return;
             }
+            PointerWheelChanged -= Border_PointerWheelChanged;
+            PointerPressed -= Border_PointerPressed;
+            PointerReleased -= Border_PointerReleased;
+            PointerMoved -= Border_PointerMoved;
+            _element.RenderTransform = null;
+            _element = null;
+            Defaults();
         }
 
         private void Wheel(PointerWheelEventArgs e)
         {
-            if (_element != null && _captured == false)
+            if (_element == null || _captured != false)
             {
-                var point = e.GetPosition(_element);
-                ZoomDeltaTo(e.Delta.Y, point.X, point.Y);
+                return;
             }
+            var point = e.GetPosition(_element);
+            ZoomDeltaTo(e.Delta.Y, point.X, point.Y);
         }
 
         private void Pressed(PointerPressedEventArgs e)
         {
-            if (EnableInput)
+            if (!EnableInput)
             {
-                var button = PanButton;
-                var properties = e.GetCurrentPoint(this).Properties;
-                if ((properties.IsLeftButtonPressed && button == ButtonName.Left)
-                    || (properties.IsRightButtonPressed && button == ButtonName.Right)
-                    || (properties.IsMiddleButtonPressed && button == ButtonName.Middle))
-                {
-                    if (_element != null && _captured == false && _isPanning == false)
-                    {
-                        var point = e.GetPosition(_element);
-                        StartPan(point.X, point.Y);
-                        _captured = true;
-                        _isPanning = true;
-                    }
-                }
+                return;
+            }
+            var button = PanButton;
+            var properties = e.GetCurrentPoint(this).Properties;
+            if ((!properties.IsLeftButtonPressed || button != ButtonName.Left)
+                && (!properties.IsRightButtonPressed || button != ButtonName.Right)
+                && (!properties.IsMiddleButtonPressed || button != ButtonName.Middle))
+            {
+                return;
+            }
+            if (_element != null && _captured == false && _isPanning == false)
+            {
+                var point = e.GetPosition(_element);
+                StartPan(point.X, point.Y);
+                _captured = true;
+                _isPanning = true;
             }
         }
 
         private void Released(PointerReleasedEventArgs e)
         {
-            if (EnableInput)
+            if (!EnableInput)
             {
-                if (_element != null && _captured == true && _isPanning == true)
-                {
-                    _captured = false;
-                    _isPanning = false;
-                }
+                return;
             }
+            if (_element == null || _captured != true || _isPanning != true)
+            {
+                return;
+            }
+            _captured = false;
+            _isPanning = false;
         }
 
         private void Moved(PointerEventArgs e)
         {
-            if (EnableInput)
+            if (!EnableInput)
             {
-                if (_element != null && _captured == true && _isPanning == true)
-                {
-                    var point = e.GetPosition(_element);
-                    PanTo(point.X, point.Y);
-                }
+                return;
             }
+            if (_element == null || _captured != true || _isPanning != true)
+            {
+                return;
+            }
+            var point = e.GetPosition(_element);
+            PanTo(point.X, point.Y);
         }
 
         private double Constrain(double value, double minimum, double maximum)
@@ -515,30 +527,31 @@ namespace Avalonia.Controls.PanAndZoom
         /// <inheritdoc/>
         public void Invalidate()
         {
-            if (_element != null)
+            if (_element == null)
             {
-                if (EnableConstrains == true)
-                {
-                    Constrain();
-                }
-                Debug.WriteLine($"Zoom: {_matrix.M11} {_matrix.M22} Offset: {_matrix.M31} {_matrix.M32}");
-                double oldZoomX = _zoomX;
-                double oldZoomY = _zoomY;
-                double oldOffsetX = _offsetX;
-                double oldOffsetY = _offsetY;
-                _zoomX = _matrix.M11;
-                _zoomY = _matrix.M22;
-                _offsetX = _matrix.M31;
-                _offsetY = _matrix.M32;
-                RaisePropertyChanged(ZoomXProperty, oldZoomX, _zoomX);
-                RaisePropertyChanged(ZoomYProperty, oldZoomY, _zoomY);
-                RaisePropertyChanged(OffsetXProperty, oldOffsetX, _offsetX);
-                RaisePropertyChanged(OffsetYProperty, oldOffsetY, _offsetY);
-                InvalidatedChild?.Invoke(_matrix.M11, _matrix.M22, _matrix.M31, _matrix.M32);
-                _element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
-                _element.RenderTransform = new MatrixTransform(_matrix);
-                _element.InvalidateVisual();
+                return;
             }
+            if (EnableConstrains == true)
+            {
+                Constrain();
+            }
+            Debug.WriteLine($"Zoom: {_matrix.M11} {_matrix.M22} Offset: {_matrix.M31} {_matrix.M32}");
+            double oldZoomX = _zoomX;
+            double oldZoomY = _zoomY;
+            double oldOffsetX = _offsetX;
+            double oldOffsetY = _offsetY;
+            _zoomX = _matrix.M11;
+            _zoomY = _matrix.M22;
+            _offsetX = _matrix.M31;
+            _offsetY = _matrix.M32;
+            RaisePropertyChanged(ZoomXProperty, oldZoomX, _zoomX);
+            RaisePropertyChanged(ZoomYProperty, oldZoomY, _zoomY);
+            RaisePropertyChanged(OffsetXProperty, oldOffsetX, _offsetX);
+            RaisePropertyChanged(OffsetYProperty, oldOffsetY, _offsetY);
+            InvalidatedChild?.Invoke(_matrix.M11, _matrix.M22, _matrix.M31, _matrix.M32);
+            _element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
+            _element.RenderTransform = new MatrixTransform(_matrix);
+            _element.InvalidateVisual();
         }
 
         /// <inheritdoc/>
@@ -593,6 +606,8 @@ namespace Avalonia.Controls.PanAndZoom
                         var zoom = Max(zx, zy);
                         return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
                     }
+                case StretchMode.None:
+                    break;
             }
             return Matrix.Identity;
         }
@@ -601,55 +616,59 @@ namespace Avalonia.Controls.PanAndZoom
         public void Fill(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             Debug.WriteLine($"Fill: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
-            if (_element != null)
+            if (_element == null)
             {
-                _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Fill);
-                Invalidate();
+                return;
             }
+            _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Fill);
+            Invalidate();
         }
 
         /// <inheritdoc/>
         public void Uniform(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             Debug.WriteLine($"Uniform: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
-            if (_element != null)
+            if (_element == null)
             {
-                _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Uniform);
-                Invalidate();
+                return;
             }
+            _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Uniform);
+            Invalidate();
         }
 
         /// <inheritdoc/>
         public void UniformToFill(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             Debug.WriteLine($"UniformToFill: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
-            if (_element != null)
+            if (_element == null)
             {
-                _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.UniformToFill);
-                Invalidate();
+                return;
             }
+            _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.UniformToFill);
+            Invalidate();
         }
 
         /// <inheritdoc/>
         public void AutoFit(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             Debug.WriteLine($"AutoFit: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
-            if (_element != null)
+            if (_element == null)
             {
-                switch (Stretch)
-                {
-                    case StretchMode.Fill:
-                        Fill(panelWidth, panelHeight, elementWidth, elementHeight);
-                        break;
-                    case StretchMode.Uniform:
-                        Uniform(panelWidth, panelHeight, elementWidth, elementHeight);
-                        break;
-                    case StretchMode.UniformToFill:
-                        UniformToFill(panelWidth, panelHeight, elementWidth, elementHeight);
-                        break;
-                }
-                Invalidate();
+                return;
             }
+            switch (Stretch)
+            {
+                case StretchMode.Fill:
+                    Fill(panelWidth, panelHeight, elementWidth, elementHeight);
+                    break;
+                case StretchMode.Uniform:
+                    Uniform(panelWidth, panelHeight, elementWidth, elementHeight);
+                    break;
+                case StretchMode.UniformToFill:
+                    UniformToFill(panelWidth, panelHeight, elementWidth, elementHeight);
+                    break;
+            }
+            Invalidate();
         }
 
         /// <inheritdoc/>
@@ -682,37 +701,41 @@ namespace Avalonia.Controls.PanAndZoom
         /// <inheritdoc/>
         public void Fill()
         {
-            if (_element != null)
+            if (_element == null)
             {
-                Fill(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height); 
+                return;
             }
+            Fill(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
         }
 
         /// <inheritdoc/>
         public void Uniform()
         {
-            if (_element != null)
+            if (_element == null)
             {
-                Uniform(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height); 
+                return;
             }
+            Uniform(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
         }
 
         /// <inheritdoc/>
         public void UniformToFill()
         {
-            if (_element != null)
+            if (_element == null)
             {
-                UniformToFill(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height); 
+                return;
             }
+            UniformToFill(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
         }
 
         /// <inheritdoc/>
         public void AutoFit()
         {
-            if (_element != null)
+            if (_element == null)
             {
-                AutoFit(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
+                return;
             }
+            AutoFit(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
         }
     }
 }
