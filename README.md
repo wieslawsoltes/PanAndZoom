@@ -5,6 +5,7 @@
 [![Build status](https://dev.azure.com/wieslawsoltes/GitHub/_apis/build/status/Sources/PanAndZoom)](https://dev.azure.com/wieslawsoltes/GitHub/_build/latest?definitionId=58)
 
 [![NuGet](https://img.shields.io/nuget/v/Avalonia.Controls.PanAndZoom.svg)](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom)
+[![NuGet](https://img.shields.io/nuget/dt/PanAndZoom.svg)](https://www.nuget.org/packages/PanAndZoom)
 [![MyGet](https://img.shields.io/myget/panandzoom-nightly/vpre/Avalonia.Controls.PanAndZoom.svg?label=myget)](https://www.myget.org/gallery/panandzoom-nightly) 
 
 PanAndZoom control for WPF and Avalonia
