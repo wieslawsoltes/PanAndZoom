@@ -139,10 +139,17 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <inheritdoc/>
-        public bool EnableInput
+        public bool EnablePan
         {
-            get => GetValue(EnableInputProperty);
-            set => SetValue(EnableInputProperty, value);
+            get => GetValue(EnablePanProperty);
+            set => SetValue(EnablePanProperty, value);
+        }
+
+        /// <inheritdoc/>
+        public bool EnableZoom
+        {
+            get => GetValue(EnableZoomProperty);
+            set => SetValue(EnableZoomProperty, value);
         }
 
         /// <inheritdoc/>
@@ -279,10 +286,16 @@ namespace Avalonia.Controls.PanAndZoom
             AvaloniaProperty.Register<ZoomBorder, double>(nameof(MaxOffsetY), double.PositiveInfinity, false, BindingMode.TwoWay);
 
         /// <summary>
-        /// Identifies the <seealso cref="EnableInput"/> avalonia property.
+        /// Identifies the <seealso cref="EnablePan"/> avalonia property.
         /// </summary>
-        public static StyledProperty<bool> EnableInputProperty =
-            AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableInput), true, false, BindingMode.TwoWay);
+        public static StyledProperty<bool> EnablePanProperty =
+            AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnablePan), true, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// Identifies the <seealso cref="EnableZoom"/> avalonia property.
+        /// </summary>
+        public static StyledProperty<bool> EnableZoomProperty =
+            AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableZoom), true, false, BindingMode.TwoWay);
 
         /// <summary>
         /// Identifies the <seealso cref="EnableGestureZoom"/> avalonia property.
@@ -379,7 +392,7 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Border_PointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            if (!EnableInput)
+            if (!EnableZoom)
             {
                 return;
             }
@@ -455,7 +468,7 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Pressed(PointerPressedEventArgs e)
         {
-            if (!EnableInput)
+            if (!EnablePan)
             {
                 return;
             }
@@ -478,7 +491,7 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Released(PointerReleasedEventArgs e)
         {
-            if (!EnableInput)
+            if (!EnablePan)
             {
                 return;
             }
@@ -492,7 +505,7 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Moved(PointerEventArgs e)
         {
-            if (!EnableInput)
+            if (!EnablePan)
             {
                 return;
             }

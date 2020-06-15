@@ -135,10 +135,17 @@ namespace Wpf.Controls.PanAndZoom
         }
 
         /// <inheritdoc/>
-        public bool EnableInput
+        public bool EnablePan
         {
-            get => (bool)GetValue(EnableInputProperty);
-            set => SetValue(EnableInputProperty, value);
+            get => (bool)GetValue(EnablePanProperty);
+            set => SetValue(EnablePanProperty, value);
+        }
+
+        /// <inheritdoc/>
+        public bool EnableZoom
+        {
+            get => (bool)GetValue(EnableZoomProperty);
+            set => SetValue(EnableZoomProperty, value);
         }
 
         /// <inheritdoc/>
@@ -331,11 +338,21 @@ namespace Wpf.Controls.PanAndZoom
                 new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
-        /// Identifies the <seealso cref="EnableInput"/> dependency property.
+        /// Identifies the <seealso cref="EnablePan"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty EnableInputProperty =
+        public static readonly DependencyProperty EnablePanProperty =
             DependencyProperty.Register(
-                nameof(EnableInput),
+                nameof(EnablePan),
+                typeof(bool),
+                typeof(ZoomBorder),
+                new FrameworkPropertyMetadata(true));
+
+        /// <summary>
+        /// Identifies the <seealso cref="EnableZoom"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty EnableZoomProperty =
+            DependencyProperty.Register(
+                nameof(EnableZoom),
                 typeof(bool),
                 typeof(ZoomBorder),
                 new FrameworkPropertyMetadata(true));
@@ -443,7 +460,7 @@ namespace Wpf.Controls.PanAndZoom
 
         private void Border_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (!EnableInput)
+            if (!EnableZoom)
             {
                 return;
             }
@@ -452,7 +469,7 @@ namespace Wpf.Controls.PanAndZoom
 
         private void Border_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (!EnableInput)
+            if (!EnablePan)
             {
                 return;
             }
@@ -468,7 +485,7 @@ namespace Wpf.Controls.PanAndZoom
 
         private void Border_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (!EnableInput)
+            if (!EnablePan)
             {
                 return;
             }
@@ -484,7 +501,7 @@ namespace Wpf.Controls.PanAndZoom
 
         private void Border_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (EnableInput)
+            if (EnablePan)
             {
                 Moved(e);
             }
@@ -492,7 +509,7 @@ namespace Wpf.Controls.PanAndZoom
 
         private void Border_ManipulationStarting(object? sender, ManipulationStartingEventArgs e)
         {
-            if (!EnableInput || _element == null)
+            if (_element == null)
             {
                 return;
             }
@@ -501,7 +518,7 @@ namespace Wpf.Controls.PanAndZoom
 
         private void Border_ManipulationDelta(object? sender, ManipulationDeltaEventArgs e)
         {
-            if (!EnableInput || _element == null)
+            if (_element == null)
             {
                 return;
             }
@@ -613,17 +630,17 @@ namespace Wpf.Controls.PanAndZoom
             var center = new Point(_element.RenderSize.Width / 2, _element.RenderSize.Height / 2);
             center = _matrix.Transform(center);
 
-            if (EnableGestureZoom)
+            if (EnableGestureZoom && EnableZoom)
             {
                 _matrix.ScaleAt(scale, scale, center.X, center.Y);
             }
 
-            if (EnableGestureRotation)
+            if (EnableGestureRotation && EnableZoom)
             {
                 _matrix.RotateAt(delta.Rotation, center.X, center.Y);
             }
 
-            if (EnableGestureTranslation)
+            if (EnableGestureTranslation && EnablePan)
             {
                 _matrix.Translate(delta.Translation.X, delta.Translation.Y);
             }

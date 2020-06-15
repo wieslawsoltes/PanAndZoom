@@ -101,9 +101,14 @@ namespace PanAndZoom
         double MaxOffsetY { get; set; }
 
         /// <summary>
-        /// Gets or sets flag indicating whether input events are processed.
+        /// Gets or sets flag indicating whether pan input events are processed.
         /// </summary>
-        bool EnableInput { get; set; }
+        bool EnablePan { get; set; }
+
+        /// <summary>
+        /// Gets or sets flag indicating whether input zoom events are processed.
+        /// </summary>
+        bool EnableZoom { get; set; }
 
         /// <summary>
         /// Gets or sets flag indicating whether zoom gesture is enabled.
