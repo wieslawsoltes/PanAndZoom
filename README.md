@@ -8,7 +8,7 @@
 [![NuGet](https://img.shields.io/nuget/dt/PanAndZoom.svg)](https://www.nuget.org/packages/PanAndZoom)
 [![MyGet](https://img.shields.io/myget/panandzoom-nightly/vpre/Avalonia.Controls.PanAndZoom.svg?label=myget)](https://www.myget.org/gallery/panandzoom-nightly) 
 
-PanAndZoom control for WPF and Avalonia
+PanAndZoom control for Avalonia
 
 <a href='https://www.youtube.com/watch?v=dM_cRdEuksU' target='_blank'>![](https://i.ytimg.com/vi/dM_cRdEuksU/hqdefault.jpg)<a/>
 
@@ -16,7 +16,7 @@ PanAndZoom control for WPF and Avalonia
 
 PanAndZoom is delivered as a NuGet package.
 
-You can find the packages here [NuGet for Avalonia](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom/) and here [NuGet for WPF](https://www.nuget.org/packages/Wpf.Controls.PanAndZoom/) or by using nightly build feed:
+You can find the NuGet packages here for [Avalonia](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom/) or by using nightly build feed:
 * Add `https://www.myget.org/F/panandzoom-nightly/api/v2` to your package sources
 * Alternative nightly build feed `https://pkgs.dev.azure.com/wieslawsoltes/GitHub/_packaging/CI/nuget/v3/index.json`
 * Update your package using `PanAndZoom` feed
@@ -25,20 +25,9 @@ You can install the package for `Avalonia` based projects like this:
 
 `Install-Package Avalonia.Controls.PanAndZoom -Pre`
 
-You can install the package for `WPF` based projects like this:
-
-`Install-Package Wpf.Controls.PanAndZoom -Pre`
-
 ### Package Dependencies
 
 * [Avalonia](https://www.nuget.org/packages/Avalonia/)
-* [System.Reactive](https://www.nuget.org/packages/System.Reactive/)
-* [System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/)
-* [System.Reactive.Interfaces](https://www.nuget.org/packages/System.Reactive.Interfaces/)
-* [System.Reactive.Linq](https://www.nuget.org/packages/System.Reactive.Linq/)
-* [System.Reactive.PlatformServices](https://www.nuget.org/packages/System.Reactive.PlatformServices/)
-* [Serilog](https://www.nuget.org/packages/Serilog/)
-* [System.ValueTuple](https://www.nuget.org/packages/System.ValueTuple/)
 
 ### Package Sources
 
@@ -162,118 +151,6 @@ namespace AvaloniaDemo
 }
 ```
 
-### WPF
-
-`MainWindow.xaml`
-```XAML
-<Window x:Class="WpfDemo.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:paz="clr-namespace:Wpf.Controls.PanAndZoom;assembly=Wpf.Controls.PanAndZoom"
-        WindowStartupLocation="CenterScreen"
-        UseLayoutRounding="True" SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display"
-        Title="PanAndZoom WPF Demo" Height="640" Width="640">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="12"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="12"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="12"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="50"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" 
-                    HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">
-            <TextBlock Text="F - Fill"/>
-            <TextBlock Text="U - Uniform"/>
-            <TextBlock Text="R - Reset"/>
-            <TextBlock Text="T - Toggle Stretch Mode"/>
-            <TextBlock Text="Mouse Wheel - Zoom to Point"/>
-            <TextBlock Text="Mouse Left Button Down - Pan"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" 
-                    HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
-            <TextBlock Text="PanButton:" VerticalAlignment="Center"/>
-            <ComboBox ItemsSource="{Binding ElementName=zoomBorder, Path=ButtonNames}" 
-                      SelectedItem="{Binding ElementName=zoomBorder, Path=PanButton}" 
-                      Margin="2">
-            </ComboBox>
-            <TextBlock Text="Stretch:" VerticalAlignment="Center"/>
-            <ComboBox ItemsSource="{Binding ElementName=zoomBorder, Path=StretchModes}" 
-                      SelectedItem="{Binding ElementName=zoomBorder, Path=Stretch}" 
-                      Margin="2">
-            </ComboBox>
-            <TextBlock Text="ZoomSpeed:" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding ElementName=zoomBorder, Path=ZoomSpeed}" 
-                     TextAlignment="Center" Width="50" Margin="2"/>
-            <CheckBox IsChecked="{Binding ElementName=zoomBorder, Path=EnablePan}" 
-                      Content="EnablePan" VerticalAlignment="Center"/>
-            <CheckBox IsChecked="{Binding ElementName=zoomBorder, Path=EnableZoom}" 
-                      Content="EnableZoom" VerticalAlignment="Center"/>
-        </StackPanel>
-        <paz:ZoomBorder Name="zoomBorder" Stretch="None" ZoomSpeed="1.2" 
-                        Background="SlateBlue" ClipToBounds="True" Focusable="True"
-                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
-                        Grid.Row="4" Grid.Column="1">
-            <Canvas Background="LightGray" Width="300" Height="300">
-                <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
-                <StackPanel Canvas.Left="100" Canvas.Top="200">
-                    <TextBlock Text="Text1" Width="100" Background="Red" Foreground="WhiteSmoke"/>
-                    <TextBlock Text="Text2" Width="100" Background="Red" Foreground="WhiteSmoke"/>
-                </StackPanel>
-            </Canvas>
-        </paz:ZoomBorder>
-    </Grid>
-</Window>
-```
-
-`MainWindow.xaml.cs`
-```C#
-using System.Windows;
-using System.Windows.Input;
-
-namespace WpfDemo
-{
-    public partial class MainWindow : Window
-    {
-        public MainWindow()
-        {
-            InitializeComponent();
-
-            zoomBorder.KeyDown += ZoomBorder_KeyDown;
-        }
-
-        private void ZoomBorder_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.F)
-            {
-                zoomBorder.Fill();
-            }
-
-            if (e.Key == Key.U)
-            {
-                zoomBorder.Uniform();
-            }
-
-            if (e.Key == Key.R)
-            {
-                zoomBorder.Reset();
-            }
-
-            if (e.Key == Key.T)
-            {
-                zoomBorder.ToggleStretchMode();
-                zoomBorder.AutoFit();
-            }
-        }
-    }
-}
-```
 ### Getting zoom ratio
 
 To get current zoom ratio use `ZoomX` and `ZoomY` properties. 
