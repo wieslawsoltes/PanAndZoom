@@ -575,6 +575,30 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <inheritdoc/>
+        public void ZoomIn()
+        {
+            if (_element == null)
+            {
+                return;
+            }
+            var x = _element.Bounds.Width / 2.0 + _offsetX;
+            var y = _element.Bounds.Height / 2.0 + _offsetY;
+            ZoomTo(ZoomSpeed, x, y);
+        }
+
+        /// <inheritdoc/>
+        public void ZoomOut()
+        {
+            if (_element == null)
+            {
+                return;
+            }
+            var x = _element.Bounds.Width / 2.0 + _offsetX;
+            var y = _element.Bounds.Height / 2.0 + _offsetY;
+            ZoomTo(1 / ZoomSpeed, x, y);
+        }
+
+        /// <inheritdoc/>
         public void ZoomDeltaTo(double delta, double x, double y)
         {
             ZoomTo(delta > 0 ? ZoomSpeed : 1 / ZoomSpeed, x, y);

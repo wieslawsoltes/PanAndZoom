@@ -139,6 +139,16 @@ namespace PanAndZoom
         void ZoomTo(double zoom, double x, double y);
 
         /// <summary>
+        /// Zoom in one step positive delta ratio and panel center point.
+        /// </summary>
+        void ZoomIn();
+
+        /// <summary>
+        /// Zoom out one step positive delta ratio and panel center point.
+        /// </summary>
+        void ZoomOut();
+
+        /// <summary>
         /// Zoom to provided zoom delta ratio and provided center point.
         /// </summary>
         /// <param name="delta">The zoom delta ratio.</param>
