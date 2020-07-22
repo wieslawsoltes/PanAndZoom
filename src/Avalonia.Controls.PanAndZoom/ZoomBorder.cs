@@ -581,8 +581,8 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 return;
             }
-            var x = _element.Bounds.Width / 2.0 - _offsetX;
-            var y = _element.Bounds.Height / 2.0 - _offsetY;
+            var x = _element.Bounds.Width / 2.0;
+            var y = _element.Bounds.Height / 2.0;
             ZoomTo(ZoomSpeed, x, y);
         }
 
@@ -593,8 +593,8 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 return;
             }
-            var x = _element.Bounds.Width / 2.0 - _offsetX;
-            var y = _element.Bounds.Height / 2.0 - _offsetY;
+            var x = _element.Bounds.Width / 2.0;
+            var y = _element.Bounds.Height / 2.0;
             ZoomTo(1 / ZoomSpeed, x, y);
         }
 
