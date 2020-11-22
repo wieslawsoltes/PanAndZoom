@@ -1,9 +1,9 @@
 ﻿<Window x:Class="AvaloniaDemo.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:paz="clr-namespace:Avalonia.Controls.PanAndZoom;assembly=Avalonia.Controls.PanAndZoom"
-        UseLayoutRounding="True"
-        Title="PanAndZoom Avalonia Demo" Height="640" Width="640">
+        xmlns:paz="using:Avalonia.Controls.PanAndZoom"
+        WindowStartupLocation="CenterScreen" UseLayoutRounding="True"
+        Title="PanAndZoom" Height="640" Width="640">
     <Grid RowDefinitions="Auto,12,Auto,12,*,12" ColumnDefinitions="50,*,50">
         <StackPanel Orientation="Vertical"
                     HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">

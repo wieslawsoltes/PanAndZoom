@@ -5,7 +5,7 @@
 [![Build status](https://dev.azure.com/wieslawsoltes/GitHub/_apis/build/status/Sources/PanAndZoom)](https://dev.azure.com/wieslawsoltes/GitHub/_build/latest?definitionId=58)
 
 [![NuGet](https://img.shields.io/nuget/v/Avalonia.Controls.PanAndZoom.svg)](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom)
-[![NuGet](https://img.shields.io/nuget/dt/PanAndZoom.svg)](https://www.nuget.org/packages/PanAndZoom)
+[![NuGet](https://img.shields.io/nuget/dt/Avalonia.Controls.PanAndZoom.svg)](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom)
 [![MyGet](https://img.shields.io/myget/panandzoom-nightly/vpre/Avalonia.Controls.PanAndZoom.svg?label=myget)](https://www.myget.org/gallery/panandzoom-nightly) 
 
 PanAndZoom control for Avalonia
@@ -47,11 +47,11 @@ You can install the package for `Avalonia` based projects like this:
 <Window x:Class="AvaloniaDemo.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:paz="clr-namespace:Avalonia.Controls.PanAndZoom;assembly=Avalonia.Controls.PanAndZoom"
-        UseLayoutRounding="True"
-        Title="PanAndZoom Avalonia Demo" Height="640" Width="640">
+        xmlns:paz="using:Avalonia.Controls.PanAndZoom"
+        WindowStartupLocation="CenterScreen" UseLayoutRounding="True"
+        Title="PanAndZoom" Height="640" Width="640">
     <Grid RowDefinitions="Auto,12,Auto,12,*,12" ColumnDefinitions="50,*,50">
-        <StackPanel Orientation="Vertical" 
+        <StackPanel Orientation="Vertical"
                     HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">
             <TextBlock Text="F - Fill"/>
             <TextBlock Text="U - Uniform"/>
@@ -60,44 +60,48 @@ You can install the package for `Avalonia` based projects like this:
             <TextBlock Text="Mouse Wheel - Zoom to Point"/>
             <TextBlock Text="Mouse Left Button Down - Pan"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" 
+        <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
             <TextBlock Text="PanButton:" VerticalAlignment="Center"/>
-            <ComboBox Items="{x:Static paz:ZoomBorder.ButtonNames}" 
-                      SelectedItem="{Binding #zoomBorder.PanButton, Mode=TwoWay}" 
+            <ComboBox Items="{x:Static paz:ZoomBorder.ButtonNames}"
+                      SelectedItem="{Binding #zoomBorder.PanButton, Mode=TwoWay}"
                       Margin="2">
             </ComboBox>
             <TextBlock Text="Stretch:" VerticalAlignment="Center"/>
-            <ComboBox Items="{x:Static paz:ZoomBorder.StretchModes}" 
-                      SelectedItem="{Binding #zoomBorder.Stretch, Mode=TwoWay}" 
+            <ComboBox Items="{x:Static paz:ZoomBorder.StretchModes}"
+                      SelectedItem="{Binding #zoomBorder.Stretch, Mode=TwoWay}"
                       Margin="2">
             </ComboBox>
             <TextBlock Text="ZoomSpeed:" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding #zoomBorder.ZoomSpeed, Mode=TwoWay}" 
+            <TextBox Text="{Binding #zoomBorder.ZoomSpeed, Mode=TwoWay}"
                      TextAlignment="Center" Width="50" Margin="2"/>
-            <CheckBox IsChecked="{Binding #zoomBorder.EnablePan}" 
+            <CheckBox IsChecked="{Binding #zoomBorder.EnablePan}"
                       Content="EnablePan" VerticalAlignment="Center"/>
-            <CheckBox IsChecked="{Binding #zoomBorder.EnableZoom}" 
+            <CheckBox IsChecked="{Binding #zoomBorder.EnableZoom}"
                       Content="EnableZoom" VerticalAlignment="Center"/>
         </StackPanel>
-        <paz:ZoomBorder Name="zoomBorder" Stretch="None" ZoomSpeed="1.2" 
-                        Background="SlateBlue" ClipToBounds="True" Focusable="True"
-                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
-                        Grid.Row="4" Grid.Column="1">
-            <Canvas Background="LightGray" Width="300" Height="300">
-                <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
-                <StackPanel Canvas.Left="100" Canvas.Top="200">
-                    <TextBlock Text="Text1" Width="100" Background="Red" Foreground="WhiteSmoke"/>
-                    <TextBlock Text="Text2" Width="100" Background="Red" Foreground="WhiteSmoke"/>
-                </StackPanel>
-            </Canvas>
-        </paz:ZoomBorder>
-    </Grid>
+        <ScrollViewer Grid.Row="4" Grid.Column="1"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto">
+            <paz:ZoomBorder Name="zoomBorder" Stretch="None" ZoomSpeed="1.2"
+                            Background="SlateBlue" ClipToBounds="True" Focusable="True"
+                            VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Canvas Background="LightGray" Width="300" Height="300">
+                    <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
+                    <StackPanel Canvas.Left="100" Canvas.Top="200">
+                        <TextBlock Text="Text1" Width="100" Background="Red" Foreground="WhiteSmoke"/>
+                        <TextBlock Text="Text2" Width="100" Background="Red" Foreground="WhiteSmoke"/>
+                    </StackPanel>
+                </Canvas>
+            </paz:ZoomBorder>  
+        </ScrollViewer>
+    </Grid> 
 </Window>
 ```
 
 `MainWindow.xaml.cs`
 ```C#
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.PanAndZoom;
@@ -108,15 +112,20 @@ namespace AvaloniaDemo
 {
     public class MainWindow : Window
     {
-        private ZoomBorder zoomBorder;
+        private readonly ZoomBorder? _zoomBorder;
 
         public MainWindow()
         {
             this.InitializeComponent();
             this.AttachDevTools();
 
-            zoomBorder = this.Find<ZoomBorder>("zoomBorder");
-            zoomBorder.KeyDown += ZoomBorder_KeyDown;
+            _zoomBorder = this.Find<ZoomBorder>("zoomBorder");
+            if (_zoomBorder != null)
+            {
+                _zoomBorder.KeyDown += ZoomBorder_KeyDown;
+                
+                _zoomBorder.ZoomChanged += ZoomBorder_ZoomChanged;
+            }
         }
 
         private void InitializeComponent()
@@ -124,28 +133,29 @@ namespace AvaloniaDemo
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void ZoomBorder_KeyDown(object sender, KeyEventArgs e)
+        private void ZoomBorder_KeyDown(object? sender, KeyEventArgs e)
         {
-            if (e.Key == Key.F)
+            switch (e.Key)
             {
-                zoomBorder.Fill();
+                case Key.F:
+                    _zoomBorder?.Fill();
+                    break;
+                case Key.U:
+                    _zoomBorder?.Uniform();
+                    break;
+                case Key.R:
+                    _zoomBorder?.Reset();
+                    break;
+                case Key.T:
+                    _zoomBorder?.ToggleStretchMode();
+                    _zoomBorder?.AutoFit();
+                    break;
             }
+        }
 
-            if (e.Key == Key.U)
-            {
-                zoomBorder.Uniform();
-            }
-
-            if (e.Key == Key.R)
-            {
-                zoomBorder.Reset();
-            }
-
-            if (e.Key == Key.T)
-            {
-                zoomBorder.ToggleStretchMode();
-                zoomBorder.AutoFit();
-            }
+        private void ZoomBorder_ZoomChanged(object sender, ZoomChangedEventArgs e)
+        {
+            Debug.WriteLine($"[ZoomChanged] {e.ZoomX} {e.ZoomY} {e.OffsetX} {e.OffsetY}");
         }
     }
 }
@@ -169,7 +179,7 @@ To constrain pan offset use `MinOffsetX`, `MaxOffsetX`, `MinOffsetY` and `MaxOff
 
 ### Enable or disable constrains
 
-To enable or disable contrains use `EnableConstrains` flag.
+To enable or disable constrains use `EnableConstrains` flag.
 
 ## License
 
