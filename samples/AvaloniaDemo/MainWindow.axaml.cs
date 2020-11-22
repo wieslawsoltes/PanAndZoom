@@ -9,23 +9,29 @@ namespace AvaloniaDemo
 {
     public class MainWindow : Window
     {
-        private readonly ZoomBorder? _zoomBorder;
+        private readonly ZoomBorder? ZoomBorder1;
+        private readonly ZoomBorder? ZoomBorder2;
 
         public MainWindow()
         {
             this.InitializeComponent();
             this.AttachDevTools();
 
-            _zoomBorder = this.Find<ZoomBorder>("ZoomBorder");
-            
-            if (_zoomBorder != null)
+            ZoomBorder1 = this.Find<ZoomBorder>("ZoomBorder1");
+            if (ZoomBorder1 != null)
             {
-                _zoomBorder.KeyDown += ZoomBorder_KeyDown;
-                
-                _zoomBorder.ZoomChanged += ZoomBorder_ZoomChanged;
+                ZoomBorder1.KeyDown += ZoomBorder_KeyDown;
+                ZoomBorder1.ZoomChanged += ZoomBorder_ZoomChanged;
             }
 
-            DataContext = _zoomBorder;
+            ZoomBorder2 = this.Find<ZoomBorder>("ZoomBorder2");
+            if (ZoomBorder2 != null)
+            {
+                ZoomBorder2.KeyDown += ZoomBorder_KeyDown;
+                ZoomBorder2.ZoomChanged += ZoomBorder_ZoomChanged;
+            }
+
+            DataContext = ZoomBorder1;
         }
 
         private void InitializeComponent()
@@ -35,20 +41,22 @@ namespace AvaloniaDemo
 
         private void ZoomBorder_KeyDown(object? sender, KeyEventArgs e)
         {
+            var zoomBorder = this.DataContext as ZoomBorder;
+            
             switch (e.Key)
             {
                 case Key.F:
-                    _zoomBorder?.Fill();
+                    zoomBorder?.Fill();
                     break;
                 case Key.U:
-                    _zoomBorder?.Uniform();
+                    zoomBorder?.Uniform();
                     break;
                 case Key.R:
-                    _zoomBorder?.Reset();
+                    zoomBorder?.Reset();
                     break;
                 case Key.T:
-                    _zoomBorder?.ToggleStretchMode();
-                    _zoomBorder?.AutoFit();
+                    zoomBorder?.ToggleStretchMode();
+                    zoomBorder?.AutoFit();
                     break;
             }
         }
@@ -56,6 +64,27 @@ namespace AvaloniaDemo
         private void ZoomBorder_ZoomChanged(object sender, ZoomChangedEventArgs e)
         {
             Debug.WriteLine($"[ZoomChanged] {e.ZoomX} {e.ZoomY} {e.OffsetX} {e.OffsetY}");
+        }
+
+        private void TabControl_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+        {
+            if (sender is TabControl tabControl)
+            {
+                if (tabControl.SelectedItem is TabItem tabItem)
+                {
+                    if (tabItem.Tag is string tag)
+                    {
+                        if (tag == "1")
+                        {
+                            DataContext = ZoomBorder1;
+                        }
+                        else if (tag == "2")
+                        {
+                            DataContext = ZoomBorder2;
+                        }
+                    }
+                }
+            }
         }
     }
 }
