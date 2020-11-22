@@ -530,7 +530,7 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 return;
             }
-            Defaults();
+            // Defaults();
             _element = element;
             PointerWheelChanged += Border_PointerWheelChanged;
             PointerPressed += Border_PointerPressed;
@@ -550,7 +550,7 @@ namespace Avalonia.Controls.PanAndZoom
             PointerMoved -= Border_PointerMoved;
             _element.RenderTransform = null;
             _element = null;
-            Defaults();
+            // Defaults();
         }
 
         private void Wheel(PointerWheelEventArgs e)
