@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -43,7 +44,7 @@ namespace Avalonia.Controls.PanAndZoom
     /// <summary>
     /// Pan and zoom control for Avalonia.
     /// </summary>
-    public class ZoomBorder : Border
+    public class ZoomBorder : Border, ILogicalScrollable
     {
         /// <summary>
         /// Gets available stretch modes.
@@ -227,7 +228,7 @@ namespace Avalonia.Controls.PanAndZoom
         /// <summary>
         /// Zoom changed event.
         /// </summary>
-        public event ZoomChangedEventHandler ZoomChanged;
+        public event ZoomChangedEventHandler? ZoomChanged;
         
         /// <summary>
         /// Gets or sets invalidate action for border child element.
@@ -651,26 +652,51 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 return;
             }
+            
             if (EnableConstrains == true)
             {
                 Constrain();
             }
+            
             var oldZoomX = _zoomX;
             var oldZoomY = _zoomY;
             var oldOffsetX = _offsetX;
             var oldOffsetY = _offsetY;
+            
             _zoomX = _matrix.M11;
             _zoomY = _matrix.M22;
             _offsetX = _matrix.M31;
             _offsetY = _matrix.M32;
+            
             RaisePropertyChanged(ZoomXProperty, oldZoomX, _zoomX);
             RaisePropertyChanged(ZoomYProperty, oldZoomY, _zoomY);
             RaisePropertyChanged(OffsetXProperty, oldOffsetX, _offsetX);
             RaisePropertyChanged(OffsetYProperty, oldOffsetY, _offsetY);
+            
             InvalidatedChild?.Invoke(_matrix.M11, _matrix.M22, _matrix.M31, _matrix.M32);
+            
             _element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
             _element.RenderTransform = new MatrixTransform(_matrix);
+
+            if (this is ILogicalScrollable scrollable)
+            {
+                var bounds = this.Bounds;
+
+                var transformed = bounds.TransformToAABB(_matrix);
+
+                _extent = transformed.Size;
+
+                _offset = transformed.Position;
+
+                _viewport = bounds.Size;
+
+                Debug.WriteLine($"Extent: {_extent} | Offset: {_offset} | Viewport: {_viewport}");
+
+                scrollable.RaiseScrollInvalidated(EventArgs.Empty);
+            }
+
             _element.InvalidateVisual();
+
             RaiseZoomChanged();
         }
 
@@ -938,6 +964,73 @@ namespace Avalonia.Controls.PanAndZoom
                 return;
             }
             AutoFit(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
+        }
+
+        private Size _extent = new Size();
+        private Size _viewport = new Size();
+        private Vector _offset = new Vector();
+        private bool _canHorizontallyScroll = false;
+        private bool _canVerticallyScroll = false;
+        private EventHandler? _scrollInvalidated;
+
+        /// <inheritdoc/>
+        Size IScrollable.Extent => _extent;
+
+        /// <inheritdoc/>
+        Vector IScrollable.Offset
+        {
+            get => _offset;
+            set => _offset = value;
+        }
+
+        /// <inheritdoc/>
+        Size IScrollable.Viewport => _viewport;
+
+        bool ILogicalScrollable.CanHorizontallyScroll
+        {
+            get => _canHorizontallyScroll;
+            set
+            {
+                _canHorizontallyScroll = value;
+                InvalidateMeasure();
+            }
+        }
+
+        bool ILogicalScrollable.CanVerticallyScroll
+        {
+            get => _canVerticallyScroll;
+            set
+            {
+                _canVerticallyScroll = value;
+                InvalidateMeasure();
+            }
+        }
+
+        bool ILogicalScrollable.IsLogicalScrollEnabled => true;
+
+        event EventHandler ILogicalScrollable.ScrollInvalidated
+        {
+            add => _scrollInvalidated += value;
+            remove => _scrollInvalidated -= value;
+        }
+
+        Size ILogicalScrollable.ScrollSize => new Size(1, 1);
+
+        Size ILogicalScrollable.PageScrollSize => new Size(1, 1);
+
+        bool ILogicalScrollable.BringIntoView(IControl target, Rect targetRect)
+        {
+            return false;
+        }
+
+        IControl? ILogicalScrollable.GetControlInDirection(NavigationDirection direction, IControl from)
+        {
+            return null;
+        }
+
+        void ILogicalScrollable.RaiseScrollInvalidated(EventArgs e)
+        {
+            _scrollInvalidated?.Invoke(this, e);
         }
     }
 }
