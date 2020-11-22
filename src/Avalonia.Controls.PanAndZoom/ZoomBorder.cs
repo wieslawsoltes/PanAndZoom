@@ -790,6 +790,24 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
+        /// Zoom and pan.
+        /// </summary>
+        /// <param name="panelWidth">The panel width.</param>
+        /// <param name="panelHeight">The panel height.</param>
+        /// <param name="elementWidth">The element width.</param>
+        /// <param name="elementHeight">The element height.</param>
+        public void None(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
+        {
+            Debug.WriteLine($"None: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
+            if (_element == null)
+            {
+                return;
+            }
+            _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.None);
+            Invalidate();
+        }
+
+        /// <summary>
         /// Zoom and pan to fill panel.
         /// </summary>
         /// <param name="panelWidth">The panel width.</param>
