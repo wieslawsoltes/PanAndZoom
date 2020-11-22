@@ -678,22 +678,7 @@ namespace Avalonia.Controls.PanAndZoom
             _element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
             _element.RenderTransform = new MatrixTransform(_matrix);
 
-            if (this is ILogicalScrollable scrollable)
-            {
-                var bounds = this.Bounds;
-
-                var transformed = bounds.TransformToAABB(_matrix);
-
-                _extent = transformed.Size;
-
-                _offset = -transformed.Position;
-
-                _viewport = bounds.Size;
-
-                Debug.WriteLine($"Extent: {_extent} | Offset: {_offset} | Viewport: {_viewport}");
-
-                scrollable.RaiseScrollInvalidated(EventArgs.Empty);
-            }
+            UpdateScrollable();
 
             _element.InvalidateVisual();
 
@@ -1031,6 +1016,36 @@ namespace Avalonia.Controls.PanAndZoom
         void ILogicalScrollable.RaiseScrollInvalidated(EventArgs e)
         {
             _scrollInvalidated?.Invoke(this, e);
+        }
+
+        private void UpdateScrollable()
+        {
+            if (!(this is ILogicalScrollable scrollable))
+            {
+                return;
+            }
+
+            var bounds = this.Bounds;
+
+            var transformed = bounds.TransformToAABB(_matrix);
+
+            var size = transformed.Size;
+            var x = transformed.Position.X;
+            var y = transformed.Position.Y;
+
+            var offsetSize = new Size(Abs(x), Abs(y));
+
+            _extent = size + offsetSize;
+
+            var offsetX = x <= 0 ? Abs(x) : size.Width - x;
+            var offsetY = y <= 0 ? Abs(y) : size.Height - y;
+
+            _offset = new Vector(offsetX, offsetY);
+            _viewport = bounds.Size;
+
+            Debug.WriteLine($"Extent: {_extent} | Offset: {_offset} | Viewport: {_viewport}");
+
+            scrollable.RaiseScrollInvalidated(EventArgs.Empty);
         }
     }
 }
