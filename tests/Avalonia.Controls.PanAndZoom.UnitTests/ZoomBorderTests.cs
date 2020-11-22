@@ -1,14 +1,35 @@
-﻿using System;
-using Xunit;
+﻿using Xunit;
 
 namespace Avalonia.Controls.PanAndZoom.UnitTests
 {
     public class ZoomBorderTests
     {
         [Fact]
-        public void Stub()
+        public void ZoomBorder_Ctor()
         {
-            Assert.True(true);
+            var target = new ZoomBorder();
+            Assert.NotNull(target);
+            Assert.Equal(ButtonName.Middle, target.PanButton);
+            Assert.Equal(1.2, target.ZoomSpeed);
+            Assert.Equal(StretchMode.Uniform, target.Stretch);
+            Assert.Equal(1.0, target.ZoomX);
+            Assert.Equal(1.0, target.ZoomY);
+            Assert.Equal(0.0, target.OffsetX);
+            Assert.Equal(0.0, target.OffsetY);
+            Assert.Equal(true, target.EnableConstrains);
+            Assert.Equal(double.NegativeInfinity, target.MinZoomX);
+            Assert.Equal(double.PositiveInfinity, target.MaxZoomX);
+            Assert.Equal(double.NegativeInfinity, target.MinZoomY);
+            Assert.Equal(double.PositiveInfinity, target.MaxZoomY);
+            Assert.Equal(double.NegativeInfinity, target.MinOffsetX);
+            Assert.Equal(double.PositiveInfinity, target.MaxOffsetX);
+            Assert.Equal(double.NegativeInfinity, target.MinOffsetY);
+            Assert.Equal(double.PositiveInfinity, target.MaxOffsetY);
+            Assert.Equal(true, target.EnablePan);
+            Assert.Equal(true, target.EnableZoom);
+            Assert.Equal(true, target.EnableGestureZoom); 
+            Assert.Equal(true, target.EnableGestureRotation);
+            Assert.Equal(true, target.EnableGestureTranslation);
         }
     }
 }
