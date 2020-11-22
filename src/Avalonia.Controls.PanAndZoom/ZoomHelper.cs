@@ -1,4 +1,5 @@
 ﻿using System;
+using static System.Math;
 
 namespace Avalonia.Controls.PanAndZoom
 {
@@ -22,17 +23,19 @@ namespace Avalonia.Controls.PanAndZoom
             var width = transformed.Size.Width;
             var height = transformed.Size.Height;
 
-            var x = transformed.Position.X;
-            var y = transformed.Position.Y;
+            var x = matrix.M31;
+            var y = matrix.M32;
 
-            extent = new Size(width + Math.Abs(x), height + Math.Abs(y));
-
-            var offsetX = x < 0 ? extent.Width + x : 0;
-            var offsetY = y < 0 ? extent.Height + y : 0;
-
-            offset = new Vector(offsetX, offsetY);
+            extent = new Size(
+                width + Math.Abs(x),
+                height + Math.Abs(y));
 
             viewport = bounds.Size;
+     
+            var offsetX = x < 0 ? Abs(x) : 0;
+            var offsetY = y < 0 ? Abs(y) : 0;
+
+            offset = new Vector(offsetX, offsetY);
         }
     }
 }
