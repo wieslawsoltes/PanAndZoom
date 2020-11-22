@@ -2,54 +2,113 @@
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:paz="using:Avalonia.Controls.PanAndZoom"
+        x:CompileBindings="True"
         WindowStartupLocation="CenterScreen" UseLayoutRounding="True"
-        Title="PanAndZoom" Height="640" Width="640">
-    <Grid RowDefinitions="Auto,12,Auto,12,*,12" ColumnDefinitions="50,*,50">
-        <StackPanel Orientation="Vertical"
-                    HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">
-            <TextBlock Text="F - Fill"/>
-            <TextBlock Text="U - Uniform"/>
-            <TextBlock Text="R - Reset"/>
-            <TextBlock Text="T - Toggle Stretch Mode"/>
-            <TextBlock Text="Mouse Wheel - Zoom to Point"/>
-            <TextBlock Text="Mouse Left Button Down - Pan"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
-            <TextBlock Text="PanButton:" VerticalAlignment="Center"/>
-            <ComboBox Items="{x:Static paz:ZoomBorder.ButtonNames}"
-                      SelectedItem="{Binding #zoomBorder.PanButton, Mode=TwoWay}"
-                      Margin="2">
-            </ComboBox>
-            <TextBlock Text="Stretch:" VerticalAlignment="Center"/>
-            <ComboBox Items="{x:Static paz:ZoomBorder.StretchModes}"
-                      SelectedItem="{Binding #zoomBorder.Stretch, Mode=TwoWay}"
-                      Margin="2">
-            </ComboBox>
-            <TextBlock Text="ZoomSpeed:" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding #zoomBorder.ZoomSpeed, Mode=TwoWay}"
-                     TextAlignment="Center" Width="50" Margin="2"/>
-            <CheckBox IsChecked="{Binding #zoomBorder.EnablePan}"
-                      Content="EnablePan" VerticalAlignment="Center"/>
-            <CheckBox IsChecked="{Binding #zoomBorder.EnableZoom}"
-                      Content="EnableZoom" VerticalAlignment="Center"/>
-        </StackPanel>
-        <ScrollViewer Grid.Row="4" Grid.Column="1"
-                      VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Auto">
-            <paz:ZoomBorder Name="zoomBorder" Stretch="None" ZoomSpeed="2"
-                            Background="SlateBlue" ClipToBounds="True" Focusable="True"
-                            VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <Border BorderBrush="Yellow" BorderThickness="10">
-                    <Canvas Background="LightGray" Width="300" Height="300">
-                        <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
-                        <StackPanel Canvas.Left="100" Canvas.Top="200">
-                            <TextBlock Text="Text1" Width="100" Background="Red" Foreground="WhiteSmoke"/>
-                            <TextBlock Text="Text2" Width="100" Background="Red" Foreground="WhiteSmoke"/>
+        Background="{DynamicResource SystemChromeMediumColor}"
+        Foreground="{DynamicResource SystemBaseHighColor}"
+        Height="640" Width="1200"
+        Title="PanAndZoom" >
+    <Window.Styles>
+        <Style Selector="Label">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+        <Style Selector="CheckBox">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+    </Window.Styles>
+    <DockPanel>
+        <Panel DockPanel.Dock="Left" Margin="12">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <StackPanel x:DataType="paz:ZoomBorder">
+                        <StackPanel>
+                            <Label Content="PanButton:"/>
+                            <ComboBox Items="{x:Static paz:ZoomBorder.ButtonNames}"
+                                      SelectedItem="{Binding PanButton, Mode=TwoWay}">
+                            </ComboBox>
                         </StackPanel>
-                    </Canvas>
-                </Border>
-            </paz:ZoomBorder>  
-        </ScrollViewer>
-    </Grid> 
+                        <StackPanel>
+                            <Label Content="Stretch:"/>
+                            <ComboBox Items="{x:Static paz:ZoomBorder.StretchModes}"
+                                      SelectedItem="{Binding Stretch, Mode=TwoWay}">
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="ZoomSpeed:"/>
+                            <TextBox Text="{Binding ZoomSpeed, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <CheckBox IsChecked="{Binding EnablePan}"
+                                  Content="EnablePan"/>
+                        <CheckBox IsChecked="{Binding EnableZoom}"
+                                  Content="EnableZoom"/>
+                        <CheckBox IsChecked="{Binding EnableConstrains}"
+                                  Content="EnableConstrains"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Content="F - Fill"/>
+                        <Label Content="U - Uniform"/>
+                        <Label Content="R - Reset"/>
+                        <Label Content="T - Toggle Stretch Mode"/>
+                        <Label Content="Mouse Wheel - Zoom to Point"/>
+                        <Label Content="Mouse Left Button Down - Pan"/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>        
+        </Panel>
+        <Panel DockPanel.Dock="Right" Margin="12">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto">
+                <StackPanel Width="120" x:DataType="paz:ZoomBorder">
+                    <StackPanel>
+                        <Label Content="ZoomX:"/>
+                        <Label Content="{Binding ZoomX}"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Content="ZoomY:"/>
+                        <Label Content="{Binding ZoomY}"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Content="OffsetX:"/>
+                        <Label Content="{Binding OffsetX}"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Content="ZoomY:"/>
+                        <Label Content="{Binding OffsetY}"/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>        
+        </Panel>
+        <Panel Margin="12">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto">
+                <paz:ZoomBorder Name="ZoomBorder"
+                                Stretch="None" 
+                                ZoomSpeed="2"
+                                EnableConstrains="False"
+                                Background="SlateBlue" ClipToBounds="True" Focusable="True"
+                                VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Border BorderBrush="Yellow" BorderThickness="10">
+                        <Canvas Background="LightGray" Width="300" Height="300">
+                            <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
+                            <StackPanel Canvas.Left="100" Canvas.Top="200">
+                                <TextBlock Text="Text1" Width="100" Background="Red" Foreground="WhiteSmoke"/>
+                                <TextBlock Text="Text2" Width="100" Background="Red" Foreground="WhiteSmoke"/>
+                            </StackPanel>
+                        </Canvas>
+                    </Border>
+                </paz:ZoomBorder>  
+            </ScrollViewer>
+        </Panel>
+    </DockPanel>
 </Window>

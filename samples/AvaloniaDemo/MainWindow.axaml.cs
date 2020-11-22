@@ -16,13 +16,16 @@ namespace AvaloniaDemo
             this.InitializeComponent();
             this.AttachDevTools();
 
-            _zoomBorder = this.Find<ZoomBorder>("zoomBorder");
+            _zoomBorder = this.Find<ZoomBorder>("ZoomBorder");
+            
             if (_zoomBorder != null)
             {
                 _zoomBorder.KeyDown += ZoomBorder_KeyDown;
                 
                 _zoomBorder.ZoomChanged += ZoomBorder_ZoomChanged;
             }
+
+            DataContext = _zoomBorder;
         }
 
         private void InitializeComponent()

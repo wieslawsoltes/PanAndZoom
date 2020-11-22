@@ -64,26 +64,26 @@ You can install the package for `Avalonia` based projects like this:
                     HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
             <TextBlock Text="PanButton:" VerticalAlignment="Center"/>
             <ComboBox Items="{x:Static paz:ZoomBorder.ButtonNames}"
-                      SelectedItem="{Binding #zoomBorder.PanButton, Mode=TwoWay}"
+                      SelectedItem="{Binding #ZoomBorder.PanButton, Mode=TwoWay}"
                       Margin="2">
             </ComboBox>
             <TextBlock Text="Stretch:" VerticalAlignment="Center"/>
             <ComboBox Items="{x:Static paz:ZoomBorder.StretchModes}"
-                      SelectedItem="{Binding #zoomBorder.Stretch, Mode=TwoWay}"
+                      SelectedItem="{Binding #ZoomBorder.Stretch, Mode=TwoWay}"
                       Margin="2">
             </ComboBox>
             <TextBlock Text="ZoomSpeed:" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding #zoomBorder.ZoomSpeed, Mode=TwoWay}"
+            <TextBox Text="{Binding #ZoomBorder.ZoomSpeed, Mode=TwoWay}"
                      TextAlignment="Center" Width="50" Margin="2"/>
-            <CheckBox IsChecked="{Binding #zoomBorder.EnablePan}"
+            <CheckBox IsChecked="{Binding #ZoomBorder.EnablePan}"
                       Content="EnablePan" VerticalAlignment="Center"/>
-            <CheckBox IsChecked="{Binding #zoomBorder.EnableZoom}"
+            <CheckBox IsChecked="{Binding #ZoomBorder.EnableZoom}"
                       Content="EnableZoom" VerticalAlignment="Center"/>
         </StackPanel>
         <ScrollViewer Grid.Row="4" Grid.Column="1"
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Auto">
-            <paz:ZoomBorder Name="zoomBorder" Stretch="None" ZoomSpeed="1.2"
+            <paz:ZoomBorder Name="ZoomBorder" Stretch="None" ZoomSpeed="1.2"
                             Background="SlateBlue" ClipToBounds="True" Focusable="True"
                             VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Canvas Background="LightGray" Width="300" Height="300">
@@ -119,7 +119,7 @@ namespace AvaloniaDemo
             this.InitializeComponent();
             this.AttachDevTools();
 
-            _zoomBorder = this.Find<ZoomBorder>("zoomBorder");
+            _zoomBorder = this.Find<ZoomBorder>("ZoomBorder");
             if (_zoomBorder != null)
             {
                 _zoomBorder.KeyDown += ZoomBorder_KeyDown;
