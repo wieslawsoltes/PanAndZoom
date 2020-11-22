@@ -1029,17 +1029,14 @@ namespace Avalonia.Controls.PanAndZoom
 
             var transformed = bounds.TransformToAABB(_matrix);
 
-            var size = transformed.Size;
+            var width = Max(bounds.Size.Width, transformed.Size.Width);
+            var height = Max(bounds.Size.Height, transformed.Size.Height);
             var x = transformed.Position.X;
             var y = transformed.Position.Y;
+            var offsetX = x <= 0 ? Abs(x) : width - x;
+            var offsetY = y <= 0 ? Abs(y) : height - y;
 
-            var offsetSize = new Size(Abs(x), Abs(y));
-
-            _extent = size + offsetSize;
-
-            var offsetX = x <= 0 ? Abs(x) : size.Width - x;
-            var offsetY = y <= 0 ? Abs(y) : size.Height - y;
-
+            _extent = new Size(width + Abs(x), height + Abs(y));
             _offset = new Vector(offsetX, offsetY);
             _viewport = bounds.Size;
 
