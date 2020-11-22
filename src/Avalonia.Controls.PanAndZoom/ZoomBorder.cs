@@ -678,9 +678,9 @@ namespace Avalonia.Controls.PanAndZoom
             _element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
             _element.RenderTransform = new MatrixTransform(_matrix);
 
-            UpdateScrollable();
-
             _element.InvalidateVisual();
+
+            UpdateScrollable();
 
             RaiseZoomChanged();
         }
@@ -1025,7 +1025,12 @@ namespace Avalonia.Controls.PanAndZoom
                 return;
             }
 
-            ZoomHelper.CalculateScrollable(this.Bounds, _matrix, out var extent, out var viewport, out var  offset);
+            if (_element == null)
+            {
+                return;
+            }
+            
+            ZoomHelper.CalculateScrollable(_element.Bounds, _matrix, out var extent, out var viewport, out var  offset);
 
             _extent = extent;
             _offset = offset;
