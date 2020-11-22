@@ -10,7 +10,7 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
         }
         
         [Fact]
-        public void CalculateScrollable_Defaults()
+        public void CalculateScrollable_Default()
         {
             var bounds = new Rect(0, 0, 100, 100);
             var matrix = CreateMatrix();
