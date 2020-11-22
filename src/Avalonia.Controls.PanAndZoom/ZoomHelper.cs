@@ -27,11 +27,8 @@ namespace Avalonia.Controls.PanAndZoom
 
             extent = new Size(width + Math.Abs(x), height + Math.Abs(y));
 
-            var offsetX = x < 0 ? extent.Width - x : 0;
-            var offsetY = y < 0 ? extent.Height - y : 0;
-
-            offsetX -= width - bounds.Width;
-            offsetY -= height - bounds.Height;
+            var offsetX = x < 0 ? extent.Width + x : 0;
+            var offsetY = y < 0 ? extent.Height + y : 0;
 
             offset = new Vector(offsetX, offsetY);
 
