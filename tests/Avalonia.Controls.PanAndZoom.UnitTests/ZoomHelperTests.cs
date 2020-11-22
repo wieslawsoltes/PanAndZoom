@@ -81,7 +81,7 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
             var bounds = new Rect(0, 0, 300, 300);
             var matrix = CreateMatrix(scaleX: 2, scaleY: 2, offsetX: -150);
             ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
-            Assert.Equal(new Size(750, 600), extent);
+            Assert.Equal(new Size(600, 600), extent);
             Assert.Equal(new Size(300, 300), viewport);
             Assert.Equal(new Vector(150, 0), offset);
         }
@@ -92,7 +92,7 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
             var bounds = new Rect(0, 0, 300, 300);
             var matrix = CreateMatrix(scaleX: 2, scaleY: 2, offsetX: 150);
             ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
-            Assert.Equal(new Size(750, 600), extent);
+            Assert.Equal(new Size(600, 600), extent);
             Assert.Equal(new Size(300, 300), viewport);
             Assert.Equal(new Vector(0, 0), offset);
         }
@@ -103,7 +103,7 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
             var bounds = new Rect(0, 0, 300, 300);
             var matrix = CreateMatrix(scaleX: 2, scaleY: 2, offsetY: -150);
             ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
-            Assert.Equal(new Size(600, 750), extent);
+            Assert.Equal(new Size(600, 600), extent);
             Assert.Equal(new Size(300, 300), viewport);
             Assert.Equal(new Vector(0, 150), offset);
         }
@@ -114,7 +114,7 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
             var bounds = new Rect(0, 0, 300, 300);
             var matrix = CreateMatrix(scaleX: 2, scaleY: 2, offsetY: 150);
             ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
-            Assert.Equal(new Size(600, 750), extent);
+            Assert.Equal(new Size(600, 600), extent);
             Assert.Equal(new Size(300, 300), viewport);
             Assert.Equal(new Vector(0, 0), offset);
         }
@@ -136,9 +136,9 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
             var bounds = new Rect(0, 0, 300, 300);
             var matrix = CreateMatrix(scaleX: 0.5, scaleY: 0.5, offsetX: -200);
             ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
-            Assert.Equal(new Size(300, 300), extent);
+            Assert.Equal(new Size(500, 300), extent);
             Assert.Equal(new Size(300, 300), viewport);
-            Assert.Equal(new Vector(0, 0), offset);
+            Assert.Equal(new Vector(200, 0), offset);
         }
 
         [Fact]
@@ -147,7 +147,7 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
             var bounds = new Rect(0, 0, 300, 300);
             var matrix = CreateMatrix(scaleX: 0.5, scaleY: 0.5, offsetX: 200);
             ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
-            Assert.Equal(new Size(300, 300), extent);
+            Assert.Equal(new Size(350, 300), extent);
             Assert.Equal(new Size(300, 300), viewport);
             Assert.Equal(new Vector(0, 0), offset);
         }
@@ -158,9 +158,9 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
             var bounds = new Rect(0, 0, 300, 300);
             var matrix = CreateMatrix(scaleX: 0.5, scaleY: 0.5, offsetY: -200);
             ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
-            Assert.Equal(new Size(300, 300), extent);
+            Assert.Equal(new Size(300, 500), extent);
             Assert.Equal(new Size(300, 300), viewport);
-            Assert.Equal(new Vector(0, 0), offset);
+            Assert.Equal(new Vector(0, 200), offset);
         }
 
         [Fact]
@@ -169,7 +169,7 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
             var bounds = new Rect(0, 0, 300, 300);
             var matrix = CreateMatrix(scaleX: 0.5, scaleY: 0.5, offsetY: 200);
             ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
-            Assert.Equal(new Size(300, 300), extent);
+            Assert.Equal(new Size(300, 350), extent);
             Assert.Equal(new Size(300, 300), viewport);
             Assert.Equal(new Vector(0, 0), offset);
         }
