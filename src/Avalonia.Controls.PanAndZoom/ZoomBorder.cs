@@ -922,6 +922,18 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
+        /// Zoom and pan.
+        /// </summary>
+        public void None()
+        {
+            if (_element == null)
+            {
+                return;
+            }
+            None(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
+        }
+        
+        /// <summary>
         /// Zoom and pan to fill panel.
         /// </summary>
         public void Fill()
