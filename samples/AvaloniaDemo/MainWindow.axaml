@@ -107,6 +107,17 @@
                                         <TextBlock Text="Text1" Width="100" Background="Red" Foreground="WhiteSmoke"/>
                                         <TextBlock Text="Text2" Width="100" Background="Red" Foreground="WhiteSmoke"/>
                                     </StackPanel>
+                                    <Button Content="Button" Width="120" Canvas.Left="100" Canvas.Top="250"/>
+                                    <ListBox Width="120"
+                                             Canvas.Left="10" Canvas.Top="10"
+                                             x:DataType="paz:ZoomBorder"
+                                             Items="{x:Static paz:ZoomBorder.StretchModes}"
+                                             SelectedItem="{Binding Stretch, Mode=TwoWay}"/>
+                                    <ListBox Width="120"
+                                             Canvas.Left="160" Canvas.Top="10"
+                                             x:DataType="paz:ZoomBorder"
+                                             Items="{x:Static paz:ZoomBorder.ButtonNames}"
+                                             SelectedItem="{Binding PanButton, Mode=TwoWay}"/>
                                 </Canvas>
                             </Border>
                         </paz:ZoomBorder>  
