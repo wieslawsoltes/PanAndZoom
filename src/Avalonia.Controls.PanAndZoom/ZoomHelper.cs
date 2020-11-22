@@ -23,17 +23,20 @@ namespace Avalonia.Controls.PanAndZoom
             var width = transformed.Size.Width;
             var height = transformed.Size.Height;
 
-            var x = matrix.M31;
-            var y = matrix.M32;
+            var ex = matrix.M31;
+            var ey = matrix.M32;
 
             extent = new Size(
-                width + Math.Abs(x),
-                height + Math.Abs(y));
+                width + Math.Abs(ex),
+                height + Math.Abs(ey));
 
             viewport = bounds.Size;
      
-            var offsetX = x < 0 ? Abs(x) : 0;
-            var offsetY = y < 0 ? Abs(y) : 0;
+            var ox = matrix.M31 * matrix.M11;
+            var oy = matrix.M32 * matrix.M22;
+
+            var offsetX = ox < 0 ? Abs(ox) : 0;
+            var offsetY = oy < 0 ? Abs(oy) : 0;
 
             offset = new Vector(offsetX, offsetY);
         }
