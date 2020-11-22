@@ -5,7 +5,7 @@ namespace Avalonia.Controls.PanAndZoom
     /// <summary>
     /// Avalonia Matrix helper methods.
     /// </summary>
-    internal static class MatrixHelper
+    public static class MatrixHelper
     {
         /// <summary>
         /// Creates a translation matrix using the specified offsets.
