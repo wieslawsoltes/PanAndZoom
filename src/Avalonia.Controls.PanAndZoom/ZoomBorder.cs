@@ -1025,25 +1025,12 @@ namespace Avalonia.Controls.PanAndZoom
                 return;
             }
 
-            var bounds = this.Bounds;
+            ZoomHelper.CalculateScrollable(this.Bounds, _matrix, out var extent, out var viewport, out var  offset);
 
-            var transformed = bounds.TransformToAABB(_matrix);
-
-            var width = transformed.Size.Width;
-            var height = transformed.Size.Height;
-
-            var x = transformed.Position.X;
-            var y = transformed.Position.Y;
-
-            _extent = new Size(width + Abs(x), height + Abs(y));
-
-            var offsetX = x < 0 ? _extent.Width - x : 0;
-            var offsetY = y < 0 ? _extent.Height - y : 0;
+            _extent = extent;
+            _offset = offset;
+            _viewport = viewport;
             
-            _offset = new Vector(offsetX, offsetY);
-
-            _viewport = bounds.Size;
-
             Debug.WriteLine($"Extent: {_extent} | Offset: {_offset} | Viewport: {_viewport}");
 
             scrollable.RaiseScrollInvalidated(EventArgs.Empty);
