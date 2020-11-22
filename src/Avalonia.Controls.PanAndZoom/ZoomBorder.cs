@@ -658,38 +658,31 @@ namespace Avalonia.Controls.PanAndZoom
                 Constrain();
             }
             
-            _zoomX = _matrix.M11;
-            _zoomY = _matrix.M22;
-            _offsetX = _matrix.M31;
-            _offsetY = _matrix.M32;
-
             var oldZoomX = _zoomX;
             var oldZoomY = _zoomY;
             var oldOffsetX = _offsetX;
             var oldOffsetY = _offsetY;
             
+            _zoomX = _matrix.M11;
+            _zoomY = _matrix.M22;
+            _offsetX = _matrix.M31;
+            _offsetY = _matrix.M32;
+            
             RaisePropertyChanged(ZoomXProperty, oldZoomX, _zoomX);
             RaisePropertyChanged(ZoomYProperty, oldZoomY, _zoomY);
             RaisePropertyChanged(OffsetXProperty, oldOffsetX, _offsetX);
             RaisePropertyChanged(OffsetYProperty, oldOffsetY, _offsetY);
-
-            InvalidatedChild?.Invoke(_zoomX, _zoomY, _offsetX, _offsetY);
- 
-            InvalidateElement();
-            UpdateScrollable();
-            RaiseZoomChanged();
-        }
-
-        private void InvalidateElement()
-        {
-            if (_element == null)
-            {
-                return;
-            }
-
+            
+            InvalidatedChild?.Invoke(_matrix.M11, _matrix.M22, _matrix.M31, _matrix.M32);
+            
             _element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
             _element.RenderTransform = new MatrixTransform(_matrix);
+
+            UpdateScrollable();
+
             _element.InvalidateVisual();
+
+            RaiseZoomChanged();
         }
 
         /// <summary>
@@ -1033,21 +1026,24 @@ namespace Avalonia.Controls.PanAndZoom
             }
 
             var bounds = this.Bounds;
-            var transformedBounds = bounds.TransformToAABB(_matrix);
 
-            var size = transformedBounds.Size;
-            var positionX = transformedBounds.Position.X;
-            var positionY = transformedBounds.Position.Y;
-            var absolutePositionX = Abs(positionX);
-            var absolutePositionY = Abs(positionY);
+            var transformed = bounds.TransformToAABB(_matrix);
 
-            var offsetSize = new Size(absolutePositionX, absolutePositionY);
-            var offsetX = positionX <= 0 ? absolutePositionX : size.Width - positionX;
-            var offsetY = positionY <= 0 ? absolutePositionY : size.Height - positionY;
+            var size = transformed.Size;
+            var x = transformed.Position.X;
+            var y = transformed.Position.Y;
+
+            var offsetSize = new Size(Abs(x), Abs(y));
 
             _extent = size + offsetSize;
+
+            var offsetX = x <= 0 ? Abs(x) : size.Width - x;
+            var offsetY = y <= 0 ? Abs(y) : size.Height - y;
+
             _offset = new Vector(offsetX, offsetY);
             _viewport = bounds.Size;
+
+            Debug.WriteLine($"Extent: {_extent} | Offset: {_offset} | Viewport: {_viewport}");
 
             scrollable.RaiseScrollInvalidated(EventArgs.Empty);
         }
