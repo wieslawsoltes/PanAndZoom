@@ -74,12 +74,100 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
             Assert.Equal(new Size(300, 300), viewport);
             Assert.Equal(new Vector(0, 0), offset);
         }
-        
+
+        [Fact]
+        public void CalculateScrollable_ZoomIn_2x_OffsetX_Negative()
+        {
+            var bounds = new Rect(0, 0, 300, 300);
+            var matrix = CreateMatrix(scaleX: 2, scaleY: 2, offsetX: -150);
+            ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
+            Assert.Equal(new Size(750, 600), extent);
+            Assert.Equal(new Size(300, 300), viewport);
+            Assert.Equal(new Vector(150, 0), offset);
+        }
+
+        [Fact]
+        public void CalculateScrollable_ZoomIn_2x_OffsetX_Positive()
+        {
+            var bounds = new Rect(0, 0, 300, 300);
+            var matrix = CreateMatrix(scaleX: 2, scaleY: 2, offsetX: 150);
+            ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
+            Assert.Equal(new Size(750, 600), extent);
+            Assert.Equal(new Size(300, 300), viewport);
+            Assert.Equal(new Vector(0, 0), offset);
+        }
+
+        [Fact]
+        public void CalculateScrollable_ZoomIn_2x_OffsetY_Negative()
+        {
+            var bounds = new Rect(0, 0, 300, 300);
+            var matrix = CreateMatrix(scaleX: 2, scaleY: 2, offsetY: -150);
+            ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
+            Assert.Equal(new Size(600, 750), extent);
+            Assert.Equal(new Size(300, 300), viewport);
+            Assert.Equal(new Vector(0, 150), offset);
+        }
+
+        [Fact]
+        public void CalculateScrollable_ZoomIn_2x_OffsetY_Positive()
+        {
+            var bounds = new Rect(0, 0, 300, 300);
+            var matrix = CreateMatrix(scaleX: 2, scaleY: 2, offsetY: 150);
+            ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
+            Assert.Equal(new Size(600, 750), extent);
+            Assert.Equal(new Size(300, 300), viewport);
+            Assert.Equal(new Vector(0, 0), offset);
+        }
+
         [Fact]
         public void CalculateScrollable_ZoomOut_0_5x()
         {
             var bounds = new Rect(0, 0, 300, 300);
             var matrix = CreateMatrix(scaleX: 0.5, scaleY: 0.5);
+            ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
+            Assert.Equal(new Size(300, 300), extent);
+            Assert.Equal(new Size(300, 300), viewport);
+            Assert.Equal(new Vector(0, 0), offset);
+        }
+
+        [Fact]
+        public void CalculateScrollable_ZoomOut_0_5x_OffsetX_Negative()
+        {
+            var bounds = new Rect(0, 0, 300, 300);
+            var matrix = CreateMatrix(scaleX: 0.5, scaleY: 0.5, offsetX: -200);
+            ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
+            Assert.Equal(new Size(300, 300), extent);
+            Assert.Equal(new Size(300, 300), viewport);
+            Assert.Equal(new Vector(0, 0), offset);
+        }
+
+        [Fact]
+        public void CalculateScrollable_ZoomOut_0_5x_OffsetX_Positive()
+        {
+            var bounds = new Rect(0, 0, 300, 300);
+            var matrix = CreateMatrix(scaleX: 0.5, scaleY: 0.5, offsetX: 200);
+            ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
+            Assert.Equal(new Size(300, 300), extent);
+            Assert.Equal(new Size(300, 300), viewport);
+            Assert.Equal(new Vector(0, 0), offset);
+        }
+
+        [Fact]
+        public void CalculateScrollable_ZoomOut_0_5x_OffsetY_Negative()
+        {
+            var bounds = new Rect(0, 0, 300, 300);
+            var matrix = CreateMatrix(scaleX: 0.5, scaleY: 0.5, offsetY: -200);
+            ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
+            Assert.Equal(new Size(300, 300), extent);
+            Assert.Equal(new Size(300, 300), viewport);
+            Assert.Equal(new Vector(0, 0), offset);
+        }
+
+        [Fact]
+        public void CalculateScrollable_ZoomOut_0_5x_OffsetY_Positive()
+        {
+            var bounds = new Rect(0, 0, 300, 300);
+            var matrix = CreateMatrix(scaleX: 0.5, scaleY: 0.5, offsetY: 200);
             ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
             Assert.Equal(new Size(300, 300), extent);
             Assert.Equal(new Size(300, 300), viewport);
