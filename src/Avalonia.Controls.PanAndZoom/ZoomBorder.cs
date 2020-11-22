@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
@@ -430,6 +431,8 @@ namespace Avalonia.Controls.PanAndZoom
             Background = Brushes.Transparent;
             AttachedToVisualTree += PanAndZoom_AttachedToVisualTree;
             DetachedFromVisualTree += PanAndZoom_DetachedFromVisualTree;
+            AddHandler(Gestures.ScrollGestureEvent, OnScrollGesture);
+            //AddHandler(Gestures.ScrollGestureEndedEvent, OnScrollGestureEnded);
             this.GetObservable(ChildProperty).Subscribe(ChildChanged);
         }
 
@@ -990,6 +993,7 @@ namespace Avalonia.Controls.PanAndZoom
         private bool _canHorizontallyScroll = false;
         private bool _canVerticallyScroll = false;
         private EventHandler? _scrollInvalidated;
+        private Dictionary<int, Vector>? _activeLogicalGestureScrolls;
 
         /// <inheritdoc/>
         Size IScrollable.Extent => _extent;
@@ -1071,5 +1075,80 @@ namespace Avalonia.Controls.PanAndZoom
 
             scrollable.RaiseScrollInvalidated(EventArgs.Empty);
         }
+
+        private void OnScrollGesture(object sender, ScrollGestureEventArgs e)
+        {
+            Debug.WriteLine($"[OnScrollGesture] Id: {e.Id}, Delta: {e.Delta}");
+            /*
+            if (_extent.Height > _viewport.Height || _extent.Width > _viewport.Width)
+            {
+                var scrollable = this as ILogicalScrollable;
+                var isLogical = scrollable?.IsLogicalScrollEnabled == true;
+                var x = _offset.X;
+                var y = _offset.Y;
+                var delta = default(Vector);
+                
+                if (isLogical)
+                {
+                    _activeLogicalGestureScrolls?.TryGetValue(e.Id, out delta);
+                }
+
+                delta += e.Delta;
+
+                if (_extent.Height > _viewport.Height)
+                {
+                    double dy;
+                    if (isLogical)
+                    {
+                        var logicalUnits = delta.Y / 50;
+                        delta = delta.WithY(delta.Y - logicalUnits * 50);
+                        dy = logicalUnits * scrollable!.ScrollSize.Height;
+                    }
+                    else
+                    {
+                        dy = delta.Y;
+                    }
+
+                    y += dy;
+                    y = Max(y, 0);
+                    y = Min(y, _extent.Height - _viewport.Height);
+                }
+
+                if (_extent.Width > _viewport.Width)
+                {
+                    double dx;
+                    if (isLogical)
+                    {
+                        var logicalUnits = delta.X / 50;
+                        delta = delta.WithX(delta.X - logicalUnits * 50);
+                        dx = logicalUnits * scrollable!.ScrollSize.Width;
+                    }
+                    else
+                    {
+                        dx = delta.X;
+                    }
+ 
+                    x += dx;
+                    x = Max(x, 0);
+                    x = Min(x, _extent.Width - _viewport.Width);
+                }
+
+                if (isLogical)
+                {
+                    if (_activeLogicalGestureScrolls == null)
+                    {
+                        _activeLogicalGestureScrolls = new Dictionary<int, Vector>();   
+                    }
+                    _activeLogicalGestureScrolls[e.Id] = delta;
+                }
+
+                _offset = new Vector(x, y);
+                e.Handled = true;
+            }
+            */
+        }
+        
+        //private void OnScrollGestureEnded(object sender, ScrollGestureEndedEventArgs e)
+        //    => _activeLogicalGestureScrolls?.Remove(e.Id);
     }
 }
