@@ -47,7 +47,7 @@ namespace Avalonia.Controls.PanAndZoom
                     }
                 }
             }
-            else
+            else if (!(width > viewport.Width))
             {
                 width += Abs(transformed.Position.X);
             }
@@ -69,7 +69,7 @@ namespace Avalonia.Controls.PanAndZoom
                     }
                 }
             }
-            else
+            else if (!(height > viewport.Height))
             {
                 height += Abs(transformed.Position.Y);
             }
