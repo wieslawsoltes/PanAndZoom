@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
+  <Import Project="..\..\build\Avalonia.props" />
   <Import Project="..\..\build\XUnit.props" />
 
   <ItemGroup>
