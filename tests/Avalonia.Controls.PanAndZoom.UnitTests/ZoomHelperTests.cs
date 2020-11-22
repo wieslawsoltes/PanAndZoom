@@ -4,7 +4,7 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
 {
     public class ZoomHelperTests
     {
-        private Matrix CreateMatrix(double scaleX = 1.0, double scaleY = 1.0, double offsetX = 0.0, double offsetY = 0.0)
+        private static Matrix CreateMatrix(double scaleX = 1.0, double scaleY = 1.0, double offsetX = 0.0, double offsetY = 0.0)
         {
             return new Matrix(scaleX, 0, 0, scaleY, offsetX, offsetY);
         }
