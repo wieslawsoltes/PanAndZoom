@@ -1,5 +1,4 @@
-﻿
-namespace PanAndZoom
+﻿namespace Avalonia.Controls.PanAndZoom
 {
     /// <summary>
     /// Describes how content is resized to fill its allocated space.

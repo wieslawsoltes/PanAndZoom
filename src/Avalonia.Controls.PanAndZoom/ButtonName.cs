@@ -1,5 +1,4 @@
-﻿
-namespace PanAndZoom
+﻿namespace Avalonia.Controls.PanAndZoom
 {
     /// <summary>
     /// Describes mouse button names.

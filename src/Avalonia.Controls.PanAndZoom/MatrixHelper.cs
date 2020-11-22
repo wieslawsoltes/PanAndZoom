@@ -1,12 +1,11 @@
-﻿using Avalonia;
-using static System.Math;
+﻿using static System.Math;
 
-namespace Avalonia.MatrixExtensions
+namespace Avalonia.Controls.PanAndZoom
 {
     /// <summary>
     /// Avalonia Matrix helper methods.
     /// </summary>
-    public static class MatrixHelper
+    internal static class MatrixHelper
     {
         /// <summary>
         /// Creates a translation matrix using the specified offsets.

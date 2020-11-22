@@ -8,7 +8,7 @@ namespace AvaloniaDemo
 {
     public class MainWindow : Window
     {
-        private ZoomBorder _zoomBorder;
+        private readonly ZoomBorder? _zoomBorder;
 
         public MainWindow()
         {
@@ -29,25 +29,21 @@ namespace AvaloniaDemo
 
         private void ZoomBorder_KeyDown(object? sender, KeyEventArgs e)
         {
-            if (e.Key == Key.F)
+            switch (e.Key)
             {
-                _zoomBorder.Fill();
-            }
-
-            if (e.Key == Key.U)
-            {
-                _zoomBorder.Uniform();
-            }
-
-            if (e.Key == Key.R)
-            {
-                _zoomBorder.Reset();
-            }
-
-            if (e.Key == Key.T)
-            {
-                _zoomBorder.ToggleStretchMode();
-                _zoomBorder.AutoFit();
+                case Key.F:
+                    _zoomBorder?.Fill();
+                    break;
+                case Key.U:
+                    _zoomBorder?.Uniform();
+                    break;
+                case Key.R:
+                    _zoomBorder?.Reset();
+                    break;
+                case Key.T:
+                    _zoomBorder?.ToggleStretchMode();
+                    _zoomBorder?.AutoFit();
+                    break;
             }
         }
     }

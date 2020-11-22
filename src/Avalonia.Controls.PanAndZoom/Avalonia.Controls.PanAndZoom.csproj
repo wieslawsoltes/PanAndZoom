@@ -23,9 +23,4 @@
     <Compile Include="**\*.cs" Exclude="obj\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Avalonia.MatrixExtensions\Avalonia.MatrixExtensions.csproj" />
-    <ProjectReference Include="..\PanAndZoom\PanAndZoom.csproj" />
-  </ItemGroup>
-
 </Project>

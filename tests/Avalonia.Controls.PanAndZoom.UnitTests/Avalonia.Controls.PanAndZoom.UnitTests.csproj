@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Avalonia.Controls.PanAndZoom\Avalonia.Controls.PanAndZoom.csproj" />
-    <ProjectReference Include="..\..\src\PanAndZoom\PanAndZoom.csproj" />
   </ItemGroup>
 
 </Project>

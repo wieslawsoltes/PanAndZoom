@@ -2,9 +2,7 @@
 using System.Diagnostics;
 using Avalonia.Data;
 using Avalonia.Input;
-using Avalonia.MatrixExtensions;
 using Avalonia.Media;
-using PanAndZoom;
 using static System.Math;
 
 namespace Avalonia.Controls.PanAndZoom
@@ -12,170 +10,23 @@ namespace Avalonia.Controls.PanAndZoom
     /// <summary>
     /// Pan and zoom control for Avalonia.
     /// </summary>
-    public class ZoomBorder : Border, IPanAndZoom
+    public class ZoomBorder : Border
     {
-        private IControl? _element;
-        private Point _pan;
-        private Point _previous;
-        private Matrix _matrix;
-        private bool _isPanning;
-        private double _zoomX = 1.0;
-        private double _zoomY = 1.0;
-        private double _offsetX = 0.0;
-        private double _offsetY = 0.0;
-        private bool _captured = false;
-        private static StretchMode[] _autoFitModes = (StretchMode[])Enum.GetValues(typeof(StretchMode));
-        private static ButtonName[] _buttonNames = (ButtonName[])Enum.GetValues(typeof(ButtonName));
-
         /// <summary>
         /// Gets available stretch modes.
         /// </summary>
-        public static StretchMode[] StretchModes => _autoFitModes;
+        public static StretchMode[] StretchModes { get; } = (StretchMode[])Enum.GetValues(typeof(StretchMode));
 
         /// <summary>
         /// Gets available button names.
         /// </summary>
-        public static ButtonName[] ButtonNames => _buttonNames;
-
-        /// <inheritdoc/>
-        public Action<double, double, double, double>? InvalidatedChild { get; set; }
-
-        /// <inheritdoc/>
-        public ButtonName PanButton
-        {
-            get => GetValue(PanButtonProperty);
-            set => SetValue(PanButtonProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public double ZoomSpeed
-        {
-            get => GetValue(ZoomSpeedProperty);
-            set => SetValue(ZoomSpeedProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public StretchMode Stretch
-        {
-            get => GetValue(StretchProperty);
-            set => SetValue(StretchProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public double ZoomX => _zoomX;
-
-        /// <inheritdoc/>
-        public double ZoomY => _zoomY;
-
-        /// <inheritdoc/>
-        public double OffsetX => _offsetX;
-
-        /// <inheritdoc/>
-        public double OffsetY => _offsetY;
-
-        /// <inheritdoc/>
-        public bool EnableConstrains
-        {
-            get => GetValue(EnableConstrainsProperty);
-            set => SetValue(EnableConstrainsProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public double MinZoomX
-        {
-            get => GetValue(MinZoomXProperty);
-            set => SetValue(MinZoomXProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public double MaxZoomX
-        {
-            get => GetValue(MaxZoomXProperty);
-            set => SetValue(MaxZoomXProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public double MinZoomY
-        {
-            get => GetValue(MinZoomYProperty);
-            set => SetValue(MinZoomYProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public double MaxZoomY
-        {
-            get => GetValue(MaxZoomYProperty);
-            set => SetValue(MaxZoomYProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public double MinOffsetX
-        {
-            get => GetValue(MinOffsetXProperty);
-            set => SetValue(MinOffsetXProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public double MaxOffsetX
-        {
-            get => GetValue(MaxOffsetXProperty);
-            set => SetValue(MaxOffsetXProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public double MinOffsetY
-        {
-            get => GetValue(MinOffsetYProperty);
-            set => SetValue(MinOffsetYProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public double MaxOffsetY
-        {
-            get => GetValue(MaxOffsetYProperty);
-            set => SetValue(MaxOffsetYProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public bool EnablePan
-        {
-            get => GetValue(EnablePanProperty);
-            set => SetValue(EnablePanProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public bool EnableZoom
-        {
-            get => GetValue(EnableZoomProperty);
-            set => SetValue(EnableZoomProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public bool EnableGestureZoom
-        {
-            get => GetValue(EnableGestureZoomProperty);
-            set => SetValue(EnableGestureZoomProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public bool EnableGestureRotation
-        {
-            get => GetValue(EnableGestureRotationProperty);
-            set => SetValue(EnableGestureRotationProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public bool EnableGestureTranslation
-        {
-            get => GetValue(EnableGestureTranslationProperty);
-            set => SetValue(EnableGestureTranslationProperty, value);
-        }
+        public static ButtonName[] ButtonNames { get; } = (ButtonName[])Enum.GetValues(typeof(ButtonName));
 
         /// <summary>
         /// Identifies the <seealso cref="PanButton"/> avalonia property.
         /// </summary>
         public static StyledProperty<ButtonName> PanButtonProperty =
-            AvaloniaProperty.Register<ZoomBorder, ButtonName>(nameof(PanButton), ButtonName.Left, false, BindingMode.TwoWay);
+            AvaloniaProperty.Register<ZoomBorder, ButtonName>(nameof(PanButton), ButtonName.Middle, false, BindingMode.TwoWay);
 
         /// <summary>
         /// Identifies the <seealso cref="ZoomSpeed"/> avalonia property.
@@ -329,6 +180,206 @@ namespace Avalonia.Controls.PanAndZoom
                 MaxOffsetYProperty);
         }
 
+        private IControl? _element;
+        private Point _pan;
+        private Point _previous;
+        private Matrix _matrix;
+        private bool _isPanning;
+        private double _zoomX = 1.0;
+        private double _zoomY = 1.0;
+        private double _offsetX = 0.0;
+        private double _offsetY = 0.0;
+        private bool _captured = false;
+
+        /// <summary>
+        /// Gets or sets invalidate action for border child element.
+        /// </summary>
+        /// <remarks>
+        /// First parameter is zoom ratio for x axis.
+        /// Second parameter is zoom ratio for y axis.
+        /// Third parameter is pan offset for x axis.
+        /// Fourth parameter is pan offset for y axis.
+        /// </remarks>
+        public Action<double, double, double, double>? InvalidatedChild { get; set; }
+
+        /// <summary>
+        /// Gets or sets pan input button.
+        /// </summary>
+        public ButtonName PanButton
+        {
+            get => GetValue(PanButtonProperty);
+            set => SetValue(PanButtonProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets zoom speed ratio.
+        /// </summary>
+        public double ZoomSpeed
+        {
+            get => GetValue(ZoomSpeedProperty);
+            set => SetValue(ZoomSpeedProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets stretch mode.
+        /// </summary>
+        public StretchMode Stretch
+        {
+            get => GetValue(StretchProperty);
+            set => SetValue(StretchProperty, value);
+        }
+
+        /// <summary>
+        /// Gets the render transform matrix.
+        /// </summary>
+        public Matrix Matrix => _matrix;
+
+        /// <summary>
+        /// Gets the zoom ratio for x axis.
+        /// </summary>
+        public double ZoomX => _zoomX;
+
+        /// <summary>
+        /// Gets the zoom ratio for y axis.
+        /// </summary>
+        public double ZoomY => _zoomY;
+
+        /// <summary>
+        /// Gets the pan offset for x axis.
+        /// </summary>
+        public double OffsetX => _offsetX;
+
+        /// <summary>
+        /// Gets the pan offset for y axis.
+        /// </summary>
+        public double OffsetY => _offsetY;
+
+        /// <summary>
+        /// Gets or sets flag indicating whether zoom ratio and pan offset constrains are applied.
+        /// </summary>
+        public bool EnableConstrains
+        {
+            get => GetValue(EnableConstrainsProperty);
+            set => SetValue(EnableConstrainsProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets minimum zoom ratio for x axis.
+        /// </summary>
+        public double MinZoomX
+        {
+            get => GetValue(MinZoomXProperty);
+            set => SetValue(MinZoomXProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets maximum zoom ratio for x axis.
+        /// </summary>
+        public double MaxZoomX
+        {
+            get => GetValue(MaxZoomXProperty);
+            set => SetValue(MaxZoomXProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets minimum zoom ratio for y axis.
+        /// </summary>
+        public double MinZoomY
+        {
+            get => GetValue(MinZoomYProperty);
+            set => SetValue(MinZoomYProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets maximum zoom ratio for y axis.
+        /// </summary>
+        public double MaxZoomY
+        {
+            get => GetValue(MaxZoomYProperty);
+            set => SetValue(MaxZoomYProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets minimum offset for x axis.
+        /// </summary>
+        public double MinOffsetX
+        {
+            get => GetValue(MinOffsetXProperty);
+            set => SetValue(MinOffsetXProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets maximum offset for x axis.
+        /// </summary>
+        public double MaxOffsetX
+        {
+            get => GetValue(MaxOffsetXProperty);
+            set => SetValue(MaxOffsetXProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets minimum offset for y axis.
+        /// </summary>
+        public double MinOffsetY
+        {
+            get => GetValue(MinOffsetYProperty);
+            set => SetValue(MinOffsetYProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets maximum offset for y axis.
+        /// </summary>
+        public double MaxOffsetY
+        {
+            get => GetValue(MaxOffsetYProperty);
+            set => SetValue(MaxOffsetYProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets flag indicating whether pan input events are processed.
+        /// </summary>
+        public bool EnablePan
+        {
+            get => GetValue(EnablePanProperty);
+            set => SetValue(EnablePanProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets flag indicating whether input zoom events are processed.
+        /// </summary>
+        public bool EnableZoom
+        {
+            get => GetValue(EnableZoomProperty);
+            set => SetValue(EnableZoomProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets flag indicating whether zoom gesture is enabled.
+        /// </summary>
+        public bool EnableGestureZoom
+        {
+            get => GetValue(EnableGestureZoomProperty);
+            set => SetValue(EnableGestureZoomProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets flag indicating whether rotation gesture is enabled.
+        /// </summary>
+        public bool EnableGestureRotation
+        {
+            get => GetValue(EnableGestureRotationProperty);
+            set => SetValue(EnableGestureRotationProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets flag indicating whether translation (pan) gesture is enabled.
+        /// </summary>
+        public bool EnableGestureTranslation
+        {
+            get => GetValue(EnableGestureTranslationProperty);
+            set => SetValue(EnableGestureTranslationProperty, value);
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoomBorder"/> class.
         /// </summary>
@@ -336,13 +387,10 @@ namespace Avalonia.Controls.PanAndZoom
             : base()
         {
             Defaults();
-
             Focusable = true;
             Background = Brushes.Transparent;
-
             AttachedToVisualTree += PanAndZoom_AttachedToVisualTree;
             DetachedFromVisualTree += PanAndZoom_DetachedFromVisualTree;
-
             this.GetObservable(ChildProperty).Subscribe(ChildChanged);
         }
 
@@ -412,7 +460,7 @@ namespace Avalonia.Controls.PanAndZoom
             Moved(e);
         }
 
-        private void ChildChanged(IControl element)
+        private void ChildChanged(IControl? element)
         {
             if (element != null && element != _element && _element != null)
             {
@@ -425,7 +473,7 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
-        private void AttachElement(IControl element)
+        private void AttachElement(IControl? element)
         {
             if (element == null)
             {
@@ -528,14 +576,16 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Constrain()
         {
-            double zoomX = Constrain(_matrix.M11, MinZoomX, MaxZoomX);
-            double zoomY = Constrain(_matrix.M22, MinZoomY, MaxZoomY);
-            double offsetX = Constrain(_matrix.M31, MinOffsetX, MaxOffsetX);
-            double offsetY = Constrain(_matrix.M32, MinOffsetY, MaxOffsetY);
+            var zoomX = Constrain(_matrix.M11, MinZoomX, MaxZoomX);
+            var zoomY = Constrain(_matrix.M22, MinZoomY, MaxZoomY);
+            var offsetX = Constrain(_matrix.M31, MinOffsetX, MaxOffsetX);
+            var offsetY = Constrain(_matrix.M32, MinOffsetY, MaxOffsetY);
             _matrix = new Matrix(zoomX, 0.0, 0.0, zoomY, offsetX, offsetY);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Invalidate child element.
+        /// </summary>
         public void Invalidate()
         {
             if (_element == null)
@@ -546,11 +596,10 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 Constrain();
             }
-            Debug.WriteLine($"Zoom: {_matrix.M11} {_matrix.M22} Offset: {_matrix.M31} {_matrix.M32}");
-            double oldZoomX = _zoomX;
-            double oldZoomY = _zoomY;
-            double oldOffsetX = _offsetX;
-            double oldOffsetY = _offsetY;
+            var oldZoomX = _zoomX;
+            var oldZoomY = _zoomY;
+            var oldOffsetX = _offsetX;
+            var oldOffsetY = _offsetY;
             _zoomX = _matrix.M11;
             _zoomY = _matrix.M22;
             _offsetX = _matrix.M31;
@@ -565,14 +614,21 @@ namespace Avalonia.Controls.PanAndZoom
             _element.InvalidateVisual();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Zoom to provided zoom ratio and provided center point.
+        /// </summary>
+        /// <param name="zoom">The zoom ratio.</param>
+        /// <param name="x">The center point x axis coordinate.</param>
+        /// <param name="y">The center point y axis coordinate.</param>
         public void ZoomTo(double zoom, double x, double y)
         {
             _matrix = MatrixHelper.ScaleAtPrepend(_matrix, zoom, zoom, x, y);
             Invalidate();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Zoom in one step positive delta ratio and panel center point.
+        /// </summary>
         public void ZoomIn()
         {
             if (_element == null)
@@ -584,7 +640,9 @@ namespace Avalonia.Controls.PanAndZoom
             ZoomTo(ZoomSpeed, x, y);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Zoom out one step positive delta ratio and panel center point.
+        /// </summary>
         public void ZoomOut()
         {
             if (_element == null)
@@ -596,25 +654,38 @@ namespace Avalonia.Controls.PanAndZoom
             ZoomTo(1 / ZoomSpeed, x, y);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Zoom to provided zoom delta ratio and provided center point.
+        /// </summary>
+        /// <param name="delta">The zoom delta ratio.</param>
+        /// <param name="x">The center point x axis coordinate.</param>
+        /// <param name="y">The center point y axis coordinate.</param>
         public void ZoomDeltaTo(double delta, double x, double y)
         {
             ZoomTo(delta > 0 ? ZoomSpeed : 1 / ZoomSpeed, x, y);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Set pan origin.
+        /// </summary>
+        /// <param name="x">The origin point x axis coordinate.</param>
+        /// <param name="y">The origin point y axis coordinate.</param>
         public void StartPan(double x, double y)
         {
             _pan = new Point();
             _previous = new Point(x, y);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Pan control to provided target point.
+        /// </summary>
+        /// <param name="x">The target point x axis coordinate.</param>
+        /// <param name="y">The target point y axis coordinate.</param>
         public void PanTo(double x, double y)
         {
-            double dx = x - _previous.X;
-            double dy = y - _previous.Y;
-            Point delta = new Point(dx, dy);
+            var dx = x - _previous.X;
+            var dy = y - _previous.Y;
+            var delta = new Point(dx, dy);
             _previous = new Point(x, y);
             _pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
             _matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
@@ -623,10 +694,10 @@ namespace Avalonia.Controls.PanAndZoom
 
         private Matrix GetMatrix(double panelWidth, double panelHeight, double elementWidth, double elementHeight, StretchMode mode)
         {
-            double zx = panelWidth / elementWidth;
-            double zy = panelHeight / elementHeight;
-            double cx = elementWidth / 2.0;
-            double cy = elementHeight / 2.0;
+            var zx = panelWidth / elementWidth;
+            var zy = panelHeight / elementHeight;
+            var cx = elementWidth / 2.0;
+            var cy = elementHeight / 2.0;
             switch (mode)
             {
                 case StretchMode.Fill:
@@ -647,7 +718,13 @@ namespace Avalonia.Controls.PanAndZoom
             return Matrix.Identity;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Zoom and pan to fill panel.
+        /// </summary>
+        /// <param name="panelWidth">The panel width.</param>
+        /// <param name="panelHeight">The panel height.</param>
+        /// <param name="elementWidth">The element width.</param>
+        /// <param name="elementHeight">The element height.</param>
         public void Fill(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             Debug.WriteLine($"Fill: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
@@ -659,7 +736,13 @@ namespace Avalonia.Controls.PanAndZoom
             Invalidate();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Zoom and pan to panel extents while maintaining aspect ratio.
+        /// </summary>
+        /// <param name="panelWidth">The panel width.</param>
+        /// <param name="panelHeight">The panel height.</param>
+        /// <param name="elementWidth">The element width.</param>
+        /// <param name="elementHeight">The element height.</param>
         public void Uniform(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             Debug.WriteLine($"Uniform: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
@@ -671,7 +754,13 @@ namespace Avalonia.Controls.PanAndZoom
             Invalidate();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Zoom and pan to panel extents while maintaining aspect ratio. If aspect of panel is different panel is filled.
+        /// </summary>
+        /// <param name="panelWidth">The panel width.</param>
+        /// <param name="panelHeight">The panel height.</param>
+        /// <param name="elementWidth">The element width.</param>
+        /// <param name="elementHeight">The element height.</param>
         public void UniformToFill(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             Debug.WriteLine($"UniformToFill: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
@@ -683,7 +772,13 @@ namespace Avalonia.Controls.PanAndZoom
             Invalidate();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Zoom and pan child element inside panel using stretch mode.
+        /// </summary>
+        /// <param name="panelWidth">The panel width.</param>
+        /// <param name="panelHeight">The panel height.</param>
+        /// <param name="elementWidth">The element width.</param>
+        /// <param name="elementHeight">The element height.</param>
         public void AutoFit(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
             Debug.WriteLine($"AutoFit: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
@@ -706,7 +801,9 @@ namespace Avalonia.Controls.PanAndZoom
             Invalidate();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Set next stretch mode.
+        /// </summary>
         public void ToggleStretchMode()
         {
             switch (Stretch)
@@ -726,14 +823,18 @@ namespace Avalonia.Controls.PanAndZoom
             }
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Reset pan and zoom matrix.
+        /// </summary>
         public void Reset()
         {
             _matrix = Matrix.Identity;
             Invalidate();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Zoom and pan to fill panel.
+        /// </summary>
         public void Fill()
         {
             if (_element == null)
@@ -743,7 +844,9 @@ namespace Avalonia.Controls.PanAndZoom
             Fill(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Zoom and pan to panel extents while maintaining aspect ratio.
+        /// </summary>
         public void Uniform()
         {
             if (_element == null)
@@ -753,7 +856,9 @@ namespace Avalonia.Controls.PanAndZoom
             Uniform(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Zoom and pan to panel extents while maintaining aspect ratio. If aspect of panel is different panel is filled.
+        /// </summary>
         public void UniformToFill()
         {
             if (_element == null)
@@ -763,7 +868,9 @@ namespace Avalonia.Controls.PanAndZoom
             UniformToFill(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Zoom and pan child element inside panel using stretch mode.
+        /// </summary>
         public void AutoFit()
         {
             if (_element == null)
