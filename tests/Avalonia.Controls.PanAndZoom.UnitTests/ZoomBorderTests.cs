@@ -16,7 +16,7 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
             Assert.Equal(1.0, target.ZoomY);
             Assert.Equal(0.0, target.OffsetX);
             Assert.Equal(0.0, target.OffsetY);
-            Assert.Equal(true, target.EnableConstrains);
+            Assert.True(target.EnableConstrains);
             Assert.Equal(double.NegativeInfinity, target.MinZoomX);
             Assert.Equal(double.PositiveInfinity, target.MaxZoomX);
             Assert.Equal(double.NegativeInfinity, target.MinZoomY);
@@ -25,11 +25,11 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
             Assert.Equal(double.PositiveInfinity, target.MaxOffsetX);
             Assert.Equal(double.NegativeInfinity, target.MinOffsetY);
             Assert.Equal(double.PositiveInfinity, target.MaxOffsetY);
-            Assert.Equal(true, target.EnablePan);
-            Assert.Equal(true, target.EnableZoom);
-            Assert.Equal(true, target.EnableGestureZoom); 
-            Assert.Equal(true, target.EnableGestureRotation);
-            Assert.Equal(true, target.EnableGestureTranslation);
+            Assert.True(target.EnablePan);
+            Assert.True(target.EnableZoom);
+            Assert.True(target.EnableGestureZoom); 
+            Assert.True(target.EnableGestureRotation);
+            Assert.True(target.EnableGestureTranslation);
         }
     }
 }
