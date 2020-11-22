@@ -686,7 +686,7 @@ namespace Avalonia.Controls.PanAndZoom
 
                 _extent = transformed.Size;
 
-                _offset = transformed.Position;
+                _offset = -transformed.Position;
 
                 _viewport = bounds.Size;
 
