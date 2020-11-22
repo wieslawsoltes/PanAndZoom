@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Diagnostics;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.PanAndZoom;
 using Avalonia.Input;
@@ -19,6 +20,8 @@ namespace AvaloniaDemo
             if (_zoomBorder != null)
             {
                 _zoomBorder.KeyDown += ZoomBorder_KeyDown;
+                
+                _zoomBorder.ZoomChanged += ZoomBorder_ZoomChanged;
             }
         }
 
@@ -45,6 +48,11 @@ namespace AvaloniaDemo
                     _zoomBorder?.AutoFit();
                     break;
             }
+        }
+
+        private void ZoomBorder_ZoomChanged(object sender, ZoomChangedEventArgs e)
+        {
+            Debug.WriteLine($"[ZoomChanged] {e.ZoomX} {e.ZoomY} {e.OffsetX} {e.OffsetY}");
         }
     }
 }

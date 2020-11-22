@@ -8,6 +8,39 @@ using static System.Math;
 namespace Avalonia.Controls.PanAndZoom
 {
     /// <summary>
+    /// Zoom changed event arguments.
+    /// </summary>
+    public class ZoomChangedEventArgs : EventArgs
+    {
+        /// <summary>
+        /// Gets the zoom ratio for x axis.
+        /// </summary>
+        public double ZoomX { get; set; }
+        
+        /// <summary>
+        /// Gets the zoom ratio for y axis.
+        /// </summary>
+        public double ZoomY { get; set; }
+        
+        /// <summary>
+        /// Gets the pan offset for x axis.
+        /// </summary>
+        public double OffsetX { get; set; }
+        
+        /// <summary>
+        /// Gets the pan offset for y axis.
+        /// </summary>
+        public double OffsetY { get; set; }
+    }
+
+    /// <summary>
+    /// Zoom changed event handler.
+    /// </summary>
+    /// <param name="sender">The sender object.</param>
+    /// <param name="e">Zoom changed event arguments.</param>
+    public delegate void ZoomChangedEventHandler(object sender, ZoomChangedEventArgs e);
+
+    /// <summary>
     /// Pan and zoom control for Avalonia.
     /// </summary>
     public class ZoomBorder : Border
@@ -191,6 +224,11 @@ namespace Avalonia.Controls.PanAndZoom
         private double _offsetY = 0.0;
         private bool _captured = false;
 
+        /// <summary>
+        /// Zoom changed event.
+        /// </summary>
+        public event ZoomChangedEventHandler ZoomChanged;
+        
         /// <summary>
         /// Gets or sets invalidate action for border child element.
         /// </summary>
@@ -394,6 +432,18 @@ namespace Avalonia.Controls.PanAndZoom
             this.GetObservable(ChildProperty).Subscribe(ChildChanged);
         }
 
+        private void RaiseZoomChanged()
+        {
+            var args = new ZoomChangedEventArgs()
+            {
+                ZoomX = _zoomX,
+                ZoomY =  _zoomY,
+                OffsetX = _offsetX,
+                OffsetY =  _offsetY
+            };
+            OnZoomChanged(args);
+        }
+
         private void Defaults()
         {
             _isPanning = false;
@@ -584,6 +634,15 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
+        /// Raises <see cref="ZoomChanged"/> event.
+        /// </summary>
+        /// <param name="e">Zoom changed event arguments.</param>
+        protected virtual void OnZoomChanged(ZoomChangedEventArgs e)
+        {
+            ZoomChanged?.Invoke(this, e);
+        }
+
+        /// <summary>
         /// Invalidate child element.
         /// </summary>
         public void Invalidate()
@@ -612,6 +671,7 @@ namespace Avalonia.Controls.PanAndZoom
             _element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
             _element.RenderTransform = new MatrixTransform(_matrix);
             _element.InvalidateVisual();
+            RaiseZoomChanged();
         }
 
         /// <summary>
