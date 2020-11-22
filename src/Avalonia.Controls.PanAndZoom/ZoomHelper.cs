@@ -23,6 +23,16 @@ namespace Avalonia.Controls.PanAndZoom
             var width = transformed.Size.Width;
             var height = transformed.Size.Height;
 
+            if (width < bounds.Width)
+            {
+                width = bounds.Width;
+            }
+            
+            if (height < bounds.Height)
+            {
+                height = bounds.Height;
+            }
+
             var ex = matrix.M31;
             var ey = matrix.M32;
 
