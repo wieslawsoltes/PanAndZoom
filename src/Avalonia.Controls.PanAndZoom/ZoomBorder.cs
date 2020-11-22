@@ -1030,8 +1030,6 @@ namespace Avalonia.Controls.PanAndZoom
             _extent = extent;
             _offset = offset;
             _viewport = viewport;
-            
-            Debug.WriteLine($"Extent: {_extent} | Offset: {_offset} | Viewport: {_viewport}");
 
             scrollable.RaiseScrollInvalidated(EventArgs.Empty);
         }
