@@ -19,5 +19,49 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
             Assert.Equal(new Size(100, 100), viewport);
             Assert.Equal(new Vector(0, 0), offset);
         }
+        
+        [Fact]
+        public void CalculateScrollable_OffsetX_Negative()
+        {
+            var bounds = new Rect(0, 0, 100, 100);
+            var matrix = CreateMatrix(offsetX: -25);
+            ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
+            Assert.Equal(new Size(125, 100), extent);
+            Assert.Equal(new Size(100, 100), viewport);
+            Assert.Equal(new Vector(100, 0), offset);
+        }
+        
+        [Fact]
+        public void CalculateScrollable_OffsetX_Positive()
+        {
+            var bounds = new Rect(0, 0, 100, 100);
+            var matrix = CreateMatrix(offsetX: 25);
+            ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
+            Assert.Equal(new Size(125, 100), extent);
+            Assert.Equal(new Size(100, 100), viewport);
+            Assert.Equal(new Vector(0, 0), offset);
+        }
+        
+        [Fact]
+        public void CalculateScrollable_OffsetY_Negative()
+        {
+            var bounds = new Rect(0, 0, 100, 100);
+            var matrix = CreateMatrix(offsetY: -25);
+            ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
+            Assert.Equal(new Size(100, 125), extent);
+            Assert.Equal(new Size(100, 100), viewport);
+            Assert.Equal(new Vector(0, 100), offset);
+        }
+        
+        [Fact]
+        public void CalculateScrollable_OffsetY_Positive()
+        {
+            var bounds = new Rect(0, 0, 100, 100);
+            var matrix = CreateMatrix(offsetY: 25);
+            ZoomHelper.CalculateScrollable(bounds, matrix, out var extent, out var viewport, out var  offset);
+            Assert.Equal(new Size(100, 125), extent);
+            Assert.Equal(new Size(100, 100), viewport);
+            Assert.Equal(new Vector(0, 0), offset);
+        }
     }
 }
