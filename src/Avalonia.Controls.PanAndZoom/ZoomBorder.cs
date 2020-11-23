@@ -1065,7 +1065,7 @@ namespace Avalonia.Controls.PanAndZoom
 
         Size ILogicalScrollable.ScrollSize => new Size(1, 1);
 
-        Size ILogicalScrollable.PageScrollSize => new Size(1, 1);
+        Size ILogicalScrollable.PageScrollSize => new Size(10, 10);
 
         bool ILogicalScrollable.BringIntoView(IControl target, Rect targetRect)
         {
