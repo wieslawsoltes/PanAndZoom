@@ -1061,7 +1061,7 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            Log($"[OnScrollChanged] ExtentDelta: {e.ExtentDelta}, OffsetDelta: {e.OffsetDelta}, ViewportDelta: {e.ViewportDelta}");
+            Log($"[OnScrollChanged] sender: {sender}, ExtentDelta: {e.ExtentDelta}, OffsetDelta: {e.OffsetDelta}, ViewportDelta: {e.ViewportDelta}");
         }
     }
 }
