@@ -9,6 +9,41 @@ namespace Avalonia.Controls.PanAndZoom
     public static class ZoomHelper
     {
         /// <summary>
+        /// Calculate pan and zoom matrix based on provided streatch mode.
+        /// </summary>
+        /// <param name="panelWidth">The panel width.</param>
+        /// <param name="panelHeight">The panel height.</param>
+        /// <param name="elementWidth">The element width.</param>
+        /// <param name="elementHeight">The element height.</param>
+        /// <param name="mode">The stretch mode.</param>
+        public static Matrix CalculateMatrix(double panelWidth, double panelHeight, double elementWidth, double elementHeight, StretchMode mode)
+        {
+            var zx = panelWidth / elementWidth;
+            var zy = panelHeight / elementHeight;
+            var cx = elementWidth / 2.0;
+            var cy = elementHeight / 2.0;
+
+            switch (mode)
+            {
+                default:
+                case StretchMode.None:
+                    return Matrix.Identity;
+                case StretchMode.Fill:
+                    return MatrixHelper.ScaleAt(zx, zy, cx, cy);
+                case StretchMode.Uniform:
+                    {
+                        var zoom = Min(zx, zy);
+                        return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                    }
+                case StretchMode.UniformToFill:
+                    {
+                        var zoom = Max(zx, zy);
+                        return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                    }
+            }
+        }
+
+        /// <summary>
         /// Calculate scrollable properties.
         /// </summary>
         /// <param name="source">The source bounds.</param>

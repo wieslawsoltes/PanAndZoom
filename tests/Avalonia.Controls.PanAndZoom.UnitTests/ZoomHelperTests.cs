@@ -10,6 +10,62 @@ namespace Avalonia.Controls.PanAndZoom.UnitTests
         }
         
         [Fact]
+        public void CalculateMatrix_StretchMode_None()
+        {
+            var panelBounds = new Rect(0, 0, 300, 200);
+            var elementBounds = new Rect(0, 0, 100, 100);
+            var target = ZoomHelper.CalculateMatrix(panelBounds.Width, panelBounds.Height, elementBounds.Width, elementBounds.Height, StretchMode.None);
+            Assert.Equal(1.0, target.M11);
+            Assert.Equal(0.0, target.M12);
+            Assert.Equal(0.0, target.M21);
+            Assert.Equal(1.0, target.M22);
+            Assert.Equal(0.0, target.M31);
+            Assert.Equal(0.0, target.M32);
+        }
+
+        [Fact]
+        public void CalculateMatrix_StretchMode_Fill()
+        {
+            var panelBounds = new Rect(0, 0, 300, 200);
+            var elementBounds = new Rect(0, 0, 100, 100);
+            var target = ZoomHelper.CalculateMatrix(panelBounds.Width, panelBounds.Height, elementBounds.Width, elementBounds.Height, StretchMode.Fill);
+            Assert.Equal(3.0, target.M11);
+            Assert.Equal(0.0, target.M12);
+            Assert.Equal(0.0, target.M21);
+            Assert.Equal(2.0, target.M22);
+            Assert.Equal(-100.0, target.M31);
+            Assert.Equal(-50.0, target.M32);
+        }
+
+        [Fact]
+        public void CalculateMatrix_StretchMode_Uniform()
+        {
+            var panelBounds = new Rect(0, 0, 300, 200);
+            var elementBounds = new Rect(0, 0, 100, 100);
+            var target = ZoomHelper.CalculateMatrix(panelBounds.Width, panelBounds.Height, elementBounds.Width, elementBounds.Height, StretchMode.Uniform);
+            Assert.Equal(2.0, target.M11);
+            Assert.Equal(0.0, target.M12);
+            Assert.Equal(0.0, target.M21);
+            Assert.Equal(2.0, target.M22);
+            Assert.Equal(-50.0, target.M31);
+            Assert.Equal(-50.0, target.M32);
+        }
+
+        [Fact]
+        public void CalculateMatrix_StretchMode_UniformToFill()
+        {
+            var panelBounds = new Rect(0, 0, 300, 200);
+            var elementBounds = new Rect(0, 0, 100, 100);
+            var target = ZoomHelper.CalculateMatrix(panelBounds.Width, panelBounds.Height, elementBounds.Width, elementBounds.Height, StretchMode.UniformToFill);
+            Assert.Equal(3.0, target.M11);
+            Assert.Equal(0.0, target.M12);
+            Assert.Equal(0.0, target.M21);
+            Assert.Equal(3.0, target.M22);
+            Assert.Equal(-100.0, target.M31);
+            Assert.Equal(-100.0, target.M32);
+        }
+
+        [Fact]
         public void CalculateScrollable_Default()
         {
             var bounds = new Rect(0, 0, 100, 100);

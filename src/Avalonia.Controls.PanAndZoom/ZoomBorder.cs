@@ -769,32 +769,6 @@ namespace Avalonia.Controls.PanAndZoom
             Invalidate();
         }
 
-        private Matrix GetMatrix(double panelWidth, double panelHeight, double elementWidth, double elementHeight, StretchMode mode)
-        {
-            var zx = panelWidth / elementWidth;
-            var zy = panelHeight / elementHeight;
-            var cx = elementWidth / 2.0;
-            var cy = elementHeight / 2.0;
-            switch (mode)
-            {
-                case StretchMode.Fill:
-                    return MatrixHelper.ScaleAt(zx, zy, cx, cy);
-                case StretchMode.Uniform:
-                    {
-                        var zoom = Min(zx, zy);
-                        return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
-                    }
-                case StretchMode.UniformToFill:
-                    {
-                        var zoom = Max(zx, zy);
-                        return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
-                    }
-                case StretchMode.None:
-                    break;
-            }
-            return Matrix.Identity;
-        }
-
         /// <summary>
         /// Zoom and pan.
         /// </summary>
@@ -809,7 +783,7 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 return;
             }
-            _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.None);
+            _matrix = ZoomHelper.CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.None);
             Invalidate();
         }
 
@@ -827,7 +801,7 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 return;
             }
-            _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Fill);
+            _matrix = ZoomHelper.CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Fill);
             Invalidate();
         }
 
@@ -845,7 +819,7 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 return;
             }
-            _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Uniform);
+            _matrix = ZoomHelper.CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Uniform);
             Invalidate();
         }
 
@@ -863,7 +837,7 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 return;
             }
-            _matrix = GetMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.UniformToFill);
+            _matrix = ZoomHelper.CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.UniformToFill);
             Invalidate();
         }
 
