@@ -52,7 +52,7 @@ namespace AvaloniaDemo
                     zoomBorder?.Uniform();
                     break;
                 case Key.R:
-                    zoomBorder?.Reset();
+                    zoomBorder?.ResetMatrix();
                     break;
                 case Key.T:
                     zoomBorder?.ToggleStretchMode();

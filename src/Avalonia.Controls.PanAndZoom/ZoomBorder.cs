@@ -921,12 +921,20 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
+        /// Set pan and zoom matrix.
+        /// </summary>
+        public void SetMatrix(Matrix matrix)
+        {
+            _matrix = matrix;
+            Invalidate();
+        }
+
+        /// <summary>
         /// Reset pan and zoom matrix.
         /// </summary>
-        public void Reset()
+        public void ResetMatrix()
         {
-            _matrix = Matrix.Identity;
-            Invalidate();
+            SetMatrix(Matrix.Identity);
         }
 
         /// <summary>

@@ -144,7 +144,7 @@ namespace AvaloniaDemo
                     _zoomBorder?.Uniform();
                     break;
                 case Key.R:
-                    _zoomBorder?.Reset();
+                    _zoomBorder?.ResetMatrix();
                     break;
                 case Key.T:
                     _zoomBorder?.ToggleStretchMode();
