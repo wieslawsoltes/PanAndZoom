@@ -69,6 +69,19 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
+        /// Creates a translation and scale matrix using the specified offsets and scales along the x-axis and y-axis.
+        /// </summary>
+        /// <param name="scaleX">Scaling factor that is applied along the x-axis.</param>
+        /// <param name="scaleY">Scaling factor that is applied along the y-axis.</param>
+        /// <param name="offsetX">X-coordinate offset.</param>
+        /// <param name="offsetY">Y-coordinate offset.</param>
+        /// <returns>The created translation and scale matrix.</returns>
+        public static Matrix ScaleAndTranslate(double scaleX, double scaleY, double offsetX, double offsetY)
+        {
+            return new Matrix(scaleY, 0.0, 0.0, scaleY, offsetX, offsetY);
+        }
+
+        /// <summary>
         /// Creates a skew matrix.
         /// </summary>
         /// <param name="angleX">Angle of skew along the X-axis in radians.</param>

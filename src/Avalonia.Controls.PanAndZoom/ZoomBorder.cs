@@ -406,32 +406,18 @@ namespace Avalonia.Controls.PanAndZoom
         public ZoomBorder()
             : base()
         {
-            Defaults();
-            Focusable = true;
-            Background = Brushes.Transparent;
-            AttachedToVisualTree += PanAndZoom_AttachedToVisualTree;
-            DetachedFromVisualTree += PanAndZoom_DetachedFromVisualTree;
-            AddHandler(ScrollViewer.ScrollChangedEvent, OnScrollChanged);
-            this.GetObservable(ChildProperty).Subscribe(ChildChanged);
-        }
-
-        private void RaiseZoomChanged()
-        {
-            var args = new ZoomChangedEventArgs()
-            {
-                ZoomX = _zoomX,
-                ZoomY =  _zoomY,
-                OffsetX = _offsetX,
-                OffsetY =  _offsetY
-            };
-            OnZoomChanged(args);
-        }
-
-        private void Defaults()
-        {
             _isPanning = false;
             _matrix = Matrix.Identity;
             _captured = false;
+
+            Focusable = true;
+            Background = Brushes.Transparent;
+
+            AttachedToVisualTree += PanAndZoom_AttachedToVisualTree;
+            DetachedFromVisualTree += PanAndZoom_DetachedFromVisualTree;
+
+            AddHandler(ScrollViewer.ScrollChangedEvent, OnScrollChanged);
+            this.GetObservable(ChildProperty).Subscribe(ChildChanged);
         }
 
         /// <summary>
@@ -448,11 +434,7 @@ namespace Avalonia.Controls.PanAndZoom
                 return size;
             }
 
-            AutoFit(
-                size.Width,
-                size.Height,
-                _element.Bounds.Width,
-                _element.Bounds.Height);
+            AutoFit(size.Width, size.Height, _element.Bounds.Width, _element.Bounds.Height);
 
             return size;
         }
@@ -594,7 +576,28 @@ namespace Avalonia.Controls.PanAndZoom
             PanTo(point.X, point.Y);
         }
 
-        private double Constrain(double value, double minimum, double maximum)
+        /// <summary>
+        /// Raises <see cref="ZoomChanged"/> event.
+        /// </summary>
+        /// <param name="e">Zoom changed event arguments.</param>
+        protected virtual void OnZoomChanged(ZoomChangedEventArgs e)
+        {
+            ZoomChanged?.Invoke(this, e);
+        }
+
+        private void RaiseZoomChanged()
+        {
+            var args = new ZoomChangedEventArgs()
+            {
+                ZoomX = _zoomX,
+                ZoomY =  _zoomY,
+                OffsetX = _offsetX,
+                OffsetY =  _offsetY
+            };
+            OnZoomChanged(args);
+        }
+
+        private double ClampValue(double value, double minimum, double maximum)
         {
             if (minimum > maximum)
                 throw new ArgumentException($"Parameter {nameof(minimum)} is greater than {nameof(maximum)}.");
@@ -607,20 +610,11 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Constrain()
         {
-            var zoomX = Constrain(_matrix.M11, MinZoomX, MaxZoomX);
-            var zoomY = Constrain(_matrix.M22, MinZoomY, MaxZoomY);
-            var offsetX = Constrain(_matrix.M31, MinOffsetX, MaxOffsetX);
-            var offsetY = Constrain(_matrix.M32, MinOffsetY, MaxOffsetY);
+            var zoomX = ClampValue(_matrix.M11, MinZoomX, MaxZoomX);
+            var zoomY = ClampValue(_matrix.M22, MinZoomY, MaxZoomY);
+            var offsetX = ClampValue(_matrix.M31, MinOffsetX, MaxOffsetX);
+            var offsetY = ClampValue(_matrix.M32, MinOffsetY, MaxOffsetY);
             _matrix = new Matrix(zoomX, 0.0, 0.0, zoomY, offsetX, offsetY);
-        }
-
-        /// <summary>
-        /// Raises <see cref="ZoomChanged"/> event.
-        /// </summary>
-        /// <param name="e">Zoom changed event arguments.</param>
-        protected virtual void OnZoomChanged(ZoomChangedEventArgs e)
-        {
-            ZoomChanged?.Invoke(this, e);
         }
 
         /// <summary>
@@ -682,14 +676,43 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// Zoom to provided zoom ratio and provided center point.
+        /// Set pan and zoom matrix.
         /// </summary>
-        /// <param name="zoom">The zoom ratio.</param>
+        public void SetMatrix(Matrix matrix)
+        {
+            _matrix = matrix;
+            Invalidate();
+        }
+
+        /// <summary>
+        /// Reset pan and zoom matrix.
+        /// </summary>
+        public void ResetMatrix()
+        {
+            SetMatrix(Matrix.Identity);
+        }
+
+        /// <summary>
+        /// Zoom to provided zoom value and provided center point.
+        /// </summary>
+        /// <param name="zoom">The zoom value.</param>
         /// <param name="x">The center point x axis coordinate.</param>
         /// <param name="y">The center point y axis coordinate.</param>
-        public void ZoomTo(double zoom, double x, double y)
+        public void Zoom(double zoom, double x = 0.0, double y = 0.0)
         {
-            _matrix = MatrixHelper.ScaleAtPrepend(_matrix, zoom, zoom, x, y);
+            _matrix = MatrixHelper.ScaleAt(zoom, zoom, x, y);
+            Invalidate();
+        }
+
+        /// <summary>
+        /// Zoom to provided zoom ratio and provided center point.
+        /// </summary>
+        /// <param name="ratio">The zoom ratio.</param>
+        /// <param name="x">The center point x axis coordinate.</param>
+        /// <param name="y">The center point y axis coordinate.</param>
+        public void ZoomTo(double ratio, double x = 0.0, double y = 0.0)
+        {
+            _matrix = MatrixHelper.ScaleAtPrepend(_matrix, ratio, ratio, x, y);
             Invalidate();
         }
 
@@ -741,6 +764,17 @@ namespace Avalonia.Controls.PanAndZoom
         {
             _pan = new Point();
             _previous = new Point(x, y);
+        }
+
+        /// <summary>
+        /// Pan control to provided target point.
+        /// </summary>
+        /// <param name="x">The target point x axis coordinate.</param>
+        /// <param name="y">The target point y axis coordinate.</param>
+        public void Pan(double x, double y)
+        {
+            _matrix = MatrixHelper.ScaleAndTranslate(_zoomX, _zoomY, x, y);
+            Invalidate();
         }
 
         /// <summary>
@@ -882,23 +916,6 @@ namespace Avalonia.Controls.PanAndZoom
                     Stretch = StretchMode.None;
                     break;
             }
-        }
-
-        /// <summary>
-        /// Set pan and zoom matrix.
-        /// </summary>
-        public void SetMatrix(Matrix matrix)
-        {
-            _matrix = matrix;
-            Invalidate();
-        }
-
-        /// <summary>
-        /// Reset pan and zoom matrix.
-        /// </summary>
-        public void ResetMatrix()
-        {
-            SetMatrix(Matrix.Identity);
         }
 
         /// <summary>
