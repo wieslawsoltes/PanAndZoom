@@ -205,6 +205,7 @@ namespace Avalonia.Controls.PanAndZoom
         private Point _previous;
         private Matrix _matrix;
         private bool _isPanning;
+        private bool _isInvalidating;
         private double _zoomX = 1.0;
         private double _zoomY = 1.0;
         private double _offsetX = 0.0;
@@ -416,7 +417,6 @@ namespace Avalonia.Controls.PanAndZoom
             AttachedToVisualTree += PanAndZoom_AttachedToVisualTree;
             DetachedFromVisualTree += PanAndZoom_DetachedFromVisualTree;
 
-            AddHandler(ScrollViewer.ScrollChangedEvent, OnScrollChanged);
             this.GetObservable(ChildProperty).Subscribe(ChildChanged);
         }
 
@@ -522,7 +522,7 @@ namespace Avalonia.Controls.PanAndZoom
                 return;
             }
             var point = e.GetPosition(_element);
-            ZoomDeltaTo(e.Delta.Y, point.X, point.Y);
+            ZoomDeltaTo(e.Delta.Y, point.X, point.Y, true);
         }
 
         private void Pressed(PointerPressedEventArgs e)
@@ -542,7 +542,7 @@ namespace Avalonia.Controls.PanAndZoom
             if (_element != null && _captured == false && _isPanning == false)
             {
                 var point = e.GetPosition(_element);
-                StartPan(point.X, point.Y);
+                BeginPanTo(point.X, point.Y);
                 _captured = true;
                 _isPanning = true;
             }
@@ -573,7 +573,7 @@ namespace Avalonia.Controls.PanAndZoom
                 return;
             }
             var point = e.GetPosition(_element);
-            PanTo(point.X, point.Y);
+            ContinuePanTo(point.X, point.Y, true);
         }
 
         /// <summary>
@@ -618,25 +618,40 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// Invalidate pand and zoom control.
+        /// Invalidate pan and zoom control.
         /// </summary>
-        public void Invalidate()
+        /// <param name="invalidateScroll">The flag indicating whether to invalidate scroll.</param>
+        public void Invalidate(bool invalidateScroll)
         {
-            if (_element == null)
+            if (_isInvalidating)
             {
                 return;
             }
+            
+            _isInvalidating = true;
+            
+            if (_element == null)
+            {
+                _isInvalidating = false;
+                return;
+            }
 
-            if (EnableConstrains == true)
+            if (EnableConstrains)
             {
                 Constrain();
             }
 
             InvalidateProperties();
             InvalidateElement();
-            InvalidateScrollable();
+
+            if (invalidateScroll)
+            {
+                InvalidateScrollable();
+            }
 
             RaiseZoomChanged();
+ 
+            _isInvalidating = false;
         }
 
         /// <summary>
@@ -678,10 +693,11 @@ namespace Avalonia.Controls.PanAndZoom
         /// <summary>
         /// Set pan and zoom matrix.
         /// </summary>
+        /// <param name="matrix">The matrix to set as current.</param>
         public void SetMatrix(Matrix matrix)
         {
             _matrix = matrix;
-            Invalidate();
+            Invalidate(true);
         }
 
         /// <summary>
@@ -698,10 +714,11 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="zoom">The zoom value.</param>
         /// <param name="x">The center point x axis coordinate.</param>
         /// <param name="y">The center point y axis coordinate.</param>
-        public void Zoom(double zoom, double x = 0.0, double y = 0.0)
+        /// <param name="invalidateScroll">The flag indicating whether to invalidate scroll.</param>
+        public void Zoom(double zoom, double x, double y, bool invalidateScroll)
         {
             _matrix = MatrixHelper.ScaleAt(zoom, zoom, x, y);
-            Invalidate();
+            Invalidate(invalidateScroll);
         }
 
         /// <summary>
@@ -710,10 +727,11 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="ratio">The zoom ratio.</param>
         /// <param name="x">The center point x axis coordinate.</param>
         /// <param name="y">The center point y axis coordinate.</param>
-        public void ZoomTo(double ratio, double x = 0.0, double y = 0.0)
+        /// <param name="invalidateScroll">The flag indicating whether to invalidate scroll.</param>
+        public void ZoomTo(double ratio, double x, double y, bool invalidateScroll)
         {
             _matrix = MatrixHelper.ScaleAtPrepend(_matrix, ratio, ratio, x, y);
-            Invalidate();
+            Invalidate(invalidateScroll);
         }
 
         /// <summary>
@@ -727,7 +745,7 @@ namespace Avalonia.Controls.PanAndZoom
             }
             var x = _element.Bounds.Width / 2.0;
             var y = _element.Bounds.Height / 2.0;
-            ZoomTo(ZoomSpeed, x, y);
+            ZoomTo(ZoomSpeed, x, y, true);
         }
 
         /// <summary>
@@ -741,7 +759,7 @@ namespace Avalonia.Controls.PanAndZoom
             }
             var x = _element.Bounds.Width / 2.0;
             var y = _element.Bounds.Height / 2.0;
-            ZoomTo(1 / ZoomSpeed, x, y);
+            ZoomTo(1 / ZoomSpeed, x, y, true);
         }
 
         /// <summary>
@@ -750,9 +768,34 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="delta">The zoom delta ratio.</param>
         /// <param name="x">The center point x axis coordinate.</param>
         /// <param name="y">The center point y axis coordinate.</param>
-        public void ZoomDeltaTo(double delta, double x, double y)
+        /// <param name="invalidateScroll">The flag indicating whether to invalidate scroll.</param>
+        public void ZoomDeltaTo(double delta, double x, double y, bool invalidateScroll)
         {
-            ZoomTo(delta > 0 ? ZoomSpeed : 1 / ZoomSpeed, x, y);
+            ZoomTo(delta > 0 ? ZoomSpeed : 1 / ZoomSpeed, x, y, invalidateScroll);
+        }
+
+        /// <summary>
+        /// Pan control to provided delta.
+        /// </summary>
+        /// <param name="dx">The target x axis delta.</param>
+        /// <param name="dy">The target y axis delta.</param>
+        /// <param name="invalidateScroll">The flag indicating whether to invalidate scroll.</param>
+        public void PanDelta(double dx, double dy, bool invalidateScroll)
+        {
+            _matrix = MatrixHelper.ScaleAndTranslate(_zoomX, _zoomY, _matrix.M31 + dx, _matrix.M32 + dy);
+            Invalidate(invalidateScroll);
+        }
+        
+        /// <summary>
+        /// Pan control to provided target point.
+        /// </summary>
+        /// <param name="x">The target point x axis coordinate.</param>
+        /// <param name="y">The target point y axis coordinate.</param>
+        /// <param name="invalidateScroll">The flag indicating whether to invalidate scroll.</param>
+        public void Pan(double x, double y, bool invalidateScroll)
+        {
+            _matrix = MatrixHelper.ScaleAndTranslate(_zoomX, _zoomY, x, y);
+            Invalidate(invalidateScroll);
         }
 
         /// <summary>
@@ -760,29 +803,19 @@ namespace Avalonia.Controls.PanAndZoom
         /// </summary>
         /// <param name="x">The origin point x axis coordinate.</param>
         /// <param name="y">The origin point y axis coordinate.</param>
-        public void StartPan(double x, double y)
+        public void BeginPanTo(double x, double y)
         {
             _pan = new Point();
             _previous = new Point(x, y);
         }
 
         /// <summary>
-        /// Pan control to provided target point.
+        /// Continue pan to provided target point.
         /// </summary>
         /// <param name="x">The target point x axis coordinate.</param>
         /// <param name="y">The target point y axis coordinate.</param>
-        public void Pan(double x, double y)
-        {
-            _matrix = MatrixHelper.ScaleAndTranslate(_zoomX, _zoomY, x, y);
-            Invalidate();
-        }
-
-        /// <summary>
-        /// Pan control to provided target point.
-        /// </summary>
-        /// <param name="x">The target point x axis coordinate.</param>
-        /// <param name="y">The target point y axis coordinate.</param>
-        public void PanTo(double x, double y)
+        /// <param name="invalidateScroll">The flag indicating whether to invalidate scroll.</param>
+        public void ContinuePanTo(double x, double y, bool invalidateScroll)
         {
             var dx = x - _previous.X;
             var dy = y - _previous.Y;
@@ -790,7 +823,7 @@ namespace Avalonia.Controls.PanAndZoom
             _previous = new Point(x, y);
             _pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
             _matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
-            Invalidate();
+            Invalidate(invalidateScroll);
         }
 
         /// <summary>
@@ -808,7 +841,7 @@ namespace Avalonia.Controls.PanAndZoom
                 return;
             }
             _matrix = ZoomHelper.CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.None);
-            Invalidate();
+            Invalidate(true);
         }
 
         /// <summary>
@@ -826,7 +859,7 @@ namespace Avalonia.Controls.PanAndZoom
                 return;
             }
             _matrix = ZoomHelper.CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Fill);
-            Invalidate();
+            Invalidate(true);
         }
 
         /// <summary>
@@ -844,7 +877,7 @@ namespace Avalonia.Controls.PanAndZoom
                 return;
             }
             _matrix = ZoomHelper.CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Uniform);
-            Invalidate();
+            Invalidate(true);
         }
 
         /// <summary>
@@ -862,7 +895,7 @@ namespace Avalonia.Controls.PanAndZoom
                 return;
             }
             _matrix = ZoomHelper.CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.UniformToFill);
-            Invalidate();
+            Invalidate(true);
         }
 
         /// <summary>
@@ -893,7 +926,7 @@ namespace Avalonia.Controls.PanAndZoom
                 case StretchMode.None:
                     break;
             }
-            Invalidate();
+            Invalidate(true);
         }
 
         /// <summary>
@@ -985,7 +1018,18 @@ namespace Avalonia.Controls.PanAndZoom
         Vector IScrollable.Offset
         {
             get => _offset;
-            set => _offset = value;
+            set
+            {
+                if (!_isInvalidating)
+                {
+                    var (x, y) = _offset;
+                    _offset = value;
+                    var dx = x - _offset.X;
+                    var dy = y - _offset.Y;
+                    PanDelta(dx, dy, false);
+                    Log($"[Offset] offset: {_offset}, dx: {dx}, dy: {dy}");
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -1057,11 +1101,6 @@ namespace Avalonia.Controls.PanAndZoom
             _viewport = viewport;
 
             scrollable.RaiseScrollInvalidated(EventArgs.Empty);
-        }
-
-        private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            Log($"[OnScrollChanged] sender: {sender}, ExtentDelta: {e.ExtentDelta}, OffsetDelta: {e.OffsetDelta}, ViewportDelta: {e.ViewportDelta}");
         }
     }
 }
