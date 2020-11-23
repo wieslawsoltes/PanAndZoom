@@ -78,41 +78,25 @@ namespace Avalonia.Controls.PanAndZoom
         /// Identifies the <seealso cref="ZoomX"/> avalonia property.
         /// </summary>
         public static readonly DirectProperty<ZoomBorder, double> ZoomXProperty =
-            AvaloniaProperty.RegisterDirect<ZoomBorder, double>(
-                nameof(ZoomX),
-                o => o.ZoomX,
-                null,
-                1.0);
+            AvaloniaProperty.RegisterDirect<ZoomBorder, double>(nameof(ZoomX), o => o.ZoomX, null, 1.0);
 
         /// <summary>
         /// Identifies the <seealso cref="ZoomY"/> avalonia property.
         /// </summary>
         public static readonly DirectProperty<ZoomBorder, double> ZoomYProperty =
-            AvaloniaProperty.RegisterDirect<ZoomBorder, double>(
-                nameof(ZoomY),
-                o => o.ZoomY,
-                null,
-                1.0);
+            AvaloniaProperty.RegisterDirect<ZoomBorder, double>(nameof(ZoomY), o => o.ZoomY, null, 1.0);
 
         /// <summary>
         /// Identifies the <seealso cref="OffsetX"/> avalonia property.
         /// </summary>
         public static readonly DirectProperty<ZoomBorder, double> OffsetXProperty =
-            AvaloniaProperty.RegisterDirect<ZoomBorder, double>(
-                nameof(OffsetX),
-                o => o.OffsetX,
-                null,
-                0.0);
+            AvaloniaProperty.RegisterDirect<ZoomBorder, double>(nameof(OffsetX), o => o.OffsetX, null, 0.0);
 
         /// <summary>
         /// Identifies the <seealso cref="OffsetY"/> avalonia property.
         /// </summary>
         public static readonly DirectProperty<ZoomBorder, double> OffsetYProperty =
-            AvaloniaProperty.RegisterDirect<ZoomBorder, double>(
-                nameof(OffsetY),
-                o => o.OffsetY,
-                null,
-                0.0);
+            AvaloniaProperty.RegisterDirect<ZoomBorder, double>(nameof(OffsetY), o => o.OffsetY, null, 0.0);
 
         /// <summary>
         /// Identifies the <seealso cref="EnableConstrains"/> avalonia property.
