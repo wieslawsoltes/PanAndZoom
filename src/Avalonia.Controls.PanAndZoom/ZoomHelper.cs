@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using static System.Math;
 
 namespace Avalonia.Controls.PanAndZoom
@@ -25,7 +24,7 @@ namespace Avalonia.Controls.PanAndZoom
 
             var transformed = bounds.TransformToAABB(matrix);
 
-            Debug.WriteLine($"source: {source}, bounds: {bounds}, transformed: {transformed}");
+            ZoomBorder.Log($"[CalculateScrollable] source: {source}, bounds: {bounds}, transformed: {transformed}");
             
             var width = transformed.Size.Width;
             var height = transformed.Size.Height;
@@ -84,8 +83,7 @@ namespace Avalonia.Controls.PanAndZoom
 
             offset = new Vector(offsetX, offsetY);
 
-            Debug.WriteLine($"Extent: {extent} | Offset: {offset} | Viewport: {viewport}");
-
+            ZoomBorder.Log($"[CalculateScrollable] Extent: {extent} | Offset: {offset} | Viewport: {viewport}");
         }
     }
 }

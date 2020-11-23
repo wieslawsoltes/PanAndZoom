@@ -14,8 +14,8 @@ namespace AvaloniaDemo
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
             }
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
@@ -214,6 +213,8 @@ namespace Avalonia.Controls.PanAndZoom
                 MinOffsetYProperty,
                 MaxOffsetYProperty);
         }
+
+        internal static void Log(string message) => Debug.WriteLine(message);
 
         private IControl? _element;
         private Point _pan;
@@ -479,13 +480,13 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void PanAndZoom_AttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
-            Debug.WriteLine($"AttachedToVisualTree: {Name}");
+            Log($"[AttachedToVisualTree] {Name}");
             ChildChanged(Child);
         }
 
         private void PanAndZoom_DetachedFromVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
-            Debug.WriteLine($"DetachedFromVisualTree: {Name}");
+            Log($"[DetachedFromVisualTree] {Name}");
             DetachElement();
         }
 
@@ -800,7 +801,7 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="elementHeight">The element height.</param>
         public void None(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
-            Debug.WriteLine($"None: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
+            Log($"[None] {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element == null)
             {
                 return;
@@ -818,7 +819,7 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="elementHeight">The element height.</param>
         public void Fill(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
-            Debug.WriteLine($"Fill: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
+            Log($"[Fill] {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element == null)
             {
                 return;
@@ -836,7 +837,7 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="elementHeight">The element height.</param>
         public void Uniform(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
-            Debug.WriteLine($"Uniform: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
+            Log($"[Uniform] {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element == null)
             {
                 return;
@@ -854,7 +855,7 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="elementHeight">The element height.</param>
         public void UniformToFill(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
-            Debug.WriteLine($"UniformToFill: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
+            Log($"[UniformToFill] {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element == null)
             {
                 return;
@@ -872,7 +873,7 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="elementHeight">The element height.</param>
         public void AutoFit(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
         {
-            Debug.WriteLine($"AutoFit: {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
+            Log($"[AutoFit] {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element == null)
             {
                 return;
@@ -1076,7 +1077,7 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            Debug.WriteLine($"[OnScrollChanged] ExtentDelta: {e.ExtentDelta}, OffsetDelta: {e.OffsetDelta}, ViewportDelta: {e.ViewportDelta}");
+            Log($"[OnScrollChanged] ExtentDelta: {e.ExtentDelta}, OffsetDelta: {e.OffsetDelta}, ViewportDelta: {e.ViewportDelta}");
         }
     }
 }
