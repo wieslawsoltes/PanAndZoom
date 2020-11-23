@@ -18,7 +18,7 @@ PanAndZoom is delivered as a NuGet package.
 
 You can find the NuGet packages here for [Avalonia](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom/) or by using nightly build feed:
 * Add `https://www.myget.org/F/panandzoom-nightly/api/v2` to your package sources
-* Alternative nightly build feed `https://pkgs.dev.azure.com/wieslawsoltes/GitHub/_packaging/CI/nuget/v3/index.json`
+* Alternative nightly build feed `https://pkgs.dev.azure.com/wieslawsoltes/GitHub/_packaging/Nightly/nuget/v3/index.json`
 * Update your package using `PanAndZoom` feed
 
 You can install the package for `Avalonia` based projects like this:
