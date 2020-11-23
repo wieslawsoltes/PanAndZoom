@@ -231,17 +231,6 @@ namespace Avalonia.Controls.PanAndZoom
         /// Zoom changed event.
         /// </summary>
         public event ZoomChangedEventHandler? ZoomChanged;
-        
-        /// <summary>
-        /// Gets or sets invalidate action for border child element.
-        /// </summary>
-        /// <remarks>
-        /// First parameter is zoom ratio for x axis.
-        /// Second parameter is zoom ratio for y axis.
-        /// Third parameter is pan offset for x axis.
-        /// Fourth parameter is pan offset for y axis.
-        /// </remarks>
-        public Action<double, double, double, double>? InvalidatedChild { get; set; }
 
         /// <summary>
         /// Gets or sets pan input button.
@@ -645,7 +634,7 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
-        /// Invalidate child element.
+        /// Invalidate pand and zoom control.
         /// </summary>
         public void Invalidate()
         {
@@ -653,37 +642,53 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 return;
             }
-            
+
             if (EnableConstrains == true)
             {
                 Constrain();
             }
-            
+
+            InvalidateProperties();
+            InvalidateElement();
+            InvalidateScrollable();
+
+            RaiseZoomChanged();
+        }
+
+        /// <summary>
+        /// Invalidate properties.
+        /// </summary>
+        private void InvalidateProperties()
+        {
             var oldZoomX = _zoomX;
             var oldZoomY = _zoomY;
             var oldOffsetX = _offsetX;
             var oldOffsetY = _offsetY;
-            
+
             _zoomX = _matrix.M11;
             _zoomY = _matrix.M22;
             _offsetX = _matrix.M31;
             _offsetY = _matrix.M32;
-            
+
             RaisePropertyChanged(ZoomXProperty, oldZoomX, _zoomX);
             RaisePropertyChanged(ZoomYProperty, oldZoomY, _zoomY);
             RaisePropertyChanged(OffsetXProperty, oldOffsetX, _offsetX);
             RaisePropertyChanged(OffsetYProperty, oldOffsetY, _offsetY);
-            
-            InvalidatedChild?.Invoke(_matrix.M11, _matrix.M22, _matrix.M31, _matrix.M32);
-            
+        }
+
+        /// <summary>
+        /// Invalidate child element.
+        /// </summary>
+        private void InvalidateElement()
+        {
+            if (_element == null)
+            {
+                return;
+            }
+
             _element.RenderTransformOrigin = new RelativePoint(new Point(0, 0), RelativeUnit.Relative);
             _element.RenderTransform = new MatrixTransform(_matrix);
-
             _element.InvalidateVisual();
-
-            UpdateScrollable();
-
-            RaiseZoomChanged();
         }
 
         /// <summary>
@@ -1051,7 +1056,7 @@ namespace Avalonia.Controls.PanAndZoom
             _scrollInvalidated?.Invoke(this, e);
         }
 
-        private void UpdateScrollable()
+        private void InvalidateScrollable()
         {
             if (!(this is ILogicalScrollable scrollable))
             {
