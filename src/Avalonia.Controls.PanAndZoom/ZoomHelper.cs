@@ -60,7 +60,7 @@ namespace Avalonia.Controls.PanAndZoom
             var transformed = bounds.TransformToAABB(matrix);
 
             ZoomBorder.Log($"[CalculateScrollable] source: {source}, bounds: {bounds}, transformed: {transformed}");
-            
+
             var width = transformed.Size.Width;
             var height = transformed.Size.Height;
 
