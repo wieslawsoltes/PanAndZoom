@@ -107,7 +107,10 @@
                                         <TextBlock Text="Text1" Width="100" Background="Red" Foreground="WhiteSmoke"/>
                                         <TextBlock Text="Text2" Width="100" Background="Red" Foreground="WhiteSmoke"/>
                                     </StackPanel>
-                                    <Button Content="Button" Width="120" Canvas.Left="100" Canvas.Top="250"/>
+                                    <Button Content="Reset Zoom" 
+                                            Command="{Binding ResetMatrix}"
+                                            x:DataType="paz:ZoomBorder" x:CompileBindings="False"
+                                            Width="120" Canvas.Left="100" Canvas.Top="250"/>
                                     <ListBox Width="120"
                                              Canvas.Left="10" Canvas.Top="10"
                                              x:DataType="paz:ZoomBorder"
