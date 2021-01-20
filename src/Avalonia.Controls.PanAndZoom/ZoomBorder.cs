@@ -439,19 +439,19 @@ namespace Avalonia.Controls.PanAndZoom
             return size;
         }
 
-        private void PanAndZoom_AttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
+        private void PanAndZoom_AttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
         {
             Log($"[AttachedToVisualTree] {Name}");
             ChildChanged(Child);
         }
 
-        private void PanAndZoom_DetachedFromVisualTree(object sender, VisualTreeAttachmentEventArgs e)
+        private void PanAndZoom_DetachedFromVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
         {
             Log($"[DetachedFromVisualTree] {Name}");
             DetachElement();
         }
 
-        private void Border_PointerWheelChanged(object sender, PointerWheelEventArgs e)
+        private void Border_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
         {
             if (!EnableZoom)
             {
@@ -460,17 +460,17 @@ namespace Avalonia.Controls.PanAndZoom
             Wheel(e);
         }
 
-        private void Border_PointerPressed(object sender, PointerPressedEventArgs e)
+        private void Border_PointerPressed(object? sender, PointerPressedEventArgs e)
         {
             Pressed(e);
         }
 
-        private void Border_PointerReleased(object sender, PointerReleasedEventArgs e)
+        private void Border_PointerReleased(object? sender, PointerReleasedEventArgs e)
         {
             Released(e);
         }
 
-        private void Border_PointerMoved(object sender, PointerEventArgs e)
+        private void Border_PointerMoved(object? sender, PointerEventArgs e)
         {
             Moved(e);
         }
