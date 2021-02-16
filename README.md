@@ -25,10 +25,6 @@ You can install the package for `Avalonia` based projects like this:
 
 `Install-Package Avalonia.Controls.PanAndZoom -Pre`
 
-### Package Dependencies
-
-* [Avalonia](https://www.nuget.org/packages/Avalonia/)
-
 ### Package Sources
 
 * https://api.nuget.org/v3/index.json
@@ -39,8 +35,6 @@ You can install the package for `Avalonia` based projects like this:
 * [GitHub source code repository.](https://github.com/wieslawsoltes/PanAndZoom)
 
 ## Using PanAndZoom
-
-### Avalonia
 
 `MainWindow.xaml`
 ```XAML
