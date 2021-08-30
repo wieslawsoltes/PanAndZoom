@@ -21,11 +21,11 @@ namespace Avalonia.Controls.PanAndZoom
                 if (!_isInvalidating)
                 {
                     var (x, y) = _offset;
-                    _offset = value;
                     var dx = x - _offset.X;
                     var dy = y - _offset.Y;
                     PanDelta(dx, dy, false, !this.IsPointerOver);
                     Log($"[Offset] offset: {_offset}, dx: {dx}, dy: {dy}");
+                    _offset = value;
                 }
             }
         }
