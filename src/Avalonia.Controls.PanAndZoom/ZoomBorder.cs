@@ -13,7 +13,7 @@ namespace Avalonia.Controls.PanAndZoom
     public partial class ZoomBorder : Border
     {
         [Conditional("DEBUG")]
-        internal static void Log(string message) => Debug.WriteLine(message);
+        private static void Log(string message) => Debug.WriteLine(message);
 
         private static double ClampValue(double value, double minimum, double maximum)
         {
@@ -27,10 +27,44 @@ namespace Avalonia.Controls.PanAndZoom
         }
 
         /// <summary>
+        /// Calculate pan and zoom matrix based on provided stretch mode.
+        /// </summary>
+        /// <param name="panelWidth">The panel width.</param>
+        /// <param name="panelHeight">The panel height.</param>
+        /// <param name="elementWidth">The element width.</param>
+        /// <param name="elementHeight">The element height.</param>
+        /// <param name="mode">The stretch mode.</param>
+        public static Matrix CalculateMatrix(double panelWidth, double panelHeight, double elementWidth, double elementHeight, StretchMode mode)
+        {
+            var zx = panelWidth / elementWidth;
+            var zy = panelHeight / elementHeight;
+            var cx = elementWidth / 2.0;
+            var cy = elementHeight / 2.0;
+
+            switch (mode)
+            {
+                default:
+                case StretchMode.None:
+                    return Matrix.Identity;
+                case StretchMode.Fill:
+                    return MatrixHelper.ScaleAt(zx, zy, cx, cy);
+                case StretchMode.Uniform:
+                {
+                    var zoom = Min(zx, zy);
+                    return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                }
+                case StretchMode.UniformToFill:
+                {
+                    var zoom = Max(zx, zy);
+                    return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                }
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ZoomBorder"/> class.
         /// </summary>
         public ZoomBorder()
-            : base()
         {
             _isPanning = false;
             _matrix = Matrix.Identity;
@@ -103,9 +137,8 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void BoundsChanged(Rect bounds)
         {
-            Log($"[BoundsChanged] {bounds}");
-
-            // TODO: InvalidateScrollable();
+            // Log($"[BoundsChanged] {bounds}");
+            //InvalidateScrollable();
         }
 
         private void ChildChanged(IControl? element)
@@ -152,7 +185,7 @@ namespace Avalonia.Controls.PanAndZoom
 
         private void Wheel(PointerWheelEventArgs e)
         {
-            if (_element == null || _captured != false)
+            if (_element == null || _captured)
             {
                 return;
             }
@@ -208,7 +241,7 @@ namespace Avalonia.Controls.PanAndZoom
                 return;
             }
             var point = e.GetPosition(_element);
-            ContinuePanTo(point.X, point.Y, true, true);
+            ContinuePanTo(point.X, point.Y, true);
         }
 
         /// <summary>
@@ -238,32 +271,29 @@ namespace Avalonia.Controls.PanAndZoom
         /// <summary>
         /// Invalidate pan and zoom control.
         /// </summary>
-        /// <param name="invalidateScroll">The flag indicating whether to invalidate scroll.</param>
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
-        public void Invalidate(bool invalidateScroll, bool skipTransitions = false)
+        private void Invalidate(bool skipTransitions = false)
         {
+            Log("[Invalidate] Begin");
+
             if (_element == null)
             {
+                Log("[Invalidate] End");
                 return;
             }
 
-            lock (_lock)
+            if (EnableConstrains)
             {
-                if (EnableConstrains)
-                {
-                    Constrain();
-                }
-
-                InvalidateProperties();
-                InvalidateElement(skipTransitions);
-
-                if (invalidateScroll)
-                {
-                    InvalidateScrollable();
-                }
-
-                RaiseZoomChanged();
+                Constrain();
             }
+
+            InvalidateProperties();
+            InvalidateScrollable();
+            InvalidateElement(skipTransitions);
+            RaiseZoomChanged();
+            
+
+            Log("[Invalidate] End");
         }
 
         /// <summary>
@@ -336,8 +366,17 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
         public void SetMatrix(Matrix matrix, bool skipTransitions = false)
         {
+            if (_updating)
+            {
+                return;
+            }
+            _updating = true;
+
+            Log("[SetMatrix]");
             _matrix = matrix;
-            Invalidate(true);
+            Invalidate(skipTransitions);
+
+            _updating = false;
         }
 
         /// <summary>
@@ -363,12 +402,20 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="zoom">The zoom value.</param>
         /// <param name="x">The center point x axis coordinate.</param>
         /// <param name="y">The center point y axis coordinate.</param>
-        /// <param name="invalidateScroll">The flag indicating whether to invalidate scroll.</param>
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
-        public void Zoom(double zoom, double x, double y, bool invalidateScroll, bool skipTransitions = false)
+        public void Zoom(double zoom, double x, double y, bool skipTransitions = false)
         {
+            if (_updating)
+            {
+                return;
+            }
+            _updating = true;
+
+            Log("[Zoom]");
             _matrix = MatrixHelper.ScaleAt(zoom, zoom, x, y);
-            Invalidate(invalidateScroll, skipTransitions);
+            Invalidate(skipTransitions);
+
+            _updating = false;
         }
 
         /// <summary>
@@ -377,12 +424,20 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="ratio">The zoom ratio.</param>
         /// <param name="x">The center point x axis coordinate.</param>
         /// <param name="y">The center point y axis coordinate.</param>
-        /// <param name="invalidateScroll">The flag indicating whether to invalidate scroll.</param>
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
-        public void ZoomTo(double ratio, double x, double y, bool invalidateScroll, bool skipTransitions = false)
+        public void ZoomTo(double ratio, double x, double y, bool skipTransitions = false)
         {
+            if (_updating)
+            {
+                return;
+            }
+            _updating = true;
+
+            Log("[ZoomTo]");
             _matrix = MatrixHelper.ScaleAtPrepend(_matrix, ratio, ratio, x, y);
-            Invalidate(invalidateScroll, skipTransitions);
+            Invalidate(skipTransitions);
+
+            _updating = false;
         }
 
         /// <summary>
@@ -395,9 +450,10 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 return;
             }
+
             var x = _element.Bounds.Width / 2.0;
             var y = _element.Bounds.Height / 2.0;
-            ZoomTo(ZoomSpeed, x, y, true, skipTransitions);
+            ZoomTo(ZoomSpeed, x, y, skipTransitions);
         }
 
         /// <summary>
@@ -410,9 +466,10 @@ namespace Avalonia.Controls.PanAndZoom
             {
                 return;
             }
+
             var x = _element.Bounds.Width / 2.0;
             var y = _element.Bounds.Height / 2.0;
-            ZoomTo(1 / ZoomSpeed, x, y, true, skipTransitions);
+            ZoomTo(1 / ZoomSpeed, x, y, skipTransitions);
         }
 
         /// <summary>
@@ -421,11 +478,10 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="delta">The zoom delta ratio.</param>
         /// <param name="x">The center point x axis coordinate.</param>
         /// <param name="y">The center point y axis coordinate.</param>
-        /// <param name="invalidateScroll">The flag indicating whether to invalidate scroll.</param>
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
-        public void ZoomDeltaTo(double delta, double x, double y, bool invalidateScroll, bool skipTransitions = false)
+        public void ZoomDeltaTo(double delta, double x, double y, bool skipTransitions = false)
         {
-            ZoomTo(delta > 0 ? ZoomSpeed : 1 / ZoomSpeed, x, y, invalidateScroll, skipTransitions);
+            ZoomTo(delta > 0 ? ZoomSpeed : 1 / ZoomSpeed, x, y, skipTransitions);
         }
 
         /// <summary>
@@ -433,12 +489,20 @@ namespace Avalonia.Controls.PanAndZoom
         /// </summary>
         /// <param name="dx">The target x axis delta.</param>
         /// <param name="dy">The target y axis delta.</param>
-        /// <param name="invalidateScroll">The flag indicating whether to invalidate scroll.</param>
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
-        public void PanDelta(double dx, double dy, bool invalidateScroll, bool skipTransitions = false)
+        public void PanDelta(double dx, double dy, bool skipTransitions = false)
         {
+            if (_updating)
+            {
+                return;
+            }
+            _updating = true;
+
+            Log("[PanDelta]");
             _matrix = MatrixHelper.ScaleAndTranslate(_zoomX, _zoomY, _matrix.M31 + dx, _matrix.M32 + dy);
-            Invalidate(invalidateScroll, skipTransitions);
+            Invalidate(skipTransitions);
+
+            _updating = false;
         }
 
         /// <summary>
@@ -446,12 +510,20 @@ namespace Avalonia.Controls.PanAndZoom
         /// </summary>
         /// <param name="x">The target point x axis coordinate.</param>
         /// <param name="y">The target point y axis coordinate.</param>
-        /// <param name="invalidateScroll">The flag indicating whether to invalidate scroll.</param>
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
-        public void Pan(double x, double y, bool invalidateScroll, bool skipTransitions = false)
+        public void Pan(double x, double y, bool skipTransitions = false)
         {
+            if (_updating)
+            {
+                return;
+            }
+            _updating = true;
+
+            Log("[Pan]");
             _matrix = MatrixHelper.ScaleAndTranslate(_zoomX, _zoomY, x, y);
-            Invalidate(invalidateScroll, skipTransitions);
+            Invalidate(skipTransitions);
+
+            _updating = false;
         }
 
         /// <summary>
@@ -470,17 +542,25 @@ namespace Avalonia.Controls.PanAndZoom
         /// </summary>
         /// <param name="x">The target point x axis coordinate.</param>
         /// <param name="y">The target point y axis coordinate.</param>
-        /// <param name="invalidateScroll">The flag indicating whether to invalidate scroll.</param>
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
-        public void ContinuePanTo(double x, double y, bool invalidateScroll, bool skipTransitions = false)
+        public void ContinuePanTo(double x, double y, bool skipTransitions = false)
         {
+            if (_updating)
+            {
+                return;
+            }
+            _updating = true;
+
+            Log("[ContinuePanTo]");
             var dx = x - _previous.X;
             var dy = y - _previous.Y;
             var delta = new Point(dx, dy);
             _previous = new Point(x, y);
             _pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
             _matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
-            Invalidate(invalidateScroll, skipTransitions);
+            Invalidate(skipTransitions);
+
+            _updating = false;
         }
 
         /// <summary>
@@ -493,13 +573,23 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
         public void None(double panelWidth, double panelHeight, double elementWidth, double elementHeight, bool skipTransitions = false)
         {
-            Log($"[None] {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
-            if (_element == null)
+            if (_updating)
             {
                 return;
             }
-            _matrix = ZoomHelper.CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.None);
-            Invalidate(true, skipTransitions);
+            _updating = true;
+
+            Log($"[None] {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
+            if (_element == null)
+            {
+                _updating = false;
+                return;
+            }
+
+            _matrix = CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.None);
+            Invalidate(skipTransitions);
+
+            _updating = false;
         }
 
         /// <summary>
@@ -512,25 +602,23 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
         public void Fill(double panelWidth, double panelHeight, double elementWidth, double elementHeight, bool skipTransitions = false)
         {
-            Log($"[Fill] {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
-            if (_element == null)
+            if (_updating)
             {
                 return;
             }
-            _matrix = ZoomHelper.CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Fill);
-            Invalidate(true, skipTransitions);
-        }
+            _updating = true;
 
-        /// <summary>
-        /// Zoom and pan to panel extents while maintaining aspect ratio.
-        /// </summary>
-        /// <param name="panelWidth">The panel width.</param>
-        /// <param name="panelHeight">The panel height.</param>
-        /// <param name="elementWidth">The element width.</param>
-        /// <param name="elementHeight">The element height.</param>
-        public void Uniform(double panelWidth, double panelHeight, double elementWidth, double elementHeight)
-        {
-            Uniform(panelWidth, panelHeight, elementWidth, elementHeight, false);
+            Log($"[Fill] {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
+            if (_element == null)
+            {
+                _updating = false;
+                return;
+            }
+
+            _matrix = CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Fill);
+            Invalidate(skipTransitions);
+
+            _updating = false;
         }
 
         /// <summary>
@@ -541,15 +629,25 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="elementWidth">The element width.</param>
         /// <param name="elementHeight">The element height.</param>
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
-        public void Uniform(double panelWidth, double panelHeight, double elementWidth, double elementHeight, bool skipTransitions)
+        public void Uniform(double panelWidth, double panelHeight, double elementWidth, double elementHeight, bool skipTransitions = false)
         {
-            Log($"[Uniform] {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
-            if (_element == null)
+            if (_updating)
             {
                 return;
             }
-            _matrix = ZoomHelper.CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Uniform);
-            Invalidate(true, skipTransitions);
+            _updating = true;
+
+            Log($"[Uniform] {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
+            if (_element == null)
+            {
+                _updating = false;
+                return;
+            }
+
+            _matrix = CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.Uniform);
+            Invalidate(skipTransitions);
+
+            _updating = false;
         }
 
         /// <summary>
@@ -562,13 +660,23 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
         public void UniformToFill(double panelWidth, double panelHeight, double elementWidth, double elementHeight, bool skipTransitions = false)
         {
-            Log($"[UniformToFill] {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
-            if (_element == null)
+            if (_updating)
             {
                 return;
             }
-            _matrix = ZoomHelper.CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.UniformToFill);
-            Invalidate(true, skipTransitions);
+            _updating = true;
+
+            Log($"[UniformToFill] {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
+            if (_element == null)
+            {
+                _updating = false;
+                return;
+            }
+
+            _matrix = CalculateMatrix(panelWidth, panelHeight, elementWidth, elementHeight, StretchMode.UniformToFill);
+            Invalidate(skipTransitions);
+
+            _updating = false;
         }
 
         /// <summary>
@@ -581,7 +689,6 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
         public void AutoFit(double panelWidth, double panelHeight, double elementWidth, double elementHeight, bool skipTransitions = false)
         {
-            Log($"[AutoFit] {panelWidth}x{panelHeight} {elementWidth}x{elementHeight}");
             if (_element == null)
             {
                 return;
@@ -589,18 +696,17 @@ namespace Avalonia.Controls.PanAndZoom
             switch (Stretch)
             {
                 case StretchMode.Fill:
-                    Fill(panelWidth, panelHeight, elementWidth, elementHeight);
+                    Fill(panelWidth, panelHeight, elementWidth, elementHeight, skipTransitions);
                     break;
                 case StretchMode.Uniform:
-                    Uniform(panelWidth, panelHeight, elementWidth, elementHeight);
+                    Uniform(panelWidth, panelHeight, elementWidth, elementHeight, skipTransitions);
                     break;
                 case StretchMode.UniformToFill:
-                    UniformToFill(panelWidth, panelHeight, elementWidth, elementHeight);
+                    UniformToFill(panelWidth, panelHeight, elementWidth, elementHeight, skipTransitions);
                     break;
                 case StretchMode.None:
                     break;
             }
-            Invalidate(true, skipTransitions);
         }
 
         /// <summary>
