@@ -101,6 +101,11 @@
                                         Background="SlateBlue" ClipToBounds="True" Focusable="True"
                                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                             <Border Background="Gray" BorderBrush="Yellow" BorderThickness="10">
+                              <Border.Transitions>
+                                <Transitions>
+                                  <paz:TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2"/>
+                                </Transitions>
+                              </Border.Transitions>
                                 <Canvas Background="LightGray" Width="300" Height="300">
                                     <Rectangle Canvas.Left="125" Canvas.Top="125" Width="50" Height="50" Fill="Red"/>
                                     <StackPanel Canvas.Left="100" Canvas.Top="200">
@@ -137,6 +142,11 @@
                                             Background="SlateBlue" ClipToBounds="True" Focusable="True"
                                             VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                                 <Canvas Width="300" Height="300">
+                                  <Canvas.Transitions>
+                                    <Transitions>
+                                      <paz:TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2"/>
+                                    </Transitions>
+                                  </Canvas.Transitions>
                                     <Rectangle Fill="Red" Width="100" Height="100" Canvas.Left="0" Canvas.Top="0"/>
                                     <Rectangle Fill="Green" Width="100" Height="100" Canvas.Left="100" Canvas.Top="0"/>
                                     <Rectangle Fill="Blue" Width="100" Height="100" Canvas.Left="200" Canvas.Top="0"/>
