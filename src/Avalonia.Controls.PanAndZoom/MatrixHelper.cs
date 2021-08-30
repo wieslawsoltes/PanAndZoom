@@ -78,7 +78,7 @@ namespace Avalonia.Controls.PanAndZoom
         /// <returns>The created translation and scale matrix.</returns>
         public static Matrix ScaleAndTranslate(double scaleX, double scaleY, double offsetX, double offsetY)
         {
-            return new Matrix(scaleY, 0.0, 0.0, scaleY, offsetX, offsetY);
+            return new Matrix(scaleX, 0.0, 0.0, scaleY, offsetX, offsetY);
         }
 
         /// <summary>
