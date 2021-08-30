@@ -24,8 +24,8 @@ namespace Avalonia.Controls.PanAndZoom
                     _offset = value;
                     var dx = x - _offset.X;
                     var dy = y - _offset.Y;
-                    Log($"[Offset] offset: {_offset}, dx: {dx}, dy: {dy}");
                     PanDelta(dx, dy, false, !this.IsPointerOver);
+                    Log($"[Offset] offset: {_offset}, dx: {dx}, dy: {dy}");
                 }
             }
         }
