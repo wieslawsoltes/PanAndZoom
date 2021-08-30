@@ -96,7 +96,7 @@
                                   HorizontalScrollBarVisibility="Auto">
                         <paz:ZoomBorder Name="ZoomBorder1"
                                         Stretch="None" 
-                                        ZoomSpeed="2"
+                                        ZoomSpeed="1.2"
                                         EnableConstrains="False"
                                         Background="SlateBlue" ClipToBounds="True" Focusable="True"
                                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -137,7 +137,7 @@
                                       HorizontalScrollBarVisibility="Auto">
                             <paz:ZoomBorder Name="ZoomBorder2"
                                             Stretch="None" 
-                                            ZoomSpeed="2"
+                                            ZoomSpeed="1.2"
                                             EnableConstrains="False"
                                             Background="SlateBlue" ClipToBounds="True" Focusable="True"
                                             VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
