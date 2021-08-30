@@ -12,6 +12,7 @@ namespace Avalonia.Controls.PanAndZoom
     /// </summary>
     public partial class ZoomBorder : Border
     {
+        [Conditional("DEBUG")]
         internal static void Log(string message) => Debug.WriteLine(message);
 
         private static double ClampValue(double value, double minimum, double maximum)
@@ -42,6 +43,7 @@ namespace Avalonia.Controls.PanAndZoom
             DetachedFromVisualTree += PanAndZoom_DetachedFromVisualTree;
 
             this.GetObservable(ChildProperty).Subscribe(ChildChanged);
+            this.GetObservable(BoundsProperty).Subscribe(BoundsChanged);
         }
 
         /// <summary>
@@ -99,8 +101,17 @@ namespace Avalonia.Controls.PanAndZoom
             Moved(e);
         }
 
+        private void BoundsChanged(Rect bounds)
+        {
+            Log($"[BoundsChanged] {bounds}");
+
+            // TODO: InvalidateScrollable();
+        }
+
         private void ChildChanged(IControl? element)
         {
+            Log($"[ChildChanged] {element}");
+
             if (element != null && element != _element && _element != null)
             {
                 DetachElement();
