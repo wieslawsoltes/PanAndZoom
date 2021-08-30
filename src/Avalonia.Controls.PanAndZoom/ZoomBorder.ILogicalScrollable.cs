@@ -183,6 +183,11 @@ namespace Avalonia.Controls.PanAndZoom
 
             CalculateScrollable(_element.Bounds, _matrix, out var extent, out var viewport, out var offset);
 
+            Log($"[InvalidateScrollable] _element.Bounds: {_element.Bounds}, _matrix: {_matrix}");
+            Log($"[InvalidateScrollable] _extent: {_extent}, extent: {extent}, diff: {extent - _extent}");
+            Log($"[InvalidateScrollable] _offset: {_offset}, offset: {offset}, diff: {offset - _offset}");
+            Log($"[InvalidateScrollable] _viewport: {_viewport}, viewport: {viewport}, diff: {viewport - _viewport}");
+
             _extent = extent;
             _offset = offset;
             _viewport = viewport;
