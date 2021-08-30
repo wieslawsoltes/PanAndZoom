@@ -242,35 +242,28 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
         public void Invalidate(bool invalidateScroll, bool skipTransitions = false)
         {
-            if (_isInvalidating)
-            {
-                return;
-            }
-
-            _isInvalidating = true;
-
             if (_element == null)
             {
-                _isInvalidating = false;
                 return;
             }
 
-            if (EnableConstrains)
+            lock (_lock)
             {
-                Constrain();
+                if (EnableConstrains)
+                {
+                    Constrain();
+                }
+
+                InvalidateProperties();
+                InvalidateElement(skipTransitions);
+
+                if (invalidateScroll)
+                {
+                    InvalidateScrollable();
+                }
+
+                RaiseZoomChanged();
             }
-
-            InvalidateProperties();
-            InvalidateElement(skipTransitions);
-
-            if (invalidateScroll)
-            {
-                InvalidateScrollable();
-            }
-
-            RaiseZoomChanged();
-
-            _isInvalidating = false;
         }
 
         /// <summary>

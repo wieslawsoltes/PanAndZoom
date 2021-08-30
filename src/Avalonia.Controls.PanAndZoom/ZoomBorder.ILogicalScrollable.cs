@@ -18,7 +18,7 @@ namespace Avalonia.Controls.PanAndZoom
             get => _offset;
             set
             {
-                if (!_isInvalidating)
+                lock (_lock)
                 {
                     var (x, y) = _offset;
                     _offset = value;

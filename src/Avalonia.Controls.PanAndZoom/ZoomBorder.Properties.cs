@@ -167,7 +167,7 @@ namespace Avalonia.Controls.PanAndZoom
         private Matrix _matrix;
         private TransformOperations.Builder _transformBuilder;
         private bool _isPanning;
-        private bool _isInvalidating;
+        private readonly object _lock = new();
         private double _zoomX = 1.0;
         private double _zoomY = 1.0;
         private double _offsetX = 0.0;
