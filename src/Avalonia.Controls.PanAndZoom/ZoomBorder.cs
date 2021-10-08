@@ -190,7 +190,7 @@ namespace Avalonia.Controls.PanAndZoom
                 return;
             }
             var point = e.GetPosition(_element);
-            ZoomDeltaTo(e.Delta.Y, point.X, point.Y, true);
+            ZoomDeltaTo(e.Delta.Y, point.X, point.Y);
         }
 
         private void Pressed(PointerPressedEventArgs e)
