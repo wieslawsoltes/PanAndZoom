@@ -53,6 +53,10 @@
                         SelectedItem="{Binding Stretch, Mode=TwoWay}" />
             </StackPanel>
             <StackPanel>
+              <Label Content="PowerFactor:" />
+              <TextBox Text="{Binding PowerFactor, Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel>
               <Label Content="ZoomSpeed:" />
               <TextBox Text="{Binding ZoomSpeed, Mode=TwoWay}" />
             </StackPanel>
