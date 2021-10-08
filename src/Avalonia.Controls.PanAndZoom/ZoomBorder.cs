@@ -291,7 +291,6 @@ namespace Avalonia.Controls.PanAndZoom
             InvalidateScrollable();
             InvalidateElement(skipTransitions);
             RaiseZoomChanged();
-            
 
             Log("[Invalidate] End");
         }
@@ -481,7 +480,8 @@ namespace Avalonia.Controls.PanAndZoom
         /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
         public void ZoomDeltaTo(double delta, double x, double y, bool skipTransitions = false)
         {
-            ZoomTo(delta > 0 ? ZoomSpeed : 1 / ZoomSpeed, x, y, skipTransitions);
+            double realDelta = Sign(delta) * Pow(Abs(delta), PowerFactor);
+            ZoomTo(Pow(ZoomSpeed, realDelta), x, y, skipTransitions || Abs(realDelta) <= TransitionThreshold);
         }
 
         /// <summary>
