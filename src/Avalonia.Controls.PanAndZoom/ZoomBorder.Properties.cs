@@ -32,6 +32,18 @@ namespace Avalonia.Controls.PanAndZoom
             AvaloniaProperty.Register<ZoomBorder, double>(nameof(ZoomSpeed), 1.2, false, BindingMode.TwoWay);
 
         /// <summary>
+        /// Identifies the <seealso cref="PowerFactor"/> avalonia property.
+        /// </summary>
+        public static StyledProperty<double> PowerFactorProperty =
+            AvaloniaProperty.Register<ZoomBorder, double>(nameof(PowerFactor), 1, false, BindingMode.TwoWay);
+
+        /// <summary>
+        /// Identifies the <seealso cref="TransitionThreshold"/> avalonia property.
+        /// </summary>
+        public static StyledProperty<double> TransitionThresholdProperty =
+            AvaloniaProperty.Register<ZoomBorder, double>(nameof(TransitionThreshold), 0.5, false, BindingMode.TwoWay);
+
+        /// <summary>
         /// Identifies the <seealso cref="Stretch"/> avalonia property.
         /// </summary>
         public static StyledProperty<StretchMode> StretchProperty =
@@ -201,6 +213,24 @@ namespace Avalonia.Controls.PanAndZoom
         {
             get => GetValue(ZoomSpeedProperty);
             set => SetValue(ZoomSpeedProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the power factor used to transform the mouse wheel delta value.
+        /// </summary>
+        public double PowerFactor
+        {
+            get => GetValue(PowerFactorProperty);
+            set => SetValue(PowerFactorProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the threshold below which zoom operations will skip all transitions.
+        /// </summary>
+        public double TransitionThreshold
+        {
+            get => GetValue(TransitionThresholdProperty);
+            set => SetValue(TransitionThresholdProperty, value);
         }
 
         /// <summary>
