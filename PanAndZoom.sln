@@ -24,6 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6E241F85
 		build.ps1 = build.ps1
 		build.sh = build.sh
 		global.json = global.json
+		build\panandzoom.public.snk = build\panandzoom.public.snk
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{E16CD9A4-AA47-4440-9EB7-B9E8E59EBFC5}"
@@ -40,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{D83B9ECD
 		build\ReferenceAssemblies.props = build\ReferenceAssemblies.props
 		build\XUnit.props = build\XUnit.props
 		build\SourceLink.props = build\SourceLink.props
+		build\SignAssembly.props = build\SignAssembly.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{10DDB443-E910-47C5-B1C1-1ED769BE9834}"
