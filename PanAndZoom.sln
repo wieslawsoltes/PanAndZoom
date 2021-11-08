@@ -20,11 +20,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6E241F85-FE51-47E5-B9C2-50AAA7FEC499}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		.nuke = .nuke
 		build.ps1 = build.ps1
 		build.sh = build.sh
 		global.json = global.json
 		build\panandzoom.public.snk = build\panandzoom.public.snk
+		azure-pipelines.yml = azure-pipelines.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{E16CD9A4-AA47-4440-9EB7-B9E8E59EBFC5}"
