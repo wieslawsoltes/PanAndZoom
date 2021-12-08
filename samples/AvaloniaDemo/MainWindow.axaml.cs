@@ -5,83 +5,82 @@ using Avalonia.Controls.PanAndZoom;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 
-namespace AvaloniaDemo
+namespace AvaloniaDemo;
+
+public class MainWindow : Window
 {
-    public class MainWindow : Window
+    private readonly ZoomBorder? ZoomBorder1;
+    private readonly ZoomBorder? ZoomBorder2;
+
+    public MainWindow()
     {
-        private readonly ZoomBorder? ZoomBorder1;
-        private readonly ZoomBorder? ZoomBorder2;
+        this.InitializeComponent();
+        this.AttachDevTools();
 
-        public MainWindow()
+        ZoomBorder1 = this.Find<ZoomBorder>("ZoomBorder1");
+        if (ZoomBorder1 != null)
         {
-            this.InitializeComponent();
-            this.AttachDevTools();
-
-            ZoomBorder1 = this.Find<ZoomBorder>("ZoomBorder1");
-            if (ZoomBorder1 != null)
-            {
-                ZoomBorder1.KeyDown += ZoomBorder_KeyDown;
-                ZoomBorder1.ZoomChanged += ZoomBorder_ZoomChanged;
-            }
-
-            ZoomBorder2 = this.Find<ZoomBorder>("ZoomBorder2");
-            if (ZoomBorder2 != null)
-            {
-                ZoomBorder2.KeyDown += ZoomBorder_KeyDown;
-                ZoomBorder2.ZoomChanged += ZoomBorder_ZoomChanged;
-            }
-
-            DataContext = ZoomBorder1;
+            ZoomBorder1.KeyDown += ZoomBorder_KeyDown;
+            ZoomBorder1.ZoomChanged += ZoomBorder_ZoomChanged;
         }
 
-        private void InitializeComponent()
+        ZoomBorder2 = this.Find<ZoomBorder>("ZoomBorder2");
+        if (ZoomBorder2 != null)
         {
-            AvaloniaXamlLoader.Load(this);
+            ZoomBorder2.KeyDown += ZoomBorder_KeyDown;
+            ZoomBorder2.ZoomChanged += ZoomBorder_ZoomChanged;
         }
 
-        private void ZoomBorder_KeyDown(object? sender, KeyEventArgs e)
-        {
-            var zoomBorder = this.DataContext as ZoomBorder;
+        DataContext = ZoomBorder1;
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    private void ZoomBorder_KeyDown(object? sender, KeyEventArgs e)
+    {
+        var zoomBorder = this.DataContext as ZoomBorder;
             
-            switch (e.Key)
-            {
-                case Key.F:
-                    zoomBorder?.Fill();
-                    break;
-                case Key.U:
-                    zoomBorder?.Uniform();
-                    break;
-                case Key.R:
-                    zoomBorder?.ResetMatrix();
-                    break;
-                case Key.T:
-                    zoomBorder?.ToggleStretchMode();
-                    zoomBorder?.AutoFit();
-                    break;
-            }
-        }
-
-        private void ZoomBorder_ZoomChanged(object sender, ZoomChangedEventArgs e)
+        switch (e.Key)
         {
-            Debug.WriteLine($"[ZoomChanged] {e.ZoomX} {e.ZoomY} {e.OffsetX} {e.OffsetY}");
+            case Key.F:
+                zoomBorder?.Fill();
+                break;
+            case Key.U:
+                zoomBorder?.Uniform();
+                break;
+            case Key.R:
+                zoomBorder?.ResetMatrix();
+                break;
+            case Key.T:
+                zoomBorder?.ToggleStretchMode();
+                zoomBorder?.AutoFit();
+                break;
         }
+    }
 
-        private void TabControl_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void ZoomBorder_ZoomChanged(object sender, ZoomChangedEventArgs e)
+    {
+        Debug.WriteLine($"[ZoomChanged] {e.ZoomX} {e.ZoomY} {e.OffsetX} {e.OffsetY}");
+    }
+
+    private void TabControl_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (sender is TabControl tabControl)
         {
-            if (sender is TabControl tabControl)
+            if (tabControl.SelectedItem is TabItem tabItem)
             {
-                if (tabControl.SelectedItem is TabItem tabItem)
+                if (tabItem.Tag is string tag)
                 {
-                    if (tabItem.Tag is string tag)
+                    if (tag == "1")
                     {
-                        if (tag == "1")
-                        {
-                            DataContext = ZoomBorder1;
-                        }
-                        else if (tag == "2")
-                        {
-                            DataContext = ZoomBorder2;
-                        }
+                        DataContext = ZoomBorder1;
+                    }
+                    else if (tag == "2")
+                    {
+                        DataContext = ZoomBorder2;
                     }
                 }
             }

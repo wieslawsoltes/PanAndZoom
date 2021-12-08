@@ -1,24 +1,23 @@
-﻿namespace Avalonia.Controls.PanAndZoom
+﻿namespace Avalonia.Controls.PanAndZoom;
+
+/// <summary>
+/// Describes mouse button names.
+/// </summary>
+public enum ButtonName
 {
     /// <summary>
-    /// Describes mouse button names.
+    /// The left mouse button.
     /// </summary>
-    public enum ButtonName
-    {
-        /// <summary>
-        /// The left mouse button.
-        /// </summary>
-        Left,
+    Left,
 
-        /// <summary>
-        /// The right mouse button.
-        /// </summary>
-        Right,
+    /// <summary>
+    /// The right mouse button.
+    /// </summary>
+    Right,
 
-        /// <summary>
-        /// The middle mouse button.
-        /// </summary>
-        Middle
+    /// <summary>
+    /// The middle mouse button.
+    /// </summary>
+    Middle
 
-    }
 }
