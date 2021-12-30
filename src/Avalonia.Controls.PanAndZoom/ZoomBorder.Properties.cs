@@ -185,12 +185,7 @@ public partial class ZoomBorder
     private double _offsetX = 0.0;
     private double _offsetY = 0.0;
     private bool _captured = false;
-    private Size _extent = new Size();
-    private Size _viewport = new Size();
-    private Vector _offset = new Vector();
-    private bool _canHorizontallyScroll = false;
-    private bool _canVerticallyScroll = false;
-    private EventHandler? _scrollInvalidated;
+
 
     /// <summary>
     /// Zoom changed event.
