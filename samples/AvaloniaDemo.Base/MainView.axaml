@@ -1,0 +1,177 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:paz="using:Avalonia.Controls.PanAndZoom"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaDemo.MainView">
+ <UserControl.Styles>
+    <Style Selector="Label">
+      <Setter Property="Margin" Value="4" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+    <Style Selector="TextBox">
+      <Setter Property="Margin" Value="4" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+    <Style Selector="CheckBox">
+      <Setter Property="Margin" Value="4" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="Margin" Value="4" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+    <Style Selector="ListBoxItem">
+      <Setter Property="Margin" Value="2" />
+      <Setter Property="Padding" Value="2" />
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="VerticalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+  </UserControl.Styles>
+  <DockPanel>
+    <Panel DockPanel.Dock="Left" Margin="12">
+      <ScrollViewer VerticalScrollBarVisibility="Auto"
+                    HorizontalScrollBarVisibility="Auto">
+        <StackPanel>
+          <StackPanel x:DataType="paz:ZoomBorder">
+            <StackPanel>
+              <Label Content="PanButton:" />
+              <ComboBox Items="{x:Static paz:ZoomBorder.ButtonNames}"
+                        SelectedItem="{Binding PanButton, Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel>
+              <Label Content="Stretch:" />
+              <ComboBox Items="{x:Static paz:ZoomBorder.StretchModes}"
+                        SelectedItem="{Binding Stretch, Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel>
+              <Label Content="PowerFactor:" />
+              <TextBox Text="{Binding PowerFactor, Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel>
+              <Label Content="ZoomSpeed:" />
+              <TextBox Text="{Binding ZoomSpeed, Mode=TwoWay}" />
+            </StackPanel>
+            <CheckBox IsChecked="{Binding EnablePan}"
+                      Content="EnablePan" />
+            <CheckBox IsChecked="{Binding EnableZoom}"
+                      Content="EnableZoom" />
+            <CheckBox IsChecked="{Binding EnableConstrains}"
+                      Content="EnableConstrains" />
+          </StackPanel>
+          <StackPanel>
+            <Label Content="F - Fill" />
+            <Label Content="U - Uniform" />
+            <Label Content="R - Reset" />
+            <Label Content="T - Toggle Stretch Mode" />
+            <Label Content="Mouse Wheel - Zoom to Point" />
+            <Label Content="Mouse Left Button Down - Pan" />
+          </StackPanel>
+        </StackPanel>
+      </ScrollViewer>
+    </Panel>
+    <Panel DockPanel.Dock="Right" Margin="12">
+      <ScrollViewer VerticalScrollBarVisibility="Auto"
+                    HorizontalScrollBarVisibility="Auto">
+        <StackPanel Width="120" x:DataType="paz:ZoomBorder">
+          <StackPanel>
+            <Label Content="ZoomX:" />
+            <Label Content="{Binding ZoomX}" />
+          </StackPanel>
+          <StackPanel>
+            <Label Content="ZoomY:" />
+            <Label Content="{Binding ZoomY}" />
+          </StackPanel>
+          <StackPanel>
+            <Label Content="OffsetX:" />
+            <Label Content="{Binding OffsetX}" />
+          </StackPanel>
+          <StackPanel>
+            <Label Content="OffsetY:" />
+            <Label Content="{Binding OffsetY}" />
+          </StackPanel>
+        </StackPanel>
+      </ScrollViewer>
+    </Panel>
+    <Panel Margin="12">
+      <TabControl SelectionChanged="TabControl_SelectionChanged">
+        <TabItem Tag="1" Header="Example 1">
+          <ScrollViewer VerticalScrollBarVisibility="Auto"
+                        HorizontalScrollBarVisibility="Auto">
+            <paz:ZoomBorder Name="ZoomBorder1"
+                            Stretch="None"
+                            ZoomSpeed="1.5"
+                            EnableConstrains="False"
+                            Background="SlateBlue" ClipToBounds="True" Focusable="True"
+                            VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+              <Border Background="Gray" BorderBrush="Yellow" BorderThickness="10">
+                <Border.Transitions>
+                  <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+                  </Transitions>
+                </Border.Transitions>
+                <Canvas Background="LightGray" Width="300" Height="300">
+                  <Rectangle Canvas.Left="125" Canvas.Top="125" Width="50" Height="50" Fill="Red" />
+                  <StackPanel Canvas.Left="100" Canvas.Top="200">
+                    <TextBlock Text="Text1" Width="100" Background="Red" Foreground="WhiteSmoke" />
+                    <TextBlock Text="Text2" Width="100" Background="Red" Foreground="WhiteSmoke" />
+                  </StackPanel>
+                  <Button Content="Reset Zoom"
+                          Command="{Binding ResetMatrix}"
+                          x:DataType="paz:ZoomBorder" x:CompileBindings="False"
+                          Width="120" Canvas.Left="100" Canvas.Top="250" />
+                  <ListBox Width="120"
+                           Canvas.Left="10" Canvas.Top="10"
+                           x:DataType="paz:ZoomBorder"
+                           Items="{x:Static paz:ZoomBorder.StretchModes}"
+                           SelectedItem="{Binding Stretch, Mode=TwoWay}" />
+                  <ListBox Width="120"
+                           Canvas.Left="160" Canvas.Top="10"
+                           x:DataType="paz:ZoomBorder"
+                           Items="{x:Static paz:ZoomBorder.ButtonNames}"
+                           SelectedItem="{Binding PanButton, Mode=TwoWay}" />
+                </Canvas>
+              </Border>
+            </paz:ZoomBorder>
+          </ScrollViewer>
+        </TabItem>
+        <TabItem Tag="2" Header="Example 2">
+          <Panel Margin="12" Width="300" Height="300" Background="Gray">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto">
+              <paz:ZoomBorder Name="ZoomBorder2"
+                              Stretch="None"
+                              ZoomSpeed="1.5"
+                              EnableConstrains="False"
+                              Background="SlateBlue" ClipToBounds="True" Focusable="True"
+                              VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Canvas Width="300" Height="300">
+                  <Canvas.Transitions>
+                    <Transitions>
+                      <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+                    </Transitions>
+                  </Canvas.Transitions>
+                  <Rectangle Fill="Red" Width="100" Height="100" Canvas.Left="0" Canvas.Top="0" />
+                  <Rectangle Fill="Green" Width="100" Height="100" Canvas.Left="100" Canvas.Top="0" />
+                  <Rectangle Fill="Blue" Width="100" Height="100" Canvas.Left="200" Canvas.Top="0" />
+                  <Rectangle Fill="Yellow" Width="100" Height="100" Canvas.Left="0" Canvas.Top="100" />
+                  <Rectangle Fill="Magenta" Width="100" Height="100" Canvas.Left="100" Canvas.Top="100" />
+                  <Rectangle Fill="Orange" Width="100" Height="100" Canvas.Left="200" Canvas.Top="100" />
+                  <Rectangle Fill="Purple" Width="100" Height="100" Canvas.Left="0" Canvas.Top="200" />
+                  <Rectangle Fill="Cyan" Width="100" Height="100" Canvas.Left="100" Canvas.Top="200" />
+                  <Rectangle Fill="Teal" Width="100" Height="100" Canvas.Left="200" Canvas.Top="200" />
+                </Canvas>
+              </paz:ZoomBorder>
+            </ScrollViewer>
+          </Panel>
+        </TabItem>
+      </TabControl>
+    </Panel>
+  </DockPanel>
+</UserControl>
+

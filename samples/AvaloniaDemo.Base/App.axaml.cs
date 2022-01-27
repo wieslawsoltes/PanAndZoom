@@ -19,8 +19,9 @@ public class App : Application
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
         {
-            //singleViewLifetime.MainView = new MainView();
+            singleViewLifetime.MainView = new MainView();
         }
+
         base.OnFrameworkInitializationCompleted();
     }
 }
