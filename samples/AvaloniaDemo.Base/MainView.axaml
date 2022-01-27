@@ -5,7 +5,8 @@
              xmlns:paz="using:Avalonia.Controls.PanAndZoom"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaDemo.MainView">
- <UserControl.Styles>
+
+  <UserControl.Styles>
     <Style Selector="Label">
       <Setter Property="Margin" Value="4" />
       <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -33,6 +34,7 @@
       <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
   </UserControl.Styles>
+
   <DockPanel>
     <Panel DockPanel.Dock="Left" Margin="12">
       <ScrollViewer VerticalScrollBarVisibility="Auto"
@@ -173,5 +175,6 @@
       </TabControl>
     </Panel>
   </DockPanel>
+
 </UserControl>
 
