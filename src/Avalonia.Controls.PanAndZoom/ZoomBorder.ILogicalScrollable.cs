@@ -10,11 +10,11 @@ namespace Avalonia.Controls.PanAndZoom;
 /// </summary>
 public partial class ZoomBorder : ILogicalScrollable
 {
-    private Size _extent = new Size();
-    private Size _viewport = new Size();
-    private Vector _offset = new Vector();
-    private bool _canHorizontallyScroll = false;
-    private bool _canVerticallyScroll = false;
+    private Size _extent;
+    private Size _viewport;
+    private Vector _offset;
+    private bool _canHorizontallyScroll;
+    private bool _canVerticallyScroll;
     private EventHandler? _scrollInvalidated;
 
     /// <summary>
@@ -151,7 +151,7 @@ public partial class ZoomBorder : ILogicalScrollable
 
     bool ILogicalScrollable.IsLogicalScrollEnabled => true;
 
-    event EventHandler ILogicalScrollable.ScrollInvalidated
+    event EventHandler? ILogicalScrollable.ScrollInvalidated
     {
         add => _scrollInvalidated += value;
         remove => _scrollInvalidated -= value;
@@ -166,7 +166,7 @@ public partial class ZoomBorder : ILogicalScrollable
         return false;
     }
 
-    IControl? ILogicalScrollable.GetControlInDirection(NavigationDirection direction, IControl from)
+    IControl? ILogicalScrollable.GetControlInDirection(NavigationDirection direction, IControl? from)
     {
         return null;
     }
