@@ -485,6 +485,84 @@ public partial class ZoomBorder : Border
     }
 
     /// <summary>
+    /// Zoom to provided area based on provided stretch mode.
+    /// </summary>
+    /// <param name="area">The area to zoom into.</param>
+    /// <param name="mode">The stretch mode.</param>
+    /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
+    public void ZoomIntoArea(Rect area, StretchMode mode = StretchMode.Uniform, bool skipTransitions = false)
+    {
+        if (_updating)
+        {
+            return;
+        }
+        _updating = true;
+
+        Log("[ZoomRectangle]");
+
+        if (mode == StretchMode.None)
+        {
+            _matrix = Matrix.Identity;
+            Invalidate(skipTransitions);
+            _updating = false;
+            return;
+        }
+
+        var zx = Bounds.Width / area.Width;
+        var zy = Bounds.Height / area.Height;
+        double zoom = 1.0;
+
+        double left = area.Left;
+        double top = area.Top;
+
+        switch (mode)
+        {
+            case StretchMode.Uniform:
+                {
+                    if (zx > zy)
+                    {
+                        zoom = zy;
+                        left -= (Bounds.Width / zoom - area.Width) / 2.0;
+                    }
+                    else
+                    {
+                        zoom = zx;
+                        top -= (Bounds.Height / zoom - area.Height) / 2.0;
+                    }
+                    break;
+                }
+            case StretchMode.UniformToFill:
+                {
+                    if (zx > zy)
+                    {
+                        zoom = zx;
+                        top -= (Bounds.Height / zoom - area.Height) / 2.0;
+                    }
+                    else
+                    {
+                        zoom = zy;
+                        left -= (Bounds.Width / zoom - area.Width) / 2.0;
+                    }
+                    break;
+                }
+        }
+
+        _matrix = MatrixHelper.Translate(-left, -top);
+        if (mode == StretchMode.Fill)
+        {
+            _matrix *= MatrixHelper.Scale(zx, zy);
+        }
+        else
+        {
+            _matrix *= MatrixHelper.Scale(zoom, zoom);
+        }
+
+        Invalidate(skipTransitions);
+
+        _updating = false;
+    }
+
+    /// <summary>
     /// Pan control to provided delta.
     /// </summary>
     /// <param name="dx">The target x axis delta.</param>
