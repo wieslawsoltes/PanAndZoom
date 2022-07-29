@@ -49,15 +49,15 @@ public partial class ZoomBorder : Border
             case StretchMode.Fill:
                 return MatrixHelper.ScaleAt(zx, zy, cx, cy);
             case StretchMode.Uniform:
-                {
-                    var zoom = Min(zx, zy);
-                    return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
-                }
+            {
+                var zoom = Min(zx, zy);
+                return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+            }
             case StretchMode.UniformToFill:
-                {
-                    var zoom = Max(zx, zy);
-                    return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
-                }
+            {
+                var zoom = Max(zx, zy);
+                return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+            }
         }
     }
 
@@ -518,33 +518,33 @@ public partial class ZoomBorder : Border
         switch (mode)
         {
             case StretchMode.Uniform:
+            {
+                if (zx > zy)
                 {
-                    if (zx > zy)
-                    {
-                        zoom = zy;
-                        left -= (Bounds.Width / zoom - area.Width) / 2.0;
-                    }
-                    else
-                    {
-                        zoom = zx;
-                        top -= (Bounds.Height / zoom - area.Height) / 2.0;
-                    }
-                    break;
+                    zoom = zy;
+                    left -= (Bounds.Width / zoom - area.Width) / 2.0;
                 }
+                else
+                {
+                    zoom = zx;
+                    top -= (Bounds.Height / zoom - area.Height) / 2.0;
+                }
+                break;
+            }
             case StretchMode.UniformToFill:
+            {
+                if (zx > zy)
                 {
-                    if (zx > zy)
-                    {
-                        zoom = zx;
-                        top -= (Bounds.Height / zoom - area.Height) / 2.0;
-                    }
-                    else
-                    {
-                        zoom = zy;
-                        left -= (Bounds.Width / zoom - area.Width) / 2.0;
-                    }
-                    break;
+                    zoom = zx;
+                    top -= (Bounds.Height / zoom - area.Height) / 2.0;
                 }
+                else
+                {
+                    zoom = zy;
+                    left -= (Bounds.Width / zoom - area.Width) / 2.0;
+                }
+                break;
+            }
         }
 
         _matrix = MatrixHelper.Translate(-left, -top);
