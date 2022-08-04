@@ -5,7 +5,7 @@ class IndexedDbWrapper {
         this.objectStores = objectStores;
     }
     connect() {
-        var conn = window.indexedDB.open(this.databaseName, 1);
+        const conn = window.indexedDB.open(this.databaseName, 1);
         conn.onupgradeneeded = event => {
             const db = event.target.result;
             this.objectStores.forEach(store => {
@@ -33,7 +33,7 @@ class InnerDbConnection {
     put(store, obj, key) {
         const os = this.openStore(store, "readwrite");
         return new Promise((resolve, reject) => {
-            var response = os.put(obj, key);
+            const response = os.put(obj, key);
             response.onsuccess = () => {
                 resolve(response.result);
             };
@@ -45,7 +45,7 @@ class InnerDbConnection {
     get(store, key) {
         const os = this.openStore(store, "readonly");
         return new Promise((resolve, reject) => {
-            var response = os.get(key);
+            const response = os.get(key);
             response.onsuccess = () => {
                 resolve(response.result);
             };
@@ -57,7 +57,7 @@ class InnerDbConnection {
     delete(store, key) {
         const os = this.openStore(store, "readwrite");
         return new Promise((resolve, reject) => {
-            var response = os.delete(key);
+            const response = os.delete(key);
             response.onsuccess = () => {
                 resolve();
             };
@@ -82,22 +82,34 @@ class StorageItem {
     getName() {
         return this.handle.name;
     }
+    getKind() {
+        return this.handle.kind;
+    }
     async openRead() {
         await this.verityPermissions('read');
-        var file = await this.handle.getFile();
-        return file;
+        return await this.handle.getFile();
     }
     async openWrite() {
         await this.verityPermissions('readwrite');
         return await this.handle.createWritable({ keepExistingData: true });
     }
     async getProperties() {
-        var file = this.handle.getFile && await this.handle.getFile();
+        const file = this.handle.getFile && await this.handle.getFile();
         return file && {
             Size: file.size,
             LastModified: file.lastModified,
             Type: file.type
         };
+    }
+    async getItems() {
+        if (this.handle.kind !== "directory") {
+            return new StorageItems([]);
+        }
+        const items = [];
+        for await (const [key, value] of this.handle.entries()) {
+            items.push(new StorageItem(value));
+        }
+        return new StorageItems(items);
     }
     async verityPermissions(mode) {
         if (await this.handle.queryPermission({ mode }) === 'granted') {
@@ -161,14 +173,14 @@ export class StorageProvider {
     static async selectFolderDialog(startIn) {
         // 'Picker' API doesn't accept "null" as a parameter, so it should be set to undefined.
         const options = {
-            startIn: (startIn || undefined)
+            startIn: (startIn?.handle || undefined)
         };
         const handle = await window.showDirectoryPicker(options);
         return new StorageItem(handle);
     }
     static async openFileDialog(startIn, multiple, types, excludeAcceptAllOption) {
         const options = {
-            startIn: (startIn || undefined),
+            startIn: (startIn?.handle || undefined),
             multiple,
             excludeAcceptAllOption,
             types: (types || undefined)
@@ -178,7 +190,7 @@ export class StorageProvider {
     }
     static async saveFileDialog(startIn, suggestedName, types, excludeAcceptAllOption) {
         const options = {
-            startIn: (startIn || undefined),
+            startIn: (startIn?.handle || undefined),
             suggestedName: (suggestedName || undefined),
             excludeAcceptAllOption,
             types: (types || undefined)
