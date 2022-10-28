@@ -27,7 +27,7 @@ jobs:
       run: dotnet publish $PROJECT_PATH -c Release -o release --nologo
 
     - name: Change base-tag in index.html
-      run: sed -i 's/<base href="\/" \/>/<base href="\/$PROJECT_BASE\/" \/>/g' $OUTPUT_PATH/index.html
+      run: sed -i ""s/<base href="\/" \/>/<base href="\/$PROJECT_BASE\/" \/>/g" $OUTPUT_PATH/index.html
 
     - name: copy index.html to 404.html
       run: cp $OUTPUT_PATH/index.html $OUTPUT_PATH/404.html
