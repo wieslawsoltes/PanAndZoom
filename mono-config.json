@@ -105,10 +105,6 @@
     },
     {
       "behavior": "assembly",
-      "name": "System.Drawing.Primitives.dll"
-    },
-    {
-      "behavior": "assembly",
       "name": "System.Linq.dll"
     },
     {
