@@ -141,7 +141,7 @@ public partial class ZoomBorder : Border
         //InvalidateScrollable();
     }
 
-    private void ChildChanged(IControl? element)
+    private void ChildChanged(Control? element)
     {
         Log($"[ChildChanged] {element}");
 
@@ -156,7 +156,7 @@ public partial class ZoomBorder : Border
         }
     }
 
-    private void AttachElement(IControl? element)
+    private void AttachElement(Control? element)
     {
         if (element == null)
         {
@@ -300,20 +300,10 @@ public partial class ZoomBorder : Border
     /// </summary>
     private void InvalidateProperties()
     {
-        var oldZoomX = _zoomX;
-        var oldZoomY = _zoomY;
-        var oldOffsetX = _offsetX;
-        var oldOffsetY = _offsetY;
-
-        _zoomX = _matrix.M11;
-        _zoomY = _matrix.M22;
-        _offsetX = _matrix.M31;
-        _offsetY = _matrix.M32;
-
-        RaisePropertyChanged(ZoomXProperty, oldZoomX, _zoomX);
-        RaisePropertyChanged(ZoomYProperty, oldZoomY, _zoomY);
-        RaisePropertyChanged(OffsetXProperty, oldOffsetX, _offsetX);
-        RaisePropertyChanged(OffsetYProperty, oldOffsetY, _offsetY);
+        SetAndRaise(ZoomXProperty, ref _zoomX, _matrix.M11);
+        SetAndRaise(ZoomYProperty, ref _zoomY, _matrix.M22);
+        SetAndRaise(OffsetXProperty, ref _offsetX, _matrix.M31);
+        SetAndRaise(OffsetYProperty, ref _offsetY, _matrix.M32);
     }
 
     /// <summary>

@@ -173,7 +173,7 @@ public partial class ZoomBorder
             MaxOffsetYProperty);
     }
 
-    private IControl? _element;
+    private Control? _element;
     private Point _pan;
     private Point _previous;
     private Matrix _matrix;

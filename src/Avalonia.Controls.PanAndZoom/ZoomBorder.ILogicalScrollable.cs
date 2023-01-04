@@ -161,12 +161,12 @@ public partial class ZoomBorder : ILogicalScrollable
 
     Size ILogicalScrollable.PageScrollSize => new Size(10, 10);
 
-    bool ILogicalScrollable.BringIntoView(IControl target, Rect targetRect)
+    bool ILogicalScrollable.BringIntoView(Control target, Rect targetRect)
     {
         return false;
     }
 
-    IControl? ILogicalScrollable.GetControlInDirection(NavigationDirection direction, IControl? from)
+    Control? ILogicalScrollable.GetControlInDirection(NavigationDirection direction, Control? from)
     {
         return null;
     }
