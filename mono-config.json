@@ -97,10 +97,6 @@
     },
     {
       "behavior": "assembly",
-      "name": "System.Diagnostics.TraceSource.dll"
-    },
-    {
-      "behavior": "assembly",
       "name": "System.dll"
     },
     {
@@ -110,14 +106,6 @@
     {
       "behavior": "assembly",
       "name": "System.Linq.Expressions.dll"
-    },
-    {
-      "behavior": "assembly",
-      "name": "System.Net.Http.dll"
-    },
-    {
-      "behavior": "assembly",
-      "name": "System.Net.Primitives.dll"
     },
     {
       "behavior": "assembly",
@@ -133,31 +121,7 @@
     },
     {
       "behavior": "assembly",
-      "name": "System.Private.Xml.dll"
-    },
-    {
-      "behavior": "assembly",
-      "name": "System.Private.Xml.Linq.dll"
-    },
-    {
-      "behavior": "assembly",
-      "name": "System.Reactive.dll"
-    },
-    {
-      "behavior": "assembly",
       "name": "System.Runtime.InteropServices.JavaScript.dll"
-    },
-    {
-      "behavior": "assembly",
-      "name": "System.Runtime.Serialization.Primitives.dll"
-    },
-    {
-      "behavior": "assembly",
-      "name": "System.Text.RegularExpressions.dll"
-    },
-    {
-      "behavior": "assembly",
-      "name": "System.Xml.Linq.dll"
     },
     {
       "virtualPath": "runtimeconfig.bin",
