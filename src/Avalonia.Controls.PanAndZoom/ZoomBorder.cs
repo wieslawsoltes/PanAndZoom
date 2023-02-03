@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Transformation;
+using Avalonia.Reactive;
 using static System.Math;
 
 namespace Avalonia.Controls.PanAndZoom;
@@ -76,8 +77,8 @@ public partial class ZoomBorder : Border
         AttachedToVisualTree += PanAndZoom_AttachedToVisualTree;
         DetachedFromVisualTree += PanAndZoom_DetachedFromVisualTree;
 
-        this.GetObservable(ChildProperty).Subscribe(ChildChanged);
-        this.GetObservable(BoundsProperty).Subscribe(BoundsChanged);
+        this.GetObservable(ChildProperty).Subscribe(new AnonymousObserver<Control?>(ChildChanged));
+        this.GetObservable(BoundsProperty).Subscribe(new AnonymousObserver<Rect>(BoundsChanged));
     }
 
     /// <summary>
