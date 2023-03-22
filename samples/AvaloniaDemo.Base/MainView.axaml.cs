@@ -7,11 +7,8 @@ using Avalonia.Markup.Xaml;
 
 namespace AvaloniaDemo;
 
-public class MainView : UserControl
+public partial class MainView : UserControl
 {
-    private readonly ZoomBorder? ZoomBorder1;
-    private readonly ZoomBorder? ZoomBorder2;
-
     public MainView()
     {
         InitializeComponent();
@@ -31,11 +28,6 @@ public class MainView : UserControl
         }
 
         DataContext = ZoomBorder1;
-    }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
     }
 
     private void ZoomBorder_KeyDown(object? sender, KeyEventArgs e)

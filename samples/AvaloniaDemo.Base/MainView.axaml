@@ -5,7 +5,7 @@
              xmlns:paz="using:Avalonia.Controls.PanAndZoom"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaDemo.MainView"
-             FontFamily="avares://Avalonia.Themes.Fluent/Assets#Inter">
+             FontFamily="avares://Avalonia.Fonts.Inter/Assets#Inter">
 
   <UserControl.Styles>
     <Style Selector="Label">
