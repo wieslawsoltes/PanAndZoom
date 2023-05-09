@@ -22,31 +22,31 @@ public partial class ZoomBorder
     /// <summary>
     /// Identifies the <seealso cref="PanButton"/> avalonia property.
     /// </summary>
-    public static StyledProperty<ButtonName> PanButtonProperty =
+    public static readonly StyledProperty<ButtonName> PanButtonProperty =
         AvaloniaProperty.Register<ZoomBorder, ButtonName>(nameof(PanButton), ButtonName.Middle, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="ZoomSpeed"/> avalonia property.
     /// </summary>
-    public static StyledProperty<double> ZoomSpeedProperty =
+    public static readonly StyledProperty<double> ZoomSpeedProperty =
         AvaloniaProperty.Register<ZoomBorder, double>(nameof(ZoomSpeed), 1.2, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="PowerFactor"/> avalonia property.
     /// </summary>
-    public static StyledProperty<double> PowerFactorProperty =
+    public static readonly StyledProperty<double> PowerFactorProperty =
         AvaloniaProperty.Register<ZoomBorder, double>(nameof(PowerFactor), 1, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="TransitionThreshold"/> avalonia property.
     /// </summary>
-    public static StyledProperty<double> TransitionThresholdProperty =
+    public static readonly StyledProperty<double> TransitionThresholdProperty =
         AvaloniaProperty.Register<ZoomBorder, double>(nameof(TransitionThreshold), 0.5, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="Stretch"/> avalonia property.
     /// </summary>
-    public static StyledProperty<StretchMode> StretchProperty =
+    public static readonly  StyledProperty<StretchMode> StretchProperty =
         AvaloniaProperty.Register<ZoomBorder, StretchMode>(nameof(Stretch), StretchMode.Uniform, false, BindingMode.TwoWay);
 
     /// <summary>
@@ -76,85 +76,85 @@ public partial class ZoomBorder
     /// <summary>
     /// Identifies the <seealso cref="EnableConstrains"/> avalonia property.
     /// </summary>
-    public static StyledProperty<bool> EnableConstrainsProperty =
+    public static readonly StyledProperty<bool> EnableConstrainsProperty =
         AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableConstrains), true, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="MinZoomX"/> avalonia property.
     /// </summary>
-    public static StyledProperty<double> MinZoomXProperty =
+    public static readonly StyledProperty<double> MinZoomXProperty =
         AvaloniaProperty.Register<ZoomBorder, double>(nameof(MinZoomX), double.NegativeInfinity, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="MaxZoomX"/> avalonia property.
     /// </summary>
-    public static StyledProperty<double> MaxZoomXProperty =
+    public static readonly StyledProperty<double> MaxZoomXProperty =
         AvaloniaProperty.Register<ZoomBorder, double>(nameof(MaxZoomX), double.PositiveInfinity, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="MinZoomY"/> avalonia property.
     /// </summary>
-    public static StyledProperty<double> MinZoomYProperty =
+    public static readonly StyledProperty<double> MinZoomYProperty =
         AvaloniaProperty.Register<ZoomBorder, double>(nameof(MinZoomY), double.NegativeInfinity, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="MaxZoomY"/> avalonia property.
     /// </summary>
-    public static StyledProperty<double> MaxZoomYProperty =
+    public static readonly StyledProperty<double> MaxZoomYProperty =
         AvaloniaProperty.Register<ZoomBorder, double>(nameof(MaxZoomY), double.PositiveInfinity, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="MinOffsetX"/> avalonia property.
     /// </summary>
-    public static StyledProperty<double> MinOffsetXProperty =
+    public static readonly StyledProperty<double> MinOffsetXProperty =
         AvaloniaProperty.Register<ZoomBorder, double>(nameof(MinOffsetX), double.NegativeInfinity, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="MaxOffsetX"/> avalonia property.
     /// </summary>
-    public static StyledProperty<double> MaxOffsetXProperty =
+    public static readonly StyledProperty<double> MaxOffsetXProperty =
         AvaloniaProperty.Register<ZoomBorder, double>(nameof(MaxOffsetX), double.PositiveInfinity, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="MinOffsetY"/> avalonia property.
     /// </summary>
-    public static StyledProperty<double> MinOffsetYProperty =
+    public static readonly StyledProperty<double> MinOffsetYProperty =
         AvaloniaProperty.Register<ZoomBorder, double>(nameof(MinOffsetY), double.NegativeInfinity, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="MaxOffsetY"/> avalonia property.
     /// </summary>
-    public static StyledProperty<double> MaxOffsetYProperty =
+    public static readonly StyledProperty<double> MaxOffsetYProperty =
         AvaloniaProperty.Register<ZoomBorder, double>(nameof(MaxOffsetY), double.PositiveInfinity, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="EnablePan"/> avalonia property.
     /// </summary>
-    public static StyledProperty<bool> EnablePanProperty =
+    public static readonly StyledProperty<bool> EnablePanProperty =
         AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnablePan), true, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="EnableZoom"/> avalonia property.
     /// </summary>
-    public static StyledProperty<bool> EnableZoomProperty =
+    public static readonly StyledProperty<bool> EnableZoomProperty =
         AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableZoom), true, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="EnableGestureZoom"/> avalonia property.
     /// </summary>
-    public static StyledProperty<bool> EnableGestureZoomProperty =
+    public static readonly StyledProperty<bool> EnableGestureZoomProperty =
         AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableGestureZoom), true, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="EnableGestureRotation"/> avalonia property.
     /// </summary>
-    public static StyledProperty<bool> EnableGestureRotationProperty =
+    public static readonly StyledProperty<bool> EnableGestureRotationProperty =
         AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableGestureRotation), true, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Identifies the <seealso cref="EnableGestureTranslation"/> avalonia property.
     /// </summary>
-    public static StyledProperty<bool> EnableGestureTranslationProperty =
+    public static readonly StyledProperty<bool> EnableGestureTranslationProperty =
         AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableGestureTranslation), true, false, BindingMode.TwoWay);
 
     static ZoomBorder()
@@ -185,7 +185,6 @@ public partial class ZoomBorder
     private double _offsetX = 0.0;
     private double _offsetY = 0.0;
     private bool _captured = false;
-
 
     /// <summary>
     /// Zoom changed event.

@@ -44,12 +44,12 @@
           <StackPanel x:DataType="paz:ZoomBorder">
             <StackPanel>
               <Label Content="PanButton:" />
-              <ComboBox Items="{x:Static paz:ZoomBorder.ButtonNames}"
+              <ComboBox ItemsSource="{x:Static paz:ZoomBorder.ButtonNames}"
                         SelectedItem="{Binding PanButton, Mode=TwoWay}" />
             </StackPanel>
             <StackPanel>
               <Label Content="Stretch:" />
-              <ComboBox Items="{x:Static paz:ZoomBorder.StretchModes}"
+              <ComboBox ItemsSource="{x:Static paz:ZoomBorder.StretchModes}"
                         SelectedItem="{Binding Stretch, Mode=TwoWay}" />
             </StackPanel>
             <StackPanel>
@@ -131,12 +131,12 @@
                   <ListBox Width="120"
                            Canvas.Left="10" Canvas.Top="10"
                            x:DataType="paz:ZoomBorder"
-                           Items="{x:Static paz:ZoomBorder.StretchModes}"
+                           ItemsSource="{x:Static paz:ZoomBorder.StretchModes}"
                            SelectedItem="{Binding Stretch, Mode=TwoWay}" />
                   <ListBox Width="120"
                            Canvas.Left="160" Canvas.Top="10"
                            x:DataType="paz:ZoomBorder"
-                           Items="{x:Static paz:ZoomBorder.ButtonNames}"
+                           ItemsSource="{x:Static paz:ZoomBorder.ButtonNames}"
                            SelectedItem="{Binding PanButton, Mode=TwoWay}" />
                 </Canvas>
               </Border>
