@@ -124,6 +124,10 @@
       "name": "System.Runtime.InteropServices.JavaScript.dll"
     },
     {
+      "behavior": "assembly",
+      "name": "System.Text.RegularExpressions.dll"
+    },
+    {
       "virtualPath": "runtimeconfig.bin",
       "behavior": "vfs",
       "name": "supportFiles/0_runtimeconfig.bin"
