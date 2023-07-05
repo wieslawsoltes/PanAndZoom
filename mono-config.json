@@ -33,6 +33,10 @@
     },
     {
       "behavior": "assembly",
+      "name": "Avalonia.Metal.dll"
+    },
+    {
+      "behavior": "assembly",
       "name": "Avalonia.OpenGL.dll"
     },
     {
