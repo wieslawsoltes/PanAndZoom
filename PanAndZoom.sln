@@ -60,8 +60,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D27AEAB9-B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Desktop", "samples\AvaloniaDemo.Desktop\AvaloniaDemo.Desktop.csproj", "{76443341-EF1B-4087-8F4D-38F3B04487B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Web", "samples\AvaloniaDemo.Web\AvaloniaDemo.Web.csproj", "{58F0B720-5C60-47BE-A441-98F6FFF10B48}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{821DAFAE-8C09-45DE-A0F5-0AC0668457D4}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\build.yml = .github\workflows\build.yml
@@ -94,10 +92,6 @@ Global
 		{76443341-EF1B-4087-8F4D-38F3B04487B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76443341-EF1B-4087-8F4D-38F3B04487B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76443341-EF1B-4087-8F4D-38F3B04487B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{58F0B720-5C60-47BE-A441-98F6FFF10B48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58F0B720-5C60-47BE-A441-98F6FFF10B48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58F0B720-5C60-47BE-A441-98F6FFF10B48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58F0B720-5C60-47BE-A441-98F6FFF10B48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,7 +106,6 @@ Global
 		{E16CD9A4-AA47-4440-9EB7-B9E8E59EBFC5} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
 		{D83B9ECD-F143-4A6C-AFD7-F961174D824C} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
 		{76443341-EF1B-4087-8F4D-38F3B04487B8} = {BDB2F017-80B3-40D2-84A5-F006D4886B1A}
-		{58F0B720-5C60-47BE-A441-98F6FFF10B48} = {BDB2F017-80B3-40D2-84A5-F006D4886B1A}
 		{821DAFAE-8C09-45DE-A0F5-0AC0668457D4} = {6E241F85-FE51-47E5-B9C2-50AAA7FEC499}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
