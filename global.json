@@ -1,10 +1,6 @@
 {
   "sdk": {
-<<<<<<< Updated upstream
-    "version": "8.0.100",
-=======
     "version": "7.0.410",
->>>>>>> Stashed changes
     "rollForward": "latestMinor",
     "allowPrerelease": true
   }
