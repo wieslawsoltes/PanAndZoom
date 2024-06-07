@@ -41,7 +41,7 @@ public partial class ZoomBorder : Border
         var zy = panelHeight / elementHeight;
         var cx = elementWidth / 2.0;
         var cy = elementHeight / 2.0;
-
+        
         switch (mode)
         {
             default:
@@ -120,7 +120,14 @@ public partial class ZoomBorder : Border
         }
         Wheel(e);
     }
-
+    private void Border_KeyDown(object? sender, KeyEventArgs e)
+    {
+        MyKeyDown(e);
+    }
+    private void Border_KeyUp(object? sender, KeyEventArgs e)
+    {
+        MyKeyUp(e);
+    }
     private void Border_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         Pressed(e);
@@ -168,6 +175,8 @@ public partial class ZoomBorder : Border
         PointerPressed += Border_PointerPressed;
         PointerReleased += Border_PointerReleased;
         PointerMoved += Border_PointerMoved;
+        KeyDown += Border_KeyDown;
+        KeyUp += Border_KeyUp;
     }
 
     private void DetachElement()
@@ -180,6 +189,8 @@ public partial class ZoomBorder : Border
         PointerPressed -= Border_PointerPressed;
         PointerReleased -= Border_PointerReleased;
         PointerMoved -= Border_PointerMoved;
+        KeyDown -= Border_KeyDown;
+        KeyUp -= Border_KeyUp;
         _element.RenderTransform = null;
         _element = null;
     }
@@ -208,7 +219,7 @@ public partial class ZoomBorder : Border
         {
             return;
         }
-        if (_element != null && _captured == false && _isPanning == false)
+        if (_element != null && _captured == false && _isPanning == false && ((PanWithSpaceBar && _isSpaceBarDown == true) || !PanWithSpaceBar))
         {
             var point = e.GetPosition(_element);
             BeginPanTo(point.X, point.Y);
@@ -718,6 +729,30 @@ public partial class ZoomBorder : Border
                 break;
             case StretchMode.UniformToFill:
                 Stretch = StretchMode.None;
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Zoom and pan.
+    /// </summary>
+    public void MyKeyDown(KeyEventArgs e)
+    {
+        switch (e.Key)
+        {            
+            case Key.Space:
+                _isSpaceBarDown = true; break;
+        }
+    }
+    /// <summary>
+    /// Stop panning if 
+    /// </summary>
+    public void MyKeyUp(KeyEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case Key.Space:
+                _isSpaceBarDown = false;
                 break;
         }
     }

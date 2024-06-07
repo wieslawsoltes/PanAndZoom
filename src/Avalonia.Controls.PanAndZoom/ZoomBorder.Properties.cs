@@ -22,6 +22,12 @@ public partial class ZoomBorder
     /// <summary>
     /// Identifies the <seealso cref="PanButton"/> avalonia property.
     /// </summary>
+    public static readonly StyledProperty<bool> SpaceBarPanProperty =
+        AvaloniaProperty.Register<ZoomBorder, bool>(nameof(PanWithSpaceBar), false, false, BindingMode.TwoWay);
+
+    /// <summary>
+    /// Identifies the <seealso cref="PanButton"/> avalonia property.
+    /// </summary>
     public static readonly StyledProperty<ButtonName> PanButtonProperty =
         AvaloniaProperty.Register<ZoomBorder, ButtonName>(nameof(PanButton), ButtonName.Middle, false, BindingMode.TwoWay);
 
@@ -179,6 +185,7 @@ public partial class ZoomBorder
     private Matrix _matrix;
     private TransformOperations.Builder _transformBuilder;
     private bool _isPanning;
+    private bool _isSpaceBarDown = false;
     private volatile bool _updating = false;
     private double _zoomX = 1.0;
     private double _zoomY = 1.0;
@@ -198,6 +205,15 @@ public partial class ZoomBorder
     {
         get => GetValue(PanButtonProperty);
         set => SetValue(PanButtonProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets pan input button.
+    /// </summary>
+    public bool PanWithSpaceBar
+    {
+        get => GetValue(SpaceBarPanProperty);
+        set => SetValue(SpaceBarPanProperty, value);
     }
 
     /// <summary>

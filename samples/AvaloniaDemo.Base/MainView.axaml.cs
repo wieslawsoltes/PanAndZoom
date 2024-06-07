@@ -16,6 +16,7 @@ public partial class MainView : UserControl
         ZoomBorder1 = this.Find<ZoomBorder>("ZoomBorder1");
         if (ZoomBorder1 != null)
         {
+            ZoomBorder1.PanWithSpaceBar = true;
             ZoomBorder1.KeyDown += ZoomBorder_KeyDown;
             ZoomBorder1.ZoomChanged += ZoomBorder_ZoomChanged;
         }
