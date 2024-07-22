@@ -34,7 +34,7 @@ jobs:
   - template: Test-Bash.yml@templates
     parameters:
       name: 'Test_macOS'
-      vmImage: 'macOS-11'
+      vmImage: 'macOS-14'
       BuildConfiguration: ${{ variables.BuildConfiguration }}
       Workloads: ${{ variables.Workloads }}
 
@@ -85,7 +85,7 @@ jobs:
   - template: Publish-Bash.yml@templates
     parameters:
       name: 'Publish_macOS'
-      vmImage: 'macOS-11'
+      vmImage: 'macOS-14'
       BuildConfiguration: ${{ variables.BuildConfiguration }}
       Workloads: ${{ variables.Workloads }}
       PublishFramework: ${{ variables.PublishFramework }}
