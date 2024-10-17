@@ -217,15 +217,8 @@ public partial class ZoomBorder : Border
         {
             return;
         }
-        var button = PanButton;
-        var properties = e.GetCurrentPoint(this).Properties;
-        if ((!properties.IsLeftButtonPressed || button != ButtonName.Left)
-            && (!properties.IsRightButtonPressed || button != ButtonName.Right)
-            && (!properties.IsMiddleButtonPressed || button != ButtonName.Middle))
-        {
-            return;
-        }
-        if (_element != null && _captured == false && _isPanning == false)
+
+        if (_element != null && IsPanButtonPressed(e))
         {
             var point = e.GetPosition(_element);
             BeginPanTo(point.X, point.Y);
@@ -256,12 +249,22 @@ public partial class ZoomBorder : Border
         {
             return;
         }
-        if (_element == null || _captured != true || _isPanning != true)
+        if (_element == null || _captured != true || _isPanning != true || !IsPanButtonPressed(e))
         {
             return;
         }
+
         var point = e.GetPosition(_element);
         ContinuePanTo(point.X, point.Y, true);
+    }
+
+    private bool IsPanButtonPressed(PointerEventArgs e)
+    {
+        var button = PanButton;
+        var properties = e.GetCurrentPoint(this).Properties;
+        return (properties.IsLeftButtonPressed && button == ButtonName.Left)
+            || (properties.IsRightButtonPressed && button == ButtonName.Right)
+            || (properties.IsMiddleButtonPressed && button == ButtonName.Middle);
     }
 
     /// <summary>
