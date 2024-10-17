@@ -21,15 +21,16 @@ public partial class ZoomBorder : ILogicalScrollable
     /// Calculate scrollable properties.
     /// </summary>
     /// <param name="source">The source bounds.</param>
+    /// <param name="borderSize">The size of border (this control)</param>
     /// <param name="matrix">The transform matrix.</param>
     /// <param name="extent">The extent of the scrollable content.</param>
     /// <param name="viewport">The size of the viewport.</param>
     /// <param name="offset">The current scroll offset.</param>
-    public static void CalculateScrollable(Rect source, Matrix matrix, out Size extent, out Size viewport, out Vector offset)
+    public static void CalculateScrollable(Rect source, Size borderSize, Matrix matrix, out Size extent, out Size viewport, out Vector offset)
     {
         var bounds = new Rect(0, 0, source.Width, source.Height);
             
-        viewport = bounds.Size;
+        viewport = borderSize;
 
         var transformed = bounds.TransformToAABB(matrix);
 
@@ -188,7 +189,7 @@ public partial class ZoomBorder : ILogicalScrollable
             return;
         }
 
-        CalculateScrollable(_element.Bounds, _matrix, out var extent, out var viewport, out var offset);
+        CalculateScrollable(_element.Bounds, this.Bounds.Size, _matrix, out var extent, out var viewport, out var offset);
 
         Log($"[InvalidateScrollable] _element.Bounds: {_element.Bounds}, _matrix: {_matrix}");
         Log($"[InvalidateScrollable] _extent: {_extent}, extent: {extent}, diff: {extent - _extent}");
