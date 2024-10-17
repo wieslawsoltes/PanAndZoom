@@ -421,6 +421,12 @@ public partial class ZoomBorder : Border
         {
             return;
         }
+
+        if((ZoomX >= MaxZoomX && ZoomY >= MaxZoomY && ratio > 1) || (ZoomX <= MinZoomX && ZoomY <= MinZoomY && ratio < 1))
+        {
+            return;
+        }
+        
         _updating = true;
 
         Log("[ZoomTo]");
