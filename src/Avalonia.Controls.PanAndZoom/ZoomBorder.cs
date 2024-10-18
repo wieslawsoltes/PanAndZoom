@@ -52,15 +52,15 @@ public partial class ZoomBorder : Border
             case StretchMode.Fill:
                 return MatrixHelper.ScaleAt(zx, zy, cx, cy);
             case StretchMode.Uniform:
-            {
-                var zoom = Min(zx, zy);
-                return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
-            }
+                {
+                    var zoom = Min(zx, zy);
+                    return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                }
             case StretchMode.UniformToFill:
-            {
-                var zoom = Max(zx, zy);
-                return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
-            }
+                {
+                    var zoom = Max(zx, zy);
+                    return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+                }
         }
     }
 
@@ -120,11 +120,16 @@ public partial class ZoomBorder : Border
 
     private void Border_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        if (!EnableZoom)
+        if (Math.Abs(e.Delta.Y) == 1 && Math.Abs(e.Delta.X) == 0 && EnableZoom)
         {
-            return;
+            Wheel(e);
+            e.Handled = true;
         }
-        Wheel(e);
+        else if (EnablePan)
+        {
+            PanDelta(10 * e.Delta.X, 10 * e.Delta.Y);
+            e.Handled = true;
+        }
     }
 
     private void Border_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -144,7 +149,7 @@ public partial class ZoomBorder : Border
 
     private void Element_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
     {
-        if(e.Property == BoundsProperty)
+        if (e.Property == BoundsProperty)
         {
             InvalidateScrollable();
         }
@@ -183,6 +188,7 @@ public partial class ZoomBorder : Border
         PointerPressed += Border_PointerPressed;
         PointerReleased += Border_PointerReleased;
         PointerMoved += Border_PointerMoved;
+
     }
 
     private void DetachElement()
@@ -191,7 +197,7 @@ public partial class ZoomBorder : Border
         {
             return;
         }
-        
+
         PointerWheelChanged -= Border_PointerWheelChanged;
         PointerPressed -= Border_PointerPressed;
         PointerReleased -= Border_PointerReleased;
@@ -249,6 +255,7 @@ public partial class ZoomBorder : Border
         {
             return;
         }
+
         if (_element == null || _captured != true || _isPanning != true || !IsPanButtonPressed(e))
         {
             return;
@@ -444,7 +451,7 @@ public partial class ZoomBorder : Border
             return;
         }
 
-        if((ZoomX >= MaxZoomX && ZoomY >= MaxZoomY && ratio > 1) || (ZoomX <= MinZoomX && ZoomY <= MinZoomY && ratio < 1))
+        if ((ZoomX >= MaxZoomX && ZoomY >= MaxZoomY && ratio > 1) || (ZoomX <= MinZoomX && ZoomY <= MinZoomY && ratio < 1))
         {
             return;
         }
