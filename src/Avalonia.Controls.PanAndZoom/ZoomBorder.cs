@@ -128,10 +128,8 @@ public partial class ZoomBorder : Border
 
     private void Border_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        string text = $"Wheel {e.Delta.X} {e.Delta.Y} {e.KeyModifiers} {e.RoutedEvent.EventArgsType} {e.GetCurrentPoint(this).Properties}";
-        Debug.WriteLine(text);
-        Console.WriteLine(text);
-        if (Math.Abs(e.Delta.Y) == 1 && Math.Abs(e.Delta.X) == 0 && EnableZoom)
+        if (EnableZoom && 
+            ((e.KeyModifiers & KeyModifiers.Meta) == KeyModifiers.Meta) || Math.Abs(e.Delta.Y) == 1 && Math.Abs(e.Delta.X) == 0)
         {
             Wheel(e);
             e.Handled = true;
