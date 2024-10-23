@@ -81,6 +81,7 @@ public partial class ZoomBorder : Border
 
         this.GetObservable(ChildProperty).Subscribe(new AnonymousObserver<Control?>(ChildChanged));
         this.GetObservable(BoundsProperty).Subscribe(new AnonymousObserver<Rect>(BoundsChanged));
+        Gestures.AddPointerTouchPadGestureMagnifyHandler(this, Border_Magnified);
     }
 
     /// <summary>
@@ -118,11 +119,18 @@ public partial class ZoomBorder : Border
         DetachElement();
     }
 
+    private void Border_Magnified(object? sender, PointerDeltaEventArgs e)
+    {
+        Console.WriteLine($"Magnified {e.Delta}");
+        var point = e.GetPosition(_element);
+        ZoomDeltaTo(e.Delta.X, point.X, point.Y);
+    }
+
     private void Border_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
         string text = $"Wheel {e.Delta.X} {e.Delta.Y} {e.KeyModifiers} {e.RoutedEvent.EventArgsType} {e.GetCurrentPoint(this).Properties}";
         Debug.WriteLine(text);
-        Debug.WriteLine(text);
+        Console.WriteLine(text);
         if (Math.Abs(e.Delta.Y) == 1 && Math.Abs(e.Delta.X) == 0 && EnableZoom)
         {
             Wheel(e);
@@ -193,7 +201,6 @@ public partial class ZoomBorder : Border
 
         _element = element;
         _element.PropertyChanged += Element_PropertyChanged;
-
         PointerCaptureLost += Border_PointerCaptureLost;
         PointerWheelChanged += Border_PointerWheelChanged;
         PointerPressed += Border_PointerPressed;
