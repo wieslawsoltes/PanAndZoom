@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Avalonia.Controls.Metadata;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Transformation;
@@ -11,6 +12,8 @@ namespace Avalonia.Controls.PanAndZoom;
 /// <summary>
 /// Pan and zoom control for Avalonia.
 /// </summary>
+
+[PseudoClasses(":isPanning")]
 public partial class ZoomBorder : Border
 {
     [Conditional("DEBUG")]
@@ -136,10 +139,18 @@ public partial class ZoomBorder : Border
         Moved(e);
     }
 
+    private void Element_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if(e.Property == BoundsProperty)
+        {
+            InvalidateScrollable();
+        }
+    }
+
     private void BoundsChanged(Rect bounds)
     {
         // Log($"[BoundsChanged] {bounds}");
-        //InvalidateScrollable();
+        InvalidateScrollable();
     }
 
     private void ChildChanged(Control? element)
@@ -164,6 +175,7 @@ public partial class ZoomBorder : Border
             return;
         }
         _element = element;
+        _element.PropertyChanged += Element_PropertyChanged;
         PointerWheelChanged += Border_PointerWheelChanged;
         PointerPressed += Border_PointerPressed;
         PointerReleased += Border_PointerReleased;
@@ -176,10 +188,12 @@ public partial class ZoomBorder : Border
         {
             return;
         }
+        
         PointerWheelChanged -= Border_PointerWheelChanged;
         PointerPressed -= Border_PointerPressed;
         PointerReleased -= Border_PointerReleased;
         PointerMoved -= Border_PointerMoved;
+        _element.PropertyChanged -= Element_PropertyChanged;
         _element.RenderTransform = null;
         _element = null;
     }
@@ -214,6 +228,7 @@ public partial class ZoomBorder : Border
             BeginPanTo(point.X, point.Y);
             _captured = true;
             _isPanning = true;
+            SetPseudoClass(":isPanning", _isPanning);
         }
     }
 
@@ -229,6 +244,7 @@ public partial class ZoomBorder : Border
         }
         _captured = false;
         _isPanning = false;
+        SetPseudoClass(":isPanning", _isPanning);
     }
 
     private void Moved(PointerEventArgs e)
@@ -426,7 +442,7 @@ public partial class ZoomBorder : Border
         {
             return;
         }
-        
+
         _updating = true;
 
         Log("[ZoomTo]");
@@ -792,4 +808,6 @@ public partial class ZoomBorder : Border
         }
         AutoFit(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height, skipTransitions);
     }
+
+    private void SetPseudoClass(string name, bool flag) => PseudoClasses.Set(name, flag);
 }
