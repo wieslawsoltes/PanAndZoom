@@ -442,6 +442,7 @@ public partial class ZoomBorder : Border
         {
             return;
         }
+
         _updating = true;
 
         Log("[ZoomTo]");
