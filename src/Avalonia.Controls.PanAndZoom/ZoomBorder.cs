@@ -107,6 +107,10 @@ public partial class ZoomBorder : Border
     {
         Log($"[AttachedToVisualTree] {Name}");
         ChildChanged(Child);
+
+        _updating = true;
+        Invalidate(skipTransitions: false);
+        _updating = false;
     }
 
     private void PanAndZoom_DetachedFromVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
