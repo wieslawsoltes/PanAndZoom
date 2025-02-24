@@ -12,7 +12,6 @@ namespace Avalonia.Controls.PanAndZoom;
 /// <summary>
 /// Pan and zoom control for Avalonia.
 /// </summary>
-
 [PseudoClasses(":isPanning")]
 public partial class ZoomBorder : Border
 {
