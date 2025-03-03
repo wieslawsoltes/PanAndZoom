@@ -52,15 +52,15 @@ public partial class ZoomBorder : Border
             case StretchMode.Fill:
                 return MatrixHelper.ScaleAt(zx, zy, cx, cy);
             case StretchMode.Uniform:
-                {
-                    var zoom = Min(zx, zy);
-                    return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
-                }
+            {
+                var zoom = Min(zx, zy);
+                return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+            }
             case StretchMode.UniformToFill:
-                {
-                    var zoom = Max(zx, zy);
-                    return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
-                }
+            {
+                var zoom = Max(zx, zy);
+                return MatrixHelper.ScaleAt(zoom, zoom, cx, cy);
+            }
         }
     }
 
@@ -121,7 +121,7 @@ public partial class ZoomBorder : Border
 
     private void Border_Magnified(object? sender, PointerDeltaEventArgs e)
     {
-        Console.WriteLine($"Magnified {e.Delta}");
+        Log($"[Magnified] {Name} {e.Delta}");
         var point = e.GetPosition(_element);
         ZoomDeltaTo(e.Delta.X, point.X, point.Y);
     }
