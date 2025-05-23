@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Avalonia.Controls.Metadata;
 using Avalonia.Input;
+using Avalonia.Input.GestureRecognizers;
 using Avalonia.Media;
 using Avalonia.Media.Transformation;
 using Avalonia.Reactive;
@@ -142,6 +143,32 @@ public partial class ZoomBorder : Border
         Moved(e);
     }
 
+    private void TouchGesture_Delta(object? sender, TransformGestureEventArgs e)
+    {
+        if (_element == null)
+        {
+            return;
+        }
+
+        if (EnableGestureTranslation)
+        {
+            var t = e.Translation;
+            PanDelta(t.X, t.Y, true);
+        }
+
+        var center = e.Center;
+
+        if (EnableGestureZoom && e.Scale != 1.0)
+        {
+            ZoomTo(e.Scale, center.X, center.Y, true);
+        }
+
+        if (EnableGestureRotation && e.Rotation != 0.0)
+        {
+            RotateDelta(e.Rotation, center.X, center.Y, true);
+        }
+    }
+
     private void Element_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
     {
         if(e.Property == BoundsProperty)
@@ -183,6 +210,10 @@ public partial class ZoomBorder : Border
         PointerPressed += Border_PointerPressed;
         PointerReleased += Border_PointerReleased;
         PointerMoved += Border_PointerMoved;
+
+        _touchGesture = new TransformGestureRecognizer();
+        _touchGesture.GestureDelta += TouchGesture_Delta;
+        _element.GestureRecognizers.Add(_touchGesture);
     }
 
     private void DetachElement()
@@ -196,6 +227,12 @@ public partial class ZoomBorder : Border
         PointerPressed -= Border_PointerPressed;
         PointerReleased -= Border_PointerReleased;
         PointerMoved -= Border_PointerMoved;
+        if (_touchGesture != null)
+        {
+            _touchGesture.GestureDelta -= TouchGesture_Delta;
+            _element.GestureRecognizers.Remove(_touchGesture);
+            _touchGesture = null;
+        }
         _element.PropertyChanged -= Element_PropertyChanged;
         _element.RenderTransform = null;
         _element = null;
@@ -498,6 +535,28 @@ public partial class ZoomBorder : Border
     {
         double realDelta = Sign(delta) * Pow(Abs(delta), PowerFactor);
         ZoomTo(Pow(ZoomSpeed, realDelta), x, y, skipTransitions || Abs(realDelta) <= TransitionThreshold);
+    }
+
+    /// <summary>
+    /// Rotate to provided delta angle around provided center point.
+    /// </summary>
+    /// <param name="delta">The rotation delta in radians.</param>
+    /// <param name="x">The center point x axis coordinate.</param>
+    /// <param name="y">The center point y axis coordinate.</param>
+    /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
+    public void RotateDelta(double delta, double x, double y, bool skipTransitions = false)
+    {
+        if (_updating)
+        {
+            return;
+        }
+        _updating = true;
+
+        Log("[RotateDelta]");
+        _matrix = MatrixHelper.Rotation(delta, x, y) * _matrix;
+        Invalidate(skipTransitions);
+
+        _updating = false;
     }
 
     /// <summary>

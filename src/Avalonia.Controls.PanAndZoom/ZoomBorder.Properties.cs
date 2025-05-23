@@ -1,6 +1,7 @@
 ﻿using System;
 using Avalonia.Data;
 using Avalonia.Media.Transformation;
+using Avalonia.Input.GestureRecognizers;
 
 namespace Avalonia.Controls.PanAndZoom;
 
@@ -185,6 +186,7 @@ public partial class ZoomBorder
     private double _offsetX = 0.0;
     private double _offsetY = 0.0;
     private bool _captured = false;
+    private TransformGestureRecognizer? _touchGesture;
 
     /// <summary>
     /// Zoom changed event.
