@@ -142,7 +142,7 @@ public partial class ZoomBorder : Border
         Moved(e);
     }
 
-    private void Element_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+    private void Element_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         if(e.Property == BoundsProperty)
         {
@@ -235,6 +235,7 @@ public partial class ZoomBorder : Border
         }
     }
 
+    // ReSharper disable once UnusedParameter.Local
     private void Released(PointerReleasedEventArgs e)
     {
         if (!EnablePan)
@@ -341,7 +342,7 @@ public partial class ZoomBorder : Border
 
         if (skipTransitions)
         {
-            Animation.Animatable? anim = _element as Animation.Animatable;
+            Animation.Animatable? anim = _element;
 
             if (anim != null)
             {
@@ -357,7 +358,7 @@ public partial class ZoomBorder : Border
 
         if (skipTransitions && backupTransitions != null)
         {
-            Animation.Animatable? anim = _element as Animation.Animatable;
+            Animation.Animatable? anim = _element;
 
             if (anim != null)
             {
