@@ -161,7 +161,7 @@ public partial class ZoomBorder : Border
         CaptureLost(sender, e);
     }
 
-    private void Element_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+    private void Element_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         if (e.Property == BoundsProperty)
         {
@@ -251,6 +251,7 @@ public partial class ZoomBorder : Border
         }
     }
 
+    // ReSharper disable once UnusedParameter.Local
     private void Released(PointerReleasedEventArgs e) => PanningFinished();
 
     private void CaptureLost(object sender, PointerCaptureLostEventArgs e) => PanningFinished();
@@ -372,7 +373,7 @@ public partial class ZoomBorder : Border
 
         if (skipTransitions)
         {
-            Animation.Animatable? anim = _element as Animation.Animatable;
+            Animation.Animatable? anim = _element;
 
             if (anim != null)
             {
@@ -388,7 +389,7 @@ public partial class ZoomBorder : Border
 
         if (skipTransitions && backupTransitions != null)
         {
-            Animation.Animatable? anim = _element as Animation.Animatable;
+            Animation.Animatable? anim = _element;
 
             if (anim != null)
             {

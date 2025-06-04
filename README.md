@@ -5,9 +5,9 @@
 [![Build Status](https://dev.azure.com/wieslawsoltes/GitHub/_apis/build/status/wieslawsoltes.PanAndZoom?branchName=master)](https://dev.azure.com/wieslawsoltes/GitHub/_build/latest?definitionId=98&branchName=master)
 [![CI](https://github.com/wieslawsoltes/PanAndZoom/actions/workflows/build.yml/badge.svg)](https://github.com/wieslawsoltes/PanAndZoom/actions/workflows/build.yml)
 
-[![NuGet](https://img.shields.io/nuget/v/Avalonia.Controls.PanAndZoom.svg)](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom)
-[![NuGet](https://img.shields.io/nuget/dt/Avalonia.Controls.PanAndZoom.svg)](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom)
-[![MyGet](https://img.shields.io/myget/panandzoom-nightly/vpre/Avalonia.Controls.PanAndZoom.svg?label=myget)](https://www.myget.org/gallery/panandzoom-nightly) 
+[![NuGet](https://img.shields.io/nuget/v/PanAndZoom.svg)](https://www.nuget.org/packages/PanAndZoom)
+[![NuGet](https://img.shields.io/nuget/dt/PanAndZoom.svg)](https://www.nuget.org/packages/PanAndZoom)
+[![MyGet](https://img.shields.io/myget/panandzoom-nightly/vpre/PanAndZoom.svg?label=myget)](https://www.myget.org/gallery/panandzoom-nightly) 
 
 PanAndZoom control for Avalonia
 
@@ -17,14 +17,14 @@ PanAndZoom control for Avalonia
 
 PanAndZoom is delivered as a NuGet package.
 
-You can find the NuGet packages here for [Avalonia](https://www.nuget.org/packages/Avalonia.Controls.PanAndZoom/) or by using nightly build feed:
+You can find the NuGet packages here for [Avalonia](https://www.nuget.org/packages/PanAndZoom/) or by using nightly build feed:
 * Add `https://www.myget.org/F/panandzoom-nightly/api/v2` to your package sources
 * Alternative nightly build feed `https://pkgs.dev.azure.com/wieslawsoltes/GitHub/_packaging/Nightly/nuget/v3/index.json`
 * Update your package using `PanAndZoom` feed
 
 You can install the package for `Avalonia` based projects like this:
 
-`Install-Package Avalonia.Controls.PanAndZoom -Pre`
+`Install-Package PanAndZoom -Pre`
 
 ### Package Sources
 

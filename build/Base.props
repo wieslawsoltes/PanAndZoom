@@ -1,10 +1,10 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <VersionPrefix>11.2.3</VersionPrefix>
+    <VersionPrefix>11.3.0.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>Wiesław Šoltés</Authors>
     <Company>Wiesław Šoltés</Company>
-    <Copyright>Copyright © Wiesław Šoltés 2024</Copyright>
+    <Copyright>Copyright © Wiesław Šoltés 2025</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/wieslawsoltes/PanAndZoom</PackageProjectUrl>
   </PropertyGroup>
