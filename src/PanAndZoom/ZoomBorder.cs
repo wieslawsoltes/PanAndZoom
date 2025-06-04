@@ -81,6 +81,7 @@ public partial class ZoomBorder : Border
 
         this.GetObservable(ChildProperty).Subscribe(new AnonymousObserver<Control?>(ChildChanged));
         this.GetObservable(BoundsProperty).Subscribe(new AnonymousObserver<Rect>(BoundsChanged));
+        Gestures.AddPointerTouchPadGestureMagnifyHandler(this, Border_Magnified);
     }
 
     /// <summary>
@@ -118,13 +119,26 @@ public partial class ZoomBorder : Border
         DetachElement();
     }
 
+    private void Border_Magnified(object? sender, PointerDeltaEventArgs e)
+    {
+        Log($"[Magnified] {Name} {e.Delta}");
+        var point = e.GetPosition(_element);
+        ZoomDeltaTo(e.Delta.X, point.X, point.Y);
+    }
+
     private void Border_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        if (!EnableZoom)
+        if (EnableZoom && 
+            ((e.KeyModifiers & KeyModifiers.Meta) == KeyModifiers.Meta) || Math.Abs(e.Delta.Y) == 1 && Math.Abs(e.Delta.X) == 0)
         {
-            return;
+            Wheel(e);
+            e.Handled = true;
         }
-        Wheel(e);
+        else if (EnablePan)
+        {
+            PanDelta(10 * e.Delta.X, 10 * e.Delta.Y);
+            e.Handled = true;
+        }
     }
 
     private void Border_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -142,9 +156,14 @@ public partial class ZoomBorder : Border
         Moved(e);
     }
 
+    private void Border_PointerCaptureLost(object sender, PointerCaptureLostEventArgs e)
+    {
+        CaptureLost(sender, e);
+    }
+
     private void Element_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
-        if(e.Property == BoundsProperty)
+        if (e.Property == BoundsProperty)
         {
             InvalidateScrollable();
         }
@@ -177,12 +196,15 @@ public partial class ZoomBorder : Border
         {
             return;
         }
+
         _element = element;
         _element.PropertyChanged += Element_PropertyChanged;
+        PointerCaptureLost += Border_PointerCaptureLost;
         PointerWheelChanged += Border_PointerWheelChanged;
         PointerPressed += Border_PointerPressed;
         PointerReleased += Border_PointerReleased;
         PointerMoved += Border_PointerMoved;
+
     }
 
     private void DetachElement()
@@ -191,7 +213,8 @@ public partial class ZoomBorder : Border
         {
             return;
         }
-        
+
+        PointerCaptureLost -= Border_PointerCaptureLost;
         PointerWheelChanged -= Border_PointerWheelChanged;
         PointerPressed -= Border_PointerPressed;
         PointerReleased -= Border_PointerReleased;
@@ -217,15 +240,8 @@ public partial class ZoomBorder : Border
         {
             return;
         }
-        var button = PanButton;
-        var properties = e.GetCurrentPoint(this).Properties;
-        if ((!properties.IsLeftButtonPressed || button != ButtonName.Left)
-            && (!properties.IsRightButtonPressed || button != ButtonName.Right)
-            && (!properties.IsMiddleButtonPressed || button != ButtonName.Middle))
-        {
-            return;
-        }
-        if (_element != null && _captured == false && _isPanning == false)
+
+        if (_element != null && !_captured && !_isPanning && IsPanButtonPressed(e))
         {
             var point = e.GetPosition(_element);
             BeginPanTo(point.X, point.Y);
@@ -236,7 +252,11 @@ public partial class ZoomBorder : Border
     }
 
     // ReSharper disable once UnusedParameter.Local
-    private void Released(PointerReleasedEventArgs e)
+    private void Released(PointerReleasedEventArgs e) => PanningFinished();
+
+    private void CaptureLost(object sender, PointerCaptureLostEventArgs e) => PanningFinished();
+
+    private void PanningFinished()
     {
         if (!EnablePan)
         {
@@ -257,12 +277,23 @@ public partial class ZoomBorder : Border
         {
             return;
         }
-        if (_element == null || _captured != true || _isPanning != true)
+
+        if (_element == null || _captured != true || _isPanning != true || !IsPanButtonPressed(e))
         {
             return;
         }
+
         var point = e.GetPosition(_element);
         ContinuePanTo(point.X, point.Y, true);
+    }
+
+    private bool IsPanButtonPressed(PointerEventArgs e)
+    {
+        var button = PanButton;
+        var properties = e.GetCurrentPoint(this).Properties;
+        return (properties.IsLeftButtonPressed && button == ButtonName.Left)
+            || (properties.IsRightButtonPressed && button == ButtonName.Right)
+            || (properties.IsMiddleButtonPressed && button == ButtonName.Middle);
     }
 
     /// <summary>
@@ -442,7 +473,7 @@ public partial class ZoomBorder : Border
             return;
         }
 
-        if((ZoomX >= MaxZoomX && ZoomY >= MaxZoomY && ratio > 1) || (ZoomX <= MinZoomX && ZoomY <= MinZoomY && ratio < 1))
+        if ((ZoomX >= MaxZoomX && ZoomY >= MaxZoomY && ratio > 1) || (ZoomX <= MinZoomX && ZoomY <= MinZoomY && ratio < 1))
         {
             return;
         }
