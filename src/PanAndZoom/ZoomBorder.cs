@@ -182,14 +182,18 @@ public partial class ZoomBorder : Border
 
         if (e is ScrollGestureEventArgs scroll)
         {
+            if (scroll.Handled)
+                return;
+
             PanDelta(scroll.Delta.X, scroll.Delta.Y);
         }
     }
 
     private void Border_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        if (EnableZoom && 
-            ((e.KeyModifiers & KeyModifiers.Meta) == KeyModifiers.Meta) || Math.Abs(e.Delta.Y) == 1 && Math.Abs(e.Delta.X) == 0)
+        if (EnableZoom &&
+            (((e.KeyModifiers & KeyModifiers.Meta) == KeyModifiers.Meta) ||
+             (Math.Abs(e.Delta.Y) == 1 && Math.Abs(e.Delta.X) == 0)))
         {
             Wheel(e);
             e.Handled = true;
