@@ -144,7 +144,8 @@ public partial class ZoomBorder : Border
 
         if (EnableGestureRotation && Math.Abs(e.AngleDelta) > double.Epsilon)
         {
-            _matrix = MatrixHelper.Rotation(e.AngleDelta, origin.X, origin.Y) * _matrix;
+            var radians = Math.PI * e.AngleDelta / 180.0;
+            _matrix = MatrixHelper.Rotation(radians, origin.X, origin.Y) * _matrix;
             Invalidate(true);
         }
     }
@@ -163,7 +164,8 @@ public partial class ZoomBorder : Border
             return;
 
         var point = e.GetPosition(_element);
-        _matrix = MatrixHelper.Rotation(e.Delta.X, point.X, point.Y) * _matrix;
+        var radians = Math.PI * e.Delta.X / 180.0;
+        _matrix = MatrixHelper.Rotation(radians, point.X, point.Y) * _matrix;
         Invalidate(true);
     }
 
