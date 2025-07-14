@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Transformation;
+using Avalonia;
 using Avalonia.Reactive;
 using static System.Math;
 
@@ -137,7 +138,7 @@ public partial class ZoomBorder : Border
 
         if (_element != null)
         {
-            origin = TranslatePoint(origin, _element) ?? origin;
+            origin = this.TranslatePoint(origin, _element) ?? origin;
         }
 
         if (EnableGestureZoom)
