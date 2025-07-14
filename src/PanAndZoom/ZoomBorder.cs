@@ -135,6 +135,11 @@ public partial class ZoomBorder : Border
     {
         var origin = e.ScaleOrigin;
 
+        if (_element != null)
+        {
+            origin = TranslatePoint(origin, _element) ?? origin;
+        }
+
         if (EnableGestureZoom)
         {
             var delta = e.Scale / _pinchScale;
