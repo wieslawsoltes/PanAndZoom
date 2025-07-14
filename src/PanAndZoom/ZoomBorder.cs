@@ -170,9 +170,14 @@ public partial class ZoomBorder : Border
             return;
 
         var point = e.GetPosition(_element);
-        var radians = Math.PI * e.Delta.X / 180.0;
+        var delta = Math.Abs(e.Delta.Y) > Math.Abs(e.Delta.X) ? e.Delta.Y : e.Delta.X;
+        if (Math.Abs(delta) < double.Epsilon)
+            return;
+
+        var radians = Math.PI * delta / 180.0;
         _matrix = MatrixHelper.Rotation(radians, point.X, point.Y) * _matrix;
         Invalidate(true);
+        e.Handled = true;
     }
 
     private void Border_Scrolled(object? sender, RoutedEventArgs e)
@@ -185,7 +190,8 @@ public partial class ZoomBorder : Border
             if (scroll.Handled)
                 return;
 
-            PanDelta(scroll.Delta.X, scroll.Delta.Y);
+            PanDelta(10 * scroll.Delta.X, 10 * scroll.Delta.Y);
+            scroll.Handled = true;
         }
     }
 
@@ -193,7 +199,7 @@ public partial class ZoomBorder : Border
     {
         if (EnableZoom &&
             (((e.KeyModifiers & KeyModifiers.Meta) == KeyModifiers.Meta) ||
-             (Math.Abs(e.Delta.Y) == 1 && Math.Abs(e.Delta.X) == 0)))
+             (Math.Abs(e.Delta.Y) > Math.Abs(e.Delta.X))))
         {
             Wheel(e);
             e.Handled = true;
