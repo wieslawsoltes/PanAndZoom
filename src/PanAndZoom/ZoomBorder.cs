@@ -145,7 +145,8 @@ public partial class ZoomBorder : Border
         {
             var delta = e.Scale / _pinchScale;
             _pinchScale = e.Scale;
-            ZoomTo(_zoomX * delta, origin.X, origin.Y, true);
+            ZoomTo(delta, origin.X, origin.Y, true);
+            e.Handled = true;
         }
 
         if (EnableGestureRotation && Math.Abs(e.AngleDelta) > double.Epsilon)
@@ -153,6 +154,7 @@ public partial class ZoomBorder : Border
             var radians = Math.PI * e.AngleDelta / 180.0;
             _matrix = MatrixHelper.Rotation(radians, origin.X, origin.Y) * _matrix;
             Invalidate(true);
+            e.Handled = true;
         }
     }
 
@@ -190,7 +192,7 @@ public partial class ZoomBorder : Border
             if (scroll.Handled)
                 return;
 
-            PanDelta(10 * scroll.Delta.X, 10 * scroll.Delta.Y);
+            PanDelta(scroll.Delta.X, scroll.Delta.Y);
             scroll.Handled = true;
         }
     }
