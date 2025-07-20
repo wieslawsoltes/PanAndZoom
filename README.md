@@ -176,6 +176,12 @@ To constrain pan offset use `MinOffsetX`, `MaxOffsetX`, `MinOffsetY` and `MaxOff
 
 To enable or disable constrains use `EnableConstrains` flag.
 
+### Dispose image sources
+
+When replacing images inside `ZoomBorder`, dispose the previous `Image.Source`
+if it implements `IDisposable`. Neglecting to do so can lead to memory bloat
+when swapping many bitmaps.
+
 ## License
 
 PanAndZoom is licensed under the [MIT license](LICENSE.TXT).
