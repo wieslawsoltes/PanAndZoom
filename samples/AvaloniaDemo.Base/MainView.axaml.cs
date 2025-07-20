@@ -1,30 +1,47 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.PanAndZoom;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media.Imaging;
+using Avalonia.Interactivity;
 
 namespace AvaloniaDemo;
 
 public partial class MainView : UserControl
 {
+    private const string RedImageBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAEklEQVR4nGP8z4APMOGVHbHSAEEsAROxCnMTAAAAAElFTkSuQmCC";
+    private const string BlueImageBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAFElEQVR4nGNkYPjPgBsw4ZEbwdIAPy4BE1xg8ZcAAAAASUVORK5CYII=";
+
+    private bool _toggle;
     public MainView()
     {
         InitializeComponent();
 
-        ZoomBorder1 = this.Find<ZoomBorder>("ZoomBorder1");
         if (ZoomBorder1 != null)
         {
             ZoomBorder1.KeyDown += ZoomBorder_KeyDown;
             ZoomBorder1.ZoomChanged += ZoomBorder_ZoomChanged;
         }
 
-        ZoomBorder2 = this.Find<ZoomBorder>("ZoomBorder2");
         if (ZoomBorder2 != null)
         {
             ZoomBorder2.KeyDown += ZoomBorder_KeyDown;
             ZoomBorder2.ZoomChanged += ZoomBorder_ZoomChanged;
+        }
+
+        if (ZoomBorder3 != null)
+        {
+            ZoomBorder3.KeyDown += ZoomBorder_KeyDown;
+            ZoomBorder3.ZoomChanged += ZoomBorder_ZoomChanged;
+        }
+
+        if (SwapImage != null)
+        {
+            SwapImage.Source = LoadBitmap(RedImageBase64);
         }
 
         DataContext = ZoomBorder1;
@@ -73,9 +90,33 @@ public partial class MainView : UserControl
                     {
                         DataContext = ZoomBorder2;
                     }
+                    else if (tag == "3")
+                    {
+                        DataContext = ZoomBorder3;
+                    }
                 }
             }
         }
+    }
+
+    private void SwapImage_Click(object? sender, RoutedEventArgs e)
+    {
+        if (SwapImage == null)
+            return;
+
+        if (SwapImage.Source is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
+
+        SwapImage.Source = LoadBitmap(_toggle ? BlueImageBase64 : RedImageBase64);
+        _toggle = !_toggle;
+    }
+
+    private static Bitmap LoadBitmap(string base64)
+    {
+        var bytes = Convert.FromBase64String(base64);
+        return new Bitmap(new MemoryStream(bytes));
     }
 }
 

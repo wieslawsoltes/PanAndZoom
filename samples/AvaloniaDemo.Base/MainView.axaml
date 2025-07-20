@@ -173,6 +173,18 @@
             </ScrollViewer>
           </Panel>
         </TabItem>
+        <TabItem Tag="3" Header="Bitmap Swap">
+          <DockPanel Margin="12">
+            <Button Content="Swap Image" DockPanel.Dock="Top"
+                    Click="SwapImage_Click" Width="120" />
+            <paz:ZoomBorder Name="ZoomBorder3" Stretch="Uniform" ZoomSpeed="1.5"
+                            EnableConstrains="False" Background="SlateBlue"
+                            ClipToBounds="True" Focusable="True"
+                            VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+              <Image Name="SwapImage" />
+            </paz:ZoomBorder>
+          </DockPanel>
+        </TabItem>
       </TabControl>
     </Panel>
   </DockPanel>

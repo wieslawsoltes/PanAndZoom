@@ -179,8 +179,13 @@ public partial class ZoomBorder : Border
     {
         Log($"[ChildChanged] {element}");
 
-        if (element != null && element != _element && _element != null)
+        if (element != _element && _element != null)
         {
+            if (_element is Image oldImage && oldImage.Source is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
+
             DetachElement();
         }
 
