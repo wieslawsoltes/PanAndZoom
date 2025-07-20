@@ -28,7 +28,7 @@ public partial class ZoomBorder : ILogicalScrollable
     /// <param name="offset">The current scroll offset.</param>
     public static void CalculateScrollable(Rect source, Size borderSize, Matrix matrix, out Size extent, out Size viewport, out Vector offset)
     {
-        var bounds = new Rect(0, 0, source.Width, source.Height);
+        var bounds = new Rect(source.Position, source.Size);
             
         viewport = borderSize;
 

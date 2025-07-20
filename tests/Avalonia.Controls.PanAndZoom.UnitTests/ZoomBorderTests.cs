@@ -117,6 +117,18 @@ public class ZoomBorderTests
     }
 
     [Fact]
+    public void CalculateScrollable_Source_With_Negative_Position()
+    {
+        var borderSize = new Size(300, 300);
+        var bounds = new Rect(-50, -30, 200, 200);
+        var matrix = CreateMatrix();
+        ZoomBorder.CalculateScrollable(bounds, borderSize, matrix, out var extent, out var viewport, out var offset);
+        Assert.Equal(new Size(350, 330), extent);
+        Assert.Equal(new Size(300, 300), viewport);
+        Assert.Equal(new Vector(50, 30), offset);
+    }
+
+    [Fact]
     public void CalculateScrollable_OffsetX_Negative()
     {
         var borderSize = new Size(300, 300);
