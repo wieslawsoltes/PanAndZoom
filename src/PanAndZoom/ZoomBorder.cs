@@ -481,7 +481,9 @@ public partial class ZoomBorder : Border
         _updating = true;
 
         Log("[ZoomTo]");
-        _matrix = MatrixHelper.ScaleAtPrepend(_matrix, ratio, ratio, x, y);
+        var inverse = _matrix.Invert();
+        var origin = MatrixHelper.TransformPoint(inverse, new Point(x, y));
+        _matrix = MatrixHelper.ScaleAtPrepend(_matrix, ratio, ratio, origin.X, origin.Y);
         Invalidate(skipTransitions);
 
         _updating = false;

@@ -283,4 +283,34 @@ public class ZoomBorderTests
         Assert.Equal(new Size(300, 300), viewport);
         Assert.Equal(new Vector(0, 0), offset);
     }
+
+    [Fact]
+    public void ZoomDeltaTo_LargeMatrix_DoesNotResetOffset()
+    {
+        var target = new ZoomBorder();
+        var initial = MatrixHelper.ScaleAndTranslate(0.25, 0.25, -50, -25);
+        target.SetMatrix(initial);
+
+        const double x = 0;
+        const double y = 0;
+        var expectedScale = 0.25;
+        var expectedOffsetX = -50.0;
+        var expectedOffsetY = -25.0;
+
+        for (var i = 0; i < 10; i++)
+        {
+            target.ZoomDeltaTo(1, x, y);
+            var ratio = target.ZoomSpeed;
+            var localX = (x - expectedOffsetX) / expectedScale;
+            var localY = (y - expectedOffsetY) / expectedScale;
+            expectedOffsetX += expectedScale * localX * (1 - ratio);
+            expectedOffsetY += expectedScale * localY * (1 - ratio);
+            expectedScale *= ratio;
+        }
+
+        Assert.Equal(expectedScale, target.Matrix.M11, 6);
+        Assert.Equal(expectedScale, target.Matrix.M22, 6);
+        Assert.Equal(expectedOffsetX, target.Matrix.M31, 6);
+        Assert.Equal(expectedOffsetY, target.Matrix.M32, 6);
+    }
 }
