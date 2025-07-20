@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Avalonia.Controls.Metadata;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Transformation;
 using Avalonia.Reactive;
@@ -82,6 +83,9 @@ public partial class ZoomBorder : Border
         this.GetObservable(ChildProperty).Subscribe(new AnonymousObserver<Control?>(ChildChanged));
         this.GetObservable(BoundsProperty).Subscribe(new AnonymousObserver<Rect>(BoundsChanged));
         Gestures.AddPointerTouchPadGestureMagnifyHandler(this, Border_Magnified);
+        Gestures.AddPinchHandler(this, Border_Pinched);
+        Gestures.AddPointerTouchPadGestureRotateHandler(this, Border_Rotated);
+        Gestures.AddScrollGestureHandler(this, Border_Scrolled);
     }
 
     /// <summary>
@@ -124,6 +128,53 @@ public partial class ZoomBorder : Border
         Log($"[Magnified] {Name} {e.Delta}");
         var point = e.GetPosition(_element);
         ZoomDeltaTo(e.Delta.X, point.X, point.Y);
+    }
+
+    private void Border_Pinched(object? sender, PinchEventArgs e)
+    {
+        Log($"[Pinched] {Name} scale={e.Scale} origin={e.ScaleOrigin}");
+
+        if (!EnableGestureZoom)
+        {
+            return;
+        }
+
+        var factor = e.Scale / _pinchScale;
+        _pinchScale = e.Scale;
+        _matrix = MatrixHelper.ScaleAtPrepend(_matrix, factor, factor, e.ScaleOrigin.X, e.ScaleOrigin.Y);
+        Invalidate(skipTransitions: true);
+    }
+
+    private void Border_Rotated(object? sender, PointerDeltaEventArgs e)
+    {
+        Log($"[Rotated] {Name} delta={e.Delta}");
+
+        if (!EnableGestureRotation)
+        {
+            return;
+        }
+
+        var center = new Point(Bounds.Width / 2.0, Bounds.Height / 2.0);
+        _matrix = MatrixHelper.Rotation(e.Delta.X, center) * _matrix;
+        Invalidate(skipTransitions: true);
+    }
+
+    private void Border_Scrolled(object? sender, RoutedEventArgs e)
+    {
+        if (e is not ScrollGestureEventArgs se)
+        {
+            return;
+        }
+
+        Log($"[Scrolled] {Name} delta={se.Delta}");
+
+        if (!EnableGestureTranslation)
+        {
+            return;
+        }
+
+        _matrix = MatrixHelper.TranslatePrepend(_matrix, -se.Delta.X, -se.Delta.Y);
+        Invalidate(skipTransitions: true);
     }
 
     private void Border_PointerWheelChanged(object? sender, PointerWheelEventArgs e)

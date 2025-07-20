@@ -1,4 +1,9 @@
-﻿using Xunit;
+﻿using System.Reflection;
+using Avalonia;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Controls.PanAndZoom;
+using Xunit;
 
 namespace Avalonia.Controls.PanAndZoom.UnitTests;
 
@@ -282,5 +287,46 @@ public class ZoomBorderTests
         Assert.Equal(new Size(300, 350), extent);
         Assert.Equal(new Size(300, 300), viewport);
         Assert.Equal(new Vector(0, 0), offset);
+    }
+
+    [Fact]
+    public void Border_Pinched_Updates_Matrix()
+    {
+        var target = new ZoomBorder();
+        var method = typeof(ZoomBorder).GetMethod("Border_Pinched", BindingFlags.NonPublic | BindingFlags.Instance);
+        var args = new PinchEventArgs(2.0, new Point(0, 0));
+        method!.Invoke(target, new object?[] { target, args });
+
+        Assert.Equal(2.0, target.Matrix.M11);
+        Assert.Equal(2.0, target.Matrix.M22);
+    }
+
+    [Fact]
+    public void Border_Rotated_Updates_Matrix()
+    {
+        var target = new ZoomBorder();
+        var method = typeof(ZoomBorder).GetMethod("Border_Rotated", BindingFlags.NonPublic | BindingFlags.Instance);
+        var pointer = new Avalonia.Input.Pointer(Avalonia.Input.Pointer.GetNextFreeId(), Avalonia.Input.PointerType.Touch, true);
+        var props = new PointerPointProperties();
+        var args = new PointerDeltaEventArgs(Gestures.PointerTouchPadGestureRotateEvent, target, pointer, target, new Point(), 0, props, KeyModifiers.None, new Vector(1, 0));
+        method!.Invoke(target, new object?[] { target, args });
+
+        var expected = MatrixHelper.Rotation(1);
+        Assert.Equal(expected.M11, target.Matrix.M11, 3);
+        Assert.Equal(expected.M12, target.Matrix.M12, 3);
+        Assert.Equal(expected.M21, target.Matrix.M21, 3);
+        Assert.Equal(expected.M22, target.Matrix.M22, 3);
+    }
+
+    [Fact]
+    public void Border_Scrolled_Updates_Matrix()
+    {
+        var target = new ZoomBorder();
+        var method = typeof(ZoomBorder).GetMethod("Border_Scrolled", BindingFlags.NonPublic | BindingFlags.Instance);
+        var args = new ScrollGestureEventArgs(1, new Vector(10, 20));
+        method!.Invoke(target, new object?[] { target, args });
+
+        Assert.Equal(-10, target.Matrix.M31);
+        Assert.Equal(-20, target.Matrix.M32);
     }
 }
