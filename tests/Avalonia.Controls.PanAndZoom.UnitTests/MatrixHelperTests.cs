@@ -180,4 +180,79 @@ public class MatrixHelperTests
 
         Assert.True(outputMatrix.IsIdentity);
     }
+
+    [Fact]
+    public void TranslatePrepend_Returns_CorrectMatrix()
+    {
+        var matrix = new Matrix(2, 1, -1, 3, 4, 5);
+        var target = MatrixHelper.TranslatePrepend(matrix, 7, 11);
+        var expected = MatrixHelper.Translate(7, 11) * matrix;
+
+        Assert.Equal(expected.M11, target.M11);
+        Assert.Equal(expected.M12, target.M12);
+        Assert.Equal(expected.M13, target.M13);
+        Assert.Equal(expected.M21, target.M21);
+        Assert.Equal(expected.M22, target.M22);
+        Assert.Equal(expected.M23, target.M23);
+        Assert.Equal(expected.M31, target.M31);
+        Assert.Equal(expected.M32, target.M32);
+        Assert.Equal(expected.M33, target.M33);
+    }
+
+    [Fact]
+    public void Skew_Returns_CorrectMatrix()
+    {
+        float angleX = 0.1f;
+        float angleY = 0.2f;
+        var target = MatrixHelper.Skew(angleX, angleY);
+        var expected = new Matrix(1.0, System.Math.Tan(angleX), System.Math.Tan(angleY), 1.0, 0.0, 0.0);
+
+        Assert.Equal(expected.M11, target.M11);
+        Assert.Equal(expected.M12, target.M12);
+        Assert.Equal(expected.M13, target.M13);
+        Assert.Equal(expected.M21, target.M21);
+        Assert.Equal(expected.M22, target.M22);
+        Assert.Equal(expected.M23, target.M23);
+        Assert.Equal(expected.M31, target.M31);
+        Assert.Equal(expected.M32, target.M32);
+        Assert.Equal(expected.M33, target.M33);
+    }
+
+    [Fact]
+    public void Rotation_Returns_CorrectMatrix()
+    {
+        double angle = System.Math.PI / 4;
+        var target = MatrixHelper.Rotation(angle);
+        var expected = new Matrix(System.Math.Cos(angle), System.Math.Sin(angle), -System.Math.Sin(angle), System.Math.Cos(angle), 0, 0);
+
+        Assert.Equal(expected.M11, target.M11);
+        Assert.Equal(expected.M12, target.M12);
+        Assert.Equal(expected.M13, target.M13);
+        Assert.Equal(expected.M21, target.M21);
+        Assert.Equal(expected.M22, target.M22);
+        Assert.Equal(expected.M23, target.M23);
+        Assert.Equal(expected.M31, target.M31);
+        Assert.Equal(expected.M32, target.M32);
+        Assert.Equal(expected.M33, target.M33);
+    }
+
+    [Fact]
+    public void Rotation_WithCenter_Returns_CorrectMatrix()
+    {
+        double angle = System.Math.PI / 2;
+        double centerX = 2;
+        double centerY = 3;
+        var target = MatrixHelper.Rotation(angle, centerX, centerY);
+        var expected = MatrixHelper.Translate(-centerX, -centerY) * MatrixHelper.Rotation(angle) * MatrixHelper.Translate(centerX, centerY);
+
+        Assert.Equal(expected.M11, target.M11);
+        Assert.Equal(expected.M12, target.M12);
+        Assert.Equal(expected.M13, target.M13);
+        Assert.Equal(expected.M21, target.M21);
+        Assert.Equal(expected.M22, target.M22);
+        Assert.Equal(expected.M23, target.M23);
+        Assert.Equal(expected.M31, target.M31);
+        Assert.Equal(expected.M32, target.M32);
+        Assert.Equal(expected.M33, target.M33);
+    }
 }
