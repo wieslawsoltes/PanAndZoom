@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Avalonia.Controls.Metadata;
 using Avalonia.Input;
+using Avalonia.Input.GestureRecognizers;
 using Avalonia.Media;
 using Avalonia.Media.Transformation;
 using Avalonia.Reactive;
@@ -82,6 +83,20 @@ public partial class ZoomBorder : Border
         this.GetObservable(ChildProperty).Subscribe(new AnonymousObserver<Control?>(ChildChanged));
         this.GetObservable(BoundsProperty).Subscribe(new AnonymousObserver<Rect>(BoundsChanged));
         Gestures.AddPointerTouchPadGestureMagnifyHandler(this, Border_Magnified);
+        
+        // Add gesture recognizers for touch support
+        GestureRecognizers.Add(new PinchGestureRecognizer());
+        GestureRecognizers.Add(new ScrollGestureRecognizer
+        {
+            CanHorizontallyScroll = true,
+            CanVerticallyScroll = true
+        });
+        
+        // Add gesture event handlers
+        AddHandler(Gestures.PinchEvent, Border_PinchGesture);
+        AddHandler(Gestures.PinchEndedEvent, Border_PinchGestureEnded);
+        AddHandler(Gestures.ScrollGestureEvent, Border_ScrollGesture);
+        AddHandler(Gestures.ScrollGestureEndedEvent, Border_ScrollGestureEnded);
     }
 
     /// <summary>
@@ -124,6 +139,48 @@ public partial class ZoomBorder : Border
         Log($"[Magnified] {Name} {e.Delta}");
         var point = e.GetPosition(_element);
         ZoomDeltaTo(e.Delta.X, point.X, point.Y);
+    }
+
+    private void Border_PinchGesture(object? sender, PinchEventArgs e)
+    {
+        if (!EnableGestureZoom || _element == null)
+            return;
+
+        Log($"[PinchGesture] {Name} Scale: {e.Scale}");
+        
+        var point = e.ScaleOrigin;
+        var elementPoint = new Point(point.X * _element.Bounds.Width, point.Y * _element.Bounds.Height);
+        
+        // Calculate zoom delta based on scale change
+        var zoomDelta = e.Scale - 1.0;
+        ZoomDeltaTo(zoomDelta, elementPoint.X, elementPoint.Y);
+        
+        e.Handled = true;
+    }
+
+    private void Border_PinchGestureEnded(object? sender, PinchEndedEventArgs e)
+    {
+        Log($"[PinchGestureEnded] {Name}");
+        e.Handled = true;
+    }
+
+    private void Border_ScrollGesture(object? sender, ScrollGestureEventArgs e)
+    {
+        if (!EnableGestureTranslation)
+            return;
+
+        Log($"[ScrollGesture] {Name} Delta: {e.Delta}");
+        
+        // Use the scroll delta for panning
+        PanDelta(e.Delta.X, e.Delta.Y);
+        
+        e.Handled = true;
+    }
+
+    private void Border_ScrollGestureEnded(object? sender, ScrollGestureEndedEventArgs e)
+    {
+        Log($"[ScrollGestureEnded] {Name}");
+        e.Handled = true;
     }
 
     private void Border_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
