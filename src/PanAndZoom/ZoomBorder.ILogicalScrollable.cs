@@ -120,8 +120,11 @@ public partial class ZoomBorder : ILogicalScrollable
 
             Log($"[Offset] offset: {_offset}, dx: {dx}, dy: {dy}");
 
-            _matrix = MatrixHelper.ScaleAndTranslate(_zoomX, _zoomY, _matrix.M31 + dx, _matrix.M32 + dy);
-            Invalidate(!this.IsPointerOver);
+            if (dx != 0 || dy != 0)
+            {
+                _matrix = MatrixHelper.ScaleAndTranslate(_zoomX, _zoomY, _matrix.M31 + dx, _matrix.M32 + dy);
+                Invalidate(!this.IsPointerOver);
+            }
 
             _updating = false;
         }
@@ -200,6 +203,13 @@ public partial class ZoomBorder : ILogicalScrollable
         _offset = offset;
         _viewport = viewport;
 
+        // Temporarily set updating flag to prevent feedback loop when ScrollViewer
+        // reads the new offset and sets it back through IScrollable.Offset setter
+        var wasUpdating = _updating;
+        _updating = true;
+        
         scrollable.RaiseScrollInvalidated(EventArgs.Empty);
+        
+        _updating = wasUpdating;
     }
 }
