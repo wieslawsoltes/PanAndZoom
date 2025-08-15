@@ -65,6 +65,10 @@ public partial class ZoomBorder : Border
         }
     }
 
+    private PinchGestureRecognizer? _pinchGestureRecognizer;
+    private ScrollGestureRecognizer? _scrollGestureRecognizer;
+    private bool _gestureRecognizersAdded = false;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ZoomBorder"/> class.
     /// </summary>
@@ -84,19 +88,69 @@ public partial class ZoomBorder : Border
         this.GetObservable(BoundsProperty).Subscribe(new AnonymousObserver<Rect>(BoundsChanged));
         Gestures.AddPointerTouchPadGestureMagnifyHandler(this, Border_Magnified);
         
-        // Add gesture recognizers for touch support
-        GestureRecognizers.Add(new PinchGestureRecognizer());
-        GestureRecognizers.Add(new ScrollGestureRecognizer
+        // Initialize gesture recognizers
+        _pinchGestureRecognizer = new PinchGestureRecognizer();
+        _scrollGestureRecognizer = new ScrollGestureRecognizer
         {
             CanHorizontallyScroll = true,
             CanVerticallyScroll = true
-        });
+        };
         
         // Add gesture event handlers
         AddHandler(Gestures.PinchEvent, Border_PinchGesture);
         AddHandler(Gestures.PinchEndedEvent, Border_PinchGestureEnded);
         AddHandler(Gestures.ScrollGestureEvent, Border_ScrollGesture);
         AddHandler(Gestures.ScrollGestureEndedEvent, Border_ScrollGestureEnded);
+        
+        // Add gesture recognizers based on EnableGestures flag
+        UpdateGestureRecognizers();
+        
+        // Subscribe to EnableGestures property changes
+        this.GetObservable(EnableGesturesProperty).Subscribe(new AnonymousObserver<bool>(_ => UpdateGestureRecognizers()));
+    }
+
+
+
+    /// <summary>
+    /// Updates gesture recognizers based on EnableGestures flag.
+    /// </summary>
+    private void UpdateGestureRecognizers()
+    {
+        if (EnableGestures && !_gestureRecognizersAdded)
+        {
+            // Add pinch gesture recognizer
+            if (_pinchGestureRecognizer != null)
+            {
+                GestureRecognizers.Add(_pinchGestureRecognizer);
+            }
+            
+            // Add scroll gesture recognizer only if not disabled by ScrollViewer parent
+            if (_scrollGestureRecognizer != null && !_isScrollGestureDisabled)
+            {
+                GestureRecognizers.Add(_scrollGestureRecognizer);
+            }
+            
+            _gestureRecognizersAdded = true;
+        }
+        else if (!EnableGestures && _gestureRecognizersAdded)
+        {
+            // Since GestureRecognizerCollection doesn't support Remove/Clear,
+            // we need to recreate the recognizers to effectively "remove" them
+            _pinchGestureRecognizer = new PinchGestureRecognizer();
+            _scrollGestureRecognizer = new ScrollGestureRecognizer
+            {
+                CanHorizontallyScroll = true,
+                CanVerticallyScroll = true
+            };
+            
+            // Re-add event handlers to new recognizers
+            AddHandler(Gestures.PinchEvent, Border_PinchGesture);
+            AddHandler(Gestures.PinchEndedEvent, Border_PinchGestureEnded);
+            AddHandler(Gestures.ScrollGestureEvent, Border_ScrollGesture);
+            AddHandler(Gestures.ScrollGestureEndedEvent, Border_ScrollGestureEnded);
+            
+            _gestureRecognizersAdded = false;
+        }
     }
 
     /// <summary>
@@ -123,6 +177,9 @@ public partial class ZoomBorder : Border
         Log($"[AttachedToVisualTree] {Name}");
         ChildChanged(Child);
 
+        // Check if parent is ScrollViewer and disable scroll gesture if so
+        CheckParentScrollViewer();
+
         _updating = true;
         Invalidate(skipTransitions: false);
         _updating = false;
@@ -132,6 +189,29 @@ public partial class ZoomBorder : Border
     {
         Log($"[DetachedFromVisualTree] {Name}");
         DetachElement();
+    }
+
+    private bool _isScrollGestureDisabled = false;
+
+    private void CheckParentScrollViewer()
+    {
+        if (_scrollGestureRecognizer == null)
+            return;
+
+        // Check only the direct parent for ScrollViewer
+        if (this.Parent is ScrollViewer)
+        {
+            Log($"[CheckParentScrollViewer] Found ScrollViewer direct parent, disabling scroll gesture");
+            _isScrollGestureDisabled = true;
+        }
+        else
+        {
+            Log($"[CheckParentScrollViewer] No ScrollViewer direct parent found, keeping scroll gesture enabled");
+            _isScrollGestureDisabled = false;
+        }
+        
+        // Update gesture recognizers based on the new state
+        UpdateGestureRecognizers();
     }
 
     private void Border_Magnified(object? sender, PointerDeltaEventArgs e)
