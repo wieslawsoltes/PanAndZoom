@@ -67,7 +67,7 @@ public partial class ZoomBorder : Border
 
     private PinchGestureRecognizer? _pinchGestureRecognizer;
     private ScrollGestureRecognizer? _scrollGestureRecognizer;
-    private bool _gestureRecognizersAdded = false;
+    private bool _gestureRecognizersAdded;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ZoomBorder"/> class.
@@ -289,7 +289,7 @@ public partial class ZoomBorder : Border
 
     private void Border_PointerCaptureLost(object sender, PointerCaptureLostEventArgs e)
     {
-        CaptureLost(sender, e);
+        CaptureLost();
     }
 
     private void Element_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -385,7 +385,7 @@ public partial class ZoomBorder : Border
     // ReSharper disable once UnusedParameter.Local
     private void Released(PointerReleasedEventArgs e) => PanningFinished();
 
-    private void CaptureLost(object sender, PointerCaptureLostEventArgs e) => PanningFinished();
+    private void CaptureLost() => PanningFinished();
 
     private void PanningFinished()
     {
