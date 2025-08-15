@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Avalonia.Data;
 using Avalonia.Media.Transformation;
 
@@ -161,7 +161,7 @@ public partial class ZoomBorder
     /// Identifies the <seealso cref="EnableGestures"/> avalonia property.
     /// </summary>
     public static readonly StyledProperty<bool> EnableGesturesProperty =
-        AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableGestures), false, false, BindingMode.TwoWay);
+        AvaloniaProperty.Register<ZoomBorder, bool>(nameof(EnableGestures), true, false, BindingMode.TwoWay);
 
     static ZoomBorder()
     {
@@ -169,6 +169,12 @@ public partial class ZoomBorder
             ZoomSpeedProperty,
             StretchProperty,
             EnableConstrainsProperty,
+            EnablePanProperty,
+            EnableZoomProperty,
+            EnableGestureZoomProperty,
+            EnableGestureRotationProperty,
+            EnableGestureTranslationProperty,
+            EnableGesturesProperty,
             MinZoomXProperty,
             MaxZoomXProperty,
             MinZoomYProperty,
