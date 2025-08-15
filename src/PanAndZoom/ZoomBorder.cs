@@ -154,6 +154,26 @@ public partial class ZoomBorder : Border
     }
 
     /// <summary>
+    /// Checks if panning is allowed on pointer-wheel event.
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
+    protected virtual bool CanPanOnPointerWheel(PointerWheelEventArgs e)
+    {
+        return EnablePan;
+    }
+
+    /// <summary>
+    /// Checks if zooming is allowed on pointer-wheel event.
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
+    protected virtual bool CanZoomOnPointerWheel(PointerWheelEventArgs e)
+    {
+        return EnableZoom;
+    }
+
+    /// <summary>
     /// Arranges the control's child.
     /// </summary>
     /// <param name="finalSize">The size allocated to the control.</param>
@@ -265,13 +285,12 @@ public partial class ZoomBorder : Border
 
     private void Border_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        if (EnableZoom && 
-            ((e.KeyModifiers & KeyModifiers.Meta) == KeyModifiers.Meta) || Math.Abs(e.Delta.Y) == 1 && Math.Abs(e.Delta.X) == 0)
+        if (CanZoomOnPointerWheel(e))
         {
             Wheel(e);
             e.Handled = true;
         }
-        else if (EnablePan)
+        else if (CanPanOnPointerWheel(e))
         {
             PanDelta(10 * e.Delta.X, 10 * e.Delta.Y);
             e.Handled = true;
