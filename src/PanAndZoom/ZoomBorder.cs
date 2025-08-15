@@ -109,8 +109,6 @@ public partial class ZoomBorder : Border
         this.GetObservable(EnableGesturesProperty).Subscribe(new AnonymousObserver<bool>(_ => UpdateGestureRecognizers()));
     }
 
-
-
     /// <summary>
     /// Updates gesture recognizers based on EnableGestures flag.
     /// </summary>
@@ -125,7 +123,7 @@ public partial class ZoomBorder : Border
             }
             
             // Add scroll gesture recognizer only if not disabled by ScrollViewer parent
-            if (_scrollGestureRecognizer != null && !_isScrollGestureDisabled)
+            if (_scrollGestureRecognizer != null)
             {
                 GestureRecognizers.Add(_scrollGestureRecognizer);
             }
@@ -197,8 +195,8 @@ public partial class ZoomBorder : Border
         Log($"[AttachedToVisualTree] {Name}");
         ChildChanged(Child);
 
-        // Check if parent is ScrollViewer and disable scroll gesture if so
-        CheckParentScrollViewer();
+        // Update gesture recognizers based on the new state
+        UpdateGestureRecognizers();
 
         _updating = true;
         Invalidate(skipTransitions: false);
@@ -209,29 +207,6 @@ public partial class ZoomBorder : Border
     {
         Log($"[DetachedFromVisualTree] {Name}");
         DetachElement();
-    }
-
-    private bool _isScrollGestureDisabled = false;
-
-    private void CheckParentScrollViewer()
-    {
-        if (_scrollGestureRecognizer == null)
-            return;
-
-        // Check only the direct parent for ScrollViewer
-        if (this.Parent is ScrollViewer)
-        {
-            Log($"[CheckParentScrollViewer] Found ScrollViewer direct parent, disabling scroll gesture");
-            _isScrollGestureDisabled = true;
-        }
-        else
-        {
-            Log($"[CheckParentScrollViewer] No ScrollViewer direct parent found, keeping scroll gesture enabled");
-            _isScrollGestureDisabled = false;
-        }
-        
-        // Update gesture recognizers based on the new state
-        UpdateGestureRecognizers();
     }
 
     private void Border_Magnified(object? sender, PointerDeltaEventArgs e)
