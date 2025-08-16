@@ -1,10 +1,11 @@
-﻿using Xunit;
+﻿using Avalonia.Headless.XUnit;
+using Xunit;
 
 namespace Avalonia.Controls.PanAndZoom.UnitTests;
 
 public class ZoomBorderTests
 {
-    [Fact(Skip = "The CI tests are failing.")]
+    [AvaloniaFact]
     public void ZoomBorder_Ctor()
     {
         var target = new ZoomBorder();
@@ -31,11 +32,7 @@ public class ZoomBorderTests
         Assert.True(target.EnableGestureRotation);
         Assert.True(target.EnableGestureTranslation);
     }
-    private static Matrix CreateMatrix(double scaleX = 1.0, double scaleY = 1.0, double offsetX = 0.0, double offsetY = 0.0)
-    {
-        return new Matrix(scaleX, 0, 0, scaleY, offsetX, offsetY);
-    }
-        
+
     [Fact]
     public void CalculateMatrix_StretchMode_None()
     {
@@ -282,5 +279,10 @@ public class ZoomBorderTests
         Assert.Equal(new Size(300, 350), extent);
         Assert.Equal(new Size(300, 300), viewport);
         Assert.Equal(new Vector(0, 0), offset);
+    }
+
+    private static Matrix CreateMatrix(double scaleX = 1.0, double scaleY = 1.0, double offsetX = 0.0, double offsetY = 0.0)
+    {
+        return new Matrix(scaleX, 0, 0, scaleY, offsetX, offsetY);
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using Avalonia.Controls.Metadata;
 using Avalonia.Input;
@@ -6,6 +6,7 @@ using Avalonia.Input.GestureRecognizers;
 using Avalonia.Media;
 using Avalonia.Media.Transformation;
 using Avalonia.Reactive;
+using Avalonia.Styling;
 using static System.Math;
 
 namespace Avalonia.Controls.PanAndZoom;
@@ -86,7 +87,6 @@ public partial class ZoomBorder : Border
 
         this.GetObservable(ChildProperty).Subscribe(new AnonymousObserver<Control?>(ChildChanged));
         this.GetObservable(BoundsProperty).Subscribe(new AnonymousObserver<Rect>(BoundsChanged));
-        Gestures.AddPointerTouchPadGestureMagnifyHandler(this, Border_Magnified);
         
         // Initialize gesture recognizers
         _pinchGestureRecognizer = new PinchGestureRecognizer();
@@ -95,12 +95,6 @@ public partial class ZoomBorder : Border
             CanHorizontallyScroll = true,
             CanVerticallyScroll = true
         };
-        
-        // Add gesture event handlers
-        AddHandler(Gestures.PinchEvent, Border_PinchGesture);
-        AddHandler(Gestures.PinchEndedEvent, Border_PinchGestureEnded);
-        AddHandler(Gestures.ScrollGestureEvent, Border_ScrollGesture);
-        AddHandler(Gestures.ScrollGestureEndedEvent, Border_ScrollGestureEnded);
         
         // Add gesture recognizers based on EnableGestures flag
         UpdateGestureRecognizers();
@@ -140,12 +134,6 @@ public partial class ZoomBorder : Border
                 CanHorizontallyScroll = true,
                 CanVerticallyScroll = true
             };
-            
-            // Re-add event handlers to new recognizers
-            AddHandler(Gestures.PinchEvent, Border_PinchGesture);
-            AddHandler(Gestures.PinchEndedEvent, Border_PinchGestureEnded);
-            AddHandler(Gestures.ScrollGestureEvent, Border_ScrollGesture);
-            AddHandler(Gestures.ScrollGestureEndedEvent, Border_ScrollGestureEnded);
             
             _gestureRecognizersAdded = false;
         }
@@ -195,6 +183,22 @@ public partial class ZoomBorder : Border
         Log($"[AttachedToVisualTree] {Name}");
         ChildChanged(Child);
 
+        // Add pointer event handlers
+        PointerWheelChanged += Border_PointerWheelChanged;
+        PointerPressed += Border_PointerPressed;
+        PointerReleased += Border_PointerReleased;
+        PointerMoved += Border_PointerMoved;
+        PointerCaptureLost += Border_PointerCaptureLost;
+        
+        // Add gesture event handlers
+        AddHandler(Gestures.PinchEvent, Border_PinchGesture);
+        AddHandler(Gestures.PinchEndedEvent, Border_PinchGestureEnded);
+        AddHandler(Gestures.ScrollGestureEvent, Border_ScrollGesture);
+        AddHandler(Gestures.ScrollGestureEndedEvent, Border_ScrollGestureEnded);
+        
+        // Add touch pad gesture handler
+        Gestures.AddPointerTouchPadGestureMagnifyHandler(this, Border_Magnified);
+
         // Update gesture recognizers based on the new state
         UpdateGestureRecognizers();
 
@@ -207,6 +211,22 @@ public partial class ZoomBorder : Border
     {
         Log($"[DetachedFromVisualTree] {Name}");
         DetachElement();
+        
+        // Remove pointer event handlers
+        PointerWheelChanged -= Border_PointerWheelChanged;
+        PointerPressed -= Border_PointerPressed;
+        PointerReleased -= Border_PointerReleased;
+        PointerMoved -= Border_PointerMoved;
+        PointerCaptureLost -= Border_PointerCaptureLost;
+        
+        // Remove gesture event handlers
+        RemoveHandler(Gestures.PinchEvent, Border_PinchGesture);
+        RemoveHandler(Gestures.PinchEndedEvent, Border_PinchGestureEnded);
+        RemoveHandler(Gestures.ScrollGestureEvent, Border_ScrollGesture);
+        RemoveHandler(Gestures.ScrollGestureEndedEvent, Border_ScrollGestureEnded);
+        
+        // Remove touch pad gesture handler
+        Gestures.RemovePointerTouchPadGestureMagnifyHandler(this, Border_Magnified);
     }
 
     private void Border_Magnified(object? sender, PointerDeltaEventArgs e)
@@ -218,7 +238,7 @@ public partial class ZoomBorder : Border
 
     private void Border_PinchGesture(object? sender, PinchEventArgs e)
     {
-        if (!EnableGestureZoom || _element == null)
+        if (!EnableGestures || !EnableGestureZoom || _element == null)
             return;
 
         Log($"[PinchGesture] {Name} Scale: {e.Scale}");
@@ -235,13 +255,16 @@ public partial class ZoomBorder : Border
 
     private void Border_PinchGestureEnded(object? sender, PinchEndedEventArgs e)
     {
+        if (!EnableGestures)
+            return;
+            
         Log($"[PinchGestureEnded] {Name}");
         e.Handled = true;
     }
 
     private void Border_ScrollGesture(object? sender, ScrollGestureEventArgs e)
     {
-        if (!EnableGestureTranslation)
+        if (!EnableGestureTranslation || _element == null)
             return;
 
         Log($"[ScrollGesture] {Name} Delta: {e.Delta}");
@@ -287,9 +310,10 @@ public partial class ZoomBorder : Border
         Moved(e);
     }
 
-    private void Border_PointerCaptureLost(object sender, PointerCaptureLostEventArgs e)
+    private void Border_PointerCaptureLost(object? sender, PointerCaptureLostEventArgs e)
     {
         CaptureLost();
+        e.Handled = true;
     }
 
     private void Element_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -330,11 +354,6 @@ public partial class ZoomBorder : Border
 
         _element = element;
         _element.PropertyChanged += Element_PropertyChanged;
-        PointerCaptureLost += Border_PointerCaptureLost;
-        PointerWheelChanged += Border_PointerWheelChanged;
-        PointerPressed += Border_PointerPressed;
-        PointerReleased += Border_PointerReleased;
-        PointerMoved += Border_PointerMoved;
 
     }
 
@@ -345,11 +364,6 @@ public partial class ZoomBorder : Border
             return;
         }
 
-        PointerCaptureLost -= Border_PointerCaptureLost;
-        PointerWheelChanged -= Border_PointerWheelChanged;
-        PointerPressed -= Border_PointerPressed;
-        PointerReleased -= Border_PointerReleased;
-        PointerMoved -= Border_PointerMoved;
         _element.PropertyChanged -= Element_PropertyChanged;
         _element.RenderTransform = null;
         _element = null;
@@ -378,7 +392,7 @@ public partial class ZoomBorder : Border
             BeginPanTo(point.X, point.Y);
             _captured = true;
             _isPanning = true;
-            SetPseudoClass(":isPanning", _isPanning);
+            ((IPseudoClasses)Classes).Set(":isPanning", _isPanning);
         }
     }
 
@@ -399,7 +413,7 @@ public partial class ZoomBorder : Border
         }
         _captured = false;
         _isPanning = false;
-        SetPseudoClass(":isPanning", _isPanning);
+        ((IPseudoClasses)Classes).Set(":isPanning", _isPanning);
     }
 
     private void Moved(PointerEventArgs e)
@@ -975,5 +989,5 @@ public partial class ZoomBorder : Border
         AutoFit(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height, skipTransitions);
     }
 
-    private void SetPseudoClass(string name, bool flag) => PseudoClasses.Set(name, flag);
+
 }
