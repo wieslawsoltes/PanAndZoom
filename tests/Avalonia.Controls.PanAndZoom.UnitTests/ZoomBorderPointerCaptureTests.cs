@@ -345,10 +345,7 @@ public class ZoomBorderPointerCaptureTests
         
         // Verify panning started
         Assert.True(zoomBorder.Classes.Contains(":isPanning"), "Panning should be active after mouse down");
-        
-        var initialOffsetX = zoomBorder.OffsetX;
-        var initialOffsetY = zoomBorder.OffsetY;
-        
+
         // Act - Simulate pointer moved with capture
         var pointerMovedEventArgs = new PointerEventArgs(
             InputElement.PointerMovedEvent,

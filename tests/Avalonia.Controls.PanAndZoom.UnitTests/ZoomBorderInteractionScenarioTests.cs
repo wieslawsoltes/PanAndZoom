@@ -38,8 +38,7 @@ public class ZoomBorderInteractionScenarioTests
         
         // Capture initial values after layout is complete
         var initialZoom = zoomBorder.ZoomX;
-        var initialOffsetX = zoomBorder.OffsetX;
-        
+
         // Act - First zoom in with mouse wheel
         var wheelEventArgs = new PointerWheelEventArgs(
             zoomBorder,

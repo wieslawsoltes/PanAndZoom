@@ -183,8 +183,7 @@ public class ZoomBorderPointerWheelTests
         window.Show();
         
         var initialOffsetX = zoomBorder.OffsetX;
-        var initialOffsetY = zoomBorder.OffsetY;
-        
+
         // Act - Simulate horizontal wheel scroll for panning
         var wheelEventArgs = new PointerWheelEventArgs(
             zoomBorder,

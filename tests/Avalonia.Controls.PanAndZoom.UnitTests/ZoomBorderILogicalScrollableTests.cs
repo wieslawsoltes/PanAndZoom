@@ -280,7 +280,7 @@ public class ZoomBorderILogicalScrollableTests
         var matrix = Matrix.CreateScale(2.0, 2.0) * Matrix.CreateTranslation(-50, -30);
         
         // Act
-        ZoomBorder.CalculateScrollable(sourceBounds, borderSize, matrix, out var extent, out var viewport, out var offset);
+        ZoomBorder.CalculateScrollable(sourceBounds, borderSize, matrix, out _, out _, out var offset);
         
         // Assert
         Assert.Equal(50, offset.X);
@@ -464,9 +464,7 @@ public class ZoomBorderILogicalScrollableTests
         
         // First zoom to create scrollable content
         zoomBorder.Zoom(2.0, 200, 150);
-        
-        var initialOffset = scrollable.Offset;
-        
+
         // Act - Set offset multiple times rapidly (simulating ScrollViewer feedback)
         var testOffset = new Vector(100, 50);
         scrollable.Offset = testOffset;
