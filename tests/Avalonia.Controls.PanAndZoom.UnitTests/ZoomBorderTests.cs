@@ -1,10 +1,11 @@
-﻿using Xunit;
+﻿using Avalonia.Headless.XUnit;
+using Xunit;
 
 namespace Avalonia.Controls.PanAndZoom.UnitTests;
 
 public class ZoomBorderTests
 {
-    [Fact(Skip = "The CI tests are failing.")]
+    [AvaloniaFact]
     public void ZoomBorder_Ctor()
     {
         var target = new ZoomBorder();
