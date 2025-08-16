@@ -93,7 +93,7 @@ public class ZoomBorderILogicalScrollableTests
         var eventRaised = false;
         
         // Act - Subscribe to scroll invalidated event
-        scrollable.ScrollInvalidated += (sender, args) => eventRaised = true;
+        scrollable.ScrollInvalidated += (_, _) => eventRaised = true;
         
         // Trigger scroll invalidation by zooming
         zoomBorder.Zoom(2.0, 200, 150);
