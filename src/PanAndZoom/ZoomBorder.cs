@@ -1,3 +1,5 @@
+// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Diagnostics;
 using Avalonia.Controls.Metadata;
@@ -246,6 +248,22 @@ public partial class ZoomBorder : Border
         var point = e.ScaleOrigin;
         var elementPoint = new Point(point.X * _element.Bounds.Width, point.Y * _element.Bounds.Height);
         
+        // Raise GestureStarted event
+        var previousMatrix = _matrix;
+        var gestureArgs = new GestureEventArgs(
+            "Pinch",
+            _zoomX,
+            _zoomY,
+            _offsetX,
+            _offsetY,
+            elementPoint.X,
+            elementPoint.Y,
+            e.Scale - 1.0,
+            _matrix,
+            previousMatrix
+        );
+        RaiseGestureStarted(gestureArgs);
+        
         // Calculate zoom delta based on scale change
         var zoomDelta = e.Scale - 1.0;
         ZoomDeltaTo(zoomDelta, elementPoint.X, elementPoint.Y);
@@ -259,6 +277,22 @@ public partial class ZoomBorder : Border
             return;
             
         Log($"[PinchGestureEnded] {Name}");
+        
+        // Raise GestureEnded event
+        var gestureArgs = new GestureEventArgs(
+            "Pinch",
+            _zoomX,
+            _zoomY,
+            _offsetX,
+            _offsetY,
+            0,
+            0,
+            0,
+            _matrix,
+            _matrix
+        );
+        RaiseGestureEnded(gestureArgs);
+        
         e.Handled = true;
     }
 
@@ -269,6 +303,22 @@ public partial class ZoomBorder : Border
 
         Log($"[ScrollGesture] {Name} Delta: {e.Delta}");
         
+        // Raise GestureStarted event
+        var previousMatrix = _matrix;
+        var gestureArgs = new GestureEventArgs(
+            "Scroll",
+            _zoomX,
+            _zoomY,
+            _offsetX,
+            _offsetY,
+            0,
+            0,
+            Math.Sqrt(e.Delta.X * e.Delta.X + e.Delta.Y * e.Delta.Y),
+            _matrix,
+            previousMatrix
+        );
+        RaiseGestureStarted(gestureArgs);
+        
         // Use the scroll delta for panning
         PanDelta(e.Delta.X, e.Delta.Y);
         
@@ -278,6 +328,22 @@ public partial class ZoomBorder : Border
     private void Border_ScrollGestureEnded(object? sender, ScrollGestureEndedEventArgs e)
     {
         Log($"[ScrollGestureEnded] {Name}");
+        
+        // Raise GestureEnded event
+        var gestureArgs = new GestureEventArgs(
+            "Scroll",
+            _zoomX,
+            _zoomY,
+            _offsetX,
+            _offsetY,
+            0,
+            0,
+            0,
+            _matrix,
+            _matrix
+        );
+        RaiseGestureEnded(gestureArgs);
+        
         e.Handled = true;
     }
 
@@ -411,6 +477,22 @@ public partial class ZoomBorder : Border
         {
             return;
         }
+        
+        // Raise PanEnded event
+        var args = new PanEventArgs(
+            _zoomX,
+            _zoomY,
+            _offsetX,
+            _offsetY,
+            _offsetX,
+            _offsetY,
+            0,
+            0,
+            _matrix,
+            _matrix
+        );
+        RaisePanEnded(args);
+        
         _captured = false;
         _isPanning = false;
         ((IPseudoClasses)Classes).Set(":isPanning", _isPanning);
@@ -559,8 +641,25 @@ public partial class ZoomBorder : Border
         _updating = true;
 
         Log("[SetMatrix]");
+        var previousMatrix = _matrix;
         _matrix = matrix;
         Invalidate(skipTransitions);
+
+        // Raise MatrixChanged event
+        var args = new MatrixChangedEventArgs(
+            _matrix,
+            previousMatrix,
+            _zoomX,
+            _zoomY,
+            _offsetX,
+            _offsetY,
+            previousMatrix.M11,
+            previousMatrix.M22,
+            previousMatrix.M31,
+            previousMatrix.M32,
+            "SetMatrix"
+        );
+        RaiseMatrixChanged(args);
 
         _updating = false;
     }
@@ -579,7 +678,24 @@ public partial class ZoomBorder : Border
     /// <param name="skipTransitions">The flag indicating whether transitions on the child element should be temporarily disabled.</param>
     public void ResetMatrix(bool skipTransitions)
     {
+        var previousMatrix = _matrix;
         SetMatrix(Matrix.Identity, skipTransitions);
+        
+        // Raise MatrixReset event
+        var args = new MatrixChangedEventArgs(
+            Matrix.Identity,
+            previousMatrix,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            previousMatrix.M11,
+            previousMatrix.M22,
+            previousMatrix.M31,
+            previousMatrix.M32,
+            "ResetMatrix"
+        );
+        RaiseMatrixReset(args);
     }
 
     /// <summary>
@@ -598,8 +714,28 @@ public partial class ZoomBorder : Border
         _updating = true;
 
         Log("[Zoom]");
+        var previousMatrix = _matrix;
+        var previousZoomX = _zoomX;
+        var previousZoomY = _zoomY;
+        
         _matrix = MatrixHelper.ScaleAt(zoom, zoom, x, y);
         Invalidate(skipTransitions);
+
+        // Raise ZoomStarted event
+        var args = new ZoomEventArgs(
+            _zoomX,
+            _zoomY,
+            previousZoomX,
+            previousZoomY,
+            zoom / previousZoomX,
+            x,
+            y,
+            _offsetX,
+            _offsetY,
+            _matrix,
+            previousMatrix
+        );
+        RaiseZoomStarted(args);
 
         _updating = false;
     }
@@ -626,8 +762,28 @@ public partial class ZoomBorder : Border
         _updating = true;
 
         Log("[ZoomTo]");
+        var previousMatrix = _matrix;
+        var previousZoomX = _zoomX;
+        var previousZoomY = _zoomY;
+        
         _matrix = MatrixHelper.ScaleAtPrepend(_matrix, ratio, ratio, x, y);
         Invalidate(skipTransitions);
+
+        // Raise ZoomDeltaChanged event
+        var args = new ZoomEventArgs(
+            _zoomX,
+            _zoomY,
+            previousZoomX,
+            previousZoomY,
+            ratio,
+            x,
+            y,
+            _offsetX,
+            _offsetY,
+            _matrix,
+            previousMatrix
+        );
+        RaiseZoomDeltaChanged(args);
 
         _updating = false;
     }
@@ -643,9 +799,29 @@ public partial class ZoomBorder : Border
             return;
         }
 
+        var previousZoomX = _zoomX;
+        var previousZoomY = _zoomY;
+        var previousMatrix = _matrix;
+        
         var x = _element.Bounds.Width / 2.0;
         var y = _element.Bounds.Height / 2.0;
         ZoomTo(ZoomSpeed, x, y, skipTransitions);
+        
+        // Raise ZoomEnded event
+        var args = new ZoomEventArgs(
+            _zoomX,
+            _zoomY,
+            previousZoomX,
+            previousZoomY,
+            ZoomSpeed,
+            x,
+            y,
+            _offsetX,
+            _offsetY,
+            _matrix,
+            previousMatrix
+        );
+        RaiseZoomEnded(args);
     }
 
     /// <summary>
@@ -659,9 +835,29 @@ public partial class ZoomBorder : Border
             return;
         }
 
+        var previousZoomX = _zoomX;
+        var previousZoomY = _zoomY;
+        var previousMatrix = _matrix;
+        
         var x = _element.Bounds.Width / 2.0;
         var y = _element.Bounds.Height / 2.0;
         ZoomTo(1 / ZoomSpeed, x, y, skipTransitions);
+        
+        // Raise ZoomEnded event
+        var args = new ZoomEventArgs(
+            _zoomX,
+            _zoomY,
+            previousZoomX,
+            previousZoomY,
+            1 / ZoomSpeed,
+            x,
+            y,
+            _offsetX,
+            _offsetY,
+            _matrix,
+            previousMatrix
+        );
+        RaiseZoomEnded(args);
     }
 
     /// <summary>
@@ -692,8 +888,27 @@ public partial class ZoomBorder : Border
         _updating = true;
 
         Log("[PanDelta]");
+        var previousMatrix = _matrix;
+        var previousOffsetX = _offsetX;
+        var previousOffsetY = _offsetY;
+        
         _matrix = MatrixHelper.ScaleAndTranslate(_zoomX, _zoomY, _matrix.M31 + dx, _matrix.M32 + dy);
         Invalidate(skipTransitions);
+
+        // Raise PanContinued event
+        var args = new PanEventArgs(
+            _zoomX,
+            _zoomY,
+            _offsetX,
+            _offsetY,
+            previousOffsetX,
+            previousOffsetY,
+            dx,
+            dy,
+            _matrix,
+            previousMatrix
+        );
+        RaisePanContinued(args);
 
         _updating = false;
     }
@@ -713,8 +928,27 @@ public partial class ZoomBorder : Border
         _updating = true;
 
         Log("[Pan]");
+        var previousMatrix = _matrix;
+        var previousOffsetX = _offsetX;
+        var previousOffsetY = _offsetY;
+        
         _matrix = MatrixHelper.ScaleAndTranslate(_zoomX, _zoomY, x, y);
         Invalidate(skipTransitions);
+
+        // Raise PanContinued event
+        var args = new PanEventArgs(
+            _zoomX,
+            _zoomY,
+            _offsetX,
+            _offsetY,
+            previousOffsetX,
+            previousOffsetY,
+            x - previousOffsetX,
+            y - previousOffsetY,
+            _matrix,
+            previousMatrix
+        );
+        RaisePanContinued(args);
 
         _updating = false;
     }
@@ -728,6 +962,21 @@ public partial class ZoomBorder : Border
     {
         _pan = new Point();
         _previous = new Point(x, y);
+        
+        // Raise PanStarted event
+        var args = new PanEventArgs(
+            _zoomX,
+            _zoomY,
+            _offsetX,
+            _offsetY,
+            _offsetX,
+            _offsetY,
+            0.0,
+            0.0,
+            _matrix,
+            _matrix
+        );
+        RaisePanStarted(args);
     }
 
     /// <summary>
@@ -745,6 +994,10 @@ public partial class ZoomBorder : Border
         _updating = true;
 
         Log("[ContinuePanTo]");
+        var previousMatrix = _matrix;
+        var previousOffsetX = _offsetX;
+        var previousOffsetY = _offsetY;
+        
         var dx = x - _previous.X;
         var dy = y - _previous.Y;
         var delta = new Point(dx, dy);
@@ -752,6 +1005,21 @@ public partial class ZoomBorder : Border
         _pan = new Point(_pan.X + delta.X, _pan.Y + delta.Y);
         _matrix = MatrixHelper.TranslatePrepend(_matrix, _pan.X, _pan.Y);
         Invalidate(skipTransitions);
+
+        // Raise PanContinued event
+        var args = new PanEventArgs(
+            _zoomX,
+            _zoomY,
+            _offsetX,
+            _offsetY,
+            previousOffsetX,
+            previousOffsetY,
+            dx,
+            dy,
+            _matrix,
+            previousMatrix
+        );
+        RaisePanContinued(args);
 
         _updating = false;
     }
@@ -947,7 +1215,27 @@ public partial class ZoomBorder : Border
         {
             return;
         }
+        var previousStretch = Stretch;
+        var previousMatrix = _matrix;
+        
         Fill(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height, skipTransitions);
+        
+        // Raise StretchModeChanged event
+        var args = new StretchModeChangedEventArgs(
+            StretchMode.Fill,
+            previousStretch,
+            _matrix,
+            previousMatrix,
+            _zoomX,
+            _zoomY,
+            _offsetX,
+            _offsetY,
+            Bounds.Width,
+            Bounds.Height,
+            _element.Bounds.Width,
+            _element.Bounds.Height
+        );
+        RaiseStretchModeChanged(args);
     }
 
     /// <summary>
@@ -960,7 +1248,27 @@ public partial class ZoomBorder : Border
         {
             return;
         }
+        var previousStretch = Stretch;
+        var previousMatrix = _matrix;
+        
         Uniform(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height, skipTransitions);
+        
+        // Raise StretchModeChanged event
+        var args = new StretchModeChangedEventArgs(
+            StretchMode.Uniform,
+            previousStretch,
+            _matrix,
+            previousMatrix,
+            _zoomX,
+            _zoomY,
+            _offsetX,
+            _offsetY,
+            Bounds.Width,
+            Bounds.Height,
+            _element.Bounds.Width,
+            _element.Bounds.Height
+        );
+        RaiseStretchModeChanged(args);
     }
 
     /// <summary>
@@ -973,7 +1281,27 @@ public partial class ZoomBorder : Border
         {
             return;
         }
+        var previousStretch = Stretch;
+        var previousMatrix = _matrix;
+        
         UniformToFill(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height, skipTransitions);
+        
+        // Raise StretchModeChanged event
+        var args = new StretchModeChangedEventArgs(
+            StretchMode.UniformToFill,
+            previousStretch,
+            _matrix,
+            previousMatrix,
+            _zoomX,
+            _zoomY,
+            _offsetX,
+            _offsetY,
+            Bounds.Width,
+            Bounds.Height,
+            _element.Bounds.Width,
+            _element.Bounds.Height
+        );
+        RaiseStretchModeChanged(args);
     }
 
     /// <summary>
@@ -986,8 +1314,134 @@ public partial class ZoomBorder : Border
         {
             return;
         }
+        var previousMatrix = _matrix;
+        
         AutoFit(Bounds.Width, Bounds.Height, _element.Bounds.Width, _element.Bounds.Height, skipTransitions);
+        
+        // Raise AutoFitApplied event
+        var args = new StretchModeChangedEventArgs(
+            Stretch,
+            Stretch,
+            _matrix,
+            previousMatrix,
+            _zoomX,
+            _zoomY,
+            _offsetX,
+            _offsetY,
+            Bounds.Width,
+            Bounds.Height,
+            _element.Bounds.Width,
+            _element.Bounds.Height
+        );
+        RaiseAutoFitApplied(args);
     }
 
+    /// <summary>
+    /// Raises the PanStarted event.
+    /// </summary>
+    /// <param name="args">The pan event arguments.</param>
+    protected virtual void RaisePanStarted(PanEventArgs args)
+    {
+        PanStarted?.Invoke(this, args);
+    }
+
+    /// <summary>
+    /// Raises the PanContinued event.
+    /// </summary>
+    /// <param name="args">The pan event arguments.</param>
+    protected virtual void RaisePanContinued(PanEventArgs args)
+    {
+        PanContinued?.Invoke(this, args);
+    }
+
+    /// <summary>
+    /// Raises the PanEnded event.
+    /// </summary>
+    /// <param name="args">The pan event arguments.</param>
+    protected virtual void RaisePanEnded(PanEventArgs args)
+    {
+        PanEnded?.Invoke(this, args);
+    }
+
+    /// <summary>
+    /// Raises the ZoomStarted event.
+    /// </summary>
+    /// <param name="args">The zoom event arguments.</param>
+    protected virtual void RaiseZoomStarted(ZoomEventArgs args)
+    {
+        ZoomStarted?.Invoke(this, args);
+    }
+
+    /// <summary>
+    /// Raises the ZoomEnded event.
+    /// </summary>
+    /// <param name="args">The zoom event arguments.</param>
+    protected virtual void RaiseZoomEnded(ZoomEventArgs args)
+    {
+        ZoomEnded?.Invoke(this, args);
+    }
+
+    /// <summary>
+    /// Raises the ZoomDeltaChanged event.
+    /// </summary>
+    /// <param name="args">The zoom event arguments.</param>
+    protected virtual void RaiseZoomDeltaChanged(ZoomEventArgs args)
+    {
+        ZoomDeltaChanged?.Invoke(this, args);
+    }
+
+    /// <summary>
+    /// Raises the MatrixChanged event.
+    /// </summary>
+    /// <param name="args">The matrix changed event arguments.</param>
+    protected virtual void RaiseMatrixChanged(MatrixChangedEventArgs args)
+    {
+        MatrixChanged?.Invoke(this, args);
+    }
+
+    /// <summary>
+    /// Raises the MatrixReset event.
+    /// </summary>
+    /// <param name="args">The matrix changed event arguments.</param>
+    protected virtual void RaiseMatrixReset(MatrixChangedEventArgs args)
+    {
+        MatrixReset?.Invoke(this, args);
+    }
+
+    /// <summary>
+    /// Raises the StretchModeChanged event.
+    /// </summary>
+    /// <param name="args">The stretch mode changed event arguments.</param>
+    protected virtual void RaiseStretchModeChanged(StretchModeChangedEventArgs args)
+    {
+        StretchModeChanged?.Invoke(this, args);
+    }
+
+    /// <summary>
+    /// Raises the AutoFitApplied event.
+    /// </summary>
+    /// <param name="args">The stretch mode changed event arguments.</param>
+    protected virtual void RaiseAutoFitApplied(StretchModeChangedEventArgs args)
+    {
+        AutoFitApplied?.Invoke(this, args);
+    }
+
+    /// <summary>
+    /// Raises the GestureStarted event.
+    /// </summary>
+    /// <param name="args">The gesture event arguments.</param>
+    protected virtual void RaiseGestureStarted(GestureEventArgs args)
+    {
+        GestureStarted?.Invoke(this, args);
+    }
+
+    /// <summary>
+    /// Raises the GestureEnded event.
+    /// </summary>
+    /// <param name="args">The gesture event arguments.</param>
+    protected virtual void RaiseGestureEnded(GestureEventArgs args)
+    {
+        GestureEnded?.Invoke(this, args);
+    }
 
 }

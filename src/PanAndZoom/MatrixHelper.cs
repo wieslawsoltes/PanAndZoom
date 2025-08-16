@@ -1,4 +1,6 @@
-﻿using static System.Math;
+﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
+using static System.Math;
 
 namespace Avalonia.Controls.PanAndZoom;
 

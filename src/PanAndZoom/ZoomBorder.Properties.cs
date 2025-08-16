@@ -1,4 +1,6 @@
-﻿using System;
+// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using Avalonia.Data;
 using Avalonia.Media.Transformation;
 
@@ -202,6 +204,66 @@ public partial class ZoomBorder
     /// Zoom changed event.
     /// </summary>
     public event ZoomChangedEventHandler? ZoomChanged;
+
+    /// <summary>
+    /// Pan started event.
+    /// </summary>
+    public event PanEventHandler? PanStarted;
+
+    /// <summary>
+    /// Pan continued event.
+    /// </summary>
+    public event PanEventHandler? PanContinued;
+
+    /// <summary>
+    /// Pan ended event.
+    /// </summary>
+    public event PanEventHandler? PanEnded;
+
+    /// <summary>
+    /// Zoom started event.
+    /// </summary>
+    public event ZoomEventHandler? ZoomStarted;
+
+    /// <summary>
+    /// Zoom ended event.
+    /// </summary>
+    public event ZoomEventHandler? ZoomEnded;
+
+    /// <summary>
+    /// Zoom delta changed event.
+    /// </summary>
+    public event ZoomEventHandler? ZoomDeltaChanged;
+
+    /// <summary>
+    /// Matrix changed event.
+    /// </summary>
+    public event MatrixChangedEventHandler? MatrixChanged;
+
+    /// <summary>
+    /// Matrix reset event.
+    /// </summary>
+    public event MatrixChangedEventHandler? MatrixReset;
+
+    /// <summary>
+    /// Stretch mode changed event.
+    /// </summary>
+    public event StretchModeChangedEventHandler? StretchModeChanged;
+
+    /// <summary>
+    /// Auto fit applied event.
+    /// </summary>
+    public event StretchModeChangedEventHandler? AutoFitApplied;
+
+    /// <summary>
+    /// Gesture started event.
+    /// </summary>
+    public event GestureEventHandler? GestureStarted;
+
+    /// <summary>
+    /// Gesture ended event.
+    /// </summary>
+    public event GestureEventHandler? GestureEnded;
 
     /// <summary>
     /// Gets or sets pan input button.
