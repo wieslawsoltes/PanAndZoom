@@ -319,8 +319,11 @@ public partial class ZoomBorder : Border
         );
         RaiseGestureStarted(gestureArgs);
         
-        // Use the scroll delta for panning
-        PanDelta(e.Delta.X, e.Delta.Y);
+        // Use the scroll delta for panning. Scroll gesture delta follows
+        // scroll direction semantics (positive = scroll down/right), which is
+        // opposite to direct manipulation (content following finger). Invert
+        // it so the content moves with the finger on touch/gesture devices.
+        PanDelta(-e.Delta.X, -e.Delta.Y);
         
         e.Handled = true;
     }
