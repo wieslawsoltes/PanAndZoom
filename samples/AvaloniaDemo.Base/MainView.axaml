@@ -115,7 +115,7 @@
                             EnableGestures="True"
                             Background="SlateBlue" ClipToBounds="True" Focusable="True"
                             VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-              <Border Background="Gray" BorderBrush="Yellow" BorderThickness="10">
+              <Border Width="500" Height="500" Background="Gray" BorderBrush="Yellow" BorderThickness="10">
                 <Border.Transitions>
                   <Transitions>
                     <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
@@ -182,4 +182,3 @@
   </DockPanel>
 
 </UserControl>
-
