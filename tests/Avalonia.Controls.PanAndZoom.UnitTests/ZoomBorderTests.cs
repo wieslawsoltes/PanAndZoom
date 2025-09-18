@@ -1,4 +1,6 @@
-﻿using Avalonia.Headless.XUnit;
+﻿using Avalonia.Controls;
+using Avalonia.Media.Transformation;
+using Avalonia.Headless.XUnit;
 using Xunit;
 
 namespace Avalonia.Controls.PanAndZoom.UnitTests;
@@ -87,6 +89,26 @@ public class ZoomBorderTests
         Assert.Equal(3.0, target.M22);
         Assert.Equal(-100.0, target.M31);
         Assert.Equal(-100.0, target.M32);
+    }
+
+    [AvaloniaFact]
+    public void AutoFit_WithStretchNone_Resets_Matrix_ToIdentity()
+    {
+        var zoomBorder = new ZoomBorder();
+        var childElement = new Border { Width = 100, Height = 100 };
+        zoomBorder.Child = childElement;
+
+        zoomBorder.Stretch = StretchMode.Fill;
+        zoomBorder.AutoFit(200, 200, childElement.Width, childElement.Height);
+
+        var matrixAfterFill = zoomBorder.Matrix;
+        Assert.NotEqual(Matrix.Identity, matrixAfterFill);
+
+        zoomBorder.Stretch = StretchMode.None;
+        zoomBorder.AutoFit(200, 200, childElement.Width, childElement.Height);
+
+        var matrixAfterNone = zoomBorder.Matrix;
+        Assert.Equal(Matrix.Identity, matrixAfterNone);
     }
 
     [Fact]
