@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html data-lunet-theme-mode="system" data-lunet-theme-storage-key="lunet-theme" data-lunet-css-prefix="lunet" lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="lunet 1.0.10.0">
+    <script>(function(){const root=document.documentElement;const key=root.getAttribute("data-lunet-theme-storage-key")||"lunet-theme";const fallback=root.getAttribute("data-lunet-theme-mode")||"system";let stored=null;try{stored=localStorage.getItem(key);}catch(_){stored=null;}const mode=(stored==="light"||stored==="dark"||stored==="system")?stored:fallback;const prefersDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;const resolved=mode==="system"?(prefersDark?"dark":"light"):mode;root.setAttribute("data-lunet-theme-mode",mode);root.setAttribute("data-bs-theme",resolved);}());</script>
+    <link rel='icon' href='/PanAndZoom/favicon.ico' sizes='32x32'>
+    <title>Avalonia.HeadlessTestingFramework.Appium Namespace | PanAndZoom for Avalonia</title>
+    <link rel="stylesheet" href="/PanAndZoom/css/lite.css">
+    <script src="/PanAndZoom/js/lite-defer.js" defer></script>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@wieslawsoltes">
+<meta name="twitter:title" content="Avalonia.HeadlessTestingFramework.Appium Namespace | PanAndZoom for Avalonia">
+<meta name="twitter:description" content="Avalonia.HeadlessTestingFramework.Appium Namespace Filter types: Classes (28) ActionsProvides Selenium 4-style Actions API for complex interaction sequences. Supports mouse, keyboard, touch, and pen input with parallel execution. ActionSequenceRepresents an action sequence for a single input source. AvaloniaDriverMain driver class for Avalonia headless testing with Appium-like API. Provides WebDriver/Appium compatible methods for UI automation. AvaloniaElementRepresents a UI element with Appium-like API methods. Wraps an Avalonia Control to provide familiar WebDriver/Appium interactions....">
+<meta name="twitter:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
+<meta name="twitter:image:alt" content="Avalonia.HeadlessTestingFramework.Appium Namespace | PanAndZoom for Avalonia">
+<meta property="og:title" content="Avalonia.HeadlessTestingFramework.Appium Namespace | PanAndZoom for Avalonia">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://wieslawsoltes.github.io/PanAndZoom">
+<meta property="og:description" content="Avalonia.HeadlessTestingFramework.Appium Namespace Filter types: Classes (28) ActionsProvides Selenium 4-style Actions API for complex interaction sequences. Supports mouse, keyboard, touch, and pen input with parallel execution. ActionSequenceRepresents an action sequence for a single input source. AvaloniaDriverMain driver class for Avalonia headless testing with Appium-like API. Provides WebDriver/Appium compatible methods for UI automation. AvaloniaElementRepresents a UI element with Appium-like API methods. Wraps an Avalonia Control to provide familiar WebDriver/Appium interactions....">
+<meta property="og:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
+<meta property="og:image:alt" content="Avalonia.HeadlessTestingFramework.Appium Namespace | PanAndZoom for Avalonia">
+  </head>
+  <body>
+
+    <div id="lunet" class="container">
+      <nav class="navbar navbar-expand-md sticky-top">
+        <a class="navbar-brand" href="/PanAndZoom/">
+          <img class="lunet-logo" src="/PanAndZoom/images/logo.svg" alt="PanAndZoom for Avalonia" width="96" height="96">
+          <span class="visually-hidden">Home</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarSupportedContent" class="collapse navbar-collapse justify-content-between">
+<ol id='nav-id-home-0' class='navbar-nav nav-level0 show '>
+  <li id='nav-item-home-1' class='nav-item '>
+    <span class='nav-item-row'><a href='/PanAndZoom/' class='nav-link  '><i class='bi bi-house-door' aria-hidden='true'></i> Home</a></span>  </li>
+  <li id='nav-item-home-2' class='nav-item '>
+    <span class='nav-item-row'><a href='/PanAndZoom/articles/' class='nav-link  '><i class='bi bi-book' aria-hidden='true'></i> Docs</a></span>  </li>
+  <li id='nav-item-home-3' class='nav-item  active'>
+    <span class='nav-item-row'><a href='/PanAndZoom/api/' class='nav-link  '><i class='bi bi-braces' aria-hidden='true'></i> API</a></span>  </li>
+</ol>
+          <ol class="navbar-nav flex-grow-1" style="padding-right: 0.5rem;">
+            <li class="nav-item w-100">
+                <div class="lunet-search dropdown w-100">
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input id="search-input" type="search" class="form-control" placeholder="Search... (Alt+s)" aria-label="Search" aria-controls="search-results" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-search-empty-message="Enter words to search..." data-search-no-results-message="No results found.">
+                    <ul id="search-results" class="dropdown-menu w-100 p-0" style="max-height: 50vh;" role="listbox" aria-labelledby="search-input"></ul>
+                  </div>
+                </div>
+            </li>
+          </ol>
+          <div class="d-flex align-items-center gap-2 flex-shrink-0 navbar-right">
+            <div class="dropdown">
+              <button
+                id="theme-mode-toggle"
+                class="btn btn-outline-secondary btn-sm lunet-theme-toggle dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                aria-label="Theme">
+                <i class="bi bi-circle-half" data-lunet-theme-toggle-icon aria-hidden="true"></i>
+                <span
+                  data-lunet-theme-toggle-label
+                  data-theme-system-label="System"
+                  data-theme-light-label="Light"
+                  data-theme-dark-label="Dark">Theme</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="theme-mode-toggle">
+                <li><button class="dropdown-item" type="button" data-lunet-theme-choice="system"><i class="bi bi-circle-half me-2"></i>System</button></li>
+                <li><button class="dropdown-item" type="button" data-lunet-theme-choice="light"><i class="bi bi-sun-fill me-2"></i>Light</button></li>
+                <li><button class="dropdown-item" type="button" data-lunet-theme-choice="dark"><i class="bi bi-moon-stars-fill me-2"></i>Dark</button></li>
+              </ul>
+            </div>
+<ol id='nav-id-home2-0' class='navbar-nav nav-level0 show flex-shrink-0'>
+  <li id='nav-item-home2-1' class='nav-item '>
+    <span class='nav-item-row'><a href='https://github.com/wieslawsoltes/PanAndZoom' class='nav-link  btn btn-info'><i class="bi bi-github"></i> GitHub</a></span>  </li>
+</ol>
+          </div>
+        </div>
+      </nav>
+      <div class="lunet lunet-api">
+        <section data-prismjs-copy="" data-prismjs-copy-success="" data-prismjs-copy-timeout="1200" data-copy-tooltip="Copy to Clipboard." data-copy-tooltip-success="Copied!" data-copy-tooltip-error="Failed to copy!">
+
+<div class="container-xxl">
+  <div class="row">
+      <!-- Left sidebar - responsive offcanvas (offcanvas on mobile, visible sidebar on md+) -->
+      <nav id="docs-sidebar-menu" class="col-md-3 col-lg-3 col-xl-3 col-xxl-3 offcanvas-md offcanvas-start sticky-md-top menu-sidebar align-self-start order-1 order-md-0" tabindex="-1" aria-labelledby="docs-sidebar-menu-label" aria-expanded="true">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="docs-sidebar-menu-label">Menu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#docs-sidebar-menu" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class='lunet-menu-async' data-lunet-menu-partial='/PanAndZoom/partials/menus/menu-menu.dfa336f4d84b048a7ebb3946877b1d00.html' data-lunet-menu-open='menu-id-menu-0,menu-id-menu-1039' data-lunet-menu-active='menu-item-menu-1039,menu-item-menu-0'><div class='menu-loading text-body-secondary small'>Loading menu…</div></div>
+        </div>
+      </nav>
+      <!-- Right sidebar (TOC) - collapsible on mobile, visible sidebar on xxl+ -->
+      <aside id="docs-sidebar-toc" class="col-12 col-xxl-2 sticky-xxl-top menu-sidebar align-self-start order-0 order-xxl-2 collapse d-xxl-block" aria-expanded="true">
+        <h3 class="toc-title">On this page</h3>
+        <nav class="js-toc"></nav>
+      </aside>
+      <!-- Main content column -->
+      <div class="col-12 col-md-9 col-lg-9 col-xl-9 col-xxl-7 order-2 order-md-1 js-toc-content">
+        <ol class='breadcrumb'>
+          <li class='breadcrumb-item '>
+            <a href='/PanAndZoom/' class='breadcrumb-link  '><i class='bi bi-house-door' aria-hidden='true'></i> Home</a>  </li>
+          <li class='breadcrumb-item '>
+            <a href='/PanAndZoom/api/' class='breadcrumb-link  '><i class='bi bi-braces' aria-hidden='true'></i> API</a>  </li>
+          <li class='breadcrumb-item  active'>
+            <i class='bi bi-diagram-3' aria-hidden='true'></i> Avalonia.HeadlessTestingFramework.Appium  </li>
+        </ol>
+
+        <p id="lunet-results"></p>
+        <!-- Toggle buttons visible only on small screens -->
+        <div class="d-md-none mb-3">
+          <button
+            class="btn btn-outline-secondary btn-sm me-2"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#docs-sidebar-menu"
+            aria-controls="docs-sidebar-menu"
+            aria-label="Toggle docs menu">
+            Menu
+          </button>
+          <button
+            class="btn btn-outline-secondary btn-sm d-xxl-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#docs-sidebar-toc"
+            aria-controls="docs-sidebar-toc"
+            aria-expanded="false"
+            aria-label="Toggle Table Of Contents">
+            On this page
+          </button>
+        </div>
+<!-- lunet:summarize -->
+<div class="api-dotnet">
+<h1 id="avaloniaheadlesstestingframeworkappium-namespace">Avalonia.HeadlessTestingFramework.Appium Namespace</h1>
+<div class="api-dotnet-member-filter" data-api-dotnet-filter>
+<div class="api-dotnet-member-filter-row">
+<label class="api-dotnet-member-filter-label" for="api-dotnet-member-filter-avalonia-headlesstestingframework-appium">Filter types:</label>
+<input id="api-dotnet-member-filter-avalonia-headlesstestingframework-appium" class="form-control form-control-sm api-dotnet-member-filter-input" type="search" placeholder="name, kind, summary" autocomplete="off" spellcheck="false" />
+<div class="api-dotnet-member-filter-status" aria-live="polite"></div>
+</div>
+</div>
+<h2 id="classes">Classes <span class="api-dotnet-count">(28)</span></h2>
+<div class="api-dotnet-members list-group list-group-flush" data-api-dotnet-members="classes">
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.Actions/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">Actions</code></a><span class="api-dotnet-member-summary">Provides Selenium 4-style Actions API for complex interaction sequences. Supports mouse, keyboard, touch, and pen input with parallel execution.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.ActionSequence/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ActionSequence</code></a><span class="api-dotnet-member-summary">Represents an action sequence for a single input source.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.AvaloniaDriver/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">AvaloniaDriver</code></a><span class="api-dotnet-member-summary">Main driver class for Avalonia headless testing with Appium-like API. Provides WebDriver/Appium compatible methods for UI automation.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.AvaloniaElement/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">AvaloniaElement</code></a><span class="api-dotnet-member-summary">Represents a UI element with Appium-like API methods. Wraps an Avalonia Control to provide familiar WebDriver/Appium interactions.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.By/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">By</code></a><span class="api-dotnet-member-summary">Provides element location strategies similar to Appium/Selenium WebDriver. Use these methods to create locator strategies for finding UI elements.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.DriverSession/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">DriverSession</code></a><span class="api-dotnet-member-summary">Manages test session state and provides session-level operations. Inspired by Appium&apos;s session management.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.DriverWait/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">DriverWait</code></a><span class="api-dotnet-member-summary">Provides wait functionality for the driver.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.ElementAttributes/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ElementAttributes</code></a><span class="api-dotnet-member-summary">Provides methods to query element properties and attributes. Inspired by Selenium&apos;s attribute and property access patterns.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.ElementNotInteractableException/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ElementNotInteractableException</code></a><span class="api-dotnet-member-summary">Exception thrown when an element is not interactable.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.ExpectedConditions/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ExpectedConditions</code></a><span class="api-dotnet-member-summary">Provides expected conditions for use with DriverWait.Until(). Similar to Selenium/Appium ExpectedConditions.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.KeyDownAction/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">KeyDownAction</code></a><span class="api-dotnet-member-summary">Key down action.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.KeyUpAction/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">KeyUpAction</code></a><span class="api-dotnet-member-summary">Key up action.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.LocatorOptions/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">LocatorOptions</code></a><span class="api-dotnet-member-summary">Additional options for locator strategies.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.LogEntry/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">LogEntry</code></a><span class="api-dotnet-member-summary">A log entry.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.MultiTouchAction/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">MultiTouchAction</code></a><span class="api-dotnet-member-summary">Performs multiple touch actions simultaneously (multi-touch).</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.NoSuchElementException/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">NoSuchElementException</code></a><span class="api-dotnet-member-summary">Exception thrown when an element cannot be found.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.PauseAction/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">PauseAction</code></a><span class="api-dotnet-member-summary">Pause action.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.PointerDownAction/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">PointerDownAction</code></a><span class="api-dotnet-member-summary">Pointer down action.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.PointerMoveAction/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">PointerMoveAction</code></a><span class="api-dotnet-member-summary">Pointer move action.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.PointerUpAction/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">PointerUpAction</code></a><span class="api-dotnet-member-summary">Pointer up action.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.ScrollAction/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ScrollAction</code></a><span class="api-dotnet-member-summary">Scroll action.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.SendKeysAction/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">SendKeysAction</code></a><span class="api-dotnet-member-summary">Send keys action.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.SessionCapabilities/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">SessionCapabilities</code></a><span class="api-dotnet-member-summary">Session capabilities for configuring driver behavior.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.SessionLogger/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">SessionLogger</code></a><span class="api-dotnet-member-summary">Provides logging for test sessions.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.StaleElementReferenceException/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">StaleElementReferenceException</code></a><span class="api-dotnet-member-summary">Exception thrown when an element is stale (no longer attached to DOM).</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.TouchAction/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">TouchAction</code></a><span class="api-dotnet-member-summary">Chainable touch action builder for complex gesture sequences. Similar to Appium TouchAction for mobile automation.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.WaitBuilder/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">WaitBuilder</code></a><span class="api-dotnet-member-summary">Fluent builder for WaitHelper configuration.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.WaitHelper/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">WaitHelper</code></a><span class="api-dotnet-member-summary">Provides utilities for waiting on specific conditions. More advanced than ExpectedConditions with support for custom predicates.</span></div>
+</div>
+<h2 id="interfaces">Interfaces <span class="api-dotnet-count">(1)</span></h2>
+<div class="api-dotnet-members list-group list-group-flush" data-api-dotnet-members="interfaces">
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Interface"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.IAction/"><i class="bi bi-diagram-3 api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">IAction</code></a><span class="api-dotnet-member-summary">Base interface for all action types.</span></div>
+</div>
+<h2 id="enums">Enums <span class="api-dotnet-count">(5)</span></h2>
+<div class="api-dotnet-members list-group list-group-flush" data-api-dotnet-members="enums">
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Enum"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.ActionSourceType/"><i class="bi bi-list-ul api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ActionSourceType</code></a><span class="api-dotnet-member-summary">Action source types.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Enum"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.CompositeMode/"><i class="bi bi-list-ul api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">CompositeMode</code></a><span class="api-dotnet-member-summary">Defines how composite locators combine their results.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Enum"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.LocatorStrategy/"><i class="bi bi-list-ul api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">LocatorStrategy</code></a><span class="api-dotnet-member-summary">Defines the available locator strategies.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Enum"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.LogLevel/"><i class="bi bi-list-ul api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">LogLevel</code></a><span class="api-dotnet-member-summary">Log levels.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Enum"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.Appium.PointerOrigin/"><i class="bi bi-list-ul api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">PointerOrigin</code></a><span class="api-dotnet-member-summary">Pointer origin types.</span></div>
+</div>
+</div>
+
+      </div>
+  </div>
+</div>
+
+        </section>
+        <footer>
+          <hr>
+          <p>Copyright &copy; 2026, Wieslaw Soltes aka <a href="https://github.com/wieslawsoltes">wieslawsoltes</a> - Content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | Site generated by <a href="https://github.com/lunet-io/lunet">lunet</a> hosted on <a href="https://pages.github.com/">GitHub Pages</a></p>
+        </footer>
+      </div>
+    </div>
+
+  </body>
+</html>

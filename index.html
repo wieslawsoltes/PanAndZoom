@@ -1,31 +1,184 @@
 <!DOCTYPE html>
-<html>
+<html data-lunet-theme-mode="system" data-lunet-theme-storage-key="lunet-theme" data-lunet-css-prefix="lunet" lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="lunet 1.0.10.0">
+    <script>(function(){const root=document.documentElement;const key=root.getAttribute("data-lunet-theme-storage-key")||"lunet-theme";const fallback=root.getAttribute("data-lunet-theme-mode")||"system";let stored=null;try{stored=localStorage.getItem(key);}catch(_){stored=null;}const mode=(stored==="light"||stored==="dark"||stored==="system")?stored:fallback;const prefersDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;const resolved=mode==="system"?(prefersDark?"dark":"light"):mode;root.setAttribute("data-lunet-theme-mode",mode);root.setAttribute("data-bs-theme",resolved);}());</script>
+    <link rel='icon' href='/PanAndZoom/favicon.ico' sizes='32x32'>
+    <title>PanAndZoom for Avalonia | PanAndZoom for Avalonia</title>
+    <link rel="stylesheet" href="/PanAndZoom/css/lite.css">
+    <script src="/PanAndZoom/js/lite-defer.js" defer></script>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@wieslawsoltes">
+<meta name="twitter:title" content="PanAndZoom for Avalonia | PanAndZoom for Avalonia">
+<meta name="twitter:description" content="Avalonia Control and Testing Toolkit PanAndZoom for Avalonia PanAndZoom packages a production-ready ZoomBorder control for pan, zoom, bounds management, and view-state workflows, plus HeadlessTestingFramework for gesture simulation, tree inspection, Appium-style APIs, and visual recording in Avalonia tests. Start Getting Started Explore Testing APIs Browse API Start Here Installation Package setup for both libraries, headless test prerequisites, and the first integration checks. Quickstart: ZoomBorder Create a zoomable surface, bind commands, and...">
+<meta name="twitter:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
+<meta name="twitter:image:alt" content="PanAndZoom for Avalonia | PanAndZoom for Avalonia">
+<meta property="og:title" content="PanAndZoom for Avalonia | PanAndZoom for Avalonia">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://wieslawsoltes.github.io/PanAndZoom">
+<meta property="og:description" content="Avalonia Control and Testing Toolkit PanAndZoom for Avalonia PanAndZoom packages a production-ready ZoomBorder control for pan, zoom, bounds management, and view-state workflows, plus HeadlessTestingFramework for gesture simulation, tree inspection, Appium-style APIs, and visual recording in Avalonia tests. Start Getting Started Explore Testing APIs Browse API Start Here Installation Package setup for both libraries, headless test prerequisites, and the first integration checks. Quickstart: ZoomBorder Create a zoomable surface, bind commands, and...">
+<meta property="og:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
+<meta property="og:image:alt" content="PanAndZoom for Avalonia | PanAndZoom for Avalonia">
+  </head>
+  <body>
 
-<head>
-    <title>PanAndZoom</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <base href="/PanAndZoom/" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700&family=Open+Sans:wght@600&display=swap" rel="stylesheet">
-    <link rel="modulepreload" href="./main.js" />
-    <link rel="modulepreload" href="./dotnet.js" />
-    <link rel="modulepreload" href="./avalonia.js" />
-    <link rel="stylesheet" href="./app.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">    
-</head>
-
-<body style="margin: 0px">
-    <div id="out">                
-        <div id="avalonia-splash"> 
-            <div class="center">
-                <h2 class="purple">                   
-                    Powered by
-                    <a class="highlight" href="https://www.avaloniaui.net/" target="_blank">Avalonia UI</a></h2>              
-            </div>             
+    <div id="lunet" class="container">
+      <nav class="navbar navbar-expand-md ">
+        <a class="navbar-brand" href="/PanAndZoom/">
+          <img class="lunet-logo" src="/PanAndZoom/images/logo.svg" alt="PanAndZoom for Avalonia" width="96" height="96">
+          <span class="visually-hidden">Home</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarSupportedContent" class="collapse navbar-collapse justify-content-between">
+<ol id='nav-id-home-0' class='navbar-nav nav-level0 show '>
+  <li id='nav-item-home-1' class='nav-item  active'>
+    <span class='nav-item-row'><a href='/PanAndZoom/' class='nav-link  '><i class='bi bi-house-door' aria-hidden='true'></i> Home</a></span>  </li>
+  <li id='nav-item-home-2' class='nav-item '>
+    <span class='nav-item-row'><a href='/PanAndZoom/articles/' class='nav-link  '><i class='bi bi-book' aria-hidden='true'></i> Docs</a></span>  </li>
+  <li id='nav-item-home-3' class='nav-item '>
+    <span class='nav-item-row'><a href='/PanAndZoom/api/' class='nav-link  '><i class='bi bi-braces' aria-hidden='true'></i> API</a></span>  </li>
+</ol>
+          <ol class="navbar-nav flex-grow-1" style="padding-right: 0.5rem;">
+            <li class="nav-item w-100">
+                <div class="lunet-search dropdown w-100">
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input id="search-input" type="search" class="form-control" placeholder="Search... (Alt+s)" aria-label="Search" aria-controls="search-results" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-search-empty-message="Enter words to search..." data-search-no-results-message="No results found.">
+                    <ul id="search-results" class="dropdown-menu w-100 p-0" style="max-height: 50vh;" role="listbox" aria-labelledby="search-input"></ul>
+                  </div>
+                </div>
+            </li>
+          </ol>
+          <div class="d-flex align-items-center gap-2 flex-shrink-0 navbar-right">
+            <div class="dropdown">
+              <button
+                id="theme-mode-toggle"
+                class="btn btn-outline-secondary btn-sm lunet-theme-toggle dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                aria-label="Theme">
+                <i class="bi bi-circle-half" data-lunet-theme-toggle-icon aria-hidden="true"></i>
+                <span
+                  data-lunet-theme-toggle-label
+                  data-theme-system-label="System"
+                  data-theme-light-label="Light"
+                  data-theme-dark-label="Dark">Theme</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="theme-mode-toggle">
+                <li><button class="dropdown-item" type="button" data-lunet-theme-choice="system"><i class="bi bi-circle-half me-2"></i>System</button></li>
+                <li><button class="dropdown-item" type="button" data-lunet-theme-choice="light"><i class="bi bi-sun-fill me-2"></i>Light</button></li>
+                <li><button class="dropdown-item" type="button" data-lunet-theme-choice="dark"><i class="bi bi-moon-stars-fill me-2"></i>Dark</button></li>
+              </ul>
+            </div>
+<ol id='nav-id-home2-0' class='navbar-nav nav-level0 show flex-shrink-0'>
+  <li id='nav-item-home2-1' class='nav-item '>
+    <span class='nav-item-row'><a href='https://github.com/wieslawsoltes/PanAndZoom' class='nav-link  btn btn-info'><i class="bi bi-github"></i> GitHub</a></span>  </li>
+</ol>
+          </div>
         </div>
-    </div>
-    <script type='module' src="./main.js"></script>
-</body>
+      </nav>
+      <div class="lunet lunet-home">
+        <section data-prismjs-copy="" data-prismjs-copy-success="" data-prismjs-copy-timeout="1200" data-copy-tooltip="Copy to Clipboard." data-copy-tooltip-success="Copied!" data-copy-tooltip-error="Failed to copy!">
 
+<div class="container">
+<!-- lunet:summarize -->
+<div class="paz-hero">
+  <div class="paz-eyebrow"><i class="bi bi-bounding-box-circles" aria-hidden="true"></i> Avalonia Control and Testing Toolkit</div>
+  <div class="paz-hero-split">
+    <div>
+      <h1>PanAndZoom for Avalonia</h1>
+      <p class="lead"><strong>PanAndZoom</strong> packages a production-ready <code>ZoomBorder</code> control for pan, zoom, bounds management, and view-state workflows, plus <strong>HeadlessTestingFramework</strong> for gesture simulation, tree inspection, Appium-style APIs, and visual recording in Avalonia tests.</p>
+      <div class="paz-hero-actions">
+        <a class="btn btn-primary btn-lg" href="articles/getting-started/overview"><i class="bi bi-rocket-takeoff" aria-hidden="true"></i> Start Getting Started</a>
+        <a class="btn btn-outline-secondary btn-lg" href="articles/headless-testing"><i class="bi bi-bezier2" aria-hidden="true"></i> Explore Testing APIs</a>
+        <a class="btn btn-outline-secondary btn-lg" href="api"><i class="bi bi-braces-asterisk" aria-hidden="true"></i> Browse API</a>
+      </div>
+    </div>
+    <div class="paz-hero-media">
+      <img src="images/panandzoom.png" alt="PanAndZoom sample application" />
+    </div>
+  </div>
+</div>
+<h2 id="start-here">Start Here</h2>
+<div class="paz-link-grid">
+  <a class="paz-link-card" href="articles/getting-started/installation">
+    <span class="paz-link-card-title"><i class="bi bi-download" aria-hidden="true"></i> Installation</span>
+    <p>Package setup for both libraries, headless test prerequisites, and the first integration checks.</p>
+  </a>
+  <a class="paz-link-card" href="articles/getting-started/quickstart-zoom-border">
+    <span class="paz-link-card-title"><i class="bi bi-arrows-move" aria-hidden="true"></i> Quickstart: ZoomBorder</span>
+    <p>Create a zoomable surface, bind commands, and wire pointer and keyboard interaction.</p>
+  </a>
+  <a class="paz-link-card" href="articles/getting-started/quickstart-headless-testing">
+    <span class="paz-link-card-title"><i class="bi bi-bug" aria-hidden="true"></i> Quickstart: Headless Testing</span>
+    <p>Drive Avalonia controls with touch, keyboard, and Appium-style APIs inside headless tests.</p>
+  </a>
+  <a class="paz-link-card" href="articles/samples">
+    <span class="paz-link-card-title"><i class="bi bi-window-stack" aria-hidden="true"></i> Sample Walkthrough</span>
+    <p>Map the sample app tabs to concrete ZoomBorder features and testing scenarios.</p>
+  </a>
+</div>
+<h2 id="packages">Packages</h2>
+<div class="paz-link-grid paz-link-grid--wide">
+  <a class="paz-link-card" href="articles/intro">
+    <span class="paz-link-card-title"><i class="bi bi-zoom-in" aria-hidden="true"></i> PanAndZoom</span>
+    <p><code>ZoomBorder</code>, matrix helpers, commands, history, state persistence, bounds control, and advanced viewport utilities.</p>
+  </a>
+  <a class="paz-link-card" href="articles/headless-testing">
+    <span class="paz-link-card-title"><i class="bi bi-camera-video" aria-hidden="true"></i> HeadlessTestingFramework</span>
+    <p>Input simulation, tree queries, template inspection, recording, video conversion, and Appium-like interaction layers.</p>
+  </a>
+</div>
+<h2 id="documentation-sections">Documentation Sections</h2>
+<div class="paz-link-grid paz-link-grid--wide">
+  <a class="paz-link-card" href="articles/getting-started">
+    <span class="paz-link-card-title"><i class="bi bi-signpost-split" aria-hidden="true"></i> Getting Started</span>
+    <p>Choose the right package, install it, and get your first sample or test working quickly.</p>
+  </a>
+  <a class="paz-link-card" href="articles/concepts">
+    <span class="paz-link-card-title"><i class="bi bi-diagram-3" aria-hidden="true"></i> Concepts</span>
+    <p>Coordinate systems, transformation state, gestures, commands, and persistence mental models.</p>
+  </a>
+  <a class="paz-link-card" href="articles/guides">
+    <span class="paz-link-card-title"><i class="bi bi-journal-code" aria-hidden="true"></i> Guides</span>
+    <p>Scenario-driven recipes for bounds management, view history, keyboard control, zoom-to-rectangle, and more.</p>
+  </a>
+  <a class="paz-link-card" href="articles/headless-testing">
+    <span class="paz-link-card-title"><i class="bi bi-cpu" aria-hidden="true"></i> Headless Testing</span>
+    <p>Testing workflows spanning gesture simulation, tree introspection, Appium-like APIs, and recording.</p>
+  </a>
+  <a class="paz-link-card" href="articles/advanced">
+    <span class="paz-link-card-title"><i class="bi bi-speedometer2" aria-hidden="true"></i> Advanced</span>
+    <p>Custom bounds and resize hooks, ScrollViewer integration, diagnostics, and project-level testing strategy.</p>
+  </a>
+  <a class="paz-link-card" href="articles/reference">
+    <span class="paz-link-card-title"><i class="bi bi-collection" aria-hidden="true"></i> Reference</span>
+    <p>Namespace maps, API coverage, Lunet pipeline details, and licensing.</p>
+  </a>
+</div>
+<h2 id="repository">Repository</h2>
+<ul>
+<li>Source code and issues: <a href="https://github.com/wieslawsoltes/PanAndZoom">github.com/wieslawsoltes/PanAndZoom</a></li>
+<li>Published docs target: <a href="https://wieslawsoltes.github.io/PanAndZoom">wieslawsoltes.github.io/PanAndZoom</a></li>
+</ul>
+
+</div>
+        </section>
+        <footer>
+          <hr>
+          <p>Copyright &copy; 2026, Wieslaw Soltes aka <a href="https://github.com/wieslawsoltes">wieslawsoltes</a> - Content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | Site generated by <a href="https://github.com/lunet-io/lunet">lunet</a> hosted on <a href="https://pages.github.com/">GitHub Pages</a></p>
+        </footer>
+      </div>
+    </div>
+
+  </body>
 </html>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">PanAndZoom logo</title>
+  <desc id="desc">A magnifier and viewport icon representing pan and zoom interactions.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b7285" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+  </defs>
+  <rect x="16" y="16" width="224" height="224" rx="48" fill="url(#bg)" />
+  <rect x="54" y="58" width="112" height="112" rx="20" fill="none" stroke="#ffffff" stroke-width="14" />
+  <path d="M110 78v72M74 114h72" stroke="#ffffff" stroke-width="14" stroke-linecap="round" />
+  <circle cx="158" cy="158" r="34" fill="none" stroke="#ffffff" stroke-width="14" />
+  <path d="M182 182l28 28" stroke="#ffffff" stroke-width="14" stroke-linecap="round" />
+</svg>

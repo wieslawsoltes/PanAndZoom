@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html data-lunet-theme-mode="system" data-lunet-theme-storage-key="lunet-theme" data-lunet-css-prefix="lunet" lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="lunet 1.0.10.0">
+    <script>(function(){const root=document.documentElement;const key=root.getAttribute("data-lunet-theme-storage-key")||"lunet-theme";const fallback=root.getAttribute("data-lunet-theme-mode")||"system";let stored=null;try{stored=localStorage.getItem(key);}catch(_){stored=null;}const mode=(stored==="light"||stored==="dark"||stored==="system")?stored:fallback;const prefersDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;const resolved=mode==="system"?(prefersDark?"dark":"light"):mode;root.setAttribute("data-lunet-theme-mode",mode);root.setAttribute("data-bs-theme",resolved);}());</script>
+    <link rel='icon' href='/PanAndZoom/favicon.ico' sizes='32x32'>
+    <title>Avalonia.Controls.PanAndZoom Namespace | PanAndZoom for Avalonia</title>
+    <link rel="stylesheet" href="/PanAndZoom/css/lite.css">
+    <script src="/PanAndZoom/js/lite-defer.js" defer></script>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@wieslawsoltes">
+<meta name="twitter:title" content="Avalonia.Controls.PanAndZoom Namespace | PanAndZoom for Avalonia">
+<meta name="twitter:description" content="Avalonia.Controls.PanAndZoom Namespace Filter types: Classes (9) GestureEventArgsGesture operation event arguments. MatrixChangedEventArgsMatrix changed event arguments. MatrixHelperAvalonia Matrix helper methods. PanEventArgsPan operation event arguments. StretchModeChangedEventArgsStretch mode changed event arguments. ZoomBorderPan and zoom control for Avalonia. ZoomBorderStateRepresents the complete state of a ZoomBorder control for serialization. ZoomChangedEventArgsZoom changed event arguments. ZoomEventArgsZoom operation event arguments. Structs (2) SavedViewRepresents a named saved view....">
+<meta name="twitter:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
+<meta name="twitter:image:alt" content="Avalonia.Controls.PanAndZoom Namespace | PanAndZoom for Avalonia">
+<meta property="og:title" content="Avalonia.Controls.PanAndZoom Namespace | PanAndZoom for Avalonia">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://wieslawsoltes.github.io/PanAndZoom">
+<meta property="og:description" content="Avalonia.Controls.PanAndZoom Namespace Filter types: Classes (9) GestureEventArgsGesture operation event arguments. MatrixChangedEventArgsMatrix changed event arguments. MatrixHelperAvalonia Matrix helper methods. PanEventArgsPan operation event arguments. StretchModeChangedEventArgsStretch mode changed event arguments. ZoomBorderPan and zoom control for Avalonia. ZoomBorderStateRepresents the complete state of a ZoomBorder control for serialization. ZoomChangedEventArgsZoom changed event arguments. ZoomEventArgsZoom operation event arguments. Structs (2) SavedViewRepresents a named saved view....">
+<meta property="og:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
+<meta property="og:image:alt" content="Avalonia.Controls.PanAndZoom Namespace | PanAndZoom for Avalonia">
+  </head>
+  <body>
+
+    <div id="lunet" class="container">
+      <nav class="navbar navbar-expand-md sticky-top">
+        <a class="navbar-brand" href="/PanAndZoom/">
+          <img class="lunet-logo" src="/PanAndZoom/images/logo.svg" alt="PanAndZoom for Avalonia" width="96" height="96">
+          <span class="visually-hidden">Home</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarSupportedContent" class="collapse navbar-collapse justify-content-between">
+<ol id='nav-id-home-0' class='navbar-nav nav-level0 show '>
+  <li id='nav-item-home-1' class='nav-item '>
+    <span class='nav-item-row'><a href='/PanAndZoom/' class='nav-link  '><i class='bi bi-house-door' aria-hidden='true'></i> Home</a></span>  </li>
+  <li id='nav-item-home-2' class='nav-item '>
+    <span class='nav-item-row'><a href='/PanAndZoom/articles/' class='nav-link  '><i class='bi bi-book' aria-hidden='true'></i> Docs</a></span>  </li>
+  <li id='nav-item-home-3' class='nav-item  active'>
+    <span class='nav-item-row'><a href='/PanAndZoom/api/' class='nav-link  '><i class='bi bi-braces' aria-hidden='true'></i> API</a></span>  </li>
+</ol>
+          <ol class="navbar-nav flex-grow-1" style="padding-right: 0.5rem;">
+            <li class="nav-item w-100">
+                <div class="lunet-search dropdown w-100">
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input id="search-input" type="search" class="form-control" placeholder="Search... (Alt+s)" aria-label="Search" aria-controls="search-results" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-search-empty-message="Enter words to search..." data-search-no-results-message="No results found.">
+                    <ul id="search-results" class="dropdown-menu w-100 p-0" style="max-height: 50vh;" role="listbox" aria-labelledby="search-input"></ul>
+                  </div>
+                </div>
+            </li>
+          </ol>
+          <div class="d-flex align-items-center gap-2 flex-shrink-0 navbar-right">
+            <div class="dropdown">
+              <button
+                id="theme-mode-toggle"
+                class="btn btn-outline-secondary btn-sm lunet-theme-toggle dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                aria-label="Theme">
+                <i class="bi bi-circle-half" data-lunet-theme-toggle-icon aria-hidden="true"></i>
+                <span
+                  data-lunet-theme-toggle-label
+                  data-theme-system-label="System"
+                  data-theme-light-label="Light"
+                  data-theme-dark-label="Dark">Theme</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="theme-mode-toggle">
+                <li><button class="dropdown-item" type="button" data-lunet-theme-choice="system"><i class="bi bi-circle-half me-2"></i>System</button></li>
+                <li><button class="dropdown-item" type="button" data-lunet-theme-choice="light"><i class="bi bi-sun-fill me-2"></i>Light</button></li>
+                <li><button class="dropdown-item" type="button" data-lunet-theme-choice="dark"><i class="bi bi-moon-stars-fill me-2"></i>Dark</button></li>
+              </ul>
+            </div>
+<ol id='nav-id-home2-0' class='navbar-nav nav-level0 show flex-shrink-0'>
+  <li id='nav-item-home2-1' class='nav-item '>
+    <span class='nav-item-row'><a href='https://github.com/wieslawsoltes/PanAndZoom' class='nav-link  btn btn-info'><i class="bi bi-github"></i> GitHub</a></span>  </li>
+</ol>
+          </div>
+        </div>
+      </nav>
+      <div class="lunet lunet-api">
+        <section data-prismjs-copy="" data-prismjs-copy-success="" data-prismjs-copy-timeout="1200" data-copy-tooltip="Copy to Clipboard." data-copy-tooltip-success="Copied!" data-copy-tooltip-error="Failed to copy!">
+
+<div class="container-xxl">
+  <div class="row">
+      <!-- Left sidebar - responsive offcanvas (offcanvas on mobile, visible sidebar on md+) -->
+      <nav id="docs-sidebar-menu" class="col-md-3 col-lg-3 col-xl-3 col-xxl-3 offcanvas-md offcanvas-start sticky-md-top menu-sidebar align-self-start order-1 order-md-0" tabindex="-1" aria-labelledby="docs-sidebar-menu-label" aria-expanded="true">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="docs-sidebar-menu-label">Menu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#docs-sidebar-menu" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class='lunet-menu-async' data-lunet-menu-partial='/PanAndZoom/partials/menus/menu-menu.dfa336f4d84b048a7ebb3946877b1d00.html' data-lunet-menu-open='menu-id-menu-0,menu-id-menu-1' data-lunet-menu-active='menu-item-menu-1,menu-item-menu-0'><div class='menu-loading text-body-secondary small'>Loading menu…</div></div>
+        </div>
+      </nav>
+      <!-- Right sidebar (TOC) - collapsible on mobile, visible sidebar on xxl+ -->
+      <aside id="docs-sidebar-toc" class="col-12 col-xxl-2 sticky-xxl-top menu-sidebar align-self-start order-0 order-xxl-2 collapse d-xxl-block" aria-expanded="true">
+        <h3 class="toc-title">On this page</h3>
+        <nav class="js-toc"></nav>
+      </aside>
+      <!-- Main content column -->
+      <div class="col-12 col-md-9 col-lg-9 col-xl-9 col-xxl-7 order-2 order-md-1 js-toc-content">
+        <ol class='breadcrumb'>
+          <li class='breadcrumb-item '>
+            <a href='/PanAndZoom/' class='breadcrumb-link  '><i class='bi bi-house-door' aria-hidden='true'></i> Home</a>  </li>
+          <li class='breadcrumb-item '>
+            <a href='/PanAndZoom/api/' class='breadcrumb-link  '><i class='bi bi-braces' aria-hidden='true'></i> API</a>  </li>
+          <li class='breadcrumb-item  active'>
+            <i class='bi bi-diagram-3' aria-hidden='true'></i> Avalonia.Controls.PanAndZoom  </li>
+        </ol>
+
+        <p id="lunet-results"></p>
+        <!-- Toggle buttons visible only on small screens -->
+        <div class="d-md-none mb-3">
+          <button
+            class="btn btn-outline-secondary btn-sm me-2"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#docs-sidebar-menu"
+            aria-controls="docs-sidebar-menu"
+            aria-label="Toggle docs menu">
+            Menu
+          </button>
+          <button
+            class="btn btn-outline-secondary btn-sm d-xxl-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#docs-sidebar-toc"
+            aria-controls="docs-sidebar-toc"
+            aria-expanded="false"
+            aria-label="Toggle Table Of Contents">
+            On this page
+          </button>
+        </div>
+<!-- lunet:summarize -->
+<div class="api-dotnet">
+<h1 id="avaloniacontrolspanandzoom-namespace">Avalonia.Controls.PanAndZoom Namespace</h1>
+<div class="api-dotnet-member-filter" data-api-dotnet-filter>
+<div class="api-dotnet-member-filter-row">
+<label class="api-dotnet-member-filter-label" for="api-dotnet-member-filter-avalonia-controls-panandzoom">Filter types:</label>
+<input id="api-dotnet-member-filter-avalonia-controls-panandzoom" class="form-control form-control-sm api-dotnet-member-filter-input" type="search" placeholder="name, kind, summary" autocomplete="off" spellcheck="false" />
+<div class="api-dotnet-member-filter-status" aria-live="polite"></div>
+</div>
+</div>
+<h2 id="classes">Classes <span class="api-dotnet-count">(9)</span></h2>
+<div class="api-dotnet-members list-group list-group-flush" data-api-dotnet-members="classes">
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.GestureEventArgs/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">GestureEventArgs</code></a><span class="api-dotnet-member-summary">Gesture operation event arguments.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.MatrixChangedEventArgs/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">MatrixChangedEventArgs</code></a><span class="api-dotnet-member-summary">Matrix changed event arguments.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.MatrixHelper/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">MatrixHelper</code></a><span class="api-dotnet-member-summary">Avalonia Matrix helper methods.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.PanEventArgs/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">PanEventArgs</code></a><span class="api-dotnet-member-summary">Pan operation event arguments.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.StretchModeChangedEventArgs/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">StretchModeChangedEventArgs</code></a><span class="api-dotnet-member-summary">Stretch mode changed event arguments.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.ZoomBorder/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ZoomBorder</code></a><span class="api-dotnet-member-summary">Pan and zoom control for Avalonia.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.ZoomBorderState/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ZoomBorderState</code></a><span class="api-dotnet-member-summary">Represents the complete state of a ZoomBorder control for serialization.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.ZoomChangedEventArgs/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ZoomChangedEventArgs</code></a><span class="api-dotnet-member-summary">Zoom changed event arguments.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Class"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.ZoomEventArgs/"><i class="bi bi-box api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ZoomEventArgs</code></a><span class="api-dotnet-member-summary">Zoom operation event arguments.</span></div>
+</div>
+<h2 id="structs">Structs <span class="api-dotnet-count">(2)</span></h2>
+<div class="api-dotnet-members list-group list-group-flush" data-api-dotnet-members="structs">
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Struct"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.SavedView/"><i class="bi bi-boxes api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">SavedView</code></a><span class="api-dotnet-member-summary">Represents a named saved view.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Struct"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.ViewState/"><i class="bi bi-boxes api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ViewState</code></a><span class="api-dotnet-member-summary">Represents a saved view state.</span></div>
+</div>
+<h2 id="enums">Enums <span class="api-dotnet-count">(7)</span></h2>
+<div class="api-dotnet-members list-group list-group-flush" data-api-dotnet-members="enums">
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Enum"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.ButtonName/"><i class="bi bi-list-ul api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ButtonName</code></a><span class="api-dotnet-member-summary">Describes mouse button names.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Enum"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.ContentBoundsMode/"><i class="bi bi-list-ul api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ContentBoundsMode</code></a><span class="api-dotnet-member-summary">Describes how content bounds are restricted during pan and zoom operations.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Enum"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.DoubleClickZoomMode/"><i class="bi bi-list-ul api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">DoubleClickZoomMode</code></a><span class="api-dotnet-member-summary">Describes the behavior of double-click zoom operations.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Enum"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.ResizeBehaviorMode/"><i class="bi bi-list-ul api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ResizeBehaviorMode</code></a><span class="api-dotnet-member-summary">Describes how the view is adjusted when the control is resized.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Enum"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.StretchMode/"><i class="bi bi-list-ul api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">StretchMode</code></a><span class="api-dotnet-member-summary">Describes how content is resized to fill its allocated space.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Enum"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.WheelBehaviorMode/"><i class="bi bi-list-ul api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">WheelBehaviorMode</code></a><span class="api-dotnet-member-summary">Describes the behavior of mouse wheel operations.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Enum"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.ZoomIndicatorPosition/"><i class="bi bi-list-ul api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ZoomIndicatorPosition</code></a><span class="api-dotnet-member-summary">Defines positions for the zoom indicator.</span></div>
+</div>
+<h2 id="delegates">Delegates <span class="api-dotnet-count">(6)</span></h2>
+<div class="api-dotnet-members list-group list-group-flush" data-api-dotnet-members="delegates">
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Delegate"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.GestureEventHandler/"><i class="bi bi-code-slash api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">GestureEventHandler</code></a><span class="api-dotnet-member-summary">Gesture operation event handler.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Delegate"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.MatrixChangedEventHandler/"><i class="bi bi-code-slash api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">MatrixChangedEventHandler</code></a><span class="api-dotnet-member-summary">Matrix changed event handler.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Delegate"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.PanEventHandler/"><i class="bi bi-code-slash api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">PanEventHandler</code></a><span class="api-dotnet-member-summary">Pan operation event handler.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Delegate"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.StretchModeChangedEventHandler/"><i class="bi bi-code-slash api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">StretchModeChangedEventHandler</code></a><span class="api-dotnet-member-summary">Stretch mode changed event handler.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Delegate"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.ZoomChangedEventHandler/"><i class="bi bi-code-slash api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ZoomChangedEventHandler</code></a><span class="api-dotnet-member-summary">Zoom changed event handler.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Delegate"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.Controls.PanAndZoom.ZoomEventHandler/"><i class="bi bi-code-slash api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ZoomEventHandler</code></a><span class="api-dotnet-member-summary">Zoom operation event handler.</span></div>
+</div>
+</div>
+
+      </div>
+  </div>
+</div>
+
+        </section>
+        <footer>
+          <hr>
+          <p>Copyright &copy; 2026, Wieslaw Soltes aka <a href="https://github.com/wieslawsoltes">wieslawsoltes</a> - Content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | Site generated by <a href="https://github.com/lunet-io/lunet">lunet</a> hosted on <a href="https://pages.github.com/">GitHub Pages</a></p>
+        </footer>
+      </div>
+    </div>
+
+  </body>
+</html>

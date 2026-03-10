@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html data-lunet-theme-mode="system" data-lunet-theme-storage-key="lunet-theme" data-lunet-css-prefix="lunet" lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="lunet 1.0.10.0">
+    <script>(function(){const root=document.documentElement;const key=root.getAttribute("data-lunet-theme-storage-key")||"lunet-theme";const fallback=root.getAttribute("data-lunet-theme-mode")||"system";let stored=null;try{stored=localStorage.getItem(key);}catch(_){stored=null;}const mode=(stored==="light"||stored==="dark"||stored==="system")?stored:fallback;const prefersDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;const resolved=mode==="system"?(prefersDark?"dark":"light"):mode;root.setAttribute("data-lunet-theme-mode",mode);root.setAttribute("data-bs-theme",resolved);}());</script>
+    <link rel='icon' href='/PanAndZoom/favicon.ico' sizes='32x32'>
+    <title>GestureSimulator Class | PanAndZoom for Avalonia</title>
+    <link rel="stylesheet" href="/PanAndZoom/css/lite.css">
+    <script src="/PanAndZoom/js/lite-defer.js" defer></script>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@wieslawsoltes">
+<meta name="twitter:title" content="GestureSimulator Class | PanAndZoom for Avalonia">
+<meta name="twitter:description" content="GestureSimulator Class Definition Namespace Avalonia.HeadlessTestingFramework Assembly HeadlessTestingFramework.dll Inherits Object View source Show inherited members (7) System.Object.Equals(System.Object?) System.Object.Equals(System.Object?, System.Object?) System.Object.GetHashCode() System.Object.GetType() System.Object.MemberwiseClone() System.Object.ReferenceEquals(System.Object?, System.Object?) System.Object.ToString() Comprehensive gesture simulator for headless testing of Avalonia controls. Provides methods to simulate all Avalonia gesture events including tap, double-tap, right-tap, holding, pinch, scroll, pull-to-refresh, and touchpad gestures....">
+<meta name="twitter:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
+<meta name="twitter:image:alt" content="GestureSimulator Class | PanAndZoom for Avalonia">
+<meta property="og:title" content="GestureSimulator Class | PanAndZoom for Avalonia">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://wieslawsoltes.github.io/PanAndZoom">
+<meta property="og:description" content="GestureSimulator Class Definition Namespace Avalonia.HeadlessTestingFramework Assembly HeadlessTestingFramework.dll Inherits Object View source Show inherited members (7) System.Object.Equals(System.Object?) System.Object.Equals(System.Object?, System.Object?) System.Object.GetHashCode() System.Object.GetType() System.Object.MemberwiseClone() System.Object.ReferenceEquals(System.Object?, System.Object?) System.Object.ToString() Comprehensive gesture simulator for headless testing of Avalonia controls. Provides methods to simulate all Avalonia gesture events including tap, double-tap, right-tap, holding, pinch, scroll, pull-to-refresh, and touchpad gestures....">
+<meta property="og:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
+<meta property="og:image:alt" content="GestureSimulator Class | PanAndZoom for Avalonia">
+  </head>
+  <body>
+
+    <div id="lunet" class="container">
+      <nav class="navbar navbar-expand-md sticky-top">
+        <a class="navbar-brand" href="/PanAndZoom/">
+          <img class="lunet-logo" src="/PanAndZoom/images/logo.svg" alt="PanAndZoom for Avalonia" width="96" height="96">
+          <span class="visually-hidden">Home</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarSupportedContent" class="collapse navbar-collapse justify-content-between">
+<ol id='nav-id-home-0' class='navbar-nav nav-level0 show '>
+  <li id='nav-item-home-1' class='nav-item '>
+    <span class='nav-item-row'><a href='/PanAndZoom/' class='nav-link  '><i class='bi bi-house-door' aria-hidden='true'></i> Home</a></span>  </li>
+  <li id='nav-item-home-2' class='nav-item '>
+    <span class='nav-item-row'><a href='/PanAndZoom/articles/' class='nav-link  '><i class='bi bi-book' aria-hidden='true'></i> Docs</a></span>  </li>
+  <li id='nav-item-home-3' class='nav-item  active'>
+    <span class='nav-item-row'><a href='/PanAndZoom/api/' class='nav-link  '><i class='bi bi-braces' aria-hidden='true'></i> API</a></span>  </li>
+</ol>
+          <ol class="navbar-nav flex-grow-1" style="padding-right: 0.5rem;">
+            <li class="nav-item w-100">
+                <div class="lunet-search dropdown w-100">
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input id="search-input" type="search" class="form-control" placeholder="Search... (Alt+s)" aria-label="Search" aria-controls="search-results" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-search-empty-message="Enter words to search..." data-search-no-results-message="No results found.">
+                    <ul id="search-results" class="dropdown-menu w-100 p-0" style="max-height: 50vh;" role="listbox" aria-labelledby="search-input"></ul>
+                  </div>
+                </div>
+            </li>
+          </ol>
+          <div class="d-flex align-items-center gap-2 flex-shrink-0 navbar-right">
+            <div class="dropdown">
+              <button
+                id="theme-mode-toggle"
+                class="btn btn-outline-secondary btn-sm lunet-theme-toggle dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                aria-label="Theme">
+                <i class="bi bi-circle-half" data-lunet-theme-toggle-icon aria-hidden="true"></i>
+                <span
+                  data-lunet-theme-toggle-label
+                  data-theme-system-label="System"
+                  data-theme-light-label="Light"
+                  data-theme-dark-label="Dark">Theme</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="theme-mode-toggle">
+                <li><button class="dropdown-item" type="button" data-lunet-theme-choice="system"><i class="bi bi-circle-half me-2"></i>System</button></li>
+                <li><button class="dropdown-item" type="button" data-lunet-theme-choice="light"><i class="bi bi-sun-fill me-2"></i>Light</button></li>
+                <li><button class="dropdown-item" type="button" data-lunet-theme-choice="dark"><i class="bi bi-moon-stars-fill me-2"></i>Dark</button></li>
+              </ul>
+            </div>
+<ol id='nav-id-home2-0' class='navbar-nav nav-level0 show flex-shrink-0'>
+  <li id='nav-item-home2-1' class='nav-item '>
+    <span class='nav-item-row'><a href='https://github.com/wieslawsoltes/PanAndZoom' class='nav-link  btn btn-info'><i class="bi bi-github"></i> GitHub</a></span>  </li>
+</ol>
+          </div>
+        </div>
+      </nav>
+      <div class="lunet lunet-api">
+        <section data-prismjs-copy="" data-prismjs-copy-success="" data-prismjs-copy-timeout="1200" data-copy-tooltip="Copy to Clipboard." data-copy-tooltip-success="Copied!" data-copy-tooltip-error="Failed to copy!">
+
+<div class="container-xxl">
+  <div class="row">
+      <!-- Left sidebar - responsive offcanvas (offcanvas on mobile, visible sidebar on md+) -->
+      <nav id="docs-sidebar-menu" class="col-md-3 col-lg-3 col-xl-3 col-xxl-3 offcanvas-md offcanvas-start sticky-md-top menu-sidebar align-self-start order-1 order-md-0" tabindex="-1" aria-labelledby="docs-sidebar-menu-label" aria-expanded="true">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="docs-sidebar-menu-label">Menu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#docs-sidebar-menu" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class='lunet-menu-async' data-lunet-menu-partial='/PanAndZoom/partials/menus/menu-menu.dfa336f4d84b048a7ebb3946877b1d00.html' data-lunet-menu-open='menu-id-menu-0,menu-id-menu-567,menu-id-menu-479' data-lunet-menu-active='menu-item-menu-567,menu-item-menu-479,menu-item-menu-0'><div class='menu-loading text-body-secondary small'>Loading menu…</div></div>
+        </div>
+      </nav>
+      <!-- Right sidebar (TOC) - collapsible on mobile, visible sidebar on xxl+ -->
+      <aside id="docs-sidebar-toc" class="col-12 col-xxl-2 sticky-xxl-top menu-sidebar align-self-start order-0 order-xxl-2 collapse d-xxl-block" aria-expanded="true">
+        <h3 class="toc-title">On this page</h3>
+        <nav class="js-toc"></nav>
+      </aside>
+      <!-- Main content column -->
+      <div class="col-12 col-md-9 col-lg-9 col-xl-9 col-xxl-7 order-2 order-md-1 js-toc-content">
+        <ol class='breadcrumb'>
+          <li class='breadcrumb-item '>
+            <a href='/PanAndZoom/' class='breadcrumb-link  '><i class='bi bi-house-door' aria-hidden='true'></i> Home</a>  </li>
+          <li class='breadcrumb-item '>
+            <a href='/PanAndZoom/api/' class='breadcrumb-link  '><i class='bi bi-braces' aria-hidden='true'></i> API</a>  </li>
+          <li class='breadcrumb-item '>
+            <a href='/PanAndZoom/api/Avalonia.HeadlessTestingFramework/' class='breadcrumb-link  '><i class='bi bi-diagram-3' aria-hidden='true'></i> Avalonia.HeadlessTestingFramework</a>  </li>
+          <li class='breadcrumb-item  active'>
+            <i class='bi bi-box' aria-hidden='true'></i> GestureSimulator  </li>
+        </ol>
+
+        <p id="lunet-results"></p>
+        <!-- Toggle buttons visible only on small screens -->
+        <div class="d-md-none mb-3">
+          <button
+            class="btn btn-outline-secondary btn-sm me-2"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#docs-sidebar-menu"
+            aria-controls="docs-sidebar-menu"
+            aria-label="Toggle docs menu">
+            Menu
+          </button>
+          <button
+            class="btn btn-outline-secondary btn-sm d-xxl-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#docs-sidebar-toc"
+            aria-controls="docs-sidebar-toc"
+            aria-expanded="false"
+            aria-label="Toggle Table Of Contents">
+            On this page
+          </button>
+        </div>
+<!-- lunet:summarize -->
+<div class="api-dotnet">
+<h1 id="gesturesimulator-class">GestureSimulator Class</h1>
+<h2 id="definition" class="heading-anchor-hidden">Definition</h2>
+<div class="api-dotnet-definition">
+<div class="api-dotnet-definition-header">
+<div class="api-dotnet-definition-meta">
+<div><span class="api-dotnet-label">Namespace</span> <a href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework/">Avalonia.HeadlessTestingFramework</a></div>
+<div><span class="api-dotnet-label">Assembly</span> HeadlessTestingFramework.dll</div>
+<div><span class="api-dotnet-label">Inherits</span> <span class="api-dotnet-inline-list"><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">Object</a></span></div>
+</div>
+<div class="api-dotnet-definition-actions">
+<a class="api-dotnet-action" href="https://github.com/wieslawsoltes/PanAndZoom/blob/master/src/HeadlessTestingFramework/GestureSimulator.cs#L25" target="_blank" rel="noopener">View source</a>
+</div>
+</div>
+<details class="api-dotnet-inherited">
+<summary>Show inherited members (7)</summary>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object.Equals-System.Object">System.Object.Equals(System.Object?)</a></li>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object.Equals-System.Object-System.Object">System.Object.Equals(System.Object?, System.Object?)</a></li>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object.GetHashCode">System.Object.GetHashCode()</a></li>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object.GetType">System.Object.GetType()</a></li>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object.MemberwiseClone">System.Object.MemberwiseClone()</a></li>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object.ReferenceEquals-System.Object-System.Object">System.Object.ReferenceEquals(System.Object?, System.Object?)</a></li>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object.ToString">System.Object.ToString()</a></li>
+</ul>
+</details>
+</div>
+<p>Comprehensive gesture simulator for headless testing of Avalonia controls.
+Provides methods to simulate all Avalonia gesture events including tap, double-tap,
+right-tap, holding, pinch, scroll, pull-to-refresh, and touchpad gestures.</p>
+<pre><code class="language-csharp">public class GestureSimulator
+</code></pre>
+<h2 id="remarks">Remarks</h2>
+<p>Note: Some gesture event args have internal constructors in Avalonia.
+For these cases, we use reflection or alternative approaches.
+TappedEventArgs requires a PointerEventArgs which we create internally.
+ScrollGestureInertiaStartingEventArgs has an internal constructor and cannot be
+directly instantiated from user code - scroll sequences work without inertia events.</p>
+<div class="api-dotnet-member-filter" data-api-dotnet-filter>
+<div class="api-dotnet-member-filter-row">
+<label class="api-dotnet-member-filter-label" for="api-dotnet-member-filter-avalonia-headlesstestingframework-gesturesimulator">Filter members:</label>
+<input id="api-dotnet-member-filter-avalonia-headlesstestingframework-gesturesimulator" class="form-control form-control-sm api-dotnet-member-filter-input" type="search" placeholder="name, kind, summary (e.g. kind:method)" autocomplete="off" spellcheck="false" />
+<div class="api-dotnet-member-filter-status" aria-live="polite"></div>
+</div>
+<div class="form-text api-dotnet-member-filter-help">Tip: use <code>kind:method</code>, <code>kind:property</code>, <code>kind:ctor</code>. Press <kbd>Esc</kbd> to clear.</div>
+</div>
+<h2 id="constructors">Constructors <span class="api-dotnet-count">(1)</span></h2>
+<div class="api-dotnet-members list-group list-group-flush" data-api-dotnet-members="constructors">
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Constructor"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.-ctor/"><i class="bi bi-hammer api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">GestureSimulator()</code></a><span class="api-dotnet-member-summary">Creates a new gesture simulator.</span></div>
+</div>
+<h2 id="properties">Properties <span class="api-dotnet-count">(1)</span></h2>
+<div class="api-dotnet-members list-group list-group-flush" data-api-dotnet-members="properties">
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Property"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.Timestamp/"><i class="bi bi-sliders api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">Timestamp</code></a><span class="api-dotnet-member-summary">Gets the current timestamp.</span></div>
+</div>
+<h2 id="methods">Methods <span class="api-dotnet-count">(31)</span></h2>
+<div class="api-dotnet-members list-group list-group-flush" data-api-dotnet-members="methods">
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.AdvanceTime-System.Int32/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">AdvanceTime(Int32)</code></a><span class="api-dotnet-member-summary">Advances the internal timestamp by the specified number of milliseconds.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.DoubleTap-Avalonia.Interactivity-f9ebc5a079ac/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">DoubleTap(Interactive, Point, PointerType, KeyModifiers)</code></a><span class="api-dotnet-member-summary">Simulates a DoubleTap gesture event.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.DoubleTapZoom-Avalonia.Interacti-5681f35fdad0/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">DoubleTapZoom(Interactive, Point, Double, Int32)</code></a><span class="api-dotnet-member-summary">Simulates a double-tap-and-zoom gesture (common iOS/Android pattern).</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.Flick-Avalonia.Interactivity.Int-08c36522c21c/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">Flick(Interactive, SwipeDirection, Double, Double)</code></a><span class="api-dotnet-member-summary">Simulates a flick/fling gesture (fast swipe with inertia).</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.GetNextGestureId/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">GetNextGestureId()</code></a><span class="api-dotnet-member-summary">Generates a unique gesture ID.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.Hold-Avalonia.Interactivity.Inte-e4300fef8bc7/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">Hold(Interactive, Point, Int32, PointerType)</code></a><span class="api-dotnet-member-summary">Simulates a complete holding gesture sequence (started -> wait -> completed).</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.HoldingCancelled-Avalonia.Intera-1f78f81a93f7/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">HoldingCancelled(Interactive, Point, PointerType)</code></a><span class="api-dotnet-member-summary">Simulates a Holding gesture cancelled event.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.HoldingCompleted-Avalonia.Intera-df66a16d787c/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">HoldingCompleted(Interactive, Point, PointerType)</code></a><span class="api-dotnet-member-summary">Simulates a Holding gesture completed event.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.HoldingStarted-Avalonia.Interact-4381d2512d19/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">HoldingStarted(Interactive, Point, PointerType)</code></a><span class="api-dotnet-member-summary">Simulates a Holding gesture started event (press and hold).</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.Pinch-Avalonia.Interactivity.Int-2a899efc3daf/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">Pinch(Interactive, Double, Point, Double, Double)</code></a><span class="api-dotnet-member-summary">Simulates a Pinch gesture event.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.PinchEnded-Avalonia.Interactivity.Interactive/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">PinchEnded(Interactive)</code></a><span class="api-dotnet-member-summary">Simulates a Pinch gesture ended event.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.PinchRotate-Avalonia.Interactivi-8c2d402bd2d0/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">PinchRotate(Interactive, Point, Double, Double, Int32)</code></a><span class="api-dotnet-member-summary">Simulates a pinch rotation gesture.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.PinchZoom-Avalonia.Interactivity-6e54cbf91e6c/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">PinchZoom(Interactive, Point, Double, Double, Int32, Double, Double)</code></a><span class="api-dotnet-member-summary">Simulates a complete pinch zoom gesture sequence.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.Pull-Avalonia.Interactivity.Inte-e6327895bfe6/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">Pull(Interactive, Vector, PullDirection, Nullable&lt;Int32&gt;)</code></a><span class="api-dotnet-member-summary">Simulates a Pull gesture event (pull-to-refresh style).</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.PullEnded-Avalonia.Interactivity-97544d5b7d98/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">PullEnded(Interactive, Int32, PullDirection)</code></a><span class="api-dotnet-member-summary">Simulates a Pull gesture ended event.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.PullToRefresh-Avalonia.Interacti-d112d2581b9c/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">PullToRefresh(Interactive, PullDirection, Double, Int32)</code></a><span class="api-dotnet-member-summary">Simulates a complete pull-to-refresh gesture sequence.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.Reset/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">Reset()</code></a><span class="api-dotnet-member-summary">Resets the simulator to its initial state.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.RightTap-Avalonia.Interactivity-9fc1f27eb9ca/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">RightTap(Interactive, Point, PointerType, KeyModifiers)</code></a><span class="api-dotnet-member-summary">Simulates a RightTap gesture event (context menu trigger).</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.Scroll-Avalonia.Interactivity.In-76e8f9a31af2/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">Scroll(Interactive, Vector, Nullable&lt;Int32&gt;)</code></a><span class="api-dotnet-member-summary">Simulates a Scroll gesture event.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.ScrollEnded-Avalonia.Interactivi-ee6ff2207f0c/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ScrollEnded(Interactive, Int32)</code></a><span class="api-dotnet-member-summary">Simulates a Scroll gesture ended event.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.ScrollInertiaStarting-Avalonia.I-bd61ce1a4150/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ScrollInertiaStarting(Interactive, Int32, Vector)</code></a><span class="api-dotnet-member-summary">Simulates a Scroll gesture inertia starting event. Note: ScrollGestureInertiaStartingEventArgs has an internal constructor in Avalonia. This method uses reflection to create the event args.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.ScrollSequence-Avalonia.Interact-1687fbc8c4c8/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ScrollSequence(Interactive, Vector, Int32, Boolean, Nullable&lt;Vector&gt;)</code></a><span class="api-dotnet-member-summary">Simulates a complete scroll gesture sequence with optional inertia.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.Tap-Avalonia.Interactivity.Inter-1245b5e40f28/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">Tap(Interactive, Point, PointerType, KeyModifiers)</code></a><span class="api-dotnet-member-summary">Simulates a Tap gesture event. Uses RoutedEventArgs approach since TappedEventArgs requires internal PointerEventArgs.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.TapAndHold-Avalonia.Interactivit-92a28b9a989e/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">TapAndHold(Interactive, Point, Int32, PointerType)</code></a><span class="api-dotnet-member-summary">Simulates a tap-and-hold gesture (tap followed by hold).</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.ThreeFingerSwipe-Avalonia.Intera-48ea5f97b9c2/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">ThreeFingerSwipe(Interactive, Point, SwipeDirection, Double)</code></a><span class="api-dotnet-member-summary">Simulates a three-finger swipe gesture (common for navigation).</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.TouchpadMagnify-Avalonia.Interac-165c91b383e8/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">TouchpadMagnify(Interactive, Vector, Point, KeyModifiers)</code></a><span class="api-dotnet-member-summary">Simulates a touchpad magnify gesture (macOS trackpad pinch-to-zoom).</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.TouchpadMagnifySequence-Avalonia-d4ab6bbf3365/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">TouchpadMagnifySequence(Interactive, Point, Double, Int32, KeyModifiers)</code></a><span class="api-dotnet-member-summary">Simulates a complete touchpad magnify sequence (zoom in or out).</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.TouchpadRotate-Avalonia.Interact-dd6b8f940336/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">TouchpadRotate(Interactive, Double, Point, KeyModifiers)</code></a><span class="api-dotnet-member-summary">Simulates a touchpad rotate gesture (macOS trackpad rotation).</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.TouchpadRotateSequence-Avalonia-8d298cf685ec/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">TouchpadRotateSequence(Interactive, Point, Double, Int32, KeyModifiers)</code></a><span class="api-dotnet-member-summary">Simulates a complete touchpad rotation sequence.</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.TouchpadSwipe-Avalonia.Interacti-93c6a882dd68/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">TouchpadSwipe(Interactive, Vector, Point, KeyModifiers)</code></a><span class="api-dotnet-member-summary">Simulates a touchpad swipe gesture (macOS trackpad multi-finger swipe).</span></div>
+<div class="api-dotnet-member-item list-group-item api-dotnet-member-item-has-link" data-api-kind="Method"><a class="api-dotnet-member-title api-dotnet-member-title-link" href="/PanAndZoom/api/Avalonia.HeadlessTestingFramework.GestureSimulator.TouchpadSwipeSequence-Avalonia.I-f770ae5e2f15/"><i class="bi bi-gear api-dotnet-kind-icon" aria-hidden="true"></i><code class="api-dotnet-member-name">TouchpadSwipeSequence(Interactive, Point, SwipeDirection, Double, Int32, KeyModifiers)</code></a><span class="api-dotnet-member-summary">Simulates a complete touchpad swipe sequence.</span></div>
+</div>
+</div>
+
+      </div>
+  </div>
+</div>
+
+        </section>
+        <footer>
+          <hr>
+          <p>Copyright &copy; 2026, Wieslaw Soltes aka <a href="https://github.com/wieslawsoltes">wieslawsoltes</a> - Content licensed under the Creative Commons <a href="http://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a> | Site generated by <a href="https://github.com/lunet-io/lunet">lunet</a> hosted on <a href="https://pages.github.com/">GitHub Pages</a></p>
+        </footer>
+      </div>
+    </div>
+
+  </body>
+</html>
