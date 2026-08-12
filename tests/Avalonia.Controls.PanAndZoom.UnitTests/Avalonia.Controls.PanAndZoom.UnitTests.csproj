@@ -18,10 +18,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="6.0.4">
+    <PackageReference Include="coverlet.collector" Version="10.0.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Avalonia" Version="12.1.1" />
+    <PackageReference Update="Avalonia.Fonts.Inter" Version="12.1.1" />
+    <PackageReference Update="Avalonia.Headless.XUnit" Version="12.1.1" />
+    <PackageReference Update="Avalonia.Skia" Version="12.1.1" />
+    <PackageReference Update="Avalonia.Themes.Fluent" Version="12.1.1" />
+    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.8.1" />
   </ItemGroup>
 
 </Project>

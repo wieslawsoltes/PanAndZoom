@@ -30,4 +30,12 @@
     <ProjectReference Include="..\..\src\PanAndZoom\PanAndZoom.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="Avalonia" Version="12.1.1" />
+    <PackageReference Update="Avalonia.Fonts.Inter" Version="12.1.1" />
+    <PackageReference Update="Avalonia.Themes.Fluent" Version="12.1.1" />
+    <PackageReference Update="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" />
+    <PackageReference Update="ProDiagnostics" Version="12.1.0.2" />
+  </ItemGroup>
+
 </Project>

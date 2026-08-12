@@ -26,5 +26,10 @@
   <Import Project="..\..\build\ReferenceAssemblies.props" />
   <Import Project="..\..\build\Avalonia.props" />
   <Import Project="..\..\build\Avalonia.Headless.props" />
+  <ItemGroup>
+    <PackageReference Update="Avalonia" Version="12.1.1" />
+    <PackageReference Update="Avalonia.Headless" Version="12.1.1" />
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.400" />
+  </ItemGroup>
 
 </Project>
