@@ -550,7 +550,7 @@ public class AvaloniaElement
     public void SaveScreenshot(string path)
     {
         var bitmap = Screenshot();
-        bitmap?.Save(path);
+        bitmap?.Save(path, PngBitmapEncoderOptions.Default);
     }
 
     #endregion

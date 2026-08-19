@@ -134,11 +134,12 @@ public class GestureRecognizerTestHelper
     public void Down(Interactive target, Interactive source, Point position = default, KeyModifiers modifiers = default)
     {
         _pointer.Capture((IInputElement)target);
+        var (root, rootPosition) = ResolveRootPosition(target, position);
         source.RaiseEvent(new PointerPressedEventArgs(
             source, 
             _pointer, 
-            (Visual)source, 
-            position, 
+            root,
+            rootPosition,
             Timestamp(),
             new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.LeftButtonPressed),
             modifiers));
@@ -189,7 +190,7 @@ public class GestureRecognizerTestHelper
                 InputElement.PointerMovedEvent, 
                 recognizerTarget, 
                 _pointer, 
-                root, 
+                root,
                 rootPosition,
                 Timestamp(), 
                 new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.Other), 
@@ -199,12 +200,13 @@ public class GestureRecognizerTestHelper
         }
         else
         {
+            var (root, rootPosition) = ResolveRootPosition(target, position);
             var e = new PointerEventArgs(
                 InputElement.PointerMovedEvent, 
                 source, 
                 _pointer, 
-                (Visual)target, 
-                position,
+                root,
+                rootPosition,
                 Timestamp(), 
                 new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.Other), 
                 modifiers);
@@ -233,11 +235,12 @@ public class GestureRecognizerTestHelper
     /// <param name="modifiers">Key modifiers.</param>
     public void Up(Interactive target, Interactive source, Point position = default, KeyModifiers modifiers = default)
     {
+        var (root, rootPosition) = ResolveRootPosition(target, position);
         var e = new PointerReleasedEventArgs(
             source, 
             _pointer, 
-            (Visual)target, 
-            position, 
+            root,
+            rootPosition,
             Timestamp(),
             new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonReleased), 
             modifiers, 
@@ -255,6 +258,14 @@ public class GestureRecognizerTestHelper
         }
 
         Cancel();
+    }
+
+    private static (Visual Root, Point Position) ResolveRootPosition(Interactive target, Point position)
+    {
+        var targetVisual = (Visual)target;
+        var root = targetVisual.GetPresentationSource()?.RootVisual as Visual ?? targetVisual;
+        var rootPosition = targetVisual.TransformToVisual(root)?.Transform(position) ?? position;
+        return (root, rootPosition);
     }
 
     /// <summary>

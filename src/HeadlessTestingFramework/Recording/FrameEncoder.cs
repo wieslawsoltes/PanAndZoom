@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 
 namespace Avalonia.HeadlessTestingFramework.Recording;
@@ -152,7 +153,7 @@ public class PngSequenceEncoder : IFrameEncoder
             }
         }
 
-        bitmap.Save(filePath);
+        bitmap.Save(filePath, PngBitmapEncoderOptions.Default);
     }
 
     private static Avalonia.Platform.PixelFormat ConvertPixelFormat(PixelFormat format)
@@ -267,7 +268,7 @@ public class JpegSequenceEncoder : IFrameEncoder
 
         // Save with quality parameter (requires stream-based save)
         using var stream = File.Create(filePath);
-        bitmap.Save(stream, quality);
+        bitmap.Save(stream, new JpegBitmapEncoderOptions { Quality = quality });
     }
 
     private static Avalonia.Platform.PixelFormat ConvertJpegPixelFormat(PixelFormat format)

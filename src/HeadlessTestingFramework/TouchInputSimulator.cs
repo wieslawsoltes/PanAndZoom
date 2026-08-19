@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 
 namespace Avalonia.HeadlessTestingFramework;
 
@@ -495,12 +496,13 @@ public class TouchInputSimulator
     {
         var pointer = CreateTouchPointer(touchId);
         var properties = new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.LeftButtonPressed);
+        var (root, rootPosition) = ResolveRootPosition(target, position);
         
         return new PointerPressedEventArgs(
             target,
             pointer,
-            (Visual)target,
-            position,
+            root,
+            rootPosition,
             _timestamp,
             properties,
             KeyModifiers.None)
@@ -513,13 +515,14 @@ public class TouchInputSimulator
     {
         var pointer = CreateTouchPointer(touchId);
         var properties = new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.Other);
+        var (root, rootPosition) = ResolveRootPosition(target, position);
         
         return new PointerEventArgs(
             InputElement.PointerMovedEvent,
             target,
             pointer,
-            (Visual)target,
-            position,
+            root,
+            rootPosition,
             _timestamp,
             properties,
             KeyModifiers.None);
@@ -529,12 +532,13 @@ public class TouchInputSimulator
     {
         var pointer = CreateTouchPointer(touchId);
         var properties = new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonReleased);
+        var (root, rootPosition) = ResolveRootPosition(target, position);
         
         return new PointerReleasedEventArgs(
             target,
             pointer,
-            (Visual)target,
-            position,
+            root,
+            rootPosition,
             _timestamp,
             properties,
             KeyModifiers.None,
@@ -542,6 +546,14 @@ public class TouchInputSimulator
         {
             RoutedEvent = InputElement.PointerReleasedEvent
         };
+    }
+
+    private static (Visual Root, Point Position) ResolveRootPosition(Interactive target, Point position)
+    {
+        var targetVisual = (Visual)target;
+        var root = targetVisual.GetPresentationSource()?.RootVisual as Visual ?? targetVisual;
+        var rootPosition = targetVisual.TransformToVisual(root)?.Transform(position) ?? position;
+        return (root, rootPosition);
     }
 
     private PointerDeltaEventArgs CreatePointerDeltaEventArgs(Interactive target, Vector delta, Point position, RoutedEvent routedEvent, KeyModifiers modifiers)
