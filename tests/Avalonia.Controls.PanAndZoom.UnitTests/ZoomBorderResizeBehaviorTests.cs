@@ -134,6 +134,72 @@ public class ZoomBorderResizeBehaviorTests
         Assert.Equal(initialOffsetY, zoomBorder.OffsetY);
     }
 
+    [AvaloniaTheory]
+    [InlineData(ResizeBehaviorMode.None)]
+    [InlineData(ResizeBehaviorMode.MaintainCenter)]
+    [InlineData(ResizeBehaviorMode.MaintainTopLeft)]
+    [InlineData(ResizeBehaviorMode.MaintainZoom)]
+    [InlineData(ResizeBehaviorMode.Custom)]
+    public void ResizeBehavior_DoesNotReapplyStretchUnlessRequested(ResizeBehaviorMode resizeBehavior)
+    {
+        var zoomBorder = new ZoomBorder
+        {
+            Width = 400,
+            Height = 300,
+            ResizeBehavior = resizeBehavior,
+            Stretch = StretchMode.Uniform,
+            Child = new Border
+            {
+                Width = 200,
+                Height = 150,
+                Background = Brushes.Red
+            }
+        };
+        var window = new Window { Content = zoomBorder };
+        window.Show();
+        window.UpdateLayout();
+
+        zoomBorder.ZoomTo(1.25, 100, 75, skipTransitions: true);
+        var zoomBeforeResize = zoomBorder.ZoomX;
+
+        zoomBorder.Width = 600;
+        zoomBorder.Height = 450;
+        window.UpdateLayout();
+
+        Assert.Equal(2.5, zoomBeforeResize, 5);
+        Assert.Equal(zoomBeforeResize, zoomBorder.ZoomX, 5);
+        Assert.Equal(zoomBeforeResize, zoomBorder.ZoomY, 5);
+    }
+
+    [AvaloniaFact]
+    public void ChangingStretch_ReappliesTheNewStretchMode()
+    {
+        var zoomBorder = new ZoomBorder
+        {
+            Width = 400,
+            Height = 300,
+            ResizeBehavior = ResizeBehaviorMode.None,
+            Stretch = StretchMode.Uniform,
+            Child = new Border
+            {
+                Width = 200,
+                Height = 100,
+                Background = Brushes.Red
+            }
+        };
+        var window = new Window { Content = zoomBorder };
+        window.Show();
+        window.UpdateLayout();
+
+        Assert.Equal(2.0, zoomBorder.ZoomX, 5);
+
+        zoomBorder.Stretch = StretchMode.UniformToFill;
+        window.UpdateLayout();
+
+        Assert.Equal(3.0, zoomBorder.ZoomX, 5);
+        Assert.Equal(3.0, zoomBorder.ZoomY, 5);
+    }
+
     [AvaloniaFact]
     public void ResizeBehavior_MaintainZoom_PreservesZoomLevelOnResize()
     {
