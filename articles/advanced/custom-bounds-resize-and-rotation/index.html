@@ -12,13 +12,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@wieslawsoltes">
 <meta name="twitter:title" content="Custom Bounds, Resize, and Rotation | PanAndZoom for Avalonia">
-<meta name="twitter:description" content="Custom Bounds, Resize, and Rotation If the built-in behavior is close but not exact, ZoomBorder exposes virtual hooks for custom policy. Extensibility Points GetContentBounds(): return the effective content bounds used for custom constraints ValidateTransform(Matrix newMatrix): veto proposed transforms OnResized(Size oldSize, Size newSize): apply custom resize policy Example: public class CustomZoomBorder : ZoomBorder { protected override Rect GetContentBounds() => base.GetContentBounds(); protected override bool ValidateTransform(Matrix newMatrix) { return base.ValidateTransform(newMatrix); } protected override...">
+<meta name="twitter:description" content="Custom Bounds, Resize, and Rotation If the built-in behavior is close but not exact, ZoomBorder exposes virtual hooks for custom policy. Extensibility Points GetContentBounds(): return the effective bounds in child content coordinates; these bounds constrain panning and define scrollbar extent when BoundsMode=&quot;Custom&quot; ValidateTransform(Matrix newMatrix): accept or veto the final proposed transform InvalidateContentBounds(): reapply constraints and refresh scrollbar state after dynamic custom bounds change OnResized(Size oldSize, Size newSize)...">
 <meta name="twitter:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
 <meta name="twitter:image:alt" content="Custom Bounds, Resize, and Rotation | PanAndZoom for Avalonia">
 <meta property="og:title" content="Custom Bounds, Resize, and Rotation | PanAndZoom for Avalonia">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://wieslawsoltes.github.io/PanAndZoom">
-<meta property="og:description" content="Custom Bounds, Resize, and Rotation If the built-in behavior is close but not exact, ZoomBorder exposes virtual hooks for custom policy. Extensibility Points GetContentBounds(): return the effective content bounds used for custom constraints ValidateTransform(Matrix newMatrix): veto proposed transforms OnResized(Size oldSize, Size newSize): apply custom resize policy Example: public class CustomZoomBorder : ZoomBorder { protected override Rect GetContentBounds() => base.GetContentBounds(); protected override bool ValidateTransform(Matrix newMatrix) { return base.ValidateTransform(newMatrix); } protected override...">
+<meta property="og:description" content="Custom Bounds, Resize, and Rotation If the built-in behavior is close but not exact, ZoomBorder exposes virtual hooks for custom policy. Extensibility Points GetContentBounds(): return the effective bounds in child content coordinates; these bounds constrain panning and define scrollbar extent when BoundsMode=&quot;Custom&quot; ValidateTransform(Matrix newMatrix): accept or veto the final proposed transform InvalidateContentBounds(): reapply constraints and refresh scrollbar state after dynamic custom bounds change OnResized(Size oldSize, Size newSize)...">
 <meta property="og:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
 <meta property="og:image:alt" content="Custom Bounds, Resize, and Rotation | PanAndZoom for Avalonia">
   </head>
@@ -157,26 +157,40 @@
 <p>If the built-in behavior is close but not exact, <code>ZoomBorder</code> exposes virtual hooks for custom policy.</p>
 <h2 id="extensibility-points">Extensibility Points</h2>
 <ul>
-<li><code>GetContentBounds()</code>: return the effective content bounds used for custom constraints</li>
-<li><code>ValidateTransform(Matrix newMatrix)</code>: veto proposed transforms</li>
+<li><code>GetContentBounds()</code>: return the effective bounds in child content coordinates; these bounds constrain panning and define scrollbar extent when <code>BoundsMode=&quot;Custom&quot;</code></li>
+<li><code>ValidateTransform(Matrix newMatrix)</code>: accept or veto the final proposed transform</li>
+<li><code>InvalidateContentBounds()</code>: reapply constraints and refresh scrollbar state after dynamic custom bounds change</li>
 <li><code>OnResized(Size oldSize, Size newSize)</code>: apply custom resize policy</li>
 </ul>
-<p>Example:</p>
+<h2 id="large-panning-area-with-scrollbars">Large Panning Area With Scrollbars</h2>
+<p><code>Custom</code> uses a finite content-coordinate rectangle. Returning a rectangle larger than the child creates extra navigable space while keeping scrollbar positions meaningful:</p>
 <pre><code class="language-csharp">public class CustomZoomBorder : ZoomBorder
 {
-    protected override Rect GetContentBounds() =&gt; base.GetContentBounds();
+    private Rect _navigationBounds = new(-5000, -5000, 10000, 10000);
+
+    protected override Rect GetContentBounds() =&gt; _navigationBounds;
 
     protected override bool ValidateTransform(Matrix newMatrix)
     {
-        return base.ValidateTransform(newMatrix);
+        return newMatrix.M11 is &gt;= 0.1 and &lt;= 20;
     }
 
-    protected override void OnResized(Size oldSize, Size newSize)
+    public void SetNavigationBounds(Rect bounds)
     {
-        base.OnResized(oldSize, newSize);
+        _navigationBounds = bounds;
+        InvalidateContentBounds();
     }
 }
 </code></pre>
+<pre><code class="language-xml">&lt;ScrollViewer HorizontalScrollBarVisibility=&quot;Auto&quot;
+              VerticalScrollBarVisibility=&quot;Auto&quot;&gt;
+  &lt;local:CustomZoomBorder BoundsMode=&quot;Custom&quot;
+                          Stretch=&quot;None&quot;&gt;
+    &lt;!-- content --&gt;
+  &lt;/local:CustomZoomBorder&gt;
+&lt;/ScrollViewer&gt;
+</code></pre>
+<p>Panning remains bounded by the returned rectangle. Truly infinite panning cannot be represented by finite scrollbars; choose bounds large enough for the application’s workspace.</p>
 <h2 id="when-to-override">When To Override</h2>
 <ul>
 <li>content bounds depend on domain data rather than only the child's measured bounds</li>

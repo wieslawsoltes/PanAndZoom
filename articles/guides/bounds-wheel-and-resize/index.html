@@ -12,13 +12,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@wieslawsoltes">
 <meta name="twitter:title" content="Bounds, Wheel, and Resize | PanAndZoom for Avalonia">
-<meta name="twitter:description" content="Bounds, Wheel, and Resize This guide covers the knobs that make ZoomBorder feel predictable in real applications. Bounds Modes BoundsMode controls how the viewport is constrained: Unrestricted KeepContentVisible FillViewport KeepCentered Custom Additional supporting properties: BoundsPadding MinimumVisibleContentPercentage EnableConstrains Use Custom only if you plan to override GetContentBounds() or ValidateTransform(...). Wheel Behavior Wheel input is configurable instead of being hard-coded: zoomBorder.WheelBehavior = WheelBehaviorMode.Zoom; zoomBorder.WheelWithCtrl = WheelBehaviorMode.Zoom; zoomBorder.WheelWithShift = WheelBehaviorMode.PanHorizontal; zoomBorder.WheelZoomSensitivity = 1.0;...">
+<meta name="twitter:description" content="Bounds, Wheel, and Resize This guide covers the knobs that make ZoomBorder feel predictable in real applications. Bounds Modes BoundsMode controls how the viewport is constrained: Unrestricted KeepContentVisible FillViewport KeepCentered Custom Additional supporting properties: BoundsPadding MinimumVisibleContentPercentage EnableConstrains Use Custom when a subclass overrides GetContentBounds() or ValidateTransform(...). The returned rectangle is expressed in child content coordinates and drives both pan constraints and logical scrollbar extent. See Custom Bounds, Resize, and Rotation...">
 <meta name="twitter:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
 <meta name="twitter:image:alt" content="Bounds, Wheel, and Resize | PanAndZoom for Avalonia">
 <meta property="og:title" content="Bounds, Wheel, and Resize | PanAndZoom for Avalonia">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://wieslawsoltes.github.io/PanAndZoom">
-<meta property="og:description" content="Bounds, Wheel, and Resize This guide covers the knobs that make ZoomBorder feel predictable in real applications. Bounds Modes BoundsMode controls how the viewport is constrained: Unrestricted KeepContentVisible FillViewport KeepCentered Custom Additional supporting properties: BoundsPadding MinimumVisibleContentPercentage EnableConstrains Use Custom only if you plan to override GetContentBounds() or ValidateTransform(...). Wheel Behavior Wheel input is configurable instead of being hard-coded: zoomBorder.WheelBehavior = WheelBehaviorMode.Zoom; zoomBorder.WheelWithCtrl = WheelBehaviorMode.Zoom; zoomBorder.WheelWithShift = WheelBehaviorMode.PanHorizontal; zoomBorder.WheelZoomSensitivity = 1.0;...">
+<meta property="og:description" content="Bounds, Wheel, and Resize This guide covers the knobs that make ZoomBorder feel predictable in real applications. Bounds Modes BoundsMode controls how the viewport is constrained: Unrestricted KeepContentVisible FillViewport KeepCentered Custom Additional supporting properties: BoundsPadding MinimumVisibleContentPercentage EnableConstrains Use Custom when a subclass overrides GetContentBounds() or ValidateTransform(...). The returned rectangle is expressed in child content coordinates and drives both pan constraints and logical scrollbar extent. See Custom Bounds, Resize, and Rotation...">
 <meta property="og:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
 <meta property="og:image:alt" content="Bounds, Wheel, and Resize | PanAndZoom for Avalonia">
   </head>
@@ -174,7 +174,7 @@
 <li><code>MinimumVisibleContentPercentage</code></li>
 <li><code>EnableConstrains</code></li>
 </ul>
-<p>Use <code>Custom</code> only if you plan to override <code>GetContentBounds()</code> or <code>ValidateTransform(...)</code>.</p>
+<p>Use <code>Custom</code> when a subclass overrides <code>GetContentBounds()</code> or <code>ValidateTransform(...)</code>. The returned rectangle is expressed in child content coordinates and drives both pan constraints and logical scrollbar extent. See <a href="/PanAndZoom/articles/advanced/custom-bounds-resize-and-rotation">Custom Bounds, Resize, and Rotation</a> for a large-workspace example.</p>
 <h2 id="wheel-behavior">Wheel Behavior</h2>
 <p>Wheel input is configurable instead of being hard-coded:</p>
 <pre><code class="language-csharp">zoomBorder.WheelBehavior = WheelBehaviorMode.Zoom;
