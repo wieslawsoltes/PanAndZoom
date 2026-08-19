@@ -601,7 +601,7 @@ public class AvaloniaDriver : IDisposable
     public void SaveScreenshot(string path)
     {
         var bitmap = Screenshot();
-        bitmap?.Save(path);
+        bitmap?.Save(path, PngBitmapEncoderOptions.Default);
     }
 
     /// <summary>
@@ -615,7 +615,7 @@ public class AvaloniaDriver : IDisposable
             return null;
 
         using var stream = new MemoryStream();
-        bitmap.Save(stream);
+        bitmap.Save(stream, PngBitmapEncoderOptions.Default);
         return Convert.ToBase64String(stream.ToArray());
     }
 
