@@ -28,7 +28,9 @@ public enum ContentBoundsMode
     KeepCentered,
 
     /// <summary>
-    /// Use custom bounds logic via virtual method.
+    /// Restrict the viewport and calculate scrollbar extents from the rectangle returned by
+    /// <see cref="ZoomBorder.GetContentBounds"/>. Subclasses can additionally veto the final
+    /// transform by overriding <see cref="ZoomBorder.ValidateTransform"/>.
     /// </summary>
     Custom
 }

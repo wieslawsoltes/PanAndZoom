@@ -85,6 +85,7 @@ public partial class ZoomBorder : Border
     private double _lastPinchScale = 1.0;
     private bool _autoFitPending = true;
     private Animation.TransformOperationsTransition? _animationTransition;
+    private Matrix _lastValidMatrix = Matrix.Identity;
 
     // Zoom indicator
     private DispatcherTimer? _zoomIndicatorTimer;
@@ -132,6 +133,9 @@ public partial class ZoomBorder : Border
         this.GetObservable(StretchProperty).Subscribe(new AnonymousObserver<StretchMode>(_ => _autoFitPending = true));
         this.GetObservable(EnableAnimationsProperty).Subscribe(new AnonymousObserver<bool>(_ => UpdateAnimationTransition()));
         this.GetObservable(AnimationDurationProperty).Subscribe(new AnonymousObserver<TimeSpan>(_ => UpdateAnimationTransition()));
+        this.GetObservable(BoundsModeProperty).Subscribe(new AnonymousObserver<ContentBoundsMode>(_ => Invalidate(skipTransitions: true)));
+        this.GetObservable(BoundsPaddingProperty).Subscribe(new AnonymousObserver<Thickness>(_ => Invalidate(skipTransitions: true)));
+        this.GetObservable(MinimumVisibleContentPercentageProperty).Subscribe(new AnonymousObserver<double>(_ => Invalidate(skipTransitions: true)));
     }
 
     /// <summary>
@@ -1939,6 +1943,14 @@ public partial class ZoomBorder : Border
 
         // Apply content bounds restriction
         ApplyContentBoundsRestriction();
+
+        if (BoundsMode == ContentBoundsMode.Custom && !ValidateTransform(_matrix))
+        {
+            _matrix = _lastValidMatrix;
+            return;
+        }
+
+        _lastValidMatrix = _matrix;
     }
 
     private void ApplyContentBoundsRestriction()
@@ -1973,7 +1985,18 @@ public partial class ZoomBorder : Border
     /// <returns>The content bounds rectangle.</returns>
     protected virtual Rect GetContentBounds()
     {
-        return _element?.Bounds ?? new Rect();
+        return _element == null
+            ? default
+            : new Rect(0, 0, _element.Bounds.Width, _element.Bounds.Height);
+    }
+
+    /// <summary>
+    /// Reapplies custom bounds restrictions and refreshes the logical scroll state.
+    /// Call this from a subclass when the value returned by <see cref="GetContentBounds"/> changes.
+    /// </summary>
+    protected void InvalidateContentBounds()
+    {
+        Invalidate(skipTransitions: true);
     }
 
     /// <summary>
@@ -2104,8 +2127,49 @@ public partial class ZoomBorder : Border
 
     private void ApplyCustomBounds(Rect customBounds)
     {
-        // Subclasses can override GetContentBounds and ValidateTransform
-        // for custom bounds logic
+        if (_element == null || customBounds.Width <= 0 || customBounds.Height <= 0)
+        {
+            return;
+        }
+
+        var transformedBounds = TransformContentToViewport(customBounds, LayoutOffset, _matrix);
+        var viewportWidth = Bounds.Width;
+        var viewportHeight = Bounds.Height;
+        var padding = BoundsPadding;
+
+        var targetX = transformedBounds.X;
+        if (transformedBounds.Width <= viewportWidth)
+        {
+            targetX = (viewportWidth - transformedBounds.Width) / 2.0;
+        }
+        else
+        {
+            targetX = ClampValue(
+                transformedBounds.X,
+                viewportWidth - transformedBounds.Width - padding.Left,
+                padding.Right);
+        }
+
+        var targetY = transformedBounds.Y;
+        if (transformedBounds.Height <= viewportHeight)
+        {
+            targetY = (viewportHeight - transformedBounds.Height) / 2.0;
+        }
+        else
+        {
+            targetY = ClampValue(
+                transformedBounds.Y,
+                viewportHeight - transformedBounds.Height - padding.Top,
+                padding.Bottom);
+        }
+
+        _matrix = new Matrix(
+            _matrix.M11,
+            _matrix.M12,
+            _matrix.M21,
+            _matrix.M22,
+            _matrix.M31 + targetX - transformedBounds.X,
+            _matrix.M32 + targetY - transformedBounds.Y);
     }
 
     /// <summary>
@@ -2125,6 +2189,10 @@ public partial class ZoomBorder : Border
         if (EnableConstrains)
         {
             Constrain();
+        }
+        else
+        {
+            _lastValidMatrix = _matrix;
         }
 
         InvalidateProperties();
