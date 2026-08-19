@@ -22,7 +22,7 @@ Additional supporting properties:
 - `MinimumVisibleContentPercentage`
 - `EnableConstrains`
 
-Use `Custom` only if you plan to override `GetContentBounds()` or `ValidateTransform(...)`.
+Use `Custom` when a subclass overrides `GetContentBounds()` or `ValidateTransform(...)`. The returned rectangle is expressed in child content coordinates and drives both pan constraints and logical scrollbar extent. See [Custom Bounds, Resize, and Rotation](../advanced/custom-bounds-resize-and-rotation.md) for a large-workspace example.
 
 ## Wheel Behavior
 

@@ -38,12 +38,35 @@ public partial class ZoomBorder : ILogicalScrollable
         // The content itself is in a coordinate system from (0,0) to (Width,Height).
         // Only the content bounds get transformed by the matrix.
         
+        var layoutOffset = source.Position;
+        var contentBounds = new Rect(0, 0, source.Width, source.Height);
+        CalculateScrollable(contentBounds, layoutOffset, borderSize, matrix, out extent, out viewport, out offset);
+    }
+
+    /// <summary>
+    /// Calculate scrollable properties for content-coordinate bounds and a separate layout offset.
+    /// </summary>
+    /// <param name="contentBounds">The effective bounds in content coordinates.</param>
+    /// <param name="layoutOffset">The layout position of the child inside the ZoomBorder.</param>
+    /// <param name="borderSize">The size of the ZoomBorder viewport.</param>
+    /// <param name="matrix">The transform matrix.</param>
+    /// <param name="extent">The extent of the scrollable content.</param>
+    /// <param name="viewport">The size of the viewport.</param>
+    /// <param name="offset">The current scroll offset.</param>
+    public static void CalculateScrollable(
+        Rect contentBounds,
+        Point layoutOffset,
+        Size borderSize,
+        Matrix matrix,
+        out Size extent,
+        out Size viewport,
+        out Vector offset)
+    {
         viewport = borderSize;
 
-        // Use helper to transform content bounds to viewport coordinates (accounts for layout offset)
-        var transformed = TransformContentToViewport(source, matrix);
+        var transformed = TransformContentToViewport(contentBounds, layoutOffset, matrix);
         
-        Log($"[CalculateScrollable] source: {source}, transformed: {transformed}");
+        Log($"[CalculateScrollable] contentBounds: {contentBounds}, layoutOffset: {layoutOffset}, transformed: {transformed}");
 
         var width = transformed.Size.Width;
         var height = transformed.Size.Height;
@@ -322,7 +345,11 @@ public partial class ZoomBorder : ILogicalScrollable
             return;
         }
 
-        CalculateScrollable(_element.Bounds, this.Bounds.Size, _matrix, out var extent, out var viewport, out var offset);
+        var contentBounds = BoundsMode == ContentBoundsMode.Custom
+            ? GetContentBounds()
+            : new Rect(0, 0, _element.Bounds.Width, _element.Bounds.Height);
+
+        CalculateScrollable(contentBounds, LayoutOffset, Bounds.Size, _matrix, out var extent, out var viewport, out var offset);
 
         Log($"[InvalidateScrollable] _element.Bounds: {_element.Bounds}, _matrix: {_matrix}");
         Log($"[InvalidateScrollable] _extent: {_extent}, extent: {extent}, diff: {extent - _extent}");

@@ -1,6 +1,7 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Headless.XUnit;
 using Avalonia.Media;
 using Xunit;
@@ -315,4 +316,141 @@ public class ZoomBorderContentBoundsTests
         // Assert - Custom bounds mode doesn't throw
         Assert.NotNull(zoomBorder);
     }
+
+    [AvaloniaFact]
+    public void BoundsMode_Custom_ConstrainsPanningToReturnedBounds()
+    {
+        var zoomBorder = new CustomBoundsZoomBorder
+        {
+            Width = 400,
+            Height = 300,
+            Stretch = StretchMode.None,
+            BoundsMode = ContentBoundsMode.Custom,
+            EnableConstrains = true,
+            CustomBounds = new Rect(-1000, -1000, 2200, 2150),
+            Child = new Border
+            {
+                Width = 200,
+                Height = 150,
+                Background = Brushes.Red
+            }
+        };
+        var window = new Window { Content = zoomBorder };
+        window.Show();
+        window.UpdateLayout();
+
+        zoomBorder.Pan(5000, 5000, skipTransitions: true);
+
+        Assert.Equal(900, zoomBorder.OffsetX, 5);
+        Assert.Equal(925, zoomBorder.OffsetY, 5);
+
+        zoomBorder.Pan(-5000, -5000, skipTransitions: true);
+
+        Assert.Equal(-900, zoomBorder.OffsetX, 5);
+        Assert.Equal(-925, zoomBorder.OffsetY, 5);
+    }
+
+    [AvaloniaFact]
+    public void BoundsMode_Custom_UsesReturnedBoundsForScrollbarState()
+    {
+        var zoomBorder = new CustomBoundsZoomBorder
+        {
+            Width = 400,
+            Height = 300,
+            Stretch = StretchMode.None,
+            BoundsMode = ContentBoundsMode.Custom,
+            EnableConstrains = true,
+            CustomBounds = new Rect(-1000, -1000, 2200, 2150),
+            Child = new Border
+            {
+                Width = 200,
+                Height = 150,
+                Background = Brushes.Red
+            }
+        };
+        var window = new Window { Content = zoomBorder };
+        window.Show();
+        window.UpdateLayout();
+
+        var scrollable = (IScrollable)zoomBorder;
+
+        Assert.Equal(new Size(2200, 2150), scrollable.Extent);
+        Assert.Equal(new Size(400, 300), scrollable.Viewport);
+        Assert.Equal(new Vector(900, 925), scrollable.Offset);
+    }
+
+    [AvaloniaFact]
+    public void BoundsMode_Custom_ValidateTransformCanRejectTransform()
+    {
+        var zoomBorder = new CustomBoundsZoomBorder
+        {
+            Width = 400,
+            Height = 300,
+            Stretch = StretchMode.None,
+            BoundsMode = ContentBoundsMode.Custom,
+            EnableConstrains = true,
+            MaximumAcceptedZoom = 2,
+            CustomBounds = new Rect(-1000, -1000, 2200, 2150),
+            Child = new Border
+            {
+                Width = 200,
+                Height = 150,
+                Background = Brushes.Red
+            }
+        };
+        var window = new Window { Content = zoomBorder };
+        window.Show();
+        window.UpdateLayout();
+
+        zoomBorder.ZoomTo(3, 100, 75, skipTransitions: true);
+
+        Assert.Equal(1, zoomBorder.ZoomX, 5);
+        Assert.Equal(1, zoomBorder.ZoomY, 5);
+        Assert.Equal(0, zoomBorder.OffsetX, 5);
+        Assert.Equal(0, zoomBorder.OffsetY, 5);
+    }
+
+    [AvaloniaFact]
+    public void BoundsMode_Custom_CanRefreshDynamicBounds()
+    {
+        var zoomBorder = new CustomBoundsZoomBorder
+        {
+            Width = 400,
+            Height = 300,
+            Stretch = StretchMode.None,
+            BoundsMode = ContentBoundsMode.Custom,
+            EnableConstrains = true,
+            CustomBounds = new Rect(-1000, -1000, 2200, 2150),
+            Child = new Border
+            {
+                Width = 200,
+                Height = 150,
+                Background = Brushes.Red
+            }
+        };
+        var window = new Window { Content = zoomBorder };
+        window.Show();
+        window.UpdateLayout();
+        var scrollable = (IScrollable)zoomBorder;
+        Assert.Equal(new Size(2200, 2150), scrollable.Extent);
+
+        zoomBorder.CustomBounds = new Rect(0, 0, 200, 150);
+        zoomBorder.RefreshCustomBounds();
+
+        Assert.Equal(new Size(400, 300), scrollable.Extent);
+        Assert.Equal(new Vector(0, 0), scrollable.Offset);
+    }
+}
+
+internal sealed class CustomBoundsZoomBorder : ZoomBorder
+{
+    public Rect CustomBounds { get; set; }
+
+    public double MaximumAcceptedZoom { get; set; } = double.PositiveInfinity;
+
+    protected override Rect GetContentBounds() => CustomBounds;
+
+    protected override bool ValidateTransform(Matrix newMatrix) => newMatrix.M11 <= MaximumAcceptedZoom;
+
+    public void RefreshCustomBounds() => InvalidateContentBounds();
 }

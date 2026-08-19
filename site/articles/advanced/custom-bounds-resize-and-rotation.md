@@ -8,28 +8,46 @@ If the built-in behavior is close but not exact, `ZoomBorder` exposes virtual ho
 
 ## Extensibility Points
 
-- `GetContentBounds()`: return the effective content bounds used for custom constraints
-- `ValidateTransform(Matrix newMatrix)`: veto proposed transforms
+- `GetContentBounds()`: return the effective bounds in child content coordinates; these bounds constrain panning and define scrollbar extent when `BoundsMode="Custom"`
+- `ValidateTransform(Matrix newMatrix)`: accept or veto the final proposed transform
+- `InvalidateContentBounds()`: reapply constraints and refresh scrollbar state after dynamic custom bounds change
 - `OnResized(Size oldSize, Size newSize)`: apply custom resize policy
 
-Example:
+## Large Panning Area With Scrollbars
+
+`Custom` uses a finite content-coordinate rectangle. Returning a rectangle larger than the child creates extra navigable space while keeping scrollbar positions meaningful:
 
 ```csharp
 public class CustomZoomBorder : ZoomBorder
 {
-    protected override Rect GetContentBounds() => base.GetContentBounds();
+    private Rect _navigationBounds = new(-5000, -5000, 10000, 10000);
+
+    protected override Rect GetContentBounds() => _navigationBounds;
 
     protected override bool ValidateTransform(Matrix newMatrix)
     {
-        return base.ValidateTransform(newMatrix);
+        return newMatrix.M11 is >= 0.1 and <= 20;
     }
 
-    protected override void OnResized(Size oldSize, Size newSize)
+    public void SetNavigationBounds(Rect bounds)
     {
-        base.OnResized(oldSize, newSize);
+        _navigationBounds = bounds;
+        InvalidateContentBounds();
     }
 }
 ```
+
+```xml
+<ScrollViewer HorizontalScrollBarVisibility="Auto"
+              VerticalScrollBarVisibility="Auto">
+  <local:CustomZoomBorder BoundsMode="Custom"
+                          Stretch="None">
+    <!-- content -->
+  </local:CustomZoomBorder>
+</ScrollViewer>
+```
+
+Panning remains bounded by the returned rectangle. Truly infinite panning cannot be represented by finite scrollbars; choose bounds large enough for the application’s workspace.
 
 ## When To Override
 
