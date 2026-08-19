@@ -83,6 +83,7 @@ public partial class ZoomBorder : Border
     // Pinch tracking
     private bool _pinchActive;
     private double _lastPinchScale = 1.0;
+    private bool _autoFitPending = true;
 
     // Zoom indicator
     private DispatcherTimer? _zoomIndicatorTimer;
@@ -127,6 +128,7 @@ public partial class ZoomBorder : Border
         
         // Subscribe to EnableGestures property changes
         this.GetObservable(EnableGesturesProperty).Subscribe(new AnonymousObserver<bool>(_ => UpdateGestureRecognizers()));
+        this.GetObservable(StretchProperty).Subscribe(new AnonymousObserver<StretchMode>(_ => _autoFitPending = true));
     }
 
     /// <summary>
@@ -210,7 +212,11 @@ public partial class ZoomBorder : Border
             return size;
         }
 
-        AutoFit(size.Width, size.Height, _element.Bounds.Width, _element.Bounds.Height);
+        if (_autoFitPending)
+        {
+            AutoFit(size.Width, size.Height, _element.Bounds.Width, _element.Bounds.Height);
+            _autoFitPending = false;
+        }
 
         return size;
     }
@@ -820,6 +826,7 @@ public partial class ZoomBorder : Border
 
         _element = element;
         _element.PropertyChanged += Element_PropertyChanged;
+        _autoFitPending = true;
         
         // Notify commands that element is now available
         RaiseCommandsCanExecuteChanged();
@@ -835,6 +842,7 @@ public partial class ZoomBorder : Border
         _element.PropertyChanged -= Element_PropertyChanged;
         _element.RenderTransform = null;
         _element = null;
+        _autoFitPending = true;
         
         // Notify commands that element is no longer available
         RaiseCommandsCanExecuteChanged();
