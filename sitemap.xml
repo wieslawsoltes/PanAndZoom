@@ -1,47 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/reference/namespace-panandzoom</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/guides/centering-and-zoom-to-rectangle</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/headless-testing/tree-helpers</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/headless-testing</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/guides</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/headless-testing/appium-like-api</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/advanced</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/guides/rotation-grid-and-visibility</loc>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/reference/api-coverage-index</loc>
     <lastmod>2026-08-19</lastmod>
   </url>
   <url>
     <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/headless-testing/input-simulators</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/headless-testing/recording-and-video</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/guides/commands-and-keyboard</loc>
     <lastmod>2026-08-19</lastmod>
   </url>
   <url>
@@ -53,15 +17,59 @@
     <lastmod>2026-08-19</lastmod>
   </url>
   <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/headless-testing/recording-and-video</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/reference/namespace-recording-and-appium</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/headless-testing/appium-like-api</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
     <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/reference</loc>
     <lastmod>2026-08-19</lastmod>
   </url>
   <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom</loc>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/headless-testing</loc>
     <lastmod>2026-08-19</lastmod>
   </url>
   <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/guides/troubleshooting</loc>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/reference/namespace-panandzoom</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/reference/lunet-docs-pipeline</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/headless-testing/tree-helpers</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/license</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/reference/license</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/samples</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/advanced/custom-bounds-resize-and-rotation</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/advanced/diagnostics-and-testing</loc>
     <lastmod>2026-08-19</lastmod>
   </url>
   <url>
@@ -69,7 +77,19 @@
     <lastmod>2026-08-19</lastmod>
   </url>
   <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/reference/api-coverage-index</loc>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/advanced</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/reference/namespace-headless-testingframework</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/guides</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/guides/commands-and-keyboard</loc>
     <lastmod>2026-08-19</lastmod>
   </url>
   <url>
@@ -77,7 +97,11 @@
     <lastmod>2026-08-19</lastmod>
   </url>
   <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/getting-started/quickstart-headless-testing</loc>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/guides/rotation-grid-and-visibility</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/guides/troubleshooting</loc>
     <lastmod>2026-08-19</lastmod>
   </url>
   <url>
@@ -85,7 +109,23 @@
     <lastmod>2026-08-19</lastmod>
   </url>
   <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/getting-started/quickstart-headless-testing</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
     <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/getting-started/overview</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/getting-started/quickstart-zoom-border</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/getting-started</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/concepts/interaction-model</loc>
     <lastmod>2026-08-19</lastmod>
   </url>
   <url>
@@ -101,51 +141,11 @@
     <lastmod>2026-08-19</lastmod>
   </url>
   <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/concepts/interaction-model</loc>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/guides/centering-and-zoom-to-rectangle</loc>
     <lastmod>2026-08-19</lastmod>
   </url>
   <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/getting-started/quickstart-zoom-border</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/reference/namespace-recording-and-appium</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/reference/license</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/reference/lunet-docs-pipeline</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/getting-started</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/samples</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/reference/namespace-headless-testingframework</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/advanced/custom-bounds-resize-and-rotation</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/license</loc>
-    <lastmod>2026-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom/articles/advanced/diagnostics-and-testing</loc>
+    <loc>https://wieslawsoltes.github.io/PanAndZoom/PanAndZoom</loc>
     <lastmod>2026-08-19</lastmod>
   </url>
 </urlset>
