@@ -84,6 +84,7 @@ public partial class ZoomBorder : Border
     private bool _pinchActive;
     private double _lastPinchScale = 1.0;
     private bool _autoFitPending = true;
+    private Animation.TransformOperationsTransition? _animationTransition;
 
     // Zoom indicator
     private DispatcherTimer? _zoomIndicatorTimer;
@@ -129,6 +130,8 @@ public partial class ZoomBorder : Border
         // Subscribe to EnableGestures property changes
         this.GetObservable(EnableGesturesProperty).Subscribe(new AnonymousObserver<bool>(_ => UpdateGestureRecognizers()));
         this.GetObservable(StretchProperty).Subscribe(new AnonymousObserver<StretchMode>(_ => _autoFitPending = true));
+        this.GetObservable(EnableAnimationsProperty).Subscribe(new AnonymousObserver<bool>(_ => UpdateAnimationTransition()));
+        this.GetObservable(AnimationDurationProperty).Subscribe(new AnonymousObserver<TimeSpan>(_ => UpdateAnimationTransition()));
     }
 
     /// <summary>
@@ -549,11 +552,11 @@ public partial class ZoomBorder : Border
         switch (DoubleClickZoomMode)
         {
             case DoubleClickZoomMode.ZoomIn:
-                ZoomTo(DoubleClickZoomFactor, point.X, point.Y, ShouldAnimate());
+                ZoomTo(DoubleClickZoomFactor, point.X, point.Y, ShouldSkipTransitions());
                 break;
 
             case DoubleClickZoomMode.ZoomOut:
-                ZoomTo(1.0 / DoubleClickZoomFactor, point.X, point.Y, ShouldAnimate());
+                ZoomTo(1.0 / DoubleClickZoomFactor, point.X, point.Y, ShouldSkipTransitions());
                 break;
 
             case DoubleClickZoomMode.ZoomInOut:
@@ -561,17 +564,17 @@ public partial class ZoomBorder : Border
                 if (_zoomX >= _doubleClickZoomThreshold)
                 {
                     // Zoom out or reset
-                    ResetMatrix(ShouldAnimate());
+                    ResetMatrix(ShouldSkipTransitions());
                 }
                 else
                 {
                     // Zoom in
-                    ZoomTo(DoubleClickZoomFactor, point.X, point.Y, ShouldAnimate());
+                    ZoomTo(DoubleClickZoomFactor, point.X, point.Y, ShouldSkipTransitions());
                 }
                 break;
 
             case DoubleClickZoomMode.ZoomToFit:
-                AutoFit(ShouldAnimate());
+                AutoFit(ShouldSkipTransitions());
                 break;
 
             case DoubleClickZoomMode.None:
@@ -602,7 +605,7 @@ public partial class ZoomBorder : Border
                 else
                 {
                     // Left arrow: Pan left
-                    PanDelta(-KeyboardPanStep, 0, ShouldAnimate());
+                    PanDelta(-KeyboardPanStep, 0, ShouldSkipTransitions());
                 }
                 break;
 
@@ -618,18 +621,18 @@ public partial class ZoomBorder : Border
                 else
                 {
                     // Right arrow: Pan right
-                    PanDelta(KeyboardPanStep, 0, ShouldAnimate());
+                    PanDelta(KeyboardPanStep, 0, ShouldSkipTransitions());
                 }
                 break;
 
             case Key.Up:
                 // Up arrow: Pan up
-                PanDelta(0, -KeyboardPanStep, ShouldAnimate());
+                PanDelta(0, -KeyboardPanStep, ShouldSkipTransitions());
                 break;
 
             case Key.Down:
                 // Down arrow: Pan down
-                PanDelta(0, KeyboardPanStep, ShouldAnimate());
+                PanDelta(0, KeyboardPanStep, ShouldSkipTransitions());
                 break;
 
             case Key.Add:
@@ -639,7 +642,7 @@ public partial class ZoomBorder : Border
                 {
                     var centerX = _element.Bounds.Width / 2.0;
                     var centerY = _element.Bounds.Height / 2.0;
-                    ZoomTo(KeyboardZoomStep, centerX, centerY, ShouldAnimate());
+                    ZoomTo(KeyboardZoomStep, centerX, centerY, ShouldSkipTransitions());
                 }
                 break;
 
@@ -650,7 +653,7 @@ public partial class ZoomBorder : Border
                 {
                     var centerX = _element.Bounds.Width / 2.0;
                     var centerY = _element.Bounds.Height / 2.0;
-                    ZoomTo(1.0 / KeyboardZoomStep, centerX, centerY, ShouldAnimate());
+                    ZoomTo(1.0 / KeyboardZoomStep, centerX, centerY, ShouldSkipTransitions());
                 }
                 break;
 
@@ -658,7 +661,7 @@ public partial class ZoomBorder : Border
                 if (e.KeyModifiers.HasFlag(KeyModifiers.Control))
                 {
                     // Ctrl+0: Reset to 100% zoom (1:1)
-                    ResetMatrix(ShouldAnimate());
+                    ResetMatrix(ShouldSkipTransitions());
                 }
                 else
                 {
@@ -668,7 +671,7 @@ public partial class ZoomBorder : Border
 
             case Key.Home:
                 // Home: Fit to viewport
-                AutoFit(ShouldAnimate());
+                AutoFit(ShouldSkipTransitions());
                 break;
 
             default:
@@ -827,6 +830,7 @@ public partial class ZoomBorder : Border
         _element = element;
         _element.PropertyChanged += Element_PropertyChanged;
         _autoFitPending = true;
+        UpdateAnimationTransition();
         
         // Notify commands that element is now available
         RaiseCommandsCanExecuteChanged();
@@ -839,6 +843,7 @@ public partial class ZoomBorder : Border
             return;
         }
 
+        RemoveAnimationTransition();
         _element.PropertyChanged -= Element_PropertyChanged;
         _element.RenderTransform = null;
         _element = null;
@@ -861,6 +866,53 @@ public partial class ZoomBorder : Border
     private bool ShouldAnimate()
     {
         return EnableAnimations && AnimationDuration > TimeSpan.Zero;
+    }
+
+    private bool ShouldSkipTransitions()
+    {
+        return !ShouldAnimate();
+    }
+
+    private void UpdateAnimationTransition()
+    {
+        if (_element == null)
+        {
+            return;
+        }
+
+        RemoveAnimationTransition();
+
+        if (!ShouldAnimate())
+        {
+            return;
+        }
+
+        var transitions = _element.Transitions;
+        if (transitions?.OfType<Animation.TransformOperationsTransition>()
+                .Any(transition => transition.Property == Visual.RenderTransformProperty) == true)
+        {
+            return;
+        }
+
+        transitions ??= new Animation.Transitions();
+        _element.Transitions = transitions;
+
+        _animationTransition = new Animation.TransformOperationsTransition
+        {
+            Property = Visual.RenderTransformProperty,
+            Duration = AnimationDuration
+        };
+        transitions.Add(_animationTransition);
+    }
+
+    private void RemoveAnimationTransition()
+    {
+        if (_element?.Transitions != null && _animationTransition != null)
+        {
+            _element.Transitions.Remove(_animationTransition);
+        }
+
+        _animationTransition = null;
     }
 
     private void Pressed(PointerPressedEventArgs e)

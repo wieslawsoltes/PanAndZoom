@@ -1,6 +1,8 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Linq;
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
 using Xunit;
@@ -252,5 +254,78 @@ public class ZoomBorderAnimationTests
 
         // Assert - Should still apply (zero duration means no animation)
         Assert.True(zoomBorder.ZoomX > initialZoomX);
+    }
+
+    [AvaloniaFact]
+    public void EnableAnimations_AddsRenderTransformTransitionToChild()
+    {
+        var child = new Canvas { Width = 400, Height = 400 };
+        var zoomBorder = new ZoomBorder
+        {
+            Width = 800,
+            Height = 600,
+            EnableAnimations = true,
+            AnimationDuration = TimeSpan.FromMilliseconds(450),
+            Child = child
+        };
+        var window = new Window { Content = zoomBorder };
+        window.Show();
+
+        var transition = Assert.Single(child.Transitions!.OfType<TransformOperationsTransition>());
+        Assert.Equal(Visual.RenderTransformProperty, transition.Property);
+        Assert.Equal(TimeSpan.FromMilliseconds(450), transition.Duration);
+    }
+
+    [AvaloniaFact]
+    public void AnimationSettings_UpdateOwnedRenderTransformTransition()
+    {
+        var child = new Canvas { Width = 400, Height = 400 };
+        var zoomBorder = new ZoomBorder
+        {
+            Width = 800,
+            Height = 600,
+            EnableAnimations = true,
+            Child = child
+        };
+        var window = new Window { Content = zoomBorder };
+        window.Show();
+
+        zoomBorder.AnimationDuration = TimeSpan.FromMilliseconds(750);
+
+        var transition = Assert.Single(child.Transitions!.OfType<TransformOperationsTransition>());
+        Assert.Equal(TimeSpan.FromMilliseconds(750), transition.Duration);
+
+        zoomBorder.EnableAnimations = false;
+
+        Assert.Empty(child.Transitions!.OfType<TransformOperationsTransition>());
+    }
+
+    [AvaloniaFact]
+    public void EnableAnimations_PreservesExistingRenderTransformTransition()
+    {
+        var existingTransition = new TransformOperationsTransition
+        {
+            Property = Visual.RenderTransformProperty,
+            Duration = TimeSpan.FromSeconds(1)
+        };
+        var child = new Canvas
+        {
+            Width = 400,
+            Height = 400,
+            Transitions = new Transitions { existingTransition }
+        };
+        var zoomBorder = new ZoomBorder
+        {
+            Width = 800,
+            Height = 600,
+            EnableAnimations = true,
+            AnimationDuration = TimeSpan.FromMilliseconds(300),
+            Child = child
+        };
+        var window = new Window { Content = zoomBorder };
+        window.Show();
+
+        Assert.Same(existingTransition, Assert.Single(child.Transitions.OfType<TransformOperationsTransition>()));
+        Assert.Equal(TimeSpan.FromSeconds(1), existingTransition.Duration);
     }
 }

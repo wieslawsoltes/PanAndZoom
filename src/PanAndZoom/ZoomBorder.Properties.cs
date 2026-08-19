@@ -1362,37 +1362,37 @@ public partial class ZoomBorder
     /// <summary>
     /// Gets the command to zoom in.
     /// </summary>
-    public ICommand ZoomInCommand => _zoomInCommand ??= new ZoomBorderCommand(() => ZoomIn(ShouldAnimate()), () => EnableZoom && _element != null);
+    public ICommand ZoomInCommand => _zoomInCommand ??= new ZoomBorderCommand(() => ZoomIn(ShouldSkipTransitions()), () => EnableZoom && _element != null);
 
     /// <summary>
     /// Gets the command to zoom out.
     /// </summary>
-    public ICommand ZoomOutCommand => _zoomOutCommand ??= new ZoomBorderCommand(() => ZoomOut(ShouldAnimate()), () => EnableZoom && _element != null);
+    public ICommand ZoomOutCommand => _zoomOutCommand ??= new ZoomBorderCommand(() => ZoomOut(ShouldSkipTransitions()), () => EnableZoom && _element != null);
 
     /// <summary>
     /// Gets the command to reset the view.
     /// </summary>
-    public ICommand ResetCommand => _resetCommand ??= new ZoomBorderCommand(() => ResetMatrix(ShouldAnimate()));
+    public ICommand ResetCommand => _resetCommand ??= new ZoomBorderCommand(() => ResetMatrix(ShouldSkipTransitions()));
 
     /// <summary>
     /// Gets the command to fit content to viewport.
     /// </summary>
-    public ICommand FitCommand => _fitCommand ??= new ZoomBorderCommand(() => AutoFit(ShouldAnimate()), () => _element != null);
+    public ICommand FitCommand => _fitCommand ??= new ZoomBorderCommand(() => AutoFit(ShouldSkipTransitions()), () => _element != null);
 
     /// <summary>
     /// Gets the command to fill viewport.
     /// </summary>
-    public ICommand FillCommand => _fillCommand ??= new ZoomBorderCommand(() => Fill(ShouldAnimate()), () => _element != null);
+    public ICommand FillCommand => _fillCommand ??= new ZoomBorderCommand(() => Fill(ShouldSkipTransitions()), () => _element != null);
 
     /// <summary>
     /// Gets the command to apply uniform stretch.
     /// </summary>
-    public ICommand UniformCommand => _uniformCommand ??= new ZoomBorderCommand(() => Uniform(ShouldAnimate()), () => _element != null);
+    public ICommand UniformCommand => _uniformCommand ??= new ZoomBorderCommand(() => Uniform(ShouldSkipTransitions()), () => _element != null);
 
     /// <summary>
     /// Gets the command to apply uniform to fill stretch.
     /// </summary>
-    public ICommand UniformToFillCommand => _uniformToFillCommand ??= new ZoomBorderCommand(() => UniformToFill(ShouldAnimate()), () => _element != null);
+    public ICommand UniformToFillCommand => _uniformToFillCommand ??= new ZoomBorderCommand(() => UniformToFill(ShouldSkipTransitions()), () => _element != null);
 
     /// <summary>
     /// Gets the command to navigate back in view history.
