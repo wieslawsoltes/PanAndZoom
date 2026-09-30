@@ -1,0 +1,45 @@
+<Project Sdk="Uno.Sdk">
+
+  <!--
+    Uno Platform runtime tests for the PanAndZoom.Uno ZoomBorder control.
+
+    The tests run inside a real Uno application (Skia desktop) using the Uno.UI.RuntimeTests.Engine.
+    Run them headless (CI) with:
+      UNO_RUNTIME_TESTS_RUN_TESTS=true UNO_RUNTIME_TESTS_OUTPUT_PATH=results.xml dotnet run -f net10.0-desktop
+    On Linux use xvfb-run (X11 host). See build/run-uno-runtime-tests.sh.
+  -->
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0-desktop</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <UnoSingleProject>true</UnoSingleProject>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>false</IsTestProject>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>PanAndZoom.Uno.RuntimeTests</RootNamespace>
+
+    <ApplicationTitle>PanAndZoom.Uno.RuntimeTests</ApplicationTitle>
+    <ApplicationId>com.wieslawsoltes.panandzoom.runtimetests</ApplicationId>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationPublisher>Wiesław Šoltés</ApplicationPublisher>
+
+    <UnoFeatures>
+      SkiaRenderer;
+    </UnoFeatures>
+
+    <!-- Makes the runtime-test engine sources treat warnings from this project normally. -->
+    <DefineConstants>$(DefineConstants);IS_UNO_RUNTIMETEST_PROJECT</DefineConstants>
+    <NoWarn>$(NoWarn);Uno0001;NU1507;NETSDK1201;PRI257;CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Uno.UI.RuntimeTests.Engine" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PanAndZoom.Uno\PanAndZoom.Uno.csproj" />
+  </ItemGroup>
+
+</Project>

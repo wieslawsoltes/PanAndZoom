@@ -1,0 +1,42 @@
+<Project Sdk="Uno.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net10.0-desktop;net10.0-browserwasm;net10.0-android;net10.0-ios</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.26100</TargetFrameworks>
+    <!-- Allows fast local builds, e.g. dotnet build -p:PanAndZoomTargetFrameworks=net10.0-desktop -->
+    <TargetFrameworks Condition="'$(PanAndZoomTargetFrameworks)' != ''">$(PanAndZoomTargetFrameworks)</TargetFrameworks>
+    <UnoSingleProject>true</UnoSingleProject>
+    <OutputType>Library</OutputType>
+    <!-- Ensures the .xr.xml files are generated in a proper layout folder -->
+    <GenerateLibraryLayout>true</GenerateLibraryLayout>
+    <!-- Uno Platform 6 renders with Skia on every target; libraries must use the same renderer as apps (UNOB0017). -->
+    <UnoFeatures>
+      SkiaRenderer;
+    </UnoFeatures>
+    <Nullable>enable</Nullable>
+    <RootNamespace>PanAndZoom</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Uno0001: API not implemented on some Uno targets (reported per target by the Uno analyzers). -->
+    <NoWarn>$(NoWarn);Uno0001</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>PanAndZoom.Uno</PackageId>
+    <Description>Easily add pan and zoom functionality to your Uno Platform (WinUI) apps using the ZoomBorder control.</Description>
+    <PackageTags>Uno;UnoPlatform;WinUI;Pan;Zoom;Control;Xaml;Managed;C#</PackageTags>
+    <IsPackable>true</IsPackable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\Base.props" />
+  <Import Project="..\..\build\SourceLink.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\PanAndZoom.Core\PanAndZoom.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+</Project>

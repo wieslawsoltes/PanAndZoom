@@ -130,4 +130,129 @@ public static class MatrixMath
             (point.X * matrix.M11) + (point.Y * matrix.M21) + matrix.M31,
             (point.X * matrix.M12) + (point.Y * matrix.M22) + matrix.M32);
     }
+
+    /// <summary>
+    /// Decomposes an affine matrix into scale, skew, rotation and translation components.
+    /// </summary>
+    /// <param name="matrix">The matrix to decompose.</param>
+    /// <param name="scaleX">The x-axis scale.</param>
+    /// <param name="scaleY">The y-axis scale.</param>
+    /// <param name="skew">The skew factor.</param>
+    /// <param name="angle">The rotation angle in radians.</param>
+    /// <param name="translateX">The x-axis translation.</param>
+    /// <param name="translateY">The y-axis translation.</param>
+    /// <returns>True when the matrix could be decomposed (it is invertible).</returns>
+    public static bool TryDecompose(
+        CoreMatrix matrix,
+        out double scaleX,
+        out double scaleY,
+        out double skew,
+        out double angle,
+        out double translateX,
+        out double translateY)
+    {
+        translateX = matrix.M31;
+        translateY = matrix.M32;
+
+        var determinant = matrix.GetDeterminant();
+        scaleX = Sqrt(matrix.M11 * matrix.M11 + matrix.M12 * matrix.M12);
+
+        if (Abs(determinant) < 2.220446049250313E-15 || scaleX == 0)
+        {
+            scaleY = 0;
+            skew = 0;
+            angle = 0;
+            return false;
+        }
+
+        var a = matrix.M11 / scaleX;
+        var b = matrix.M12 / scaleX;
+
+        skew = a * matrix.M21 + b * matrix.M22;
+        var c = matrix.M21 - a * skew;
+        var d = matrix.M22 - b * skew;
+
+        scaleY = Sqrt(c * c + d * d);
+        skew /= scaleY;
+
+        if (determinant < 0)
+        {
+            scaleX = -scaleX;
+            a = -a;
+            b = -b;
+        }
+
+        angle = Atan2(b, a);
+        return true;
+    }
+
+    /// <summary>
+    /// Composes an affine matrix from scale, skew, rotation and translation components.
+    /// </summary>
+    /// <param name="scaleX">The x-axis scale.</param>
+    /// <param name="scaleY">The y-axis scale.</param>
+    /// <param name="skew">The skew factor.</param>
+    /// <param name="angle">The rotation angle in radians.</param>
+    /// <param name="translateX">The x-axis translation.</param>
+    /// <param name="translateY">The y-axis translation.</param>
+    /// <returns>The composed matrix.</returns>
+    public static CoreMatrix Compose(double scaleX, double scaleY, double skew, double angle, double translateX, double translateY)
+    {
+        var cos = Cos(angle);
+        var sin = Sin(angle);
+        return new CoreMatrix(
+            scaleX * cos,
+            scaleX * sin,
+            scaleY * (skew * cos - sin),
+            scaleY * (skew * sin + cos),
+            translateX,
+            translateY);
+    }
+
+    /// <summary>
+    /// Interpolates between two affine matrices by interpolating their decomposed components.
+    /// </summary>
+    /// <param name="from">The start matrix.</param>
+    /// <param name="to">The end matrix.</param>
+    /// <param name="progress">The progress in the range [0, 1].</param>
+    /// <returns>The interpolated matrix.</returns>
+    public static CoreMatrix Interpolate(CoreMatrix from, CoreMatrix to, double progress)
+    {
+        if (progress <= 0.0)
+        {
+            return from;
+        }
+
+        if (progress >= 1.0)
+        {
+            return to;
+        }
+
+        if (!TryDecompose(from, out var sx1, out var sy1, out var k1, out var r1, out var tx1, out var ty1)
+            || !TryDecompose(to, out var sx2, out var sy2, out var k2, out var r2, out var tx2, out var ty2))
+        {
+            return new CoreMatrix(
+                Lerp(from.M11, to.M11, progress),
+                Lerp(from.M12, to.M12, progress),
+                Lerp(from.M21, to.M21, progress),
+                Lerp(from.M22, to.M22, progress),
+                Lerp(from.M31, to.M31, progress),
+                Lerp(from.M32, to.M32, progress));
+        }
+
+        // Rotate along the shortest path.
+        var deltaAngle = r2 - r1;
+        while (deltaAngle > PI) deltaAngle -= 2 * PI;
+        while (deltaAngle < -PI) deltaAngle += 2 * PI;
+
+        return Compose(
+            Lerp(sx1, sx2, progress),
+            Lerp(sy1, sy2, progress),
+            Lerp(k1, k2, progress),
+            r1 + deltaAngle * progress,
+            Lerp(tx1, tx2, progress),
+            Lerp(ty1, ty2, progress));
+
+        static double Lerp(double a, double b, double t) => a + (b - a) * t;
+    }
 }
