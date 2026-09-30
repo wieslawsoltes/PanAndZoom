@@ -1,27 +1,24 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <Nullable>enable</Nullable>
-    <RootNamespace>Avalonia.Controls.PanAndZoom</RootNamespace>
+    <RootNamespace>PanAndZoom</RootNamespace>
+    <IsTrimmable>true</IsTrimmable>
+    <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>PanAndZoom</PackageId>
-    <Description>Easily add pan and zoom functionality to your Avalonia apps using PanAndZoom control.</Description>
-    <PackageTags>Avalonia;Pan;Zoom;Control;Xaml;Managed;C#"</PackageTags>
+    <PackageId>PanAndZoom.Core</PackageId>
+    <Description>UI framework independent pan and zoom engine shared by the PanAndZoom controls for Avalonia and Uno Platform.</Description>
+    <PackageTags>Pan;Zoom;Engine;Control;Avalonia;Uno;WinUI;Managed;C#</PackageTags>
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
   <Import Project="..\..\build\SignAssembly.props" />
   <Import Project="..\..\build\SourceLink.props" />
   <Import Project="..\..\build\ReferenceAssemblies.props" />
-  <Import Project="..\..\build\Avalonia.props" />
-
-  <ItemGroup>
-    <ProjectReference Include="..\PanAndZoom.Core\PanAndZoom.Core.csproj" />
-  </ItemGroup>
 
 </Project>

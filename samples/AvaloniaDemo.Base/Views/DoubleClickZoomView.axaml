@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:paz="using:Avalonia.Controls.PanAndZoom"
+             xmlns:pz="using:PanAndZoom"
              x:Class="AvaloniaDemo.Views.DoubleClickZoomView">
 
   <Grid ColumnDefinitions="250,*">
@@ -16,11 +17,11 @@
 
       <TextBlock Text="Double Click Mode:" Margin="0,8,0,0" />
       <ComboBox SelectedItem="{Binding DoubleClickZoomMode}">
-        <paz:DoubleClickZoomMode>ZoomIn</paz:DoubleClickZoomMode>
-        <paz:DoubleClickZoomMode>ZoomOut</paz:DoubleClickZoomMode>
-        <paz:DoubleClickZoomMode>ZoomInOut</paz:DoubleClickZoomMode>
-        <paz:DoubleClickZoomMode>ZoomToFit</paz:DoubleClickZoomMode>
-        <paz:DoubleClickZoomMode>None</paz:DoubleClickZoomMode>
+        <pz:DoubleClickZoomMode>ZoomIn</pz:DoubleClickZoomMode>
+        <pz:DoubleClickZoomMode>ZoomOut</pz:DoubleClickZoomMode>
+        <pz:DoubleClickZoomMode>ZoomInOut</pz:DoubleClickZoomMode>
+        <pz:DoubleClickZoomMode>ZoomToFit</pz:DoubleClickZoomMode>
+        <pz:DoubleClickZoomMode>None</pz:DoubleClickZoomMode>
       </ComboBox>
 
       <TextBlock Text="Zoom Factor:" Margin="0,8,0,0" />

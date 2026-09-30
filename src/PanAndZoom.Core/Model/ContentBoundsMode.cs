@@ -1,6 +1,6 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
-namespace Avalonia.Controls.PanAndZoom;
+namespace PanAndZoom;
 
 /// <summary>
 /// Describes how content bounds are restricted during pan and zoom operations.
@@ -29,8 +29,8 @@ public enum ContentBoundsMode
 
     /// <summary>
     /// Restrict the viewport and calculate scrollbar extents from the rectangle returned by
-    /// <see cref="ZoomBorder.GetContentBounds"/>. Subclasses can additionally veto the final
-    /// transform by overriding <see cref="ZoomBorder.ValidateTransform"/>.
+    /// <see cref="Core.IPanAndZoomHost.GetContentBounds"/> (<c>ZoomBorder.GetContentBounds</c>). Subclasses can additionally veto the final
+    /// transform by overriding <c>ZoomBorder.ValidateTransform</c>.
     /// </summary>
     Custom
 }

@@ -1,15 +1,13 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using static System.Math;
 
-namespace Avalonia.Controls.PanAndZoom;
+namespace PanAndZoom.Core;
 
 /// <summary>
-/// Avalonia Matrix helper methods.
+/// Factory and helper methods for <see cref="CoreMatrix"/>.
 /// </summary>
-/// <remarks>
-/// Thin Avalonia wrapper over the UI framework independent <see cref="MatrixMath"/> helpers.
-/// </remarks>
-public static class MatrixHelper
+public static class MatrixMath
 {
     /// <summary>
     /// Creates a translation matrix using the specified offsets.
@@ -17,19 +15,19 @@ public static class MatrixHelper
     /// <param name="offsetX">X-coordinate offset.</param>
     /// <param name="offsetY">Y-coordinate offset.</param>
     /// <returns>The created translation matrix.</returns>
-    public static Matrix Translate(double offsetX, double offsetY)
+    public static CoreMatrix Translate(double offsetX, double offsetY)
     {
-        return MatrixMath.Translate(offsetX, offsetY).ToAvalonia();
+        return new CoreMatrix(1.0, 0.0, 0.0, 1.0, offsetX, offsetY);
     }
 
     /// <summary>
-    /// Prepends a translation around the center of provided matrix.
+    /// Prepends a translation to the provided matrix.
     /// </summary>
     /// <param name="matrix">The matrix to prepend translation.</param>
     /// <param name="offsetX">X-coordinate offset.</param>
     /// <param name="offsetY">Y-coordinate offset.</param>
-    /// <returns>The created translation matrix.</returns>
-    public static Matrix TranslatePrepend(Matrix matrix, double offsetX, double offsetY)
+    /// <returns>The resulting matrix.</returns>
+    public static CoreMatrix TranslatePrepend(CoreMatrix matrix, double offsetX, double offsetY)
     {
         return Translate(offsetX, offsetY) * matrix;
     }
@@ -40,9 +38,9 @@ public static class MatrixHelper
     /// <param name="scaleX">Scaling factor that is applied along the x-axis.</param>
     /// <param name="scaleY">Scaling factor that is applied along the y-axis.</param>
     /// <returns>The created scaling matrix.</returns>
-    public static Matrix Scale(double scaleX, double scaleY)
+    public static CoreMatrix Scale(double scaleX, double scaleY)
     {
-        return MatrixMath.Scale(scaleX, scaleY).ToAvalonia();
+        return new CoreMatrix(scaleX, 0, 0, scaleY, 0.0, 0.0);
     }
 
     /// <summary>
@@ -53,36 +51,36 @@ public static class MatrixHelper
     /// <param name="centerX">The center X-coordinate of the scaling.</param>
     /// <param name="centerY">The center Y-coordinate of the scaling.</param>
     /// <returns>The created scaling matrix.</returns>
-    public static Matrix ScaleAt(double scaleX, double scaleY, double centerX, double centerY)
+    public static CoreMatrix ScaleAt(double scaleX, double scaleY, double centerX, double centerY)
     {
-        return MatrixMath.ScaleAt(scaleX, scaleY, centerX, centerY).ToAvalonia();
+        return new CoreMatrix(scaleX, 0, 0, scaleY, centerX - (scaleX * centerX), centerY - (scaleY * centerY));
     }
 
     /// <summary>
-    /// Prepends a scale around the center of provided matrix.
+    /// Prepends a scale around a center point to the provided matrix.
     /// </summary>
     /// <param name="matrix">The matrix to prepend scale.</param>
     /// <param name="scaleX">Scaling factor that is applied along the x-axis.</param>
     /// <param name="scaleY">Scaling factor that is applied along the y-axis.</param>
     /// <param name="centerX">The center X-coordinate of the scaling.</param>
     /// <param name="centerY">The center Y-coordinate of the scaling.</param>
-    /// <returns>The created scaling matrix.</returns>
-    public static Matrix ScaleAtPrepend(Matrix matrix, double scaleX, double scaleY, double centerX, double centerY)
+    /// <returns>The resulting matrix.</returns>
+    public static CoreMatrix ScaleAtPrepend(CoreMatrix matrix, double scaleX, double scaleY, double centerX, double centerY)
     {
         return ScaleAt(scaleX, scaleY, centerX, centerY) * matrix;
     }
 
     /// <summary>
-    /// Creates a translation and scale matrix using the specified offsets and scales along the x-axis and y-axis.
+    /// Creates a translation and scale matrix.
     /// </summary>
     /// <param name="scaleX">Scaling factor that is applied along the x-axis.</param>
     /// <param name="scaleY">Scaling factor that is applied along the y-axis.</param>
     /// <param name="offsetX">X-coordinate offset.</param>
     /// <param name="offsetY">Y-coordinate offset.</param>
     /// <returns>The created translation and scale matrix.</returns>
-    public static Matrix ScaleAndTranslate(double scaleX, double scaleY, double offsetX, double offsetY)
+    public static CoreMatrix ScaleAndTranslate(double scaleX, double scaleY, double offsetX, double offsetY)
     {
-        return MatrixMath.ScaleAndTranslate(scaleX, scaleY, offsetX, offsetY).ToAvalonia();
+        return new CoreMatrix(scaleX, 0.0, 0.0, scaleY, offsetX, offsetY);
     }
 
     /// <summary>
@@ -90,20 +88,22 @@ public static class MatrixHelper
     /// </summary>
     /// <param name="angleX">Angle of skew along the X-axis in radians.</param>
     /// <param name="angleY">Angle of skew along the Y-axis in radians.</param>
-    /// <returns>When the method completes, contains the created skew matrix.</returns>
-    public static Matrix Skew(float angleX, float angleY)
+    /// <returns>The created skew matrix.</returns>
+    public static CoreMatrix Skew(float angleX, float angleY)
     {
-        return MatrixMath.Skew(angleX, angleY).ToAvalonia();
+        return new CoreMatrix(1.0, Tan(angleX), Tan(angleY), 1.0, 0.0, 0.0);
     }
 
     /// <summary>
     /// Creates a matrix that rotates.
     /// </summary>
-    /// <param name="radians">Angle of rotation in radians. Angles are measured clockwise when looking along the rotation axis.</param>
+    /// <param name="radians">Angle of rotation in radians.</param>
     /// <returns>The created rotation matrix.</returns>
-    public static Matrix Rotation(double radians)
+    public static CoreMatrix Rotation(double radians)
     {
-        return MatrixMath.Rotation(radians).ToAvalonia();
+        var cos = Cos(radians);
+        var sin = Sin(radians);
+        return new CoreMatrix(cos, sin, -sin, cos, 0, 0);
     }
 
     /// <summary>
@@ -113,30 +113,21 @@ public static class MatrixHelper
     /// <param name="centerX">The center X-coordinate of the rotation.</param>
     /// <param name="centerY">The center Y-coordinate of the rotation.</param>
     /// <returns>The created rotation matrix.</returns>
-    public static Matrix Rotation(double angle, double centerX, double centerY)
+    public static CoreMatrix Rotation(double angle, double centerX, double centerY)
     {
         return Translate(-centerX, -centerY) * Rotation(angle) * Translate(centerX, centerY);
     }
 
     /// <summary>
-    /// Creates a matrix that rotates about a specified center.
-    /// </summary>
-    /// <param name="angle">Angle of rotation in radians.</param>
-    /// <param name="center">The center of the rotation.</param>
-    /// <returns>The created rotation matrix.</returns>
-    public static Matrix Rotation(double angle, Vector center)
-    {
-        return Translate(-center.X, -center.Y) * Rotation(angle) * Translate(center.X, center.Y);
-    }
-
-    /// <summary>
-    /// Transforms a point by this matrix.
+    /// Transforms a point by the matrix.
     /// </summary>
     /// <param name="matrix">The matrix to use as a transformation matrix.</param>
-    /// <param name="point">>The original point to apply the transformation.</param>
+    /// <param name="point">The original point to apply the transformation.</param>
     /// <returns>The result of the transformation for the input point.</returns>
-    public static Point TransformPoint(Matrix matrix, Point point)
+    public static CorePoint TransformPoint(CoreMatrix matrix, CorePoint point)
     {
-        return MatrixMath.TransformPoint(matrix.ToCore(), point.ToCore()).ToAvalonia();
+        return new CorePoint(
+            (point.X * matrix.M11) + (point.Y * matrix.M21) + matrix.M31,
+            (point.X * matrix.M12) + (point.Y * matrix.M22) + matrix.M32);
     }
 }

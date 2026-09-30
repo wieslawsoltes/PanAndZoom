@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 
-namespace Avalonia.Controls.PanAndZoom;
+namespace PanAndZoom;
 
 /// <summary>
 /// Zoom changed event arguments.

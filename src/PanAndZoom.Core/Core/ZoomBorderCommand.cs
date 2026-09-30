@@ -3,12 +3,12 @@
 using System;
 using System.Windows.Input;
 
-namespace Avalonia.Controls.PanAndZoom;
+namespace PanAndZoom.Core;
 
 /// <summary>
 /// A simple ICommand implementation for ZoomBorder operations.
 /// </summary>
-internal class ZoomBorderCommand : ICommand
+public sealed class ZoomBorderCommand : ICommand
 {
     private readonly Action _execute;
     private readonly Func<bool>? _canExecute;

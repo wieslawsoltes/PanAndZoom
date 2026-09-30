@@ -39,6 +39,7 @@
     <Project Path="samples/AvaloniaDemo.Desktop/AvaloniaDemo.Desktop.csproj" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/PanAndZoom.Core/PanAndZoom.Core.csproj" />
     <Project Path="src/PanAndZoom/PanAndZoom.csproj" />
     <Project Path="src/HeadlessTestingFramework/HeadlessTestingFramework.csproj" />
   </Folder>
