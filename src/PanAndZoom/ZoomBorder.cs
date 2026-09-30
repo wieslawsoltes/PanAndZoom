@@ -90,6 +90,11 @@ public partial class ZoomBorder : Border
         this.GetObservable(MinimumVisibleContentPercentageProperty).Subscribe(new AnonymousObserver<double>(_ => _engine.OnBoundsSettingsChanged()));
     }
 
+    /// <summary>
+    /// Gets the UI framework independent pan and zoom engine driving this control.
+    /// </summary>
+    public PanAndZoomEngine Engine => _engine;
+
     private void SubscribeEngineEvents()
     {
         _engine.ZoomChanged += (_, e) => OnZoomChanged(e);
