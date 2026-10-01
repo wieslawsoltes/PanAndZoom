@@ -3,7 +3,7 @@
 #
 # Usage: build/run-uno-runtime-tests.sh [Configuration] [Filter]
 #   Configuration  Build configuration (default: Release)
-#   Filter         Optional runtime-test filter (test class or method name fragment)
+#   Filter         Optional runtime-test filter: name fragments separated by " | " (spaces required)
 #
 # On Linux without a display the tests run under xvfb-run (X11 host).
 # The script exits with a non-zero code when any test fails.
