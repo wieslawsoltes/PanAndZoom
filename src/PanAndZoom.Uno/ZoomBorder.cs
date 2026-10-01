@@ -772,6 +772,7 @@ public partial class ZoomBorder : Control
         // The Uno macOS Skia host does not report the middle button (it tests the native
         // NSEvent.pressedMouseButtons mask against the wrong value), so a mouse press arrives
         // without any pressed button. Treat such a pointer as the middle button until it is released.
+        // See https://github.com/unoplatform/uno/issues/24852
         if (e.Pointer.PointerDeviceType == PointerDeviceType.Mouse
             && buttons == ZoomBorderPointerButtons.None
             && !properties.IsXButton1Pressed
