@@ -100,6 +100,6 @@ Documentation output is written to `site/.lunet/build/www`. The API reference is
 
 ## CI
 
-- `build.yml` builds, tests, and packs `PanAndZoom.slnx` on Linux, Windows, and macOS, and runs the Uno jobs: `uno-build` (library for every target per OS), `uno-test` (runtime tests), `uno-sample` (desktop build and WebAssembly publish), and `uno-pack`
+- `build.yml` runs on pull requests and pushes to `master`/`main`/`release/**` (superseded runs are cancelled) with three jobs: `Test` on Linux, Windows, and macOS (builds and tests `PanAndZoom.slnx`, runs the Uno runtime tests, and on macOS builds the Uno library for iOS and Android), `Uno sample` on Linux (sample self-test and WebAssembly publish), and `Pack` on Windows (all NuGet packages; the WinAppSDK target of `PanAndZoom.Uno` needs msbuild)
 - `docs.yml` builds the Lunet site and publishes it to GitHub Pages
-- `release.yml` runs on `v*` tags (or manual dispatch), builds, tests, and packs the Avalonia/core packages and `PanAndZoom.Uno` (after the Uno runtime tests), and publishes them to NuGet
+- `release.yml` runs on `v*` tags (or manual dispatch): tests `PanAndZoom.slnx` and the Uno runtime tests, packs every package on Windows, and publishes them to NuGet

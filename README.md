@@ -990,8 +990,11 @@ dotnet publish samples/UnoDemo -c Release -f net10.0-browserwasm -o artifacts/un
 
 ### CI
 
-- `.github/workflows/build.yml`: builds, tests and packs `PanAndZoom.slnx` on Linux, Windows and macOS, and runs the `uno-build` (library for every target), `uno-test` (runtime tests), `uno-sample` (desktop build and WebAssembly publish) and `uno-pack` jobs.
-- `.github/workflows/release.yml`: on `v*` tags (or manual dispatch) builds, tests and packs `PanAndZoom.slnx`, runs the Uno runtime tests, packs `PanAndZoom.Uno` and publishes all packages (`PanAndZoom`, `PanAndZoom.Core`, `PanAndZoom.Uno`, `HeadlessTestingFramework`) to NuGet.
+- `.github/workflows/build.yml` (pull requests and pushes to `master`/`main`/`release/**`, superseded runs are cancelled), three jobs:
+  - `Test` on Linux, Windows and macOS: builds and tests `PanAndZoom.slnx` and runs the Uno runtime tests; macOS also builds the Uno library for iOS and Android.
+  - `Uno sample` on Linux: runs the sample self-test (every demo page) and publishes the WebAssembly sample.
+  - `Pack` on Windows: packs all NuGet packages, including every target of `PanAndZoom.Uno` (the WinAppSDK target needs msbuild).
+- `.github/workflows/release.yml`: on `v*` tags (or manual dispatch) tests `PanAndZoom.slnx` and the Uno runtime tests, packs everything on Windows and publishes all packages (`PanAndZoom`, `PanAndZoom.Core`, `PanAndZoom.Uno`, `HeadlessTestingFramework`) to NuGet.
 - `.github/workflows/docs.yml`: builds and publishes the documentation site.
 
 ## Documentation
