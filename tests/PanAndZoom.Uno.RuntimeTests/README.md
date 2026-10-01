@@ -10,8 +10,8 @@ so layout, templates, pointer capture, manipulations and render transforms are e
 # All tests (headless on Linux through xvfb-run, a window briefly opens on macOS/Windows)
 build/run-uno-runtime-tests.sh
 
-# Debug configuration and a filter (class or method name fragments, '|' separated)
-build/run-uno-runtime-tests.sh Debug "ZoomBorderConstraintTests|ZoomBorderTests"
+# Debug configuration and a filter (class or method name fragments separated by " | " — the spaces are required)
+build/run-uno-runtime-tests.sh Debug "ZoomBorderConstraintTests | ZoomBorderTests"
 ```
 
 The script writes NUnit XML results to `artifacts/test-results/uno-runtime-tests.xml` and exits with a
