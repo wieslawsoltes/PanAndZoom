@@ -1,0 +1,27 @@
+<Page x:Class="UnoDemo.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+  <!--
+    The Avalonia demo uses a TabControl with one tab per demo. On Uno a left NavigationView scales better
+    (25 demos) and collapses to a hamburger menu on narrow (phone) screens.
+    The menu items are created in code behind from MainPage.Demos (same order as the Avalonia tabs).
+  -->
+  <NavigationView x:Name="Navigation"
+                  PaneTitle="PanAndZoom"
+                  PaneDisplayMode="Auto"
+                  CompactModeThresholdWidth="720"
+                  ExpandedModeThresholdWidth="720"
+                  OpenPaneLength="220"
+                  IsBackButtonVisible="Collapsed"
+                  IsSettingsVisible="False"
+                  IsPaneToggleButtonVisible="True"
+                  SelectionChanged="Navigation_SelectionChanged">
+    <ContentControl x:Name="DemoHost"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False" />
+  </NavigationView>
+
+</Page>

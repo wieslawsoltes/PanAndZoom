@@ -1,0 +1,76 @@
+<UserControl x:Class="UnoDemo.Views.GridSnapView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Grid &amp; Snap Demo" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Test grid snapping functionality" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Test Values:" FontWeight="SemiBold" />
+        <TextBlock Text="Single Value:" />
+        <TextBox Text="{Binding TestValue, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+        <TextBlock Text="{Binding SnappedValue}" FontWeight="SemiBold" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,4" />
+
+        <TextBlock Text="Point X:" />
+        <TextBox Text="{Binding TestX, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+        <TextBlock Text="Point Y:" />
+        <TextBox Text="{Binding TestY, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+        <TextBlock Text="{Binding SnappedPoint}" FontWeight="SemiBold" />
+
+        <Button Content="Update Snapping" Click="UpdateSnapping_Click" Margin="0,8,0,0" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Grid Settings:" FontWeight="SemiBold" />
+        <CheckBox Content="Enable Snap to Grid"
+                  IsChecked="{Binding EnableSnapToGrid, ElementName=ZoomBorder, Mode=TwoWay}"
+                  Click="UpdateSnapping_Click" />
+        <TextBlock Text="Grid Size:" />
+        <!-- GridSize changes re-run the snapping (see code behind), the Avalonia demo used TextChanged. -->
+        <TextBox Text="{Binding GridSize, ElementName=ZoomBorder, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="None"
+                      ZoomSpeed="1.2"
+                      Background="DarkSlateGray"
+                      ClipToBounds="True"
+                      EnableSnapToGrid="True"
+                      GridSize="50">
+        <Canvas Width="500" Height="500" Background="Transparent">
+          <!--
+            Grid visualization. Avalonia uses a tiled DrawingBrush (50x50 tile, #404040 1px pen) as the canvas
+            background; WinUI has no DrawingBrush so the same grid lines are drawn with a Path.
+          -->
+          <Path Stroke="#404040" StrokeThickness="1"
+                Data="M0,0 V500 M50,0 V500 M100,0 V500 M150,0 V500 M200,0 V500 M250,0 V500 M300,0 V500 M350,0 V500 M400,0 V500 M450,0 V500 M500,0 V500 M0,0 H500 M0,50 H500 M0,100 H500 M0,150 H500 M0,200 H500 M0,250 H500 M0,300 H500 M0,350 H500 M0,400 H500 M0,450 H500 M0,500 H500" />
+
+          <!-- Draggable rectangles -->
+          <Rectangle Fill="Red" Width="40" Height="40" Canvas.Left="25" Canvas.Top="25" />
+          <Rectangle Fill="Blue" Width="40" Height="40" Canvas.Left="125" Canvas.Top="125" />
+          <Rectangle Fill="Green" Width="40" Height="40" Canvas.Left="225" Canvas.Top="225" />
+          <Rectangle Fill="Orange" Width="40" Height="40" Canvas.Left="325" Canvas.Top="325" />
+
+          <TextBlock Canvas.Left="10" Canvas.Top="10" Foreground="White" Text="Grid: 50px" FontSize="14" />
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

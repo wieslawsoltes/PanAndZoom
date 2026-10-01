@@ -1,0 +1,79 @@
+<UserControl x:Class="UnoDemo.Views.AccessibilityView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Accessibility Demo" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Screen reader support and high contrast mode" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Accessibility Descriptions:" FontWeight="SemiBold" />
+        <TextBlock Text="Zoom Level:" FontSize="11" />
+        <TextBlock Text="{Binding ZoomLevelDescription}" TextWrapping="Wrap" FontWeight="SemiBold" />
+
+        <TextBlock Text="Pan Position:" FontSize="11" Margin="0,8,0,0" />
+        <TextBlock Text="{Binding PanPositionDescription}" TextWrapping="Wrap" FontWeight="SemiBold" />
+
+        <TextBlock Text="Full Description:" FontSize="11" Margin="0,8,0,0" />
+        <TextBlock Text="{Binding FullDescription}" TextWrapping="Wrap" FontWeight="SemiBold" />
+
+        <Button Content="Update Descriptions" Click="UpdateDescriptions_Click" Margin="0,8,0,0" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Settings:" FontWeight="SemiBold" />
+        <CheckBox Content="Use High Contrast Mode" IsChecked="{Binding UseHighContrastMode, ElementName=ZoomBorder, Mode=TwoWay}" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Instructions:" FontWeight="SemiBold" />
+        <TextBlock TextWrapping="Wrap" FontSize="11"
+                   Text="Pan and zoom, then click &quot;Update Descriptions&quot; to see the accessibility information that would be provided to screen readers." />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="None"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True"
+                      UseHighContrastMode="False">
+        <Canvas Width="600" Height="400" Background="LightGray">
+          <TextBlock Canvas.Left="20" Canvas.Top="20" Text="Accessible Content Area" FontSize="24" FontWeight="Bold" />
+
+          <StackPanel Canvas.Left="20" Canvas.Top="80" Spacing="10">
+            <TextBlock Text="This control provides:" FontSize="16" />
+            <TextBlock Text="• Zoom level descriptions" FontSize="14" />
+            <TextBlock Text="• Pan position information" FontSize="14" />
+            <TextBlock Text="• High contrast mode support" FontSize="14" />
+            <TextBlock Text="• Screen reader compatibility" FontSize="14" />
+          </StackPanel>
+
+          <Border Canvas.Left="320" Canvas.Top="80" Width="250" Height="280"
+                  Background="Orange" BorderBrush="Black" BorderThickness="2" Padding="10">
+            <StackPanel Spacing="8">
+              <TextBlock Text="Accessibility Features" FontSize="18" FontWeight="Bold" />
+              <TextBlock TextWrapping="Wrap" FontSize="12"
+                         Text="The ZoomBorder control provides built-in accessibility support for users with visual impairments." />
+              <TextBlock TextWrapping="Wrap" FontSize="12"
+                         Text="Enable high contrast mode to improve visibility, and use the description methods to provide context to screen readers." />
+            </StackPanel>
+          </Border>
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

@@ -1,0 +1,100 @@
+<UserControl x:Class="UnoDemo.Views.AdvancedZoomView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Advanced Zoom Controls" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Fine-grained zoom control" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Current Zoom:" FontWeight="SemiBold" />
+        <TextBlock FontSize="20">
+          <Run Text="{x:Bind ZoomBorder.ZoomX, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter=F2}" /><Run Text="x" />
+        </TextBlock>
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Zoom Methods:" FontWeight="SemiBold" />
+        <Button Content="Zoom In" Click="ZoomIn_Click" />
+        <Button Content="Zoom Out" Click="ZoomOut_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,4" />
+
+        <TextBlock Text="Set Absolute Zoom:" FontSize="11" />
+        <Slider x:Name="AbsoluteZoomSlider" Minimum="0.1" Maximum="5" StepFrequency="0.01" Value="1" />
+        <TextBlock FontSize="10">
+          <Run Text="{x:Bind AbsoluteZoomSlider.Value, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter=F2}" /><Run Text="x" />
+        </TextBlock>
+        <Button Content="Apply Absolute Zoom" Click="SetAbsoluteZoom_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,4" />
+
+        <TextBlock Text="Zoom to Ratio:" FontSize="11" />
+        <TextBox x:Name="ZoomRatioBox" Text="1.5" />
+        <Button Content="Apply Ratio" Click="ZoomToRatio_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,4" />
+
+        <TextBlock Text="Zoom Delta:" FontSize="11" />
+        <TextBox x:Name="ZoomDeltaBox" Text="0.2" />
+        <Button Content="Apply Delta" Click="ZoomDelta_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Zoom Settings:" FontWeight="SemiBold" />
+        <TextBlock Text="Power Factor:" FontSize="11" />
+        <TextBox Text="{Binding PowerFactor, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+
+        <TextBlock Text="Transition Threshold:" FontSize="11" />
+        <TextBox Text="{Binding TransitionThreshold, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock FontSize="11" TextWrapping="Wrap"
+                   Text="PowerFactor controls zoom curve steepness. TransitionThreshold sets the zoom change required to trigger transitions." />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="Uniform"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True"
+                      PowerFactor="1.0"
+                      TransitionThreshold="0.5">
+        <Canvas Width="500" Height="400" Background="LightGray">
+          <TextBlock Canvas.Left="20" Canvas.Top="20" Text="Advanced Zoom Demo" FontSize="24" FontWeight="Bold" />
+
+          <!-- Crosshair at center -->
+          <Line X1="0" Y1="200" X2="500" Y2="200" Stroke="Red" StrokeThickness="1" StrokeDashArray="5,3" />
+          <Line X1="250" Y1="0" X2="250" Y2="400" Stroke="Red" StrokeThickness="1" StrokeDashArray="5,3" />
+
+          <Border Canvas.Left="125" Canvas.Top="125" Width="250" Height="150"
+                  Background="Orange" BorderBrush="DarkOrange" BorderThickness="2" Padding="10">
+            <StackPanel>
+              <TextBlock Text="Zoom Target Area" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" />
+              <TextBlock TextWrapping="Wrap" FontSize="12" HorizontalAlignment="Center" Margin="0,8,0,0"
+                         Text="All zoom operations center on the viewport center (crosshair)." />
+            </StackPanel>
+          </Border>
+
+          <TextBlock Canvas.Left="20" Canvas.Top="320" TextWrapping="Wrap" Width="460" FontSize="13"
+                     Text="Use the controls on the left to test different zoom methods: ZoomIn(), ZoomOut(), Zoom(level), ZoomTo(ratio), ZoomDeltaTo(delta)." />
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

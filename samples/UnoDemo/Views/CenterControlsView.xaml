@@ -1,0 +1,95 @@
+<UserControl x:Class="UnoDemo.Views.CenterControlsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Center Controls" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Center view on points, rects, and controls" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Center on Point:" FontWeight="SemiBold" />
+        <Button Content="Center on Point 1" Click="CenterPoint1_Click" />
+        <Button Content="Center on Point 2" Click="CenterPoint2_Click" />
+        <Button Content="Center on Point 3" Click="CenterPoint3_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Center on Point with Zoom:" FontWeight="SemiBold" />
+        <TextBox x:Name="CenterZoomBox" Text="2.0" PlaceholderText="Zoom level..." />
+        <Button Content="Center Point 1 @ Zoom" Click="CenterPointZoom_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Center on Rectangle:" FontWeight="SemiBold" />
+        <Button Content="Center on Rect 1" Click="CenterRect1_Click" />
+        <Button Content="Center on Rect 2" Click="CenterRect2_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Center Padding:" FontWeight="SemiBold" />
+        <Slider x:Name="CenterPaddingSlider" Minimum="0" Maximum="100" Value="0" ValueChanged="CenterPadding_Changed" />
+        <TextBlock FontSize="10">
+          <Run Text="Padding: " /><Run Text="{x:Bind CenterPaddingSlider.Value, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter=F0}" /><Run Text="px" />
+        </TextBlock>
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock FontSize="11" TextWrapping="Wrap"
+                   Text="CenterOn() methods smoothly navigate to specific locations. CenterPadding adds margin around the target." />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="Uniform"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True"
+                      EnableAnimations="True"
+                      AnimationDuration="0:0:0.5"
+                      CenterPadding="0">
+        <Canvas Width="800" Height="600" Background="LightGray">
+          <TextBlock Canvas.Left="20" Canvas.Top="20" Text="Center Controls Demo" FontSize="24" FontWeight="Bold" />
+
+          <!-- Point 1 -->
+          <Ellipse Width="20" Height="20" Fill="Red" Canvas.Left="90" Canvas.Top="90" />
+          <TextBlock Canvas.Left="120" Canvas.Top="90" Text="Point 1 (100, 100)" FontSize="14" />
+
+          <!-- Point 2 -->
+          <Ellipse Width="20" Height="20" Fill="Blue" Canvas.Left="290" Canvas.Top="190" />
+          <TextBlock Canvas.Left="320" Canvas.Top="190" Text="Point 2 (300, 200)" FontSize="14" />
+
+          <!-- Point 3 -->
+          <Ellipse Width="20" Height="20" Fill="Green" Canvas.Left="490" Canvas.Top="290" />
+          <TextBlock Canvas.Left="520" Canvas.Top="290" Text="Point 3 (500, 300)" FontSize="14" />
+
+          <!-- Rect 1 -->
+          <Border Canvas.Left="50" Canvas.Top="350" Width="250" Height="150"
+                  Background="Orange" BorderBrush="DarkOrange" BorderThickness="3">
+            <TextBlock Text="Rectangle 1" FontSize="20" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Center" />
+          </Border>
+
+          <!-- Rect 2 -->
+          <Border Canvas.Left="450" Canvas.Top="350" Width="300" Height="200"
+                  Background="Purple" BorderBrush="DarkMagenta" BorderThickness="3">
+            <TextBlock Text="Rectangle 2" FontSize="20" FontWeight="Bold" Foreground="White"
+                       VerticalAlignment="Center" HorizontalAlignment="Center" />
+          </Border>
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

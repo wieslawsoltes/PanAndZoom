@@ -1,0 +1,85 @@
+<UserControl x:Class="UnoDemo.Views.RotationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Rotation Demo" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Rotate content with constraints and snapping" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Current Rotation:" FontWeight="SemiBold" />
+        <TextBlock FontSize="20">
+          <Run Text="{x:Bind ViewModel.CurrentRotation, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter=F2}" /><Run Text="°" />
+        </TextBlock>
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Rotation Controls:" FontWeight="SemiBold" />
+        <Button Content="Rotate +15°" Click="Rotate15_Click" />
+        <Button Content="Rotate -15°" Click="RotateMinus15_Click" />
+        <Button Content="Rotate +45°" Click="Rotate45_Click" />
+        <Button Content="Rotate -45°" Click="RotateMinus45_Click" />
+        <Button Content="Snap to Angle" Click="Snap_Click" />
+        <Button Content="Reset Rotation" Click="Reset_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <!-- These settings live on the ZoomBorder (the Avalonia demo bound them to the view model by mistake). -->
+        <TextBlock Text="Settings:" FontWeight="SemiBold" />
+        <CheckBox Content="Enable Gesture Rotation"
+                  IsChecked="{Binding EnableGestureRotation, ElementName=ZoomBorder, Mode=TwoWay}" />
+        <CheckBox Content="Enable Rotation Snapping"
+                  IsChecked="{Binding EnableRotationSnapping, ElementName=ZoomBorder, Mode=TwoWay}"
+                  Click="UpdateRotation_Click" />
+        <TextBlock Text="Snap Angle:" />
+        <TextBox Text="{Binding RotationSnapAngle, ElementName=ZoomBorder, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+        <TextBlock Text="Min Rotation:" />
+        <TextBox Text="{Binding MinRotation, ElementName=ZoomBorder, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+        <TextBlock Text="Max Rotation:" />
+        <TextBox Text="{Binding MaxRotation, ElementName=ZoomBorder, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="None"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True"
+                      EnableGestureRotation="True"
+                      EnableRotationSnapping="True"
+                      RotationSnapAngle="45"
+                      MinRotation="-180"
+                      MaxRotation="180">
+        <Canvas Width="400" Height="400" Background="LightGray">
+          <!-- The entire canvas is rotated by ZoomBorder - no need for separate RotateTransform -->
+          <Border Width="200" Height="200" Canvas.Left="100" Canvas.Top="100"
+                  Background="Orange" BorderBrush="Black" BorderThickness="2">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+              <TextBlock Text="ROTATABLE" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" />
+              <TextBlock FontSize="16" HorizontalAlignment="Center" Margin="0,8,0,0">
+                <Run Text="{x:Bind ViewModel.CurrentRotation, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter=F1}" /><Run Text="°" />
+              </TextBlock>
+            </StackPanel>
+          </Border>
+
+          <!-- Center crosshair -->
+          <Line X1="0" Y1="200" X2="400" Y2="200" Stroke="Red" StrokeThickness="1" />
+          <Line X1="200" Y1="0" X2="200" Y2="400" Stroke="Red" StrokeThickness="1" />
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

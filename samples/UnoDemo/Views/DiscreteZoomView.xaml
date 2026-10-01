@@ -1,0 +1,70 @@
+<UserControl x:Class="UnoDemo.Views.DiscreteZoomView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Discrete Zoom Levels" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Snap to predefined zoom levels" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Zoom Controls:" FontWeight="SemiBold" />
+        <Button Content="Zoom to Next Level" Click="ZoomNext_Click" />
+        <Button Content="Zoom to Previous Level" Click="ZoomPrevious_Click" />
+        <Button Content="Zoom to 25%" Click="Zoom25_Click" />
+        <Button Content="Zoom to 50%" Click="Zoom50_Click" />
+        <Button Content="Zoom to 100%" Click="Zoom100_Click" />
+        <Button Content="Zoom to 200%" Click="Zoom200_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Current Zoom:" FontWeight="SemiBold" />
+        <TextBlock FontSize="20"
+                   Text="{x:Bind ZoomBorder.ZoomX, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter=P0}" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Settings:" FontWeight="SemiBold" />
+        <CheckBox Content="Enable Discrete Zoom Levels" IsChecked="{Binding EnableDiscreteZoomLevels, Mode=TwoWay}" />
+
+        <TextBlock Text="Discrete Levels: 25%, 50%, 75%, 100%, 150%, 200%, 300%, 400%" FontSize="10" TextWrapping="Wrap" Margin="0,4" />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <!-- DiscreteZoomLevels (double[]) is set in code behind: WinUI XAML cannot parse arrays from strings. -->
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="Uniform"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True"
+                      EnableDiscreteZoomLevels="True">
+        <Canvas Width="400" Height="300" Background="LightGray">
+          <TextBlock Canvas.Left="20" Canvas.Top="20" Text="Discrete Zoom Demo" FontSize="24" FontWeight="Bold" />
+
+          <Border Canvas.Left="50" Canvas.Top="80" Width="300" Height="180"
+                  Background="Orange" BorderBrush="DarkOrange" BorderThickness="2" Padding="10">
+            <StackPanel Spacing="8">
+              <TextBlock Text="Zoom Levels" FontSize="18" FontWeight="Bold" />
+              <TextBlock TextWrapping="Wrap" FontSize="12"
+                         Text="Use mouse wheel or buttons to zoom. With discrete zoom enabled, the zoom will snap to predefined levels." />
+              <TextBlock TextWrapping="Wrap" FontSize="11"
+                         Text="Levels: 25%, 50%, 75%, 100%, 150%, 200%, 300%, 400%" />
+            </StackPanel>
+          </Border>
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

@@ -1,0 +1,83 @@
+<UserControl x:Class="UnoDemo.Views.KeyboardResetView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Keyboard &amp; Reset Demo" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Use keyboard shortcuts and reset methods" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Keyboard Shortcuts:" FontWeight="SemiBold" />
+        <StackPanel Spacing="4">
+          <TextBlock Text="Arrow Keys - Pan" FontFamily="Consolas" FontSize="12" />
+          <TextBlock Text="+/- - Zoom In/Out" FontFamily="Consolas" FontSize="12" />
+          <TextBlock Text="F - Fill" FontFamily="Consolas" FontSize="12" />
+          <TextBlock Text="U - Uniform" FontFamily="Consolas" FontSize="12" />
+          <TextBlock Text="R - Reset" FontFamily="Consolas" FontSize="12" />
+          <TextBlock Text="T - Toggle Stretch" FontFamily="Consolas" FontSize="12" />
+          <TextBlock Text="Ctrl+0 - Fit to Screen" FontFamily="Consolas" FontSize="12" />
+          <TextBlock Text="Ctrl+1 - Fill to Screen" FontFamily="Consolas" FontSize="12" />
+        </StackPanel>
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Reset Methods:" FontWeight="SemiBold" />
+        <Button Content="Reset Matrix" Click="ResetMatrix_Click" />
+        <Button Content="Fit to Screen" Click="FitToScreen_Click" />
+        <Button Content="Fill to Screen" Click="FillToScreen_Click" />
+        <Button Content="Auto Fit" Click="AutoFit_Click" />
+        <Button Content="Toggle Stretch Mode" Click="ToggleStretch_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Note:" FontWeight="SemiBold" />
+        <TextBlock Text="Click on the ZoomBorder to focus it, then use keyboard shortcuts." FontSize="11" TextWrapping="Wrap" />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="Uniform"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True"
+                      IsTabStop="True">
+        <Canvas Width="600" Height="400" Background="LightGray">
+          <TextBlock Canvas.Left="20" Canvas.Top="20" Text="Use keyboard to control!" FontSize="24" FontWeight="Bold" />
+
+          <Border Canvas.Left="50" Canvas.Top="100" Width="200" Height="250"
+                  Background="Orange" BorderBrush="Black" BorderThickness="2" Padding="10">
+            <StackPanel Spacing="8">
+              <TextBlock Text="Keyboard Controls" FontSize="18" FontWeight="Bold" />
+              <TextBlock TextWrapping="Wrap" FontSize="12" Text="Click here to focus, then use:" />
+              <TextBlock Text="• Arrows to pan" FontSize="12" />
+              <TextBlock Text="• +/- to zoom" FontSize="12" />
+              <TextBlock Text="• F/U/R/T for modes" FontSize="12" />
+            </StackPanel>
+          </Border>
+
+          <Border Canvas.Left="300" Canvas.Top="100" Width="250" Height="250"
+                  Background="Purple" BorderBrush="White" BorderThickness="2" Padding="10">
+            <StackPanel Spacing="8">
+              <TextBlock Text="Reset Methods" FontSize="18" FontWeight="Bold" Foreground="White" />
+              <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="White"
+                         Text="Use the buttons on the left to test different reset and fit methods." />
+            </StackPanel>
+          </Border>
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

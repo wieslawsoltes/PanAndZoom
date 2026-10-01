@@ -1,0 +1,85 @@
+<UserControl x:Class="UnoDemo.Views.ZoomToRectView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Zoom-to-Rectangle Demo" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Zoom to specific rectangular regions" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Predefined Regions:" FontWeight="SemiBold" />
+        <Button Content="Zoom to Red Region" Click="ZoomToRed_Click" />
+        <Button Content="Zoom to Blue Region" Click="ZoomToBlue_Click" />
+        <Button Content="Zoom to Green Region" Click="ZoomToGreen_Click" />
+        <Button Content="Zoom to All Regions" Click="ZoomToAll_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Custom Rectangle:" FontWeight="SemiBold" />
+        <TextBlock Text="X:" />
+        <TextBox x:Name="RectX" Text="50" />
+        <TextBlock Text="Y:" />
+        <TextBox x:Name="RectY" Text="50" />
+        <TextBlock Text="Width:" />
+        <TextBox x:Name="RectWidth" Text="100" />
+        <TextBlock Text="Height:" />
+        <TextBox x:Name="RectHeight" Text="100" />
+
+        <Button Content="Zoom to Custom Rect" Click="ZoomToCustom_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock FontSize="11" TextWrapping="Wrap"
+                   Text="Click a button to zoom to a specific region. The ZoomToRect method centers and scales the view to the specified rectangle." />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <!-- The Avalonia Canvas.Transitions (TransformOperationsTransition) are replaced by the ZoomBorder animations. -->
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="Uniform"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True"
+                      EnableAnimations="True"
+                      AnimationDuration="0:0:0.5">
+        <Canvas Width="800" Height="600" Background="LightGray">
+          <TextBlock Canvas.Left="20" Canvas.Top="20" Text="Click buttons to zoom to regions" FontSize="20" FontWeight="Bold" />
+
+          <Border x:Name="RedRegion" Canvas.Left="50" Canvas.Top="100" Width="200" Height="150"
+                  Background="Red" BorderBrush="DarkRed" BorderThickness="3">
+            <TextBlock Text="Red Region" FontSize="24" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Center" />
+          </Border>
+
+          <Border x:Name="BlueRegion" Canvas.Left="300" Canvas.Top="100" Width="200" Height="150"
+                  Background="Blue" BorderBrush="DarkBlue" BorderThickness="3">
+            <TextBlock Text="Blue Region" FontSize="24" FontWeight="Bold" Foreground="White"
+                       VerticalAlignment="Center" HorizontalAlignment="Center" />
+          </Border>
+
+          <Border x:Name="GreenRegion" Canvas.Left="550" Canvas.Top="100" Width="200" Height="150"
+                  Background="Green" BorderBrush="DarkGreen" BorderThickness="3">
+            <TextBlock Text="Green Region" FontSize="24" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Center" />
+          </Border>
+
+          <TextBlock Canvas.Left="50" Canvas.Top="400" FontSize="16" TextWrapping="Wrap" Width="700"
+                     Text="The ZoomToRect method allows you to programmatically zoom to any rectangular area in the content coordinate system. This is useful for focusing on specific areas of interest in your application." />
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>
