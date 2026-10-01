@@ -772,7 +772,13 @@ public partial class ZoomBorder : Control
 
     private bool IsTouchHandledByManipulations(PointerRoutedEventArgs e)
     {
-        return e.Pointer.PointerDeviceType == PointerDeviceType.Touch && EnableGestures;
+        return IsManipulationDevice(e.Pointer.PointerDeviceType) && EnableGestures;
+    }
+
+    // Touch and pen drive the gestures (like the Avalonia scroll gesture recognizer); the mouse uses the PanButton path.
+    private static bool IsManipulationDevice(PointerDeviceType type)
+    {
+        return type == PointerDeviceType.Touch || type == PointerDeviceType.Pen;
     }
 
     private static ZoomBorderKeyModifiers GetCurrentKeyModifiers()
@@ -952,9 +958,9 @@ public partial class ZoomBorder : Control
     {
         base.OnManipulationStarted(e);
 
-        if (e.PointerDeviceType != PointerDeviceType.Touch)
+        if (!IsManipulationDevice(e.PointerDeviceType))
         {
-            // Mouse and pen are handled by the pointer events (PanButton), not by manipulations.
+            // The mouse is handled by the pointer events (PanButton), not by manipulations.
             e.Complete();
             return;
         }
@@ -970,7 +976,7 @@ public partial class ZoomBorder : Control
     {
         base.OnManipulationDelta(e);
 
-        if (!_manipulationActive || e.PointerDeviceType != PointerDeviceType.Touch)
+        if (!_manipulationActive || !IsManipulationDevice(e.PointerDeviceType))
         {
             return;
         }
