@@ -68,7 +68,7 @@ dotnet pack src/PanAndZoom.Uno -c Release -o artifacts/packages
 build/run-uno-runtime-tests.sh
 
 # Debug configuration with a filter (test class or method name fragments, '|' separated)
-build/run-uno-runtime-tests.sh Debug "ZoomBorderConstraintTests|ZoomBorderTests"
+build/run-uno-runtime-tests.sh Debug "ZoomBorderConstraintTests | ZoomBorderTests"
 ```
 
 The script builds the test app, runs it with `UNO_RUNTIME_TESTS_RUN_TESTS` and `UNO_RUNTIME_TESTS_OUTPUT_PATH`, writes NUnit XML results to `artifacts/test-results/uno-runtime-tests.xml`, and exits with a non-zero code when a test fails. Running the app without those environment variables shows the interactive runtime test UI. On Linux CI it needs `xvfb` and the X11/OpenGL libraries.

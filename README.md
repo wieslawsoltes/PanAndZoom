@@ -976,7 +976,7 @@ The Uno runtime tests (`tests/PanAndZoom.Uno.RuntimeTests`) run inside a real Un
 build/run-uno-runtime-tests.sh
 
 # Debug configuration and a filter (test class or method name fragments, '|' separated)
-build/run-uno-runtime-tests.sh Debug "ZoomBorderConstraintTests|ZoomBorderTests"
+build/run-uno-runtime-tests.sh Debug "ZoomBorderConstraintTests | ZoomBorderTests"
 ```
 
 Results are written to `artifacts/test-results/uno-runtime-tests.xml` (NUnit XML) and the script exits with a non-zero code when a test fails. See [tests/PanAndZoom.Uno.RuntimeTests/README.md](tests/PanAndZoom.Uno.RuntimeTests/README.md) for the test helpers and porting notes.

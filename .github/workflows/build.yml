@@ -248,6 +248,18 @@ jobs:
       - name: Build desktop sample
         run: dotnet build samples/UnoDemo -c Release -f net10.0-desktop
 
+      - name: Install X11 dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgl1 libegl1 libx11-6 libxcursor1 libxrandr2 libxi6 libfontconfig1 libice6 libsm6
+
+      - name: Run sample self-test (all demo pages)
+        if: runner.os == 'Linux'
+        env:
+          UNODEMO_SELFTEST: '1'
+        run: xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" dotnet run --project samples/UnoDemo -c Release -f net10.0-desktop --no-build
+
       - name: Install wasm-tools
         if: runner.os == 'Linux'
         run: dotnet workload install wasm-tools
