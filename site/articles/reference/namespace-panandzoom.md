@@ -4,7 +4,7 @@ title: "Namespace Avalonia.Controls.PanAndZoom"
 
 # Namespace Avalonia.Controls.PanAndZoom
 
-This namespace contains the shipping control, its state objects, event args, and supporting enums.
+This namespace contains the Avalonia control (`PanAndZoom` package), its state objects, and its event args. The shared enums and the `ZoomChanged` event types live in the `PanAndZoom` namespace of the `PanAndZoom.Core` assembly (see [Namespaces PanAndZoom.Core and PanAndZoom](namespace-panandzoom-core.md)), so Avalonia code typically needs both `using Avalonia.Controls.PanAndZoom;` and `using PanAndZoom;`.
 
 ## Core Types
 
@@ -16,25 +16,29 @@ This namespace contains the shipping control, its state objects, event args, and
 | `Avalonia.Controls.PanAndZoom.ViewState` | Struct | [concepts/view-state-and-persistence.md](../concepts/view-state-and-persistence.md) |
 | `Avalonia.Controls.PanAndZoom.SavedView` | Struct | [concepts/view-state-and-persistence.md](../concepts/view-state-and-persistence.md) |
 
-## Enums
+## Enums (namespace `PanAndZoom`, assembly `PanAndZoom.Core`)
 
 | Type | Purpose |
 |---|---|
-| `Avalonia.Controls.PanAndZoom.ButtonName` | Selects the mouse button used for panning |
-| `Avalonia.Controls.PanAndZoom.StretchMode` | Chooses fit behavior for content |
-| `Avalonia.Controls.PanAndZoom.ContentBoundsMode` | Constrains how content can move inside the viewport |
-| `Avalonia.Controls.PanAndZoom.ResizeBehaviorMode` | Controls resize reactions |
-| `Avalonia.Controls.PanAndZoom.WheelBehaviorMode` | Maps wheel input to zoom or panning |
-| `Avalonia.Controls.PanAndZoom.DoubleClickZoomMode` | Controls double-click zoom behavior |
-| `Avalonia.Controls.PanAndZoom.ZoomIndicatorPosition` | Positions custom zoom indicators |
+| `PanAndZoom.ButtonName` | Selects the mouse button used for panning |
+| `PanAndZoom.StretchMode` | Chooses fit behavior for content |
+| `PanAndZoom.ContentBoundsMode` | Constrains how content can move inside the viewport |
+| `PanAndZoom.ResizeBehaviorMode` | Controls resize reactions |
+| `PanAndZoom.WheelBehaviorMode` | Maps wheel input to zoom or panning |
+| `PanAndZoom.DoubleClickZoomMode` | Controls double-click zoom behavior |
+| `PanAndZoom.ZoomIndicatorPosition` | Positions custom zoom indicators |
 
 ## Event Args And Delegates
 
 | Type | Typical use |
 |---|---|
-| `Avalonia.Controls.PanAndZoom.ZoomChangedEventArgs` and `Avalonia.Controls.PanAndZoom.ZoomChangedEventHandler` | Listen for viewport zoom and offset changes |
+| `PanAndZoom.ZoomChangedEventArgs` and `PanAndZoom.ZoomChangedEventHandler` (assembly `PanAndZoom.Core`) | Listen for viewport zoom and offset changes |
 | `Avalonia.Controls.PanAndZoom.ZoomEventArgs` and `Avalonia.Controls.PanAndZoom.ZoomEventHandler` | Observe zoom-specific operations |
 | `Avalonia.Controls.PanAndZoom.PanEventArgs` and `Avalonia.Controls.PanAndZoom.PanEventHandler` | Observe pan operations |
 | `Avalonia.Controls.PanAndZoom.GestureEventArgs` and `Avalonia.Controls.PanAndZoom.GestureEventHandler` | Observe gesture-driven actions |
 | `Avalonia.Controls.PanAndZoom.MatrixChangedEventArgs` and `Avalonia.Controls.PanAndZoom.MatrixChangedEventHandler` | React to transform-matrix updates |
 | `Avalonia.Controls.PanAndZoom.StretchModeChangedEventArgs` and `Avalonia.Controls.PanAndZoom.StretchModeChangedEventHandler` | Track stretch-mode transitions |
+
+## Engine Access
+
+`Avalonia.Controls.PanAndZoom.ZoomBorder.Engine` exposes the underlying `PanAndZoom.Core.PanAndZoomEngine`. The built-in commands are `PanAndZoom.Core.ZoomBorderCommand` instances. See [Architecture](../concepts/architecture.md).

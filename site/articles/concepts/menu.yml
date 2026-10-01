@@ -1,5 +1,6 @@
 concepts:
   - {path: readme.md, title: "Concepts"}
+  - {path: architecture.md, title: "Architecture"}
   - {path: transform-and-coordinate-spaces.md, title: "Transform and Coordinate Spaces"}
   - {path: interaction-model.md, title: "Interaction Model"}
   - {path: view-state-and-persistence.md, title: "View State and Persistence"}

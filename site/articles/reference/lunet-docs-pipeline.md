@@ -4,7 +4,7 @@ title: "Lunet Docs Pipeline"
 
 # Lunet Docs Pipeline
 
-This repository uses the same Lunet-based documentation approach as the TreeDataGrid project, adapted for PanAndZoom and HeadlessTestingFramework.
+This repository uses the same Lunet-based documentation approach as the TreeDataGrid project, adapted for PanAndZoom (Avalonia and Uno Platform), PanAndZoom.Core, and HeadlessTestingFramework.
 
 ## Site Structure
 
@@ -21,10 +21,13 @@ This repository uses the same Lunet-based documentation approach as the TreeData
 
 The API site is generated from:
 
+- `../src/PanAndZoom.Core/PanAndZoom.Core.csproj`
 - `../src/PanAndZoom/PanAndZoom.csproj`
 - `../src/HeadlessTestingFramework/HeadlessTestingFramework.csproj`
 
 The Lunet `api.dotnet` block builds the `net8.0` target and publishes generated API pages under `/api`.
+
+`src/PanAndZoom.Uno` is not part of the generated API because it only targets `net10.0` and Uno platform frameworks (it needs `Uno.Sdk` and platform workloads). Its API is covered by [Namespace PanAndZoom (Uno Platform)](namespace-panandzoom-uno.md) and [Quickstart: Uno Platform](../getting-started/quickstart-uno.md).
 
 ## Styling Pipeline Note
 

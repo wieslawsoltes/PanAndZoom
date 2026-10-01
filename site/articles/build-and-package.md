@@ -4,21 +4,81 @@ title: "Build and Package"
 
 # Build and Package
 
+The repository uses the .NET 10 SDK (`global.json`, which also pins `Uno.Sdk` 6.7.30) and two solutions:
+
+| Solution | Contents |
+|---|---|
+| `PanAndZoom.slnx` | `PanAndZoom.Core`, `PanAndZoom` (Avalonia), `HeadlessTestingFramework`, the Avalonia sample, and the Avalonia and core unit tests |
+| `PanAndZoom.Uno.slnx` | `PanAndZoom.Core`, `PanAndZoom.Uno`, the Uno sample (`samples/UnoDemo`), and the Uno runtime tests |
+
+## Avalonia And Core
+
 Build, test, and pack from repository root:
 
 ```bash
-dotnet restore
-dotnet build -c Release --no-restore
-dotnet test -c Release --no-build
-dotnet pack -c Release --no-build -o artifacts/packages
+dotnet restore PanAndZoom.slnx
+dotnet build PanAndZoom.slnx -c Release --no-restore
+dotnet test PanAndZoom.slnx -c Release --no-build
+dotnet pack PanAndZoom.slnx -c Release --no-build -o artifacts/packages
 ```
 
-Packages are written to `artifacts/packages` as `.nupkg` and `.snupkg` files.
+Packages (`PanAndZoom.Core`, `PanAndZoom`, `HeadlessTestingFramework`) are written to `artifacts/packages` as `.nupkg` and `.snupkg` files.
 
-## Build The Sample App
+Run only the engine unit tests (xunit v3, no UI framework):
+
+```bash
+dotnet test tests/PanAndZoom.Core.UnitTests -c Release
+```
+
+## Uno Platform
+
+`PanAndZoom.Uno` targets `net10.0`, `net10.0-desktop`, `net10.0-browserwasm`, `net10.0-android`, `net10.0-ios`, and, when building on Windows, `net10.0-windows10.0.26100`. Building all targets requires the .NET workloads:
+
+```bash
+dotnet workload install android ios wasm-tools
+```
+
+- `android`: `net10.0-android` (also needs an Android SDK and a Java JDK)
+- `ios`: `net10.0-ios` (iOS apps are built on macOS with Xcode)
+- `wasm-tools`: `net10.0-browserwasm`
+
+Without workloads, restrict the library targets with the `PanAndZoomTargetFrameworks` property:
+
+```bash
+# Desktop only, no workloads required
+dotnet build src/PanAndZoom.Uno -c Release -p:PanAndZoomTargetFrameworks=net10.0-desktop
+
+# Several targets (escape ';' as %3B)
+dotnet build src/PanAndZoom.Uno -c Release "-p:PanAndZoomTargetFrameworks=net10.0%3Bnet10.0-desktop%3Bnet10.0-browserwasm"
+```
+
+Full solution build and package (workloads installed):
+
+```bash
+dotnet build PanAndZoom.Uno.slnx -c Release
+dotnet pack src/PanAndZoom.Uno -c Release -o artifacts/packages
+```
+
+### Uno Runtime Tests
+
+`tests/PanAndZoom.Uno.RuntimeTests` uses Uno.UI.RuntimeTests.Engine to run MSTest-style tests inside a real Uno Skia desktop app (`net10.0-desktop`):
+
+```bash
+# All tests (headless through xvfb-run on Linux, a window briefly opens on macOS and Windows)
+build/run-uno-runtime-tests.sh
+
+# Debug configuration with a filter (test class or method name fragments, '|' separated)
+build/run-uno-runtime-tests.sh Debug "ZoomBorderConstraintTests|ZoomBorderTests"
+```
+
+The script builds the test app, runs it with `UNO_RUNTIME_TESTS_RUN_TESTS` and `UNO_RUNTIME_TESTS_OUTPUT_PATH`, writes NUnit XML results to `artifacts/test-results/uno-runtime-tests.xml`, and exits with a non-zero code when a test fails. Running the app without those environment variables shows the interactive runtime test UI. On Linux CI it needs `xvfb` and the X11/OpenGL libraries.
+
+## Build The Sample Apps
 
 ```bash
 dotnet build samples/AvaloniaDemo.Desktop/AvaloniaDemo.Desktop.csproj -c Release
+dotnet build samples/UnoDemo -c Release -f net10.0-desktop
+dotnet publish samples/UnoDemo -c Release -f net10.0-browserwasm -o artifacts/unodemo-wasm
 ```
 
 ## Build Documentation
@@ -36,10 +96,10 @@ PowerShell:
 ./serve-docs.ps1
 ```
 
-Documentation output is written to `site/.lunet/build/www`.
+Documentation output is written to `site/.lunet/build/www`. The API reference is generated from the `net8.0` targets of `PanAndZoom.Core`, `PanAndZoom`, and `HeadlessTestingFramework`.
 
 ## CI
 
-- `build.yml` builds, tests, and packs the repository
+- `build.yml` builds, tests, and packs `PanAndZoom.slnx` on Linux, Windows, and macOS, and runs the Uno jobs: `uno-build` (library for every target per OS), `uno-test` (runtime tests), `uno-sample` (desktop build and WebAssembly publish), and `uno-pack`
 - `docs.yml` builds the Lunet site and publishes it to GitHub Pages
-- `release.yml` builds release packages and publishes NuGet artifacts
+- `release.yml` runs on `v*` tags (or manual dispatch), builds, tests, and packs the Avalonia/core packages and `PanAndZoom.Uno` (after the Uno runtime tests), and publishes them to NuGet

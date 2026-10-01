@@ -3,4 +3,5 @@ getting-started:
   - {path: overview.md, title: "Overview"}
   - {path: installation.md, title: "Installation"}
   - {path: quickstart-zoom-border.md, title: "Quickstart: ZoomBorder"}
+  - {path: quickstart-uno.md, title: "Quickstart: Uno Platform"}
   - {path: quickstart-headless-testing.md, title: "Quickstart: Headless Testing"}

@@ -2,6 +2,8 @@ reference:
   - {path: readme.md, title: "Reference"}
   - {path: api-coverage-index.md, title: "API Coverage Index"}
   - {path: namespace-panandzoom.md, title: "Namespace Avalonia.Controls.PanAndZoom"}
+  - {path: namespace-panandzoom-core.md, title: "Namespaces PanAndZoom.Core and PanAndZoom"}
+  - {path: namespace-panandzoom-uno.md, title: "Namespace PanAndZoom (Uno Platform)"}
   - {path: namespace-headless-testingframework.md, title: "Namespace Avalonia.HeadlessTestingFramework"}
   - {path: namespace-recording-and-appium.md, title: "Namespaces Recording and Appium"}
   - {path: lunet-docs-pipeline.md, title: "Lunet Docs Pipeline"}

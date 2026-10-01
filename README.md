@@ -4,26 +4,99 @@
 
 [![CI](https://github.com/wieslawsoltes/PanAndZoom/actions/workflows/build.yml/badge.svg)](https://github.com/wieslawsoltes/PanAndZoom/actions/workflows/build.yml)
 
-[![NuGet](https://img.shields.io/nuget/v/PanAndZoom.svg)](https://www.nuget.org/packages/PanAndZoom)
-[![NuGet](https://img.shields.io/nuget/dt/PanAndZoom.svg)](https://www.nuget.org/packages/PanAndZoom)
-[![MyGet](https://img.shields.io/myget/panandzoom-nightly/vpre/PanAndZoom.svg?label=myget)](https://www.myget.org/gallery/panandzoom-nightly) 
+| Package | Version | Downloads |
+|---|---|---|
+| `PanAndZoom` (Avalonia) | [![NuGet](https://img.shields.io/nuget/v/PanAndZoom.svg)](https://www.nuget.org/packages/PanAndZoom) | [![NuGet](https://img.shields.io/nuget/dt/PanAndZoom.svg)](https://www.nuget.org/packages/PanAndZoom) |
+| `PanAndZoom.Uno` (Uno Platform) | [![NuGet](https://img.shields.io/nuget/v/PanAndZoom.Uno.svg)](https://www.nuget.org/packages/PanAndZoom.Uno) | [![NuGet](https://img.shields.io/nuget/dt/PanAndZoom.Uno.svg)](https://www.nuget.org/packages/PanAndZoom.Uno) |
+| `PanAndZoom.Core` (shared engine) | [![NuGet](https://img.shields.io/nuget/v/PanAndZoom.Core.svg)](https://www.nuget.org/packages/PanAndZoom.Core) | [![NuGet](https://img.shields.io/nuget/dt/PanAndZoom.Core.svg)](https://www.nuget.org/packages/PanAndZoom.Core) |
 
-PanAndZoom control for Avalonia
+[![MyGet](https://img.shields.io/myget/panandzoom-nightly/vpre/PanAndZoom.svg?label=myget)](https://www.myget.org/gallery/panandzoom-nightly)
+
+PanAndZoom control for Avalonia and Uno Platform.
 
 <a href='https://youtu.be/BFLF1WPZWCQ' target='_blank'>![](images/PanAndZoom.png)<a/>
 
+## Packages
+
+| Package | Target frameworks | Namespace | Use it for |
+|---|---|---|---|
+| [`PanAndZoom`](https://www.nuget.org/packages/PanAndZoom/) | `net8.0`, `net10.0` | `Avalonia.Controls.PanAndZoom` | The `ZoomBorder` control for Avalonia apps |
+| [`PanAndZoom.Uno`](https://www.nuget.org/packages/PanAndZoom.Uno/) | `net10.0`, `net10.0-desktop`, `net10.0-browserwasm`, `net10.0-android`, `net10.0-ios`, `net10.0-windows10.0.26100` | `PanAndZoom` | The `ZoomBorder` control for Uno Platform (WinUI) apps, Skia renderer |
+| [`PanAndZoom.Core`](https://www.nuget.org/packages/PanAndZoom.Core/) | `net8.0`, `net10.0` | `PanAndZoom`, `PanAndZoom.Core` | The UI framework independent engine and shared model types (referenced automatically by both controls) |
+
+Both controls expose the same feature set (pan, zoom, stretch modes, constraints, bounds modes, wheel and keyboard behaviors, double-click zoom, gestures, animations, view history, saved views, discrete zoom levels, grid and snap, rotation, state serialization and MVVM commands) because they share one implementation.
+
+## Architecture
+
+PanAndZoom is built as one engine and two thin UI adapters:
+
+```text
++----------------------------------+      +----------------------------------+
+| PanAndZoom (Avalonia)            |      | PanAndZoom.Uno (Uno Platform)    |
+| Avalonia.Controls.PanAndZoom     |      | namespace PanAndZoom             |
+| ZoomBorder : Border              |      | ZoomBorder : Control             |
+| StyledProperty, ILogicalScroll-  |      | DependencyProperty, pointer      |
+| able, gesture recognizers,       |      | capture, manipulations, render   |
+| Avalonia transitions             |      | loop driven MatrixTransition     |
++----------------+-----------------+      +-----------------+----------------+
+                 |  IPanAndZoomHost + IPanAndZoomSettings   |
+                 v                                          v
++----------------------------------------------------------------------------+
+| PanAndZoom.Core (net8.0, net10.0, no UI framework dependency)              |
+| PanAndZoom.Core: PanAndZoomEngine, IPanAndZoomHost, IPanAndZoomSettings,   |
+|   PanAndZoomSettings, ZoomBorderDefaults, CoreMatrix, CorePoint, CoreRect, |
+|   CoreSize, CoreVector, CoreThickness, MatrixMath, MatrixTransition,       |
+|   ZoomBorderCommand, core event data records                               |
+| PanAndZoom: StretchMode, ButtonName, ContentBoundsMode, ... ZoomChanged*   |
++----------------------------------------------------------------------------+
+```
+
+- `PanAndZoom.Core.PanAndZoomEngine` owns the transform matrix, view history, saved views and gesture state, and implements every pan, zoom, rotation, constraint, bounds and input rule. It has no UI framework dependency.
+- `PanAndZoom.Core.IPanAndZoomHost` is implemented by each control: it reports viewport and child sizes, applies the computed render transform and forwards the virtual extension points (`GetContentBounds`, `ValidateTransform`, `OnResized`, `CalculateAutoZoomLimits`).
+- `PanAndZoom.Core.IPanAndZoomSettings` is implemented by each control on top of its bindable properties, so the engine always reads live property values. `PanAndZoomSettings` is a plain implementation initialized from `ZoomBorderDefaults`.
+- The controls translate native input (pointer, wheel, keyboard, gestures or manipulations) into engine calls and convert between native types (`Avalonia.Matrix`, `Microsoft.UI.Xaml.Media.Matrix`, ...) and the core primitives.
+- Both controls expose the engine through their `Engine` property.
+
+## Migrating from earlier versions
+
+The Avalonia `ZoomBorder` public API is unchanged, but the shared model types moved to the `PanAndZoom.Core` assembly and now live in the `PanAndZoom` namespace:
+
+`StretchMode`, `ButtonName`, `ContentBoundsMode`, `DoubleClickZoomMode`, `ResizeBehaviorMode`, `WheelBehaviorMode`, `ZoomIndicatorPosition`, `ZoomChangedEventArgs` and `ZoomChangedEventHandler`.
+
+- C#: add `using PanAndZoom;` (or a `global using PanAndZoom;`) wherever you reference these types directly.
+- XAML: property values keep working unchanged (`Stretch="Uniform"`, `PanButton="Left"`), but when you reference the enum types as elements or in markup extensions add a second namespace, for example:
+
+  ```xml
+  <UserControl xmlns:paz="using:Avalonia.Controls.PanAndZoom"
+               xmlns:pz="using:PanAndZoom">
+    <ComboBox>
+      <pz:DoubleClickZoomMode>ZoomIn</pz:DoubleClickZoomMode>
+      <pz:DoubleClickZoomMode>ZoomOut</pz:DoubleClickZoomMode>
+    </ComboBox>
+  </UserControl>
+  ```
+
+- `ZoomBorderCommand` moved to `PanAndZoom.Core.ZoomBorderCommand` (public).
+- New: `ZoomBorder.Engine` exposes the underlying `PanAndZoom.Core.PanAndZoomEngine`.
+
 ## NuGet
 
-PanAndZoom is delivered as a NuGet package.
+PanAndZoom is delivered as NuGet packages.
 
-You can find the NuGet packages here for [Avalonia](https://www.nuget.org/packages/PanAndZoom/) or by using nightly build feed:
+You can find the NuGet packages here for [Avalonia](https://www.nuget.org/packages/PanAndZoom/), [Uno Platform](https://www.nuget.org/packages/PanAndZoom.Uno/) and the [shared core engine](https://www.nuget.org/packages/PanAndZoom.Core/), or by using the nightly build feed:
 * Add `https://www.myget.org/F/panandzoom-nightly/api/v2` to your package sources
 * Alternative nightly build feed `https://pkgs.dev.azure.com/wieslawsoltes/GitHub/_packaging/Nightly/nuget/v3/index.json`
 * Update your package using `PanAndZoom` feed
 
 You can install the package for `Avalonia` based projects like this:
 
-`Install-Package PanAndZoom -Pre`
+`dotnet add package PanAndZoom`
+
+You can install the package for `Uno Platform` based projects like this:
+
+`dotnet add package PanAndZoom.Uno`
+
+`PanAndZoom.Core` is referenced transitively by both packages; reference it directly only when you want to build your own adapter on top of the engine.
 
 ### Package Sources
 
@@ -35,9 +108,11 @@ You can install the package for `Avalonia` based projects like this:
 * [GitHub source code repository.](https://github.com/wieslawsoltes/PanAndZoom)
 * [Documentation site.](https://wieslawsoltes.github.io/PanAndZoom)
 * [Articles home.](site/articles/readme.md)
+* [Uno Platform quickstart.](site/articles/getting-started/quickstart-uno.md)
+* [Architecture.](site/articles/concepts/architecture.md)
 * [Headless testing docs.](site/articles/headless-testing/readme.md)
 
-## Using PanAndZoom
+## Using PanAndZoom (Avalonia)
 
 `MainWindow.xaml`
 ```XAML
@@ -60,12 +135,12 @@ You can install the package for `Avalonia` based projects like this:
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
             <TextBlock Text="PanButton:" VerticalAlignment="Center"/>
-            <ComboBox Items="{x:Static paz:ZoomBorder.ButtonNames}"
+            <ComboBox ItemsSource="{x:Static paz:ZoomBorder.ButtonNames}"
                       SelectedItem="{Binding #ZoomBorder.PanButton, Mode=TwoWay}"
                       Margin="2">
             </ComboBox>
             <TextBlock Text="Stretch:" VerticalAlignment="Center"/>
-            <ComboBox Items="{x:Static paz:ZoomBorder.StretchModes}"
+            <ComboBox ItemsSource="{x:Static paz:ZoomBorder.StretchModes}"
                       SelectedItem="{Binding #ZoomBorder.Stretch, Mode=TwoWay}"
                       Margin="2">
             </ComboBox>
@@ -81,6 +156,7 @@ You can install the package for `Avalonia` based projects like this:
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Auto">
             <paz:ZoomBorder Name="ZoomBorder" Stretch="None" ZoomSpeed="1.2"
+                            PanButton="Left"
                             Background="SlateBlue" ClipToBounds="True" Focusable="True"
                             VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Canvas Background="LightGray" Width="300" Height="300">
@@ -90,9 +166,9 @@ You can install the package for `Avalonia` based projects like this:
                         <TextBlock Text="Text2" Width="100" Background="Red" Foreground="WhiteSmoke"/>
                     </StackPanel>
                 </Canvas>
-            </paz:ZoomBorder>  
+            </paz:ZoomBorder>
         </ScrollViewer>
-    </Grid> 
+    </Grid>
 </Window>
 ```
 
@@ -104,6 +180,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.PanAndZoom;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using PanAndZoom; // StretchMode, ZoomChangedEventArgs, ... (PanAndZoom.Core)
 
 namespace AvaloniaDemo
 {
@@ -120,7 +197,7 @@ namespace AvaloniaDemo
             if (_zoomBorder != null)
             {
                 _zoomBorder.KeyDown += ZoomBorder_KeyDown;
-                
+
                 _zoomBorder.ZoomChanged += ZoomBorder_ZoomChanged;
             }
         }
@@ -158,27 +235,168 @@ namespace AvaloniaDemo
 }
 ```
 
+## Using PanAndZoom (Uno Platform)
+
+`PanAndZoom.Uno` targets Uno Platform 6 (`Uno.Sdk` 6.7.30) with the Skia renderer (`<UnoFeatures>SkiaRenderer;</UnoFeatures>`), which is the default for new Uno apps. The default control style ships in the package (`Themes/Generic.xaml`), so no resource dictionary has to be merged.
+
+`MainPage.xaml`
+```XAML
+<Page x:Class="UnoDemo.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:paz="using:PanAndZoom">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="12"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="12"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="12"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="50"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical"
+                    HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">
+            <TextBlock Text="F - Fill"/>
+            <TextBlock Text="U - Uniform"/>
+            <TextBlock Text="R - Reset"/>
+            <TextBlock Text="T - Toggle Stretch Mode"/>
+            <TextBlock Text="Mouse Wheel - Zoom to Point"/>
+            <TextBlock Text="Mouse Left Button Down - Pan"/>
+            <TextBlock Text="Touch - One Finger Pan, Two Finger Pinch Zoom"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Spacing="4"
+                    HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
+            <TextBlock Text="PanButton:" VerticalAlignment="Center"/>
+            <ComboBox x:Name="PanButtonComboBox"
+                      SelectedItem="{Binding PanButton, ElementName=ZoomBorder, Mode=TwoWay}"/>
+            <TextBlock Text="Stretch:" VerticalAlignment="Center"/>
+            <ComboBox x:Name="StretchComboBox"
+                      SelectedItem="{Binding Stretch, ElementName=ZoomBorder, Mode=TwoWay}"/>
+            <TextBlock Text="ZoomSpeed:" VerticalAlignment="Center"/>
+            <Slider Minimum="1.05" Maximum="3" StepFrequency="0.05" Width="120"
+                    Value="{Binding ZoomSpeed, ElementName=ZoomBorder, Mode=TwoWay}"/>
+            <CheckBox IsChecked="{Binding EnablePan, ElementName=ZoomBorder, Mode=TwoWay}"
+                      Content="EnablePan" VerticalAlignment="Center"/>
+            <CheckBox IsChecked="{Binding EnableZoom, ElementName=ZoomBorder, Mode=TwoWay}"
+                      Content="EnableZoom" VerticalAlignment="Center"/>
+        </StackPanel>
+        <paz:ZoomBorder x:Name="ZoomBorder" Grid.Row="4" Grid.Column="1"
+                        Stretch="None" ZoomSpeed="1.2" PanButton="Left"
+                        Background="SlateBlue" ClipToBounds="True" IsTabStop="True"
+                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Canvas Background="LightGray" Width="300" Height="300">
+                <Rectangle Canvas.Left="100" Canvas.Top="100" Width="50" Height="50" Fill="Red"/>
+                <StackPanel Canvas.Left="100" Canvas.Top="200">
+                    <Border Width="100" Background="Red">
+                        <TextBlock Text="Text1" Foreground="WhiteSmoke"/>
+                    </Border>
+                    <Border Width="100" Background="Red">
+                        <TextBlock Text="Text2" Foreground="WhiteSmoke"/>
+                    </Border>
+                </StackPanel>
+            </Canvas>
+        </paz:ZoomBorder>
+    </Grid>
+</Page>
+```
+
+`MainPage.xaml.cs`
+```C#
+using System.Diagnostics;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using PanAndZoom;
+using Windows.System;
+
+namespace UnoDemo;
+
+public sealed partial class MainPage : Page
+{
+    public MainPage()
+    {
+        this.InitializeComponent();
+
+        PanButtonComboBox.ItemsSource = ZoomBorder.ButtonNames;
+        StretchComboBox.ItemsSource = ZoomBorder.StretchModes;
+
+        ZoomBorder.KeyDown += ZoomBorder_KeyDown;
+        ZoomBorder.ZoomChanged += ZoomBorder_ZoomChanged;
+    }
+
+    private void ZoomBorder_KeyDown(object sender, KeyRoutedEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case VirtualKey.F:
+                ZoomBorder.Fill();
+                break;
+            case VirtualKey.U:
+                ZoomBorder.Uniform();
+                break;
+            case VirtualKey.R:
+                ZoomBorder.ResetMatrix();
+                break;
+            case VirtualKey.T:
+                ZoomBorder.ToggleStretchMode();
+                ZoomBorder.AutoFit();
+                break;
+        }
+    }
+
+    private void ZoomBorder_ZoomChanged(object sender, ZoomChangedEventArgs e)
+    {
+        Debug.WriteLine($"[ZoomChanged] {e.ZoomX} {e.ZoomY} {e.OffsetX} {e.OffsetY}");
+    }
+}
+```
+
+### Uno Platform differences
+
+The Uno `ZoomBorder` has the same members as the Avalonia control. The differences come from WinUI:
+
+| Area | Avalonia (`Avalonia.Controls.PanAndZoom.ZoomBorder`) | Uno Platform (`PanAndZoom.ZoomBorder`) |
+|---|---|---|
+| Base type and content | `Border`, `Child` | Templated `Control` with `[ContentProperty]` `Child` (template part `PART_Border`) |
+| Clipping | `ClipToBounds` (Avalonia property) | `ClipToBounds` dependency property, default `true` |
+| Focus for keyboard navigation | `Focusable="True"` | `IsTabStop="True"` (default); the control focuses itself on pointer press |
+| Geometry types | `Avalonia.Point`, `Rect`, `Size`, `Vector`, `Matrix` (`M31`/`M32`) | `Windows.Foundation.Point`, `Rect`, `Size`, `Microsoft.UI.Xaml.Media.Matrix` (`OffsetX`/`OffsetY`) |
+| Vector conversions | `ScreenToContent(Vector)`, `ContentToScreen(Vector)` | `ScreenToContentVector(Point)`, `ContentToScreenVector(Point)` |
+| Rotation | `Rotation` | `Rotation` (hides `UIElement.Rotation`; the content is rotated through the render matrix) |
+| Read-only state | `ZoomX`, `ZoomY`, `OffsetX`, `OffsetY`, `IsZoomIndicatorVisible`, `:isPanning` pseudo class | Read-only dependency properties `ZoomX`, `ZoomY`, `OffsetX`, `OffsetY`, `IsZoomIndicatorVisible`, `IsPanning` and the `PanningStates` visual state group (`Panning` / `NotPanning`) |
+| Animations | Avalonia transitions | Driven by the control through `MatrixTransition` on `CompositionTarget.Rendering`; observe `IsAnimating` and `RenderMatrix` |
+| Scrolling | Implements `ILogicalScrollable` | WinUI has no `ILogicalScrollable`: `Extent`, `Viewport`, `ScrollOffset`, `CanHorizontallyScroll`, `CanVerticallyScroll`, `ScrollInvalidated` and `BringIntoView(FrameworkElement, Rect)`; `BringIntoViewRequested` from descendants is handled by panning |
+| Mouse | `PanButton` drag, wheel (+ `Ctrl` / `Shift` behaviors), double click | Same, with pointer capture while panning, wheel and `DoubleTapped` |
+| Touch | Avalonia pinch and scroll gesture recognizers | WinUI manipulations: one finger pans, two fingers pinch zoom and rotate |
+| Matrix helpers | `Avalonia.Controls.PanAndZoom.MatrixHelper` | `PanAndZoom.MatrixHelper` (`Multiply(a, b)` applies `a` first) |
+
 ### Getting zoom ratio
 
-To get current zoom ratio use `ZoomX` and `ZoomY` properties. 
+To get current zoom ratio use `ZoomX` and `ZoomY` properties.
 
 ### Getting pan offset
 
-To get current pan offset use `OffsetX` and `OffsetY` properties. 
+To get current pan offset use `OffsetX` and `OffsetY` properties.
 
 ### Constrain zoom ratio
 
-To constrain zoom ratio use `MinZoomX`, `MaxZoomX`, `MinZoomY` and `MaxZoomY` properties. 
+To constrain zoom ratio use `MinZoomX`, `MaxZoomX`, `MinZoomY` and `MaxZoomY` properties.
 
 ### Constrain pan offset
 
-To constrain pan offset use `MinOffsetX`, `MaxOffsetX`, `MinOffsetY` and `MaxOffsetY` properties. 
+To constrain pan offset use `MinOffsetX`, `MaxOffsetX`, `MinOffsetY` and `MaxOffsetY` properties.
 
 ### Enable or disable constrains
 
 To enable or disable constrains use `EnableConstrains` flag.
 
 ## Advanced Features
+
+The snippets below use the Avalonia control. The Uno Platform control exposes the same members; replace the Avalonia geometry types with their WinUI counterparts (see [Uno Platform differences](#uno-platform-differences)) and `{Binding #ZoomBorder.X}` with `{Binding X, ElementName=ZoomBorder}`.
 
 ### Animation Support
 
@@ -702,14 +920,90 @@ zoomBorder.ImportState(restoredState);
 - Implement undo/redo functionality
 - Session state management
 
+## Building and Testing
+
+The repository uses the .NET 10 SDK (see `global.json`, which also pins `Uno.Sdk` 6.7.30) and two solutions:
+
+| Solution | Contents |
+|---|---|
+| `PanAndZoom.slnx` | `PanAndZoom.Core`, `PanAndZoom` (Avalonia), `HeadlessTestingFramework`, the Avalonia sample and the Avalonia/core unit tests |
+| `PanAndZoom.Uno.slnx` | `PanAndZoom.Core`, `PanAndZoom.Uno`, the Uno sample (`samples/UnoDemo`) and the Uno runtime tests |
+
+### Avalonia and core
+
+```bash
+dotnet build PanAndZoom.slnx -c Release
+dotnet test PanAndZoom.slnx -c Release
+dotnet pack PanAndZoom.slnx -c Release -o artifacts/packages
+
+# Engine unit tests only (xunit v3, no UI framework)
+dotnet test tests/PanAndZoom.Core.UnitTests -c Release
+
+# Avalonia sample
+dotnet run --project samples/AvaloniaDemo.Desktop -c Release
+```
+
+### Uno Platform
+
+The Uno library multi-targets desktop, WebAssembly, Android, iOS and Windows, so building every target needs the matching workloads:
+
+```bash
+dotnet workload install android ios wasm-tools
+```
+
+- `net10.0-android` needs the `android` workload (and an Android SDK / Java JDK).
+- `net10.0-ios` needs the `ios` workload and, to build apps, macOS with Xcode.
+- `net10.0-browserwasm` needs the `wasm-tools` workload.
+- `net10.0-windows10.0.26100` is only added when building on Windows.
+
+Without the workloads, restrict the target frameworks with the `PanAndZoomTargetFrameworks` property:
+
+```bash
+# Fast local build of the library (desktop only, no workloads needed)
+dotnet build src/PanAndZoom.Uno -c Release -p:PanAndZoomTargetFrameworks=net10.0-desktop
+
+# Full build of the Uno solution (workloads installed)
+dotnet build PanAndZoom.Uno.slnx -c Release
+
+# Pack PanAndZoom.Uno (all targets, workloads installed)
+dotnet pack src/PanAndZoom.Uno -c Release -o artifacts/packages
+```
+
+The Uno runtime tests (`tests/PanAndZoom.Uno.RuntimeTests`) run inside a real Uno Skia desktop app using [Uno.UI.RuntimeTests.Engine](https://github.com/unoplatform/uno.ui.runtimetests.engine), so layout, templates, pointer capture, manipulations and render transforms are exercised for real:
+
+```bash
+# All tests (headless through xvfb-run on Linux, a window briefly opens on macOS/Windows)
+build/run-uno-runtime-tests.sh
+
+# Debug configuration and a filter (test class or method name fragments, '|' separated)
+build/run-uno-runtime-tests.sh Debug "ZoomBorderConstraintTests|ZoomBorderTests"
+```
+
+Results are written to `artifacts/test-results/uno-runtime-tests.xml` (NUnit XML) and the script exits with a non-zero code when a test fails. See [tests/PanAndZoom.Uno.RuntimeTests/README.md](tests/PanAndZoom.Uno.RuntimeTests/README.md) for the test helpers and porting notes.
+
+Uno sample (`samples/UnoDemo`, a port of the Avalonia demo for desktop, WebAssembly, Android, iOS and Windows):
+
+```bash
+dotnet run --project samples/UnoDemo -f net10.0-desktop
+dotnet publish samples/UnoDemo -c Release -f net10.0-browserwasm -o artifacts/unodemo-wasm
+```
+
+### CI
+
+- `.github/workflows/build.yml`: builds, tests and packs `PanAndZoom.slnx` on Linux, Windows and macOS, and runs the `uno-build` (library for every target), `uno-test` (runtime tests), `uno-sample` (desktop build and WebAssembly publish) and `uno-pack` jobs.
+- `.github/workflows/release.yml`: on `v*` tags (or manual dispatch) builds, tests and packs `PanAndZoom.slnx`, runs the Uno runtime tests, packs `PanAndZoom.Uno` and publishes all packages (`PanAndZoom`, `PanAndZoom.Core`, `PanAndZoom.Uno`, `HeadlessTestingFramework`) to NuGet.
+- `.github/workflows/docs.yml`: builds and publishes the documentation site.
+
 ## Documentation
 
-The repository now includes a Lunet-based documentation site, modeled after the TreeDataGrid docs pipeline and tailored to `PanAndZoom` and `HeadlessTestingFramework`.
+The repository includes a Lunet-based documentation site, modeled after the TreeDataGrid docs pipeline and tailored to `PanAndZoom` (Avalonia and Uno Platform), `PanAndZoom.Core` and `HeadlessTestingFramework`.
 
 Key entry points:
 
 - [Docs home](site/readme.md)
 - [Getting Started](site/articles/getting-started/readme.md)
+- [Quickstart: Uno Platform](site/articles/getting-started/quickstart-uno.md)
+- [Architecture](site/articles/concepts/architecture.md)
 - [Headless Testing](site/articles/headless-testing/readme.md)
 - [Reference](site/articles/reference/readme.md)
 
