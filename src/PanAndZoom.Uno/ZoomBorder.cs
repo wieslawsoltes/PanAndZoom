@@ -128,6 +128,7 @@ public partial class ZoomBorder : Control
     private Border? _border;
     private Microsoft.UI.Dispatching.DispatcherQueueTimer? _zoomIndicatorTimer;
     private Pointer? _capturedPointer;
+    private uint? _unreportedMiddleButtonPointerId;
     private bool _manipulationPinch;
     private bool _manipulationScroll;
     private bool _manipulationActive;
@@ -760,14 +761,46 @@ public partial class ZoomBorder : Control
         return _element != null ? e.GetCurrentPoint(_element).Position.ToCore() : default;
     }
 
-    private ZoomBorderPointerButtons GetPointerButtons(PointerRoutedEventArgs e)
+    private ZoomBorderPointerButtons GetPointerButtons(PointerRoutedEventArgs e, bool isPressed = false)
     {
         var properties = e.GetCurrentPoint(this).Properties;
         var buttons = ZoomBorderPointerButtons.None;
         if (properties.IsLeftButtonPressed) buttons |= ZoomBorderPointerButtons.Left;
         if (properties.IsRightButtonPressed) buttons |= ZoomBorderPointerButtons.Right;
         if (properties.IsMiddleButtonPressed) buttons |= ZoomBorderPointerButtons.Middle;
+
+        // The Uno macOS Skia host does not report the middle button (it tests the native
+        // NSEvent.pressedMouseButtons mask against the wrong value), so a mouse press arrives
+        // without any pressed button. Treat such a pointer as the middle button until it is released.
+        if (e.Pointer.PointerDeviceType == PointerDeviceType.Mouse
+            && buttons == ZoomBorderPointerButtons.None
+            && !properties.IsXButton1Pressed
+            && !properties.IsXButton2Pressed)
+        {
+            if (isPressed)
+            {
+                _unreportedMiddleButtonPointerId = e.Pointer.PointerId;
+            }
+
+            if (_unreportedMiddleButtonPointerId == e.Pointer.PointerId)
+            {
+                buttons |= ZoomBorderPointerButtons.Middle;
+            }
+        }
+        else if (isPressed)
+        {
+            _unreportedMiddleButtonPointerId = null;
+        }
+
         return buttons;
+    }
+
+    private void ClearUnreportedMiddleButton(PointerRoutedEventArgs e)
+    {
+        if (_unreportedMiddleButtonPointerId == e.Pointer.PointerId)
+        {
+            _unreportedMiddleButtonPointerId = null;
+        }
     }
 
     private bool IsTouchHandledByManipulations(PointerRoutedEventArgs e)
@@ -818,7 +851,7 @@ public partial class ZoomBorder : Control
             return;
         }
 
-        if (_engine.ProcessPointerPressed(GetElementPosition(e), GetPointerButtons(e)))
+        if (_engine.ProcessPointerPressed(GetElementPosition(e), GetPointerButtons(e, isPressed: true)))
         {
             if (CapturePointer(e.Pointer))
             {
@@ -850,6 +883,7 @@ public partial class ZoomBorder : Control
             return;
         }
 
+        ClearUnreportedMiddleButton(e);
         _engine.ProcessPointerReleased();
         ReleaseCapturedPointer();
     }
@@ -858,6 +892,7 @@ public partial class ZoomBorder : Control
     protected override void OnPointerCanceled(PointerRoutedEventArgs e)
     {
         base.OnPointerCanceled(e);
+        ClearUnreportedMiddleButton(e);
         _engine.ProcessPointerCaptureLost();
         ReleaseCapturedPointer();
     }
@@ -866,6 +901,7 @@ public partial class ZoomBorder : Control
     protected override void OnPointerCaptureLost(PointerRoutedEventArgs e)
     {
         base.OnPointerCaptureLost(e);
+        ClearUnreportedMiddleButton(e);
         _capturedPointer = null;
         _engine.ProcessPointerCaptureLost();
         e.Handled = true;

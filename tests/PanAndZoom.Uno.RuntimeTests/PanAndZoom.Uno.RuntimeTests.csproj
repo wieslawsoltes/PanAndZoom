@@ -18,6 +18,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>PanAndZoom.Uno.RuntimeTests</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
     <ApplicationTitle>PanAndZoom.Uno.RuntimeTests</ApplicationTitle>
     <ApplicationId>com.wieslawsoltes.panandzoom.runtimetests</ApplicationId>
