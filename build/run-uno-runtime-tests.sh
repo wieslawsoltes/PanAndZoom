@@ -19,12 +19,13 @@ RESULTS="$RESULTS_DIR/uno-runtime-tests.xml"
 mkdir -p "$RESULTS_DIR"
 rm -f "$RESULTS"
 
-dotnet build "$PROJECT" -c "$CONFIGURATION" -f net10.0-desktop
+# Restrict the referenced Uno library to the desktop target so no mobile workloads are required.
+dotnet build "$PROJECT" -c "$CONFIGURATION" -f net10.0-desktop -p:PanAndZoomTargetFrameworks=net10.0-desktop
 
 export UNO_RUNTIME_TESTS_RUN_TESTS="${FILTER:-true}"
 export UNO_RUNTIME_TESTS_OUTPUT_PATH="$RESULTS"
 
-RUN=(dotnet run --project "$PROJECT" -c "$CONFIGURATION" -f net10.0-desktop --no-build)
+RUN=(dotnet run --project "$PROJECT" -c "$CONFIGURATION" -f net10.0-desktop --no-build -p:PanAndZoomTargetFrameworks=net10.0-desktop)
 
 if [[ "$(uname -s)" == "Linux" && -z "${DISPLAY:-}" ]]; then
   xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" "${RUN[@]}"

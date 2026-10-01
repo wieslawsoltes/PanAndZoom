@@ -167,7 +167,7 @@ jobs:
             tfms: net10.0%3Bnet10.0-desktop%3Bnet10.0-browserwasm%3Bnet10.0-android
           - os: windows-latest
             workloads: android ios wasm-tools
-            tfms: net10.0%3Bnet10.0-desktop%3Bnet10.0-browserwasm%3Bnet10.0-android%3Bnet10.0-ios%3Bnet10.0-windows10.0.26100
+            tfms: net10.0%3Bnet10.0-desktop%3Bnet10.0-browserwasm%3Bnet10.0-android%3Bnet10.0-ios
           - os: macos-latest
             workloads: ios android
             tfms: net10.0-ios%3Bnet10.0-android
@@ -193,6 +193,15 @@ jobs:
       - name: Build PanAndZoom.Uno
         shell: bash
         run: dotnet build src/PanAndZoom.Uno -c Release "-p:PanAndZoomTargetFrameworks=${{ matrix.tfms }}"
+
+      # WinUI class libraries containing XAML must be built with msbuild (UNOB0008).
+      - name: Setup MSBuild
+        if: runner.os == 'Windows'
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build PanAndZoom.Uno (WinAppSDK)
+        if: runner.os == 'Windows'
+        run: msbuild src/PanAndZoom.Uno/PanAndZoom.Uno.csproj /r /m /p:Configuration=Release /p:PanAndZoomTargetFrameworks=net10.0-windows10.0.26100
 
   uno-test:
     name: Uno runtime tests (${{ matrix.os }})
@@ -246,7 +255,7 @@ jobs:
           global-json-file: global.json
 
       - name: Build desktop sample
-        run: dotnet build samples/UnoDemo -c Release -f net10.0-desktop
+        run: dotnet build samples/UnoDemo -c Release -f net10.0-desktop -p:PanAndZoomTargetFrameworks=net10.0-desktop -p:UnoDemoTargetFrameworks=net10.0-desktop
 
       - name: Install X11 dependencies
         if: runner.os == 'Linux'
@@ -258,7 +267,7 @@ jobs:
         if: runner.os == 'Linux'
         env:
           UNODEMO_SELFTEST: '1'
-        run: xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" dotnet run --project samples/UnoDemo -c Release -f net10.0-desktop --no-build
+        run: xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" dotnet run --project samples/UnoDemo -c Release -f net10.0-desktop --no-build -p:PanAndZoomTargetFrameworks=net10.0-desktop -p:UnoDemoTargetFrameworks=net10.0-desktop
 
       - name: Install wasm-tools
         if: runner.os == 'Linux'
@@ -266,7 +275,7 @@ jobs:
 
       - name: Publish WebAssembly sample
         if: runner.os == 'Linux'
-        run: dotnet publish samples/UnoDemo -c Release -f net10.0-browserwasm -o artifacts/unodemo-wasm
+        run: dotnet publish samples/UnoDemo -c Release -f net10.0-browserwasm -p:PanAndZoomTargetFrameworks=net10.0-browserwasm -p:UnoDemoTargetFrameworks=net10.0-browserwasm -o artifacts/unodemo-wasm
 
       - name: Upload WebAssembly sample
         if: runner.os == 'Linux'
@@ -304,9 +313,13 @@ jobs:
             echo "VERSION_SUFFIX=-build.${{ github.run_number }}" >> $GITHUB_ENV
           fi
 
+      # WinUI class libraries containing XAML must be built with msbuild (UNOB0008).
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
       - name: Pack PanAndZoom.Uno
         shell: bash
-        run: dotnet pack src/PanAndZoom.Uno -c Release -p:VersionSuffix="${{ env.VERSION_SUFFIX }}" -o artifacts/packages
+        run: msbuild src/PanAndZoom.Uno/PanAndZoom.Uno.csproj -t:Pack -r -m -p:Configuration=Release -p:VersionSuffix="${{ env.VERSION_SUFFIX }}" -p:PackageOutputPath="$GITHUB_WORKSPACE/artifacts/packages"
 
       - name: Upload NuGet packages
         uses: actions/upload-artifact@v4

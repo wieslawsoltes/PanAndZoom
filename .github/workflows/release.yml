@@ -181,8 +181,13 @@ jobs:
       - name: Install workloads
         run: dotnet workload install android ios wasm-tools
 
+      # WinUI class libraries containing XAML must be built with msbuild (UNOB0008).
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
       - name: Pack PanAndZoom.Uno
-        run: dotnet pack src/PanAndZoom.Uno -c Release -o artifacts/packages
+        shell: bash
+        run: msbuild src/PanAndZoom.Uno/PanAndZoom.Uno.csproj -t:Pack -r -m -p:Configuration=Release -p:PackageOutputPath="$GITHUB_WORKSPACE/artifacts/packages"
 
       - name: Upload NuGet packages
         uses: actions/upload-artifact@v4
