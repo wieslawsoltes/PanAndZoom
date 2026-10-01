@@ -168,19 +168,21 @@ public static class MatrixMath
         var a = matrix.M11 / scaleX;
         var b = matrix.M12 / scaleX;
 
-        skew = a * matrix.M21 + b * matrix.M22;
-        var c = matrix.M21 - a * skew;
-        var d = matrix.M22 - b * skew;
-
-        scaleY = Sqrt(c * c + d * d);
-        skew /= scaleY;
-
+        // Mirrored matrices (negative determinant) are represented with a negative x scale.
+        // The flip must happen before the skew is extracted so the skew keeps its sign.
         if (determinant < 0)
         {
             scaleX = -scaleX;
             a = -a;
             b = -b;
         }
+
+        skew = a * matrix.M21 + b * matrix.M22;
+        var c = matrix.M21 - a * skew;
+        var d = matrix.M22 - b * skew;
+
+        scaleY = Sqrt(c * c + d * d);
+        skew /= scaleY;
 
         angle = Atan2(b, a);
         return true;

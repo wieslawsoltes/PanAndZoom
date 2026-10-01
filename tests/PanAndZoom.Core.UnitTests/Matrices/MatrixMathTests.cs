@@ -211,7 +211,7 @@ public class MatrixMathTests
         AssertEx.Equal(matrix, MatrixMath.Compose(sx, sy, k, r, x, y));
     }
 
-    [Fact(Skip = "BUG: MatrixMath.TryDecompose computes the skew before flipping the sign of scaleX for a negative determinant, so a mirrored + skewed matrix decomposes into components that do not Compose back to the original matrix (the skew sign is inverted).")]
+    [Fact]
     public void Decompose_Compose_Round_Trip_Negative_Determinant_With_Rotation_And_Skew()
     {
         var matrix = MatrixMath.Compose(-2, 3, 0.5, 0.7, 3, 4);
@@ -222,7 +222,7 @@ public class MatrixMathTests
         AssertEx.Equal(matrix, MatrixMath.Compose(sx, sy, k, r, x, y));
     }
 
-    [Fact(Skip = "BUG: MatrixMath.Interpolate between two identical mirrored + skewed matrices returns a different matrix at intermediate progress because TryDecompose inverts the skew sign for negative determinants.")]
+    [Fact]
     public void Interpolate_Between_Identical_Mirrored_Skewed_Matrices_Is_Constant()
     {
         var matrix = new CoreMatrix(-1, 0, 0.5, 1, 0, 0);

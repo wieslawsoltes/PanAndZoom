@@ -710,11 +710,8 @@ public sealed class PanAndZoomEngine
 
     private bool PanningFinished()
     {
-        if (!_settings.EnablePan)
-        {
-            return false;
-        }
-
+        // A pan that is already in progress always finishes, even when EnablePan was
+        // disabled during the drag; otherwise the engine would stay captured.
         if (!_host.HasElement || _captured != true || _isPanning != true)
         {
             return false;

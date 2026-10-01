@@ -133,7 +133,7 @@ public class PointerInputTests
         Assert.False(harness.Engine.IsPanning);
     }
 
-    [Fact(Skip = "BUG (pre-existing, ported from the original ZoomBorder): PanningFinished returns early when EnablePan is false, so disabling EnablePan during a drag leaves the engine captured with IsPanning == true; later presses are ignored until a release happens with EnablePan re-enabled.")]
+    [Fact]
     public void Disabling_Pan_During_Drag_Ends_Panning_On_Release()
     {
         var harness = EngineHarness.Create();
