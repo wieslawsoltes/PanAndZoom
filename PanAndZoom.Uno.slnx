@@ -10,6 +10,7 @@
     <Project Path="src/PanAndZoom.Uno/PanAndZoom.Uno.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/PanAndZoom.Core.UnitTests/PanAndZoom.Core.UnitTests.csproj" />
     <Project Path="tests/PanAndZoom.Uno.RuntimeTests/PanAndZoom.Uno.RuntimeTests.csproj" />
   </Folder>
 </Solution>

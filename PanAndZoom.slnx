@@ -46,5 +46,6 @@
   <Folder Name="/tests/">
     <Project Path="tests/Avalonia.Controls.PanAndZoom.UnitTests/Avalonia.Controls.PanAndZoom.UnitTests.csproj" />
     <Project Path="tests/HeadlessTestingFramework.UnitTests/HeadlessTestingFramework.UnitTests.csproj" />
+    <Project Path="tests/PanAndZoom.Core.UnitTests/PanAndZoom.Core.UnitTests.csproj" />
   </Folder>
 </Solution>
