@@ -1,0 +1,109 @@
+<UserControl x:Class="UnoDemo.Views.ResizeBehaviorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Resize Behavior" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Control resize behavior" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Resize Behavior Mode:" FontWeight="SemiBold" />
+        <ComboBox x:Name="ResizeBehaviorCombo" SelectedIndex="3" SelectionChanged="ResizeBehavior_Changed" HorizontalAlignment="Stretch">
+          <ComboBoxItem Content="None" Tag="None" />
+          <ComboBoxItem Content="Maintain Center" Tag="MaintainCenter" />
+          <ComboBoxItem Content="Maintain Top Left" Tag="MaintainTopLeft" />
+          <ComboBoxItem Content="Maintain Zoom" Tag="MaintainZoom" />
+          <ComboBoxItem Content="Reapply Stretch" Tag="ReapplyStretch" />
+        </ComboBox>
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Test Instructions:" FontSize="11" TextWrapping="Wrap" FontWeight="SemiBold" />
+
+        <TextBlock TextWrapping="Wrap" FontSize="11">
+          <Run Text="None:" FontWeight="Bold" /><Run Text=" View stays as-is during resize." />
+        </TextBlock>
+
+        <TextBlock TextWrapping="Wrap" FontSize="11" Margin="0,4,0,0">
+          <Run Text="Maintain Center:" FontWeight="Bold" /><Run Text=" Keep viewport center point fixed." />
+        </TextBlock>
+
+        <TextBlock TextWrapping="Wrap" FontSize="11" Margin="0,4,0,0">
+          <Run Text="Maintain Top Left:" FontWeight="Bold" /><Run Text=" Keep top-left position fixed." />
+        </TextBlock>
+
+        <TextBlock TextWrapping="Wrap" FontSize="11" Margin="0,4,0,0">
+          <Run Text="Maintain Zoom:" FontWeight="Bold" /><Run Text=" Keep zoom level, adjust position proportionally." />
+        </TextBlock>
+
+        <TextBlock TextWrapping="Wrap" FontSize="11" Margin="0,4,0,0">
+          <Run Text="Reapply Stretch:" FontWeight="Bold" /><Run Text=" Reapply stretch mode on resize." />
+        </TextBlock>
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Current State:" FontWeight="SemiBold" FontSize="11" />
+        <TextBlock FontSize="10">
+          <Run Text="Zoom: " /><Run Text="{x:Bind ZoomBorder.ZoomX, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter=F2}" /><Run Text="x" />
+        </TextBlock>
+        <TextBlock FontSize="10">
+          <Run Text="Offset X: " /><Run Text="{x:Bind ZoomBorder.OffsetX, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter=F1}" />
+        </TextBlock>
+        <TextBlock FontSize="10">
+          <Run Text="Offset Y: " /><Run Text="{x:Bind ZoomBorder.OffsetY, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter=F1}" />
+        </TextBlock>
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Try resizing the window to see different behaviors!" FontSize="10" TextWrapping="Wrap" FontStyle="Italic" />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="Uniform"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True"
+                      ResizeBehavior="MaintainZoom">
+        <Canvas Width="600" Height="500" Background="LightGray">
+          <TextBlock Canvas.Left="20" Canvas.Top="20" Text="Resize Behavior Demo" FontSize="24" FontWeight="Bold" />
+
+          <!-- Grid to help visualize position changes -->
+          <Rectangle Canvas.Left="0" Canvas.Top="0" Width="600" Height="1" Fill="Red" />
+          <Rectangle Canvas.Left="0" Canvas.Top="0" Width="1" Height="500" Fill="Red" />
+          <Rectangle Canvas.Left="599" Canvas.Top="0" Width="1" Height="500" Fill="Red" />
+          <Rectangle Canvas.Left="0" Canvas.Top="499" Width="600" Height="1" Fill="Red" />
+
+          <Ellipse Canvas.Left="50" Canvas.Top="50" Width="50" Height="50" Fill="Orange" />
+          <Ellipse Canvas.Left="500" Canvas.Top="50" Width="50" Height="50" Fill="Green" />
+          <Ellipse Canvas.Left="50" Canvas.Top="400" Width="50" Height="50" Fill="Blue" />
+          <Ellipse Canvas.Left="500" Canvas.Top="400" Width="50" Height="50" Fill="Purple" />
+
+          <Border Canvas.Left="200" Canvas.Top="150" Width="200" Height="200"
+                  Background="#80FFA500" BorderBrush="DarkOrange" BorderThickness="3" Padding="10">
+            <StackPanel Spacing="10" VerticalAlignment="Center">
+              <TextBlock Text="Center Area" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" />
+              <TextBlock Text="Resize the window to see behavior changes" TextWrapping="Wrap" TextAlignment="Center" FontSize="12" />
+            </StackPanel>
+          </Border>
+
+          <TextBlock Canvas.Left="20" Canvas.Top="430" TextWrapping="Wrap" Width="560" FontSize="11"
+                     Text="Watch the corner circles and center box. Different resize behaviors affect how content repositions when the window changes size." />
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

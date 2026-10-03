@@ -20,4 +20,8 @@
   <Import Project="..\..\build\ReferenceAssemblies.props" />
   <Import Project="..\..\build\Avalonia.props" />
 
+  <ItemGroup>
+    <ProjectReference Include="..\PanAndZoom.Core\PanAndZoom.Core.csproj" />
+  </ItemGroup>
+
 </Project>

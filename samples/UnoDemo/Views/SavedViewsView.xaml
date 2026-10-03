@@ -1,0 +1,112 @@
+<UserControl x:Class="UnoDemo.Views.SavedViewsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Saved Views" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Save and restore view presets" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Save New View:" FontWeight="SemiBold" />
+        <TextBlock Text="Name:" FontSize="11" />
+        <TextBox Text="{Binding ViewName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Enter view name..." />
+
+        <TextBlock Text="Description:" FontSize="11" />
+        <TextBox Text="{Binding ViewDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Optional description..." />
+
+        <Button Content="Save Current View" Click="SaveView_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Saved Views:" FontWeight="SemiBold" />
+        <!-- Avalonia ListBox -> WinUI ListView. -->
+        <ListView ItemsSource="{Binding SavedViews}"
+                  SelectedItem="{Binding SelectedViewName, Mode=TwoWay}"
+                  SelectionMode="Single"
+                  BorderBrush="#FFD0D0D0"
+                  BorderThickness="1"
+                  Height="150">
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding}" />
+            </DataTemplate>
+          </ListView.ItemTemplate>
+        </ListView>
+
+        <Button Content="Restore Selected" Click="RestoreView_Click"
+                IsEnabled="{Binding SelectedViewName, Converter={StaticResource IsNotNullOrEmpty}}" />
+        <Button Content="Delete Selected" Click="DeleteView_Click"
+                IsEnabled="{Binding SelectedViewName, Converter={StaticResource IsNotNullOrEmpty}}" />
+        <Button Content="Clear All Views" Click="ClearAllViews_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock FontSize="11" TextWrapping="Wrap"
+                   Text="Pan and zoom to interesting positions, then save them with a name. Restore saved views anytime!" />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="Uniform"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True">
+        <Canvas Width="1000" Height="700" Background="LightGray">
+          <TextBlock Canvas.Left="20" Canvas.Top="20" Text="Saved Views Demo" FontSize="28" FontWeight="Bold" />
+
+          <Border Canvas.Left="50" Canvas.Top="100" Width="250" Height="150"
+                  Background="Red" BorderBrush="DarkRed" BorderThickness="3">
+            <TextBlock Text="Region 1: Overview" FontSize="20" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Center" />
+          </Border>
+
+          <Border Canvas.Left="350" Canvas.Top="100" Width="250" Height="150"
+                  Background="Blue" BorderBrush="DarkBlue" BorderThickness="3">
+            <TextBlock Text="Region 2: Details" FontSize="20" FontWeight="Bold" Foreground="White"
+                       VerticalAlignment="Center" HorizontalAlignment="Center" />
+          </Border>
+
+          <Border Canvas.Left="650" Canvas.Top="100" Width="250" Height="150"
+                  Background="Green" BorderBrush="DarkGreen" BorderThickness="3">
+            <TextBlock Text="Region 3: Close-up" FontSize="20" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Center" />
+          </Border>
+
+          <Border Canvas.Left="50" Canvas.Top="300" Width="400" Height="350"
+                  Background="Orange" BorderBrush="DarkOrange" BorderThickness="3" Padding="15">
+            <StackPanel Spacing="10">
+              <TextBlock Text="Region 4: Info Panel" FontSize="22" FontWeight="Bold" />
+              <TextBlock TextWrapping="Wrap" FontSize="14" Text="Navigate to different regions and save them as named views:" />
+              <TextBlock TextWrapping="Wrap" FontSize="13" Text="• &quot;Overview&quot; - Full view of all regions" />
+              <TextBlock TextWrapping="Wrap" FontSize="13" Text="• &quot;Region 1&quot; - Focused on red area" />
+              <TextBlock TextWrapping="Wrap" FontSize="13" Text="• &quot;Details&quot; - Zoomed into blue section" />
+              <TextBlock TextWrapping="Wrap" FontSize="13" Text="• &quot;Close-up&quot; - Maximum zoom on green" />
+            </StackPanel>
+          </Border>
+
+          <Border Canvas.Left="500" Canvas.Top="300" Width="400" Height="150"
+                  Background="Purple" BorderBrush="DarkMagenta" BorderThickness="3" Padding="15">
+            <StackPanel>
+              <TextBlock Text="Region 5: Custom View" FontSize="20" FontWeight="Bold" Foreground="White" />
+              <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="White" Margin="0,8,0,0"
+                         Text="Create your own custom views and switch between them instantly!" />
+            </StackPanel>
+          </Border>
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

@@ -26,3 +26,14 @@ Embedding zoomable content inside a `ScrollViewer` is common, but naive implemen
 - `Avalonia.Controls.PanAndZoom.ZoomBorder.CalculateScrollable(Avalonia.Rect,Avalonia.Size,Avalonia.Media.Transformation.Matrix,Avalonia.Size@,Avalonia.Size@,Avalonia.Vector@)`
 - `BringIntoView(...)` behavior through the scrollable contract
 - [Bounds, Wheel, and Resize](../guides/bounds-wheel-and-resize.md)
+
+## Uno Platform
+
+WinUI has no `ILogicalScrollable`, so the Uno `PanAndZoom.ZoomBorder` exposes the same logical scroll state as plain members backed by the shared engine:
+
+- `Extent`, `Viewport`, and `ScrollOffset` (a `Windows.Foundation.Point`; setting it pans the content)
+- `CanHorizontallyScroll`, `CanVerticallyScroll`, and the `ScrollInvalidated` event
+- `BringIntoView(FrameworkElement, Rect)`, also used to handle `BringIntoViewRequested` raised by descendants of the child (for example when a focused control inside the content requests to be shown)
+- static `CalculateScrollable(...)` and `TransformContentToViewport(...)` helpers with WinUI types
+
+Use these members to drive custom scroll bars or a minimap instead of wrapping the control in a WinUI `ScrollViewer`.

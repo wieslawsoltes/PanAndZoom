@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/build/">
+    <File Path=".editorconfig" />
+    <File Path="global.json" />
+    <File Path="Directory.Packages.props" />
+    <File Path="build/run-uno-runtime-tests.sh" />
+  </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/UnoDemo/UnoDemo.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/PanAndZoom.Core/PanAndZoom.Core.csproj" />
+    <Project Path="src/PanAndZoom.Uno/PanAndZoom.Uno.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PanAndZoom.Core.UnitTests/PanAndZoom.Core.UnitTests.csproj" />
+    <Project Path="tests/PanAndZoom.Uno.RuntimeTests/PanAndZoom.Uno.RuntimeTests.csproj" />
+  </Folder>
+</Solution>

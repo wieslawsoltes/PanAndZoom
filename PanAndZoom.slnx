@@ -39,11 +39,13 @@
     <Project Path="samples/AvaloniaDemo.Desktop/AvaloniaDemo.Desktop.csproj" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/PanAndZoom.Core/PanAndZoom.Core.csproj" />
     <Project Path="src/PanAndZoom/PanAndZoom.csproj" />
     <Project Path="src/HeadlessTestingFramework/HeadlessTestingFramework.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Avalonia.Controls.PanAndZoom.UnitTests/Avalonia.Controls.PanAndZoom.UnitTests.csproj" />
     <Project Path="tests/HeadlessTestingFramework.UnitTests/HeadlessTestingFramework.UnitTests.csproj" />
+    <Project Path="tests/PanAndZoom.Core.UnitTests/PanAndZoom.Core.UnitTests.csproj" />
   </Folder>
 </Solution>

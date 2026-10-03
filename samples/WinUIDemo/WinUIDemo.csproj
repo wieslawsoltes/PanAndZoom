@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Native WinUI 3 (Windows App SDK) build of the PanAndZoom demo.
+
+    All application sources (App, MainPage, every demo view, view models and converters) are linked
+    from samples/UnoDemo, so the Uno Platform and the WinUI demos are the same code. The app is
+    unpackaged and self-contained (the Windows App SDK runtime is deployed with the app).
+
+    Run it (Windows only):
+      dotnet run (from samples/WinUIDemo)
+
+    Smoke test every demo page (exits with a non-zero code on failure):
+      set UNODEMO_SELFTEST=1 and dotnet run (from samples/WinUIDemo)
+  -->
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <UseWinUI>true</UseWinUI>
+    <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win-$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLowerInvariant())</RuntimeIdentifier>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>UnoDemo</RootNamespace>
+    <AssemblyName>WinUIDemo</AssemblyName>
+    <ApplicationManifest>..\UnoDemo\app.manifest</ApplicationManifest>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
+    <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+    <DefineConstants>$(DefineConstants);PANANDZOOM_WINUI</DefineConstants>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\Base.props" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PanAndZoom.WinUI\PanAndZoom.WinUI.csproj" />
+  </ItemGroup>
+
+  <!-- Shared sources of the Uno Platform demo (platform heads are excluded). -->
+  <ItemGroup>
+    <Compile Include="..\UnoDemo\**\*.cs" Exclude="..\UnoDemo\bin\**;..\UnoDemo\obj\**;..\UnoDemo\Platforms\**" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+    <ApplicationDefinition Include="..\UnoDemo\App.xaml" Link="App.xaml" />
+    <Page Include="..\UnoDemo\**\*.xaml" Exclude="..\UnoDemo\App.xaml;..\UnoDemo\bin\**;..\UnoDemo\obj\**;..\UnoDemo\Platforms\**" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>

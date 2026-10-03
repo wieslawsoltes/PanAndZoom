@@ -16,6 +16,25 @@ The main test project covers:
 - rotation, scale indicator, viewport culling, and `ILogicalScrollable`
 - Appium-style APIs and recording workflows
 
+## Core Engine Tests
+
+`tests/PanAndZoom.Core.UnitTests` (xunit v3) exercises `PanAndZoom.Core.PanAndZoomEngine` directly, without a UI framework:
+
+```bash
+dotnet test tests/PanAndZoom.Core.UnitTests -c Release
+```
+
+## Uno Platform Runtime Tests
+
+`tests/PanAndZoom.Uno.RuntimeTests` runs inside a real Uno Skia desktop app using Uno.UI.RuntimeTests.Engine, so layout, templates, pointer capture, manipulations, and render transforms are exercised for real:
+
+```bash
+build/run-uno-runtime-tests.sh
+build/run-uno-runtime-tests.sh Debug "ZoomBorderTests"
+```
+
+Results are written to `artifacts/test-results/uno-runtime-tests.xml`. On Linux without a display the script uses `xvfb-run`. The project README covers the helpers (`ZoomBorderTestHelper`, `InputHelper`) and how to port Avalonia tests.
+
 ## HeadlessTestingFramework Test Coverage Areas
 
 The second test project focuses on:

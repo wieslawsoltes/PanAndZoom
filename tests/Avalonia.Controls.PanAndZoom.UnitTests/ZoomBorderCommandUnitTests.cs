@@ -10,15 +10,14 @@ using Xunit;
 namespace Avalonia.Controls.PanAndZoom.UnitTests;
 
 /// <summary>
-/// Unit tests for ZoomBorderCommand internal class via reflection and ZoomBorder commands.
+/// Unit tests for the shared ZoomBorderCommand class (PanAndZoom.Core) via reflection and ZoomBorder commands.
 /// </summary>
 public class ZoomBorderCommandUnitTests
 {
     // Helper to get internal ZoomBorderCommand type
     private static Type GetZoomBorderCommandType()
     {
-        var assembly = typeof(ZoomBorder).Assembly;
-        return assembly.GetType("Avalonia.Controls.PanAndZoom.ZoomBorderCommand")!;
+        return typeof(global::PanAndZoom.Core.ZoomBorderCommand);
     }
 
     // Helper to create ZoomBorderCommand instance via reflection

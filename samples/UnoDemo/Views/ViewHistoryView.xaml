@@ -1,0 +1,67 @@
+<UserControl x:Class="UnoDemo.Views.ViewHistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="View History Demo" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Navigate through view history with undo/redo" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="History Controls:" FontWeight="SemiBold" />
+        <Button Content="Undo (Ctrl+Z)" Click="Undo_Click" IsEnabled="{Binding CanUndo}" />
+        <Button Content="Redo (Ctrl+Y)" Click="Redo_Click" IsEnabled="{Binding CanRedo}" />
+        <Button Content="Clear History" Click="ClearHistory_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="History Information:" FontWeight="SemiBold" />
+        <TextBlock Text="{Binding HistoryInfo}" TextWrapping="Wrap" FontFamily="Consolas" FontSize="11" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Instructions:" FontWeight="SemiBold" />
+        <TextBlock TextWrapping="Wrap" FontSize="11"
+                   Text="Pan and zoom to different positions. Each change is saved to history. Use Undo/Redo buttons or keyboard shortcuts to navigate." />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="None"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True"
+                      IsTabStop="True"
+                      EnableViewHistory="True">
+        <Canvas Width="800" Height="600" Background="LightGray">
+          <TextBlock Canvas.Left="10" Canvas.Top="10" Text="Region 1" FontSize="24" FontWeight="Bold" />
+          <Rectangle Fill="Red" Width="150" Height="150" Canvas.Left="10" Canvas.Top="50" />
+
+          <TextBlock Canvas.Left="310" Canvas.Top="10" Text="Region 2" FontSize="24" FontWeight="Bold" />
+          <Rectangle Fill="Blue" Width="150" Height="150" Canvas.Left="310" Canvas.Top="50" />
+
+          <TextBlock Canvas.Left="10" Canvas.Top="250" Text="Region 3" FontSize="24" FontWeight="Bold" />
+          <Rectangle Fill="Green" Width="150" Height="150" Canvas.Left="10" Canvas.Top="290" />
+
+          <TextBlock Canvas.Left="310" Canvas.Top="250" Text="Region 4" FontSize="24" FontWeight="Bold" />
+          <Rectangle Fill="Orange" Width="150" Height="150" Canvas.Left="310" Canvas.Top="290" />
+
+          <TextBlock Canvas.Left="610" Canvas.Top="10" Text="Region 5" FontSize="24" FontWeight="Bold" />
+          <Rectangle Fill="Purple" Width="150" Height="150" Canvas.Left="610" Canvas.Top="50" />
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

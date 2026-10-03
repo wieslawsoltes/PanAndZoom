@@ -6,7 +6,7 @@ title: "Troubleshooting"
 
 ## Keyboard shortcuts do not work
 
-- Ensure `Focusable="True"` on `ZoomBorder`.
+- Ensure `Focusable="True"` on the Avalonia `ZoomBorder` (on Uno Platform `IsTabStop` is `true` by default).
 - Ensure the control actually has focus when keys are pressed.
 - Verify `EnableKeyboardNavigation` is enabled.
 
@@ -35,3 +35,19 @@ title: "Troubleshooting"
 
 - Check whether bounds or resize behavior is adjusting the imported matrix.
 - Confirm the target content size matches the original state context.
+
+## `StretchMode` or `ZoomChangedEventArgs` cannot be found after upgrading
+
+- The shared model types moved to the `PanAndZoom` namespace in the `PanAndZoom.Core` assembly.
+- Add `using PanAndZoom;` in C#, and `xmlns:pz="using:PanAndZoom"` in Avalonia XAML when the enum types are used as elements.
+- See [Installation](../getting-started/installation.md).
+
+## Uno Platform: touch pans the page instead of the content
+
+- Keep `EnableGestures` enabled; the control sets `ManipulationMode` to translate, scale, and rotate only while gestures are enabled.
+- Check `EnableGestureTranslation`, `EnableGestureZoom`, and `EnableGestureRotation`.
+
+## Uno Platform: the library does not build for Android, iOS, or WebAssembly
+
+- Install the workloads: `dotnet workload install android ios wasm-tools`.
+- For a quick local build without workloads use `-p:PanAndZoomTargetFrameworks=net10.0-desktop`.

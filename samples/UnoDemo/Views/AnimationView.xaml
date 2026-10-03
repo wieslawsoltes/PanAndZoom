@@ -1,0 +1,81 @@
+<UserControl x:Class="UnoDemo.Views.AnimationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Animation Controls" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Smooth vs instant transitions" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Animation Settings:" FontWeight="SemiBold" />
+        <CheckBox Content="Enable Animations" IsChecked="{Binding EnableAnimations, Mode=TwoWay}" />
+
+        <TextBlock Text="Animation Duration (ms):" Margin="0,8,0,0" />
+        <Slider x:Name="DurationSlider" Minimum="0" Maximum="2000" Value="300" />
+        <TextBlock FontSize="10">
+          <Run Text="{x:Bind DurationSlider.Value, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter=F0}" /><Run Text="ms" />
+        </TextBlock>
+        <Button Content="Apply Duration" Click="ApplyDuration_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Test Animations:" FontWeight="SemiBold" />
+        <Button Content="Zoom In (Animated)" Click="ZoomInAnimated_Click" />
+        <Button Content="Zoom Out (Animated)" Click="ZoomOutAnimated_Click" />
+        <Button Content="Pan Right (Animated)" Click="PanRightAnimated_Click" />
+        <Button Content="Reset (Animated)" Click="ResetAnimated_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Test Instant (No Animation):" FontWeight="SemiBold" />
+        <Button Content="Zoom In (Instant)" Click="ZoomInInstant_Click" />
+        <Button Content="Reset (Instant)" Click="ResetInstant_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock FontSize="11" TextWrapping="Wrap"
+                   Text="Compare animated vs instant transitions. Higher duration makes smoother but slower animations. Try different durations!" />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="Uniform"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True"
+                      EnableAnimations="True"
+                      AnimationDuration="0:0:0.3">
+        <Canvas Width="500" Height="400" Background="LightGray">
+          <TextBlock Canvas.Left="20" Canvas.Top="20" Text="Animation Demo" FontSize="24" FontWeight="Bold" />
+
+          <Border Canvas.Left="100" Canvas.Top="100" Width="300" Height="200"
+                  Background="Orange" BorderBrush="DarkOrange" BorderThickness="2" Padding="15">
+            <StackPanel Spacing="10">
+              <TextBlock Text="Watch the Transitions!" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" />
+              <TextBlock TextWrapping="Wrap" FontSize="13" HorizontalAlignment="Center"
+                         Text="With animations enabled, all pan and zoom operations will smoothly transition to their target state." />
+              <TextBlock TextWrapping="Wrap" FontSize="13" HorizontalAlignment="Center"
+                         Text="Without animations (or using skipTransitions), changes happen instantly." />
+            </StackPanel>
+          </Border>
+
+          <TextBlock Canvas.Left="20" Canvas.Top="340" TextWrapping="Wrap" Width="460" FontSize="12"
+                     Text="Duration controls animation speed: 0ms = instant, 300ms = default, 1000ms+ = slow motion." />
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

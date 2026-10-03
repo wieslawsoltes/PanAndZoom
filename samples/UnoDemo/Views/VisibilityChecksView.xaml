@@ -1,0 +1,83 @@
+<UserControl x:Class="UnoDemo.Views.VisibilityChecksView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Visibility Checks" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Check if points/rects are visible" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Check Point:" FontWeight="SemiBold" />
+        <TextBlock Text="X:" FontSize="11" />
+        <TextBox Text="{Binding PointX, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+        <TextBlock Text="Y:" FontSize="11" />
+        <TextBox Text="{Binding PointY, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+        <Button Content="Check Point Visibility" Click="CheckPoint_Click" />
+        <TextBlock Text="{Binding PointResult}" FontWeight="SemiBold" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Check Rectangle:" FontWeight="SemiBold" />
+        <TextBlock Text="X:" FontSize="11" />
+        <TextBox Text="{Binding RectX, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+        <TextBlock Text="Y:" FontSize="11" />
+        <TextBox Text="{Binding RectY, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+        <TextBlock Text="Width:" FontSize="11" />
+        <TextBox Text="{Binding RectWidth, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+        <TextBlock Text="Height:" FontSize="11" />
+        <TextBox Text="{Binding RectHeight, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+        <Button Content="Check Rect Visibility" Click="CheckRect_Click" />
+        <TextBlock Text="{Binding RectResult}" FontWeight="SemiBold" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <Button Content="Get Visible Portion" Click="GetPortion_Click" />
+        <TextBlock Text="{Binding PortionResult}" FontWeight="SemiBold" TextWrapping="Wrap" FontSize="10" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock FontSize="11" TextWrapping="Wrap"
+                   Text="Pan/zoom then check if elements are visible. GetVisiblePortion() returns the part of a rect that's currently visible." />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="Uniform"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True">
+        <Canvas Width="500" Height="400" Background="LightGray">
+          <TextBlock Canvas.Left="20" Canvas.Top="20" Text="Visibility Checks Demo" FontSize="24" FontWeight="Bold" />
+
+          <!-- Test Point -->
+          <Ellipse Width="20" Height="20" Fill="Red"
+                   Canvas.Left="{Binding PointX}"
+                   Canvas.Top="{Binding PointY}" />
+
+          <!-- Test Rectangle -->
+          <Border Canvas.Left="{Binding RectX}"
+                  Canvas.Top="{Binding RectY}"
+                  Width="{Binding RectWidth}"
+                  Height="{Binding RectHeight}"
+                  BorderBrush="Blue" BorderThickness="3" Background="#40000080" />
+
+          <TextBlock Canvas.Left="20" Canvas.Top="320" TextWrapping="Wrap" Width="460" FontSize="12"
+                     Text="Methods: IsPointVisible(), IsRectangleVisible(), GetVisiblePortion(). Pan/zoom to move elements in/out of view, then check visibility." />
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

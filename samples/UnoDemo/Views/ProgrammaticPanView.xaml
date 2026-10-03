@@ -1,0 +1,110 @@
+<UserControl x:Class="UnoDemo.Views.ProgrammaticPanView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Programmatic Pan" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Control panning via code" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Center On Content Point:" FontWeight="SemiBold" />
+        <TextBlock Text="X:" FontSize="11" />
+        <TextBox x:Name="PanToX" Text="1000" />
+        <TextBlock Text="Y:" FontSize="11" />
+        <TextBox x:Name="PanToY" Text="750" />
+        <Button Content="Center On Point" Click="PanTo_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Pan by Delta:" FontWeight="SemiBold" />
+        <TextBlock Text="Delta X:" FontSize="11" />
+        <TextBox x:Name="PanDeltaX" Text="50" />
+        <TextBlock Text="Delta Y:" FontSize="11" />
+        <TextBox x:Name="PanDeltaY" Text="50" />
+        <Button Content="Apply Delta" Click="PanDelta_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Directional Pan:" FontWeight="SemiBold" />
+        <Grid Height="100" ColumnSpacing="4" RowSpacing="4">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="↑ Up" Click="PanUp_Click"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+          <Button Grid.Row="1" Grid.Column="0" Content="← Left" Click="PanLeft_Click"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+          <Button Grid.Row="1" Grid.Column="1" Content="Right →" Click="PanRight_Click"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+          <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="↓ Down" Click="PanDown_Click"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        </Grid>
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Current Offset:" FontWeight="SemiBold" />
+        <TextBlock>
+          <Run Text="X: " /><Run Text="{x:Bind ZoomBorder.OffsetX, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter=F2}" />
+        </TextBlock>
+        <TextBlock>
+          <Run Text="Y: " /><Run Text="{x:Bind ZoomBorder.OffsetY, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter=F2}" />
+        </TextBlock>
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="None"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True">
+        <Canvas Width="2000" Height="1500" Background="LightGray">
+          <TextBlock Canvas.Left="20" Canvas.Top="20" Text="Programmatic Pan Demo (2000x1500 canvas)" FontSize="24" FontWeight="Bold" />
+
+          <!-- Grid with coordinates -->
+          <Rectangle Stroke="Gray" StrokeThickness="1" Width="2000" Height="1500" Canvas.Left="0" Canvas.Top="0" Fill="Transparent" />
+
+          <Line X1="0" Y1="750" X2="2000" Y2="750" Stroke="Red" StrokeThickness="2" StrokeDashArray="5,3" />
+          <Line X1="1000" Y1="0" X2="1000" Y2="1500" Stroke="Red" StrokeThickness="2" StrokeDashArray="5,3" />
+
+          <TextBlock Canvas.Left="10" Canvas.Top="10" Text="(0, 0)" FontSize="12" />
+          <TextBlock Canvas.Left="1950" Canvas.Top="10" Text="(2000, 0)" FontSize="12" />
+          <TextBlock Canvas.Left="10" Canvas.Top="1470" Text="(0, 1500)" FontSize="12" />
+          <TextBlock Canvas.Left="1920" Canvas.Top="1470" Text="(2000, 1500)" FontSize="12" />
+          <TextBlock Canvas.Left="1010" Canvas.Top="755" Text="Center (1000, 750)" FontSize="14" FontWeight="Bold" Foreground="Red" />
+
+          <Border Canvas.Left="800" Canvas.Top="600" Width="400" Height="300"
+                  Background="Orange" BorderBrush="DarkOrange" BorderThickness="2" Padding="15">
+            <StackPanel Spacing="8">
+              <TextBlock Text="Pan Methods" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" />
+              <TextBlock TextWrapping="Wrap" FontSize="12" HorizontalAlignment="Center"
+                         Text="• CenterOn(point) - Center content point in viewport" />
+              <TextBlock TextWrapping="Wrap" FontSize="12" HorizontalAlignment="Center"
+                         Text="• PanDelta(dx, dy) - Move by offset" />
+              <TextBlock TextWrapping="Wrap" FontSize="12" HorizontalAlignment="Center"
+                         Text="Try CenterOn(1000, 750) to center the crosshair!" />
+            </StackPanel>
+          </Border>
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

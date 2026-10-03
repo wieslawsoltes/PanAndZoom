@@ -1,0 +1,64 @@
+<UserControl x:Class="UnoDemo.Views.StateSerializationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="300" />
+    </Grid.ColumnDefinitions>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="0" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="None"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True">
+        <Canvas Width="500" Height="500" Background="LightGray">
+          <TextBlock Canvas.Left="20" Canvas.Top="20" Text="State Serialization Demo" FontSize="24" FontWeight="Bold" />
+
+          <TextBlock Canvas.Left="20" Canvas.Top="70" TextWrapping="Wrap" Width="460" FontSize="14"
+                     Text="Pan and zoom to different positions, then export the state. You can restore it later using the Import button." />
+
+          <Rectangle Fill="Red" Width="100" Height="100" Canvas.Left="50" Canvas.Top="150" />
+          <Rectangle Fill="Blue" Width="100" Height="100" Canvas.Left="200" Canvas.Top="150" />
+          <Rectangle Fill="Green" Width="100" Height="100" Canvas.Left="350" Canvas.Top="150" />
+
+          <Rectangle Fill="Orange" Width="100" Height="100" Canvas.Left="50" Canvas.Top="300" />
+          <Rectangle Fill="Purple" Width="100" Height="100" Canvas.Left="200" Canvas.Top="300" />
+          <Rectangle Fill="Cyan" Width="100" Height="100" Canvas.Left="350" Canvas.Top="300" />
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="1" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="State Serialization" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Save and restore zoom/pan state" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="State Controls:" FontWeight="SemiBold" />
+        <Button Content="Export State" Click="Export_Click" />
+        <Button Content="Import State" Click="Import_Click" />
+        <Button Content="Reset State" Click="Reset_Click" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="State JSON:" FontWeight="SemiBold" />
+        <ScrollViewer Height="350" VerticalScrollBarVisibility="Auto">
+          <TextBox Text="{Binding StateJson, Mode=OneWay}"
+                   IsReadOnly="True"
+                   FontFamily="Consolas"
+                   FontSize="10"
+                   TextWrapping="Wrap"
+                   AcceptsReturn="True" />
+        </ScrollViewer>
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+
+</UserControl>

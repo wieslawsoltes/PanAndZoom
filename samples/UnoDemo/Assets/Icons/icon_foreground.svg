@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="456" height="456" viewBox="0 0 456 456" xmlns="http://www.w3.org/2000/svg">
+  <!-- Magnifier with a plus sign (zoom) -->
+  <circle cx="200" cy="200" r="92" fill="none" stroke="#FFFFFF" stroke-width="28" />
+  <line x1="266" y1="266" x2="344" y2="344" stroke="#FFFFFF" stroke-width="36" stroke-linecap="round" />
+  <line x1="200" y1="150" x2="200" y2="250" stroke="#FFD700" stroke-width="24" stroke-linecap="round" />
+  <line x1="150" y1="200" x2="250" y2="200" stroke="#FFD700" stroke-width="24" stroke-linecap="round" />
+</svg>

@@ -27,6 +27,8 @@ Create a zoomable container by wrapping your content in `Avalonia.Controls.PanAn
 
 ## Common Code-Behind Hooks
 
+`ZoomChangedEventArgs` and the other shared model types live in the `PanAndZoom` namespace (`PanAndZoom.Core` assembly), so add `using PanAndZoom;` next to `using Avalonia.Controls.PanAndZoom;`.
+
 ```csharp
 ZoomBorder.ZoomChanged += (_, e) =>
 {
@@ -61,5 +63,6 @@ ZoomBorder.ResetMatrix();
 ## Next Steps
 
 - [Transform and Coordinate Spaces](../concepts/transform-and-coordinate-spaces.md)
+- [Quickstart: Uno Platform](quickstart-uno.md)
 - [Commands and Keyboard](../guides/commands-and-keyboard.md)
 - [Bounds, Wheel, and Resize](../guides/bounds-wheel-and-resize.md)

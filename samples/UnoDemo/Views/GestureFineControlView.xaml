@@ -1,0 +1,109 @@
+<UserControl x:Class="UnoDemo.Views.GestureFineControlView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Gesture Fine Control" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Enable/disable specific gestures" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Touch Gesture Settings:" FontWeight="SemiBold" />
+
+        <CheckBox x:Name="GestureZoomCheck" Content="Enable Gesture Zoom"
+                  IsChecked="True"
+                  Click="GestureZoom_Changed" />
+        <TextBlock Text="Pinch-to-zoom on touch devices" FontSize="10" Margin="20,0,0,4" TextWrapping="Wrap" />
+
+        <CheckBox x:Name="GestureTranslationCheck" Content="Enable Gesture Translation"
+                  IsChecked="True"
+                  Click="GestureTranslation_Changed" />
+        <TextBlock Text="Touch pan/drag gestures" FontSize="10" Margin="20,0,0,4" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Gesture Configurations:" FontWeight="SemiBold" FontSize="11" />
+
+        <Button Content="Both Enabled" Click="BothEnabled_Click" />
+        <TextBlock Text="Full touch/gesture control" FontSize="10" Margin="20,0,0,4" />
+
+        <Button Content="Zoom Only" Click="ZoomOnly_Click" />
+        <TextBlock Text="Pinch zoom, no pan" FontSize="10" Margin="20,0,0,4" />
+
+        <Button Content="Pan Only" Click="PanOnly_Click" />
+        <TextBlock Text="Touch pan, no pinch zoom" FontSize="10" Margin="20,0,0,4" />
+
+        <Button Content="Both Disabled" Click="BothDisabled_Click" />
+        <TextBlock Text="Mouse/keyboard only" FontSize="10" Margin="20,0,0,4" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Current State:" FontWeight="SemiBold" FontSize="11" />
+        <TextBlock FontSize="10">
+          <Run Text="Gesture Zoom: " /><Run Text="{x:Bind ZoomBorder.EnableGestureZoom, Mode=OneWay, Converter={StaticResource StringFormat}}" />
+        </TextBlock>
+        <TextBlock FontSize="10">
+          <Run Text="Gesture Translation: " /><Run Text="{x:Bind ZoomBorder.EnableGestureTranslation, Mode=OneWay, Converter={StaticResource StringFormat}}" />
+        </TextBlock>
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Instructions:" FontSize="11" TextWrapping="Wrap" FontWeight="SemiBold" />
+        <TextBlock Text="On touch-enabled devices, try different gesture combinations. Use mouse wheel and drag to test non-gesture input."
+                   FontSize="10" TextWrapping="Wrap" />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="Uniform"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True"
+                      EnableGestureZoom="True"
+                      EnableGestureTranslation="True">
+        <Canvas Width="500" Height="400" Background="LightGray">
+          <TextBlock Canvas.Left="20" Canvas.Top="20" Text="Gesture Control Demo" FontSize="24" FontWeight="Bold" />
+
+          <Border Canvas.Left="50" Canvas.Top="80" Width="400" Height="250"
+                  Background="White" BorderBrush="DarkGray" BorderThickness="2" Padding="20">
+            <StackPanel Spacing="15">
+              <TextBlock Text="Touch Gesture Test Area" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" />
+
+              <Border Background="#20000000" Padding="10" CornerRadius="5">
+                <StackPanel Spacing="8">
+                  <TextBlock Text="🤏 Pinch to Zoom" FontSize="14" />
+                  <TextBlock Text="Controlled by EnableGestureZoom" FontSize="11" Foreground="Gray" />
+                </StackPanel>
+              </Border>
+
+              <Border Background="#20000000" Padding="10" CornerRadius="5">
+                <StackPanel Spacing="8">
+                  <TextBlock Text="👆 Touch to Pan" FontSize="14" />
+                  <TextBlock Text="Controlled by EnableGestureTranslation" FontSize="11" Foreground="Gray" />
+                </StackPanel>
+              </Border>
+
+              <TextBlock TextWrapping="Wrap" FontSize="11" TextAlignment="Center" Margin="0,10,0,0"
+                         Text="Try disabling gestures and testing with touch input. Mouse wheel and drag always work (controlled by separate properties)." />
+            </StackPanel>
+          </Border>
+
+          <TextBlock Canvas.Left="20" Canvas.Top="350" TextWrapping="Wrap" Width="460" FontSize="11"
+                     Text="Note: Mouse wheel zoom and mouse drag panning are controlled separately by EnableInput." />
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

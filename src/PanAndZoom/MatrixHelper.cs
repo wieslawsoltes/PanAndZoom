@@ -1,12 +1,14 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
-using static System.Math;
 
 namespace Avalonia.Controls.PanAndZoom;
 
 /// <summary>
 /// Avalonia Matrix helper methods.
 /// </summary>
+/// <remarks>
+/// Thin Avalonia wrapper over the UI framework independent <see cref="MatrixMath"/> helpers.
+/// </remarks>
 public static class MatrixHelper
 {
     /// <summary>
@@ -17,7 +19,7 @@ public static class MatrixHelper
     /// <returns>The created translation matrix.</returns>
     public static Matrix Translate(double offsetX, double offsetY)
     {
-        return new Matrix(1.0, 0.0, 0.0, 1.0, offsetX, offsetY);
+        return MatrixMath.Translate(offsetX, offsetY).ToAvalonia();
     }
 
     /// <summary>
@@ -40,7 +42,7 @@ public static class MatrixHelper
     /// <returns>The created scaling matrix.</returns>
     public static Matrix Scale(double scaleX, double scaleY)
     {
-        return new Matrix(scaleX, 0, 0, scaleY, 0.0, 0.0);
+        return MatrixMath.Scale(scaleX, scaleY).ToAvalonia();
     }
 
     /// <summary>
@@ -53,7 +55,7 @@ public static class MatrixHelper
     /// <returns>The created scaling matrix.</returns>
     public static Matrix ScaleAt(double scaleX, double scaleY, double centerX, double centerY)
     {
-        return new Matrix(scaleX, 0, 0, scaleY, centerX - (scaleX * centerX), centerY - (scaleY * centerY));
+        return MatrixMath.ScaleAt(scaleX, scaleY, centerX, centerY).ToAvalonia();
     }
 
     /// <summary>
@@ -80,7 +82,7 @@ public static class MatrixHelper
     /// <returns>The created translation and scale matrix.</returns>
     public static Matrix ScaleAndTranslate(double scaleX, double scaleY, double offsetX, double offsetY)
     {
-        return new Matrix(scaleX, 0.0, 0.0, scaleY, offsetX, offsetY);
+        return MatrixMath.ScaleAndTranslate(scaleX, scaleY, offsetX, offsetY).ToAvalonia();
     }
 
     /// <summary>
@@ -91,7 +93,7 @@ public static class MatrixHelper
     /// <returns>When the method completes, contains the created skew matrix.</returns>
     public static Matrix Skew(float angleX, float angleY)
     {
-        return new Matrix(1.0, Tan(angleX), Tan(angleY), 1.0, 0.0, 0.0);
+        return MatrixMath.Skew(angleX, angleY).ToAvalonia();
     }
 
     /// <summary>
@@ -101,9 +103,7 @@ public static class MatrixHelper
     /// <returns>The created rotation matrix.</returns>
     public static Matrix Rotation(double radians)
     {
-        double cos = Cos(radians);
-        double sin = Sin(radians);
-        return new Matrix(cos, sin, -sin, cos, 0, 0);
+        return MatrixMath.Rotation(radians).ToAvalonia();
     }
 
     /// <summary>
@@ -137,8 +137,6 @@ public static class MatrixHelper
     /// <returns>The result of the transformation for the input point.</returns>
     public static Point TransformPoint(Matrix matrix, Point point)
     {
-        return new Point(
-            (point.X * matrix.M11) + (point.Y * matrix.M21) + matrix.M31,
-            (point.X * matrix.M12) + (point.Y * matrix.M22) + matrix.M32);
+        return MatrixMath.TransformPoint(matrix.ToCore(), point.ToCore()).ToAvalonia();
     }
 }

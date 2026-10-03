@@ -4,7 +4,7 @@ title: "Articles"
 
 # Articles
 
-This documentation mirrors the repository structure and splits the material into narrative articles plus generated API reference.
+This documentation mirrors the repository structure and splits the material into narrative articles plus generated API reference. The narrative articles use the Avalonia control unless noted otherwise; the Uno Platform control has the same members, and its differences are listed in [Quickstart: Uno Platform](getting-started/quickstart-uno.md).
 
 - [Introduction](intro.md)
 - [Getting Started](getting-started/readme.md)

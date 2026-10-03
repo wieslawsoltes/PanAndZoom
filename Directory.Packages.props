@@ -17,9 +17,22 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageVersion Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.0.0" />
+    <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
+    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="2.5.1" />
     <PackageVersion Include="Nuke.Common" Version="10.1.0" />
     <PackageVersion Include="ProDiagnostics" Version="12.1.0.4" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="xunit.v3" Version="3.2.2" />
+    <PackageVersion Include="Uno.UI.RuntimeTests.Engine" Version="2.0.0-dev.89" />
+  </ItemGroup>
+
+  <!--
+    Packages used by the native WinUI projects that Uno.Sdk projects get implicitly (with the versions
+    pinned by Uno.Sdk); defined only outside Uno.Sdk projects to avoid overriding the Uno versions.
+  -->
+  <ItemGroup Condition="'$(UsingUnoSdk)' != 'true'">
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.20" />
+    <PackageVersion Include="SkiaSharp" Version="3.119.2" />
+    <PackageVersion Include="Uno.Core.Extensions.Logging.Singleton" Version="4.1.1" />
   </ItemGroup>
 </Project>

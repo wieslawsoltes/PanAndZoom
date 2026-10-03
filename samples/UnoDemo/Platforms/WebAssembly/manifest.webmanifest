@@ -1,0 +1,10 @@
+{
+  "background_color": "#6a5acd",
+  "description": "PanAndZoom Uno Platform demo",
+  "display": "standalone",
+  "name": "PanAndZoom Uno Demo",
+  "short_name": "PanAndZoom",
+  "start_url": "/index.html",
+  "theme_color": "#ffffff",
+  "scope": "/"
+}

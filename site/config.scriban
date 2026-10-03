@@ -5,8 +5,8 @@ template_theme_default_mode = "system"
 
 site_project_baseurl = "https://wieslawsoltes.github.io"
 site_project_basepath = environment == "dev" ? "" : "/PanAndZoom"
-site_project_name = "PanAndZoom for Avalonia"
-site_project_description = "PanAndZoom provides a ZoomBorder control for Avalonia together with a headless testing toolkit for gesture, input, and visual verification workflows."
+site_project_name = "PanAndZoom for Avalonia and Uno Platform"
+site_project_description = "PanAndZoom provides a ZoomBorder control for Avalonia and Uno Platform built on a shared, UI framework independent pan and zoom engine, together with a headless testing toolkit for gesture, input, and visual verification workflows."
 site_project_logo_path = "/images/logo.svg"
 site_project_social_banner_path = "/images/panandzoom.png"
 site_project_package_id = "PanAndZoom"
@@ -73,6 +73,10 @@ with api.dotnet
         TargetFramework: "net8.0"
     }
     projects = [
+        {
+            name: "PanAndZoom.Core",
+            path: "../src/PanAndZoom.Core/PanAndZoom.Core.csproj"
+        },
         {
             name: "PanAndZoom",
             path: "../src/PanAndZoom/PanAndZoom.csproj"

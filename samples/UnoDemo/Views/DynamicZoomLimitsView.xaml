@@ -1,0 +1,88 @@
+<UserControl x:Class="UnoDemo.Views.DynamicZoomLimitsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:paz="using:PanAndZoom">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Controls -->
+    <ScrollViewer Grid.Column="0" Style="{StaticResource DemoPanelScrollViewerStyle}">
+      <StackPanel Margin="12" Spacing="8">
+        <TextBlock Text="Dynamic Zoom Limits Demo" FontWeight="Bold" FontSize="16" />
+        <TextBlock Text="Auto-calculate zoom limits based on content" TextWrapping="Wrap" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Auto-Calculation:" FontWeight="SemiBold" />
+        <CheckBox Content="Auto Calculate Min Zoom" IsChecked="{Binding AutoCalculateMinZoom, Mode=TwoWay}" />
+        <CheckBox Content="Auto Calculate Max Zoom" IsChecked="{Binding AutoCalculateMaxZoom, Mode=TwoWay}" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Max Zoom Pixel Size:" />
+        <TextBox Text="{Binding MaxZoomPixelSize, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Manual Limits:" FontWeight="SemiBold" />
+        <TextBlock Text="Min Zoom X:" />
+        <TextBox Text="{Binding MinZoomX, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+        <TextBlock Text="Max Zoom X:" />
+        <TextBox Text="{Binding MaxZoomX, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+        <TextBlock Text="Min Zoom Y:" />
+        <TextBox Text="{Binding MinZoomY, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+        <TextBlock Text="Max Zoom Y:" />
+        <TextBox Text="{Binding MaxZoomY, Mode=TwoWay, Converter={StaticResource DoubleText}}" />
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock Text="Current Zoom:" FontWeight="SemiBold" />
+        <TextBlock>
+          <Run Text="Zoom X: " /><Run Text="{x:Bind ZoomBorder.ZoomX, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter=F2}" />
+        </TextBlock>
+        <TextBlock>
+          <Run Text="Zoom Y: " /><Run Text="{x:Bind ZoomBorder.ZoomY, Mode=OneWay, Converter={StaticResource StringFormat}, ConverterParameter=F2}" />
+        </TextBlock>
+
+        <Border Style="{StaticResource SeparatorStyle}" Margin="0,8" />
+
+        <TextBlock FontSize="11" TextWrapping="Wrap"
+                   Text="Enable auto-calculation to have zoom limits automatically set based on content and viewport size. Manual limits are combined with auto-calculated values." />
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- ZoomBorder -->
+    <Border Grid.Column="1" Style="{StaticResource DemoZoomBorderHostStyle}">
+      <paz:ZoomBorder x:Name="ZoomBorder"
+                      Stretch="Uniform"
+                      ZoomSpeed="1.2"
+                      Background="SlateBlue"
+                      ClipToBounds="True"
+                      AutoCalculateMinZoom="True"
+                      AutoCalculateMaxZoom="True"
+                      MaxZoomPixelSize="5.0"
+                      EnableConstrains="True">
+        <Canvas Width="400" Height="300" Background="LightGray">
+          <TextBlock Canvas.Left="20" Canvas.Top="20" Text="Dynamic Zoom Limits" FontSize="22" FontWeight="Bold" />
+
+          <TextBlock Canvas.Left="20" Canvas.Top="60" TextWrapping="Wrap" Width="360" FontSize="13"
+                     Text="With auto-calculation enabled, the minimum zoom ensures the entire content fits in the viewport, and maximum zoom is limited by the pixel size setting." />
+
+          <Border Canvas.Left="50" Canvas.Top="140" Width="300" Height="120"
+                  Background="Orange" BorderBrush="DarkOrange" BorderThickness="3" Padding="10">
+            <StackPanel Spacing="6">
+              <TextBlock Text="Content Area" FontSize="16" FontWeight="Bold" />
+              <TextBlock TextWrapping="Wrap" FontSize="11"
+                         Text="Try zooming in and out. Notice how the zoom limits are automatically constrained based on the content size." />
+            </StackPanel>
+          </Border>
+        </Canvas>
+      </paz:ZoomBorder>
+    </Border>
+  </Grid>
+
+</UserControl>

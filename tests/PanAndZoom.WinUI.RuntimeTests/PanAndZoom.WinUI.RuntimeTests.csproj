@@ -1,0 +1,85 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Runtime tests for the native WinUI 3 (Windows App SDK) ZoomBorder (src/PanAndZoom.WinUI).
+
+    All test sources and the test infrastructure are linked from tests/PanAndZoom.Uno.RuntimeTests,
+    so the Uno Platform and the WinUI builds run the same tests (Uno.UI.RuntimeTests.Engine, real
+    injected mouse and touch input). The app is unpackaged and self-contained. See
+    build/run-winui-runtime-tests.ps1 to run the tests (Windows only).
+  -->
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <UseWinUI>true</UseWinUI>
+    <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win-$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLowerInvariant())</RuntimeIdentifier>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>false</IsTestProject>
+    <RootNamespace>PanAndZoom.Uno.RuntimeTests</RootNamespace>
+    <AssemblyName>PanAndZoom.WinUI.RuntimeTests</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
+    <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+    <!-- PANANDZOOM_WINUI: native WinUI code paths of the shared test infrastructure (see WinUITestRunner). -->
+    <DefineConstants>$(DefineConstants);PANANDZOOM_WINUI;IS_UNO_RUNTIMETEST_PROJECT</DefineConstants>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" />
+    <PackageReference Include="Uno.UI.RuntimeTests.Engine" />
+    <!-- Implicit in Uno.Sdk apps; required by the runtime test engine sources and the test infrastructure. -->
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" />
+    <PackageReference Include="Uno.Core.Extensions.Logging.Singleton" />
+    <PackageReference Include="SkiaSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PanAndZoom.WinUI\PanAndZoom.WinUI.csproj" />
+  </ItemGroup>
+
+  <!-- Shared sources of the Uno Platform runtime tests (platform heads are excluded). -->
+  <ItemGroup>
+    <Compile Include="..\PanAndZoom.Uno.RuntimeTests\**\*.cs" Exclude="..\PanAndZoom.Uno.RuntimeTests\bin\**;..\PanAndZoom.Uno.RuntimeTests\obj\**;..\PanAndZoom.Uno.RuntimeTests\Platforms\**" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+    <ApplicationDefinition Include="..\PanAndZoom.Uno.RuntimeTests\App.xaml" Link="App.xaml" />
+    <Page Include="TestTypes.xaml" />
+  </ItemGroup>
+
+  <!--
+    UnitTestsControl (Uno.UI.RuntimeTests.Engine sources) persists its UI settings in
+    ApplicationData.Current.LocalSettings, which requires package identity and throws in unpackaged
+    WinUI apps. Compile a copy of that engine file that uses an in-memory store instead
+    (PanAndZoom.Uno.RuntimeTests.UnpackagedSettings, see WinUITestRunner.cs).
+  -->
+  <Target Name="PatchRuntimeTestsEngineForUnpackagedApp" BeforeTargets="BeforeBuild;MarkupCompilePass1;XamlPreCompile;CoreCompile">
+    <ItemGroup>
+      <_EngineUnitTestsControl Include="@(Compile)" Condition="'%(Filename)%(Extension)' == 'UnitTestsControl.cs'" />
+    </ItemGroup>
+    <PropertyGroup>
+      <_EngineUnitTestsControlPath>@(_EngineUnitTestsControl)</_EngineUnitTestsControlPath>
+      <_PatchedUnitTestsControlPath>$(IntermediateOutputPath)UnitTestsControl.Unpackaged.cs</_PatchedUnitTestsControlPath>
+      <_EngineUnitTestsControlText>$([System.IO.File]::ReadAllText('$(_EngineUnitTestsControlPath)'))</_EngineUnitTestsControlText>
+    </PropertyGroup>
+    <Error Condition="'$(_EngineUnitTestsControlPath)' == '' or !$(_EngineUnitTestsControlText.Contains('ApplicationData.Current.LocalSettings.Values'))"
+           Text="Uno.UI.RuntimeTests.Engine changed: UnitTestsControl.cs no longer uses ApplicationData.Current.LocalSettings.Values. Update PatchRuntimeTestsEngineForUnpackagedApp." />
+    <WriteLinesToFile File="$(_PatchedUnitTestsControlPath)"
+                      Lines="$([MSBuild]::Escape($(_EngineUnitTestsControlText.Replace('ApplicationData.Current.LocalSettings.Values', 'global::PanAndZoom.Uno.RuntimeTests.UnpackagedSettings.Values'))))"
+                      Overwrite="true"
+                      WriteOnlyWhenDifferent="true" />
+    <ItemGroup>
+      <Compile Remove="@(_EngineUnitTestsControl)" />
+      <Compile Include="$(_PatchedUnitTestsControlPath)" />
+    </ItemGroup>
+  </Target>
+
+</Project>

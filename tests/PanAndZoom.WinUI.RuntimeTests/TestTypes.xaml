@@ -1,0 +1,11 @@
+<!--
+  Native WinUI only applies the ZoomBorder default style to subclasses it has XAML type metadata for.
+  Referencing the test subclasses here makes the XAML compiler generate that metadata (this dictionary
+  is never loaded).
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:infrastructure="using:PanAndZoom.Uno.RuntimeTests.Infrastructure">
+  <Style x:Key="CustomBoundsZoomBorderStyle" TargetType="infrastructure:CustomBoundsZoomBorder" />
+  <Style x:Key="TestableZoomBorderStyle" TargetType="infrastructure:TestableZoomBorder" />
+</ResourceDictionary>
