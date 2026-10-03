@@ -562,6 +562,7 @@ public partial class ZoomBorder : Control
         Log($"[Unloaded] {Name}");
         _engine.OnDetachedFromVisualTree();
         _zoomIndicatorTimer?.Stop();
+        _manipulationPointers.Clear();
         DetachElement();
     }
 

@@ -143,14 +143,6 @@ internal static class WinUIInputPump
     }
 
     /// <summary>
-    /// Queues lifting every active touch contact.
-    /// </summary>
-    public static void PostLiftTouchContacts()
-    {
-        Post(LiftTouchContactsNow);
-    }
-
-    /// <summary>
     /// Waits until every queued injection was injected.
     /// </summary>
     public static Task WhenDrainedAsync()

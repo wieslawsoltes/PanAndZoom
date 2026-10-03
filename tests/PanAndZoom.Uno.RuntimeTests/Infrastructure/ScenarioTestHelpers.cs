@@ -404,11 +404,8 @@ public static class ScenarioTestHelpers
         private const InjectedInputPointerOptions MoveOptions = InjectedInputPointerOptions.Update | InjectedInputPointerOptions.InContact | InjectedInputPointerOptions.InRange | InjectedInputPointerOptions.FirstButton;
         private const InjectedInputPointerOptions UpOptions = InjectedInputPointerOptions.PointerUp | InjectedInputPointerOptions.FirstButton;
 
-        private readonly InputInjector _injector;
-
         internal TouchSession()
         {
-            _injector = InputHelper.RawInjector;
             InputHelper.EnsureTouchInjection();
         }
 

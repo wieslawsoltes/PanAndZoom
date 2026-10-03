@@ -47,7 +47,8 @@ The WinUI runtime tests run the same test classes as the Uno runtime tests in a 
 |---|---|---|
 | Runner | The embedded Uno.UI.RuntimeTests.Engine runner, started by `UNO_RUNTIME_TESTS_RUN_TESTS`. | The embedded runner needs `Window.Current`, which is always `null` in WinUI 3 desktop apps. `WinUITestRunner` starts the tests when `PANANDZOOM_WINUI_TESTS` is set. |
 | Settings | `ApplicationData.Current.LocalSettings` | Throws in unpackaged apps (no package identity). A build step patches the engine's `UnitTestsControl` to use an in-memory store. |
-| Window | Any size. | Injected input goes to the window under the pointer, so the runner maximizes the window, keeps it on top and in the foreground, and keeps the display on (input is not delivered while the display sleeps). The mouse must not be used while the tests run. |
+| Window | Any size. | Injected input goes to the window under the pointer or to the foreground window, so the runner maximizes the window, keeps it on top, returns it to the foreground before every test, and keeps the display on (input is not delivered while the display sleeps). The mouse must not be used while the tests run. |
+| Input state | Private to the app. | Global to the desktop. Every test starts by releasing touch contacts, mouse buttons and modifier keys, and the runner releases them again when the run ends. |
 
 ### Input Injection
 
@@ -86,4 +87,4 @@ Last validated on 2026-10-03:
 | Windows drops part of the finger travel when a touch manipulation starts, so touch pans are a few pixels shorter than on Uno. | Platform behavior. Documented; the control follows the WinUI manipulation events like other WinUI controls. |
 | Uno versions report the distance travelled before a manipulation is recognized differently (unoplatform/uno#20473). | Handled: `ZoomBorder` works from the cumulative manipulation. |
 | No CI job runs the WinUI runtime tests: real input injection needs an interactive desktop where the test window stays in the foreground. CI builds the WinUI library, sample and test app, and packs `PanAndZoom.WinUI`. | Open |
-| The test window can lose the foreground in an interactive session while the tests run (injected input then goes to another window). | Mitigated: the runner brings the window back before every test and logs it. |
+| The Windows input state is global, so anything else using the same desktop disturbs the tests: a window that takes the foreground (another app or test run, a remote command that opens a console window) receives the injected keyboard and horizontal wheel input, and a modifier key left down by another test run turns wheel pans into zoom gestures. | Mitigated: before every test the runner brings the window back to the foreground (logging the window that took it) and releases touch contacts, mouse buttons and modifier keys, including keys it did not press. Validated with other test runs active on the same desktop. A focus loss in the middle of a test can still fail that test, so prefer a desktop that nothing else uses. |

@@ -94,7 +94,7 @@ The shared infrastructure switches to real Windows input injection when `PANANDZ
 * Injected input is asynchronous on Windows and bursts are coalesced, so `WinUIInputPump` feeds the queued input to Windows one frame per system timer tick. `ZoomBorderTestHelper.WaitForIdleAsync()` waits until the queue drained and the input settled; modifier keys pressed by `InputHelper.MouseWheel(..., modifiers)` stay down until then.
 * Touch frames use small pointer ids, no time offset and declared pressure/contact parameters. Every frame describes all active contacts, new contacts are nudged by one pixel and back, and moving contacts are held still before they lift (see `WinUIInputPump`).
 * Offsets produced by touch drags are asserted with `ZoomBorderTestHelper.TouchPanTolerance`, because Windows drops part of the finger travel when a manipulation starts.
-* Every test starts with a reset of the global Windows input state (`ZoomBorderTestHelper.LoadAsync`).
+* Every test starts with a reset of the global Windows input state (`ZoomBorderTestHelper.LoadAsync`): touch contacts, mouse buttons and modifier keys are released (including keys left down by something else on the desktop) and the test window is returned to the foreground. The runner log (`<results>.log`) names the window that took the foreground.
 * `ZoomBorder` subclasses used by tests must be public top-level types listed in `TestTypes.xaml` of the WinUI test project, because WinUI only applies the default style to types it has XAML metadata for.
 * The engine embedded runner needs `Window.Current`, so the WinUI app uses `WinUITestRunner` (`PANANDZOOM_WINUI_TESTS` / `PANANDZOOM_WINUI_TESTS_OUTPUT`).
 

@@ -209,7 +209,6 @@ public sealed class TouchInjectionSession : IDisposable
     private const InjectedInputPointerOptions UpOptions = InjectedInputPointerOptions.PointerUp | InjectedInputPointerOptions.FirstButton;
 
     private readonly Dictionary<uint, Point> _active = new();
-    private readonly InputInjector _injector;
     private ulong _timestamp;
     private uint _pendingTime;
     private bool _disposed;
@@ -217,7 +216,6 @@ public sealed class TouchInjectionSession : IDisposable
     public TouchInjectionSession(UIElement target)
     {
         Target = target;
-        _injector = InputHelper.RawInjector;
         InputHelper.EnsureTouchInjection();
     }
 

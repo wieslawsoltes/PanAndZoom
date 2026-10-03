@@ -88,6 +88,11 @@ internal static class WinUITestRunner
                 BringToFront(window);
                 Log("Running tests.");
                 await testsControl.RunTests(CancellationToken.None, config);
+
+                // The Windows input state is global: do not leave contacts, buttons or keys pressed on the desktop.
+                Infrastructure.InputHelper.ResetTouchAndPen();
+                Infrastructure.InputHelper.Reset();
+                await Infrastructure.WinUIInputPump.WhenDrainedAsync();
                 await File.WriteAllTextAsync(outputPath, testsControl.NUnitTestResultsDocument, Encoding.UTF8);
                 Log("Results written.");
             }
@@ -118,7 +123,7 @@ internal static class WinUITestRunner
         var foreground = GetForegroundWindow();
         if (foreground != hwnd)
         {
-            Log($"The test window lost the foreground (to window 0x{foreground:X}), bringing it back.");
+            Log($"The test window lost the foreground (to {DescribeWindow(foreground)}), bringing it back.");
             BringToFront(s_window);
         }
     }
@@ -140,7 +145,35 @@ internal static class WinUITestRunner
                 presenter.Maximize();
             }
 
-            SetForegroundWindow(WinRT.Interop.WindowNative.GetWindowHandle(window));
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+            SetForegroundWindow(hwnd);
+
+            // Windows only lets the foreground process change the foreground window. When another process
+            // owns it, share its input state for the call (keyboard and horizontal wheel input goes to the
+            // foreground window, so a topmost window is not enough).
+            var foreground = GetForegroundWindow();
+            if (foreground != hwnd && foreground != IntPtr.Zero)
+            {
+                var foregroundThread = GetWindowThreadProcessId(foreground, out _);
+                var currentThread = GetCurrentThreadId();
+                if (foregroundThread != currentThread && AttachThreadInput(currentThread, foregroundThread, true))
+                {
+                    try
+                    {
+                        BringWindowToTop(hwnd);
+                        SetForegroundWindow(hwnd);
+                    }
+                    finally
+                    {
+                        AttachThreadInput(currentThread, foregroundThread, false);
+                    }
+                }
+            }
+
+            if (GetForegroundWindow() != hwnd)
+            {
+                Log($"Could not bring the test window to front, the foreground window is {DescribeWindow(GetForegroundWindow())}.");
+            }
         }
         catch (Exception ex)
         {
@@ -151,8 +184,44 @@ internal static class WinUITestRunner
     [System.Runtime.InteropServices.DllImport("user32.dll")]
     private static extern bool SetForegroundWindow(IntPtr hWnd);
 
+    private static string DescribeWindow(IntPtr hwnd)
+    {
+        if (hwnd == IntPtr.Zero)
+        {
+            return "no window";
+        }
+
+        try
+        {
+            var title = new StringBuilder(256);
+            GetWindowText(hwnd, title, title.Capacity);
+            GetWindowThreadProcessId(hwnd, out var processId);
+            using var process = System.Diagnostics.Process.GetProcessById((int)processId);
+            return $"\"{title}\" of {process.ProcessName}";
+        }
+        catch (Exception)
+        {
+            return $"window 0x{hwnd:X}";
+        }
+    }
+
     [System.Runtime.InteropServices.DllImport("user32.dll")]
     private static extern IntPtr GetForegroundWindow();
+
+    [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+    private static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int maxCount);
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern bool AttachThreadInput(uint attach, uint attachTo, bool attached);
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern bool BringWindowToTop(IntPtr hWnd);
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+    private static extern uint GetCurrentThreadId();
 
     private const uint ES_CONTINUOUS = 0x80000000;
     private const uint ES_SYSTEM_REQUIRED = 0x00000001;

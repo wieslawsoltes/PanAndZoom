@@ -83,19 +83,8 @@ public static class InputHelper
         }
     }
 
-    /// <summary>
-    /// Initializes pen injection if needed (Windows requires it before injecting pen input).
-    /// </summary>
-    public static void EnsurePenInjection()
-    {
-#if PANANDZOOM_WINUI
-        WinUIInputPump.Post(EnsurePenInjectionNow);
-#else
-        EnsurePenInjectionNow();
-#endif
-    }
-
-    internal static void EnsurePenInjectionNow()
+    // Windows requires pen injection to be initialized before injecting pen input.
+    private static void EnsurePenInjectionNow()
     {
         if (!s_penInitialized)
         {
@@ -168,18 +157,6 @@ public static class InputHelper
 #endif
     }
 
-    /// <summary>
-    /// Uninitializes pen injection (after the queued input on native WinUI). Safe to call when not initialized.
-    /// </summary>
-    public static void UninitializePenInjection()
-    {
-#if PANANDZOOM_WINUI
-        WinUIInputPump.Post(UninitializePenInjectionNow);
-#else
-        UninitializePenInjectionNow();
-#endif
-    }
-
     private static void UninitializeTouchInjectionNow()
     {
         try
@@ -238,10 +215,39 @@ public static class InputHelper
         }
 
         ReleaseModifierKeys();
+        ReleaseStuckModifierKeys();
 #else
         Injector.CleanupPointers();
 #endif
     }
+
+#if PANANDZOOM_WINUI
+    private static readonly Windows.System.VirtualKey[] s_modifierKeys =
+    {
+        Windows.System.VirtualKey.LeftControl, Windows.System.VirtualKey.RightControl,
+        Windows.System.VirtualKey.LeftShift, Windows.System.VirtualKey.RightShift,
+        Windows.System.VirtualKey.LeftMenu, Windows.System.VirtualKey.RightMenu,
+        Windows.System.VirtualKey.LeftWindows, Windows.System.VirtualKey.RightWindows
+    };
+
+    // The Windows keyboard state is global: a modifier key left down by anything else on the desktop
+    // (another test run, a remote session) would change how the control interprets wheel input.
+    private static void ReleaseStuckModifierKeys()
+    {
+        var stuck = s_modifierKeys.Where(key => (GetAsyncKeyState((int)key) & 0x8000) != 0).ToList();
+        if (stuck.Count == 0)
+        {
+            return;
+        }
+
+        PanAndZoom.Uno.RuntimeTests.WinUITestRunner.Log($"Releasing modifier keys left down on the desktop: {string.Join(", ", stuck)}.");
+        var keyUps = stuck.Select(k => new InjectedInputKeyboardInfo { VirtualKey = (ushort)k, KeyOptions = InjectedInputKeyOptions.KeyUp }).ToList();
+        WinUIInputPump.Post(() => RawInjector.InjectKeyboardInput(keyUps));
+    }
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern short GetAsyncKeyState(int virtualKey);
+#endif
 
     /// <summary>
     /// Gets the current (injected) mouse position in window coordinates.
