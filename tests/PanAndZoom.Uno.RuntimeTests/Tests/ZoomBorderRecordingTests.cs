@@ -128,7 +128,7 @@ public class ZoomBorderRecordingTests
 
         Assert.AreEqual(5, recorder.Frames.Count);
         Assert.AreEqual(5, gestures.Ended.Count(g => g == "Scroll"));
-        Assert.AreEqual(initialOffsetY + 100, zoomBorder.OffsetY, 2.0);
+        Assert.AreEqual(initialOffsetY + 100, zoomBorder.OffsetY, ZoomBorderTestHelper.TouchPanTolerance(2.0, drags: 5));
     }
 
     [TestMethod]
@@ -199,10 +199,10 @@ public class ZoomBorderRecordingTests
         Assert.AreEqual(4, recorder.Frames.Count);
         Assert.IsTrue(gestures.Ended.Count >= 4, "Should have at least 4 gesture events");
 
-        Assert.AreEqual(initialOffsetX + 80, offsets[0].X, 1.0);
-        Assert.AreEqual(initialOffsetX, offsets[1].X, 1.0);
-        Assert.AreEqual(initialOffsetY - 80, offsets[2].Y, 1.0);
-        Assert.AreEqual(initialOffsetY, offsets[3].Y, 1.0);
+        Assert.AreEqual(initialOffsetX + 80, offsets[0].X, ZoomBorderTestHelper.TouchPanTolerance());
+        Assert.AreEqual(initialOffsetX, offsets[1].X, ZoomBorderTestHelper.TouchPanTolerance(1.0, drags: 2));
+        Assert.AreEqual(initialOffsetY - 80, offsets[2].Y, ZoomBorderTestHelper.TouchPanTolerance());
+        Assert.AreEqual(initialOffsetY, offsets[3].Y, ZoomBorderTestHelper.TouchPanTolerance(1.0, drags: 2));
     }
 
     [TestMethod]

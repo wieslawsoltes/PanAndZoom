@@ -61,6 +61,13 @@ public static class ZoomBorderTestHelper
     /// </summary>
     public static async Task LoadAsync(FrameworkElement element)
     {
+#if PANANDZOOM_WINUI
+        // Start every test without touch contacts, pressed buttons or modifier keys left by a previous
+        // test: Windows input state is global (for example active touch contacts suppress the mouse).
+        InputHelper.ResetTouchAndPen();
+        InputHelper.Reset();
+        WinUITestRunner.EnsureForeground();
+#endif
         UnitTestsUIContentHelper.Content = element;
         await UnitTestsUIContentHelper.WaitForLoaded(element);
         await WaitForIdleAsync();
@@ -81,8 +88,10 @@ public static class ZoomBorderTestHelper
     public static async Task WaitForIdleAsync()
     {
 #if PANANDZOOM_WINUI
-        // Real Windows input injection is asynchronous (it goes through the OS input queue), so give
-        // the injected input time to be dispatched before waiting for the UI thread to be idle.
+        // Injected input is paced by WinUIInputPump and Windows dispatches it asynchronously (through the OS
+        // input queue), so wait for the queue to drain and give the input time to be dispatched before
+        // waiting for the UI thread to be idle.
+        await WinUIInputPump.WhenDrainedAsync();
         await Task.Delay(InputSettleDelayMilliseconds);
         await UnitTestsUIContentHelper.WaitForIdle();
         InputHelper.ReleaseModifierKeys();
@@ -95,7 +104,31 @@ public static class ZoomBorderTestHelper
     /// Time given to the Windows input queue to dispatch injected input.
     /// </summary>
     public const int InputSettleDelayMilliseconds = 150;
+
+    /// <summary>
+    /// The part of the finger travel Windows can drop when a touch manipulation starts.
+    /// </summary>
+    public const double WinUIManipulationStartLoss = 10.0;
 #endif
+
+    /// <summary>
+    /// Gets the tolerance of an offset produced by touch drags.
+    /// </summary>
+    /// <remarks>
+    /// Uno reports the whole finger travel through the manipulation events. Windows drops part of the travel
+    /// (up to about 10 pixels) when a manipulation starts, so on native WinUI the tolerance grows with the
+    /// number of drags (see site/articles/advanced/uno-and-winui-differences.md).
+    /// </remarks>
+    /// <param name="tolerance">The tolerance on Uno.</param>
+    /// <param name="drags">The number of touch drags that produced the offset.</param>
+    public static double TouchPanTolerance(double tolerance = 1.0, int drags = 1)
+    {
+#if PANANDZOOM_WINUI
+        return tolerance + drags * WinUIManipulationStartLoss;
+#else
+        return tolerance;
+#endif
+    }
 
     /// <summary>
     /// Waits until a condition is met (polling on the UI thread).

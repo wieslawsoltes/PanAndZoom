@@ -43,11 +43,28 @@
   <!-- Shared sources of the Uno Platform port. -->
   <ItemGroup>
     <Compile Include="..\PanAndZoom.Uno\**\*.cs" Exclude="..\PanAndZoom.Uno\bin\**;..\PanAndZoom.Uno\obj\**" Link="%(RecursiveDir)%(Filename)%(Extension)" />
-    <Page Include="..\PanAndZoom.Uno\Themes\Generic.xaml" Link="Themes\Generic.xaml" />
+    <Page Include="..\PanAndZoom.Uno\Themes\Generic.xaml" Link="Themes\Generic.xaml" Pack="false" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
   </ItemGroup>
+
+  <!--
+    Pack the XAML resource layout produced by the build (PanAndZoom.WinUI\Themes\Generic.xbf/.xaml)
+    next to the assembly and its .pri file, so consuming apps resolve the default style
+    (ms-appx:///PanAndZoom.WinUI/Themes/Generic.xaml).
+  -->
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);AddWinUIResourceLayoutToPackage</TargetsForTfmSpecificBuildOutput>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.xbf;.xaml</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <Target Name="AddWinUIResourceLayoutToPackage">
+    <ItemGroup>
+      <_WinUIResourceLayout Include="$(OutputPath)$(AssemblyName)\**\*.xbf;$(OutputPath)$(AssemblyName)\**\*.xaml" />
+      <BuildOutputInPackage Include="@(_WinUIResourceLayout)" TargetPath="$(AssemblyName)\%(RecursiveDir)%(Filename)%(Extension)" />
+    </ItemGroup>
+  </Target>
 
 </Project>

@@ -88,7 +88,8 @@ public class ZoomBorderEdgeCasesTests
         Assert.AreSame(secondCanvas, zoomBorder.Child);
 
         // Uno: the old child's owned render transform is detached and the new child receives one.
-        Assert.IsFalse(firstCanvas.RenderTransform is MatrixTransform, "Old child should no longer be transformed by the control");
+        // (WinUI returns a default identity MatrixTransform once the value is cleared.)
+        Assert.IsFalse(firstCanvas.RenderTransform is MatrixTransform { Matrix: var oldMatrix } && !IsIdentity(oldMatrix), "Old child should no longer be transformed by the control");
         Assert.IsTrue(await ZoomBorderTestHelper.WaitForAsync(() => secondCanvas.RenderTransform is MatrixTransform), "New child should be transformed by the control");
     }
 
@@ -178,5 +179,10 @@ public class ZoomBorderEdgeCasesTests
         zoomBorder.Pan(50, 50);
 
         Assert.AreNotEqual(initialOffsetX, zoomBorder.OffsetX);
+    }
+
+    private static bool IsIdentity(Matrix matrix)
+    {
+        return matrix.M11 == 1 && matrix.M12 == 0 && matrix.M21 == 0 && matrix.M22 == 1 && matrix.OffsetX == 0 && matrix.OffsetY == 0;
     }
 }

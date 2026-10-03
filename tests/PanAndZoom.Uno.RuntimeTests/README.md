@@ -78,3 +78,24 @@ The Avalonia tests (`tests/Avalonia.Controls.PanAndZoom.UnitTests`) are the refe
 * `ClipToBounds` defaults to `true` on Uno.
 * Avalonia gesture recognizers (pinch, scroll) are WinUI manipulations on Uno: one finger pans, two fingers pinch and rotate.
 * When the Uno behavior legitimately differs (layout rounding, WinUI APIs), adapt the expectation and leave a short comment explaining why.
+
+## Native WinUI 3
+
+`tests/PanAndZoom.WinUI.RuntimeTests` links every source of this project and runs the same tests against the
+native WinUI 3 control (`src/PanAndZoom.WinUI`) on Windows:
+
+```powershell
+build/run-winui-runtime-tests.ps1 -Configuration Debug -Filter "SmokeTests"
+```
+
+The shared infrastructure switches to real Windows input injection when `PANANDZOOM_WINUI` is defined:
+
+* Window coordinates are converted to physical screen pixels (`InjectionCoordinates`), mouse moves are absolute.
+* Injected input is asynchronous on Windows and bursts are coalesced, so `WinUIInputPump` feeds the queued input to Windows one frame per system timer tick. `ZoomBorderTestHelper.WaitForIdleAsync()` waits until the queue drained and the input settled; modifier keys pressed by `InputHelper.MouseWheel(..., modifiers)` stay down until then.
+* Touch frames use small pointer ids, no time offset and declared pressure/contact parameters. Every frame describes all active contacts, new contacts are nudged by one pixel and back, and moving contacts are held still before they lift (see `WinUIInputPump`).
+* Offsets produced by touch drags are asserted with `ZoomBorderTestHelper.TouchPanTolerance`, because Windows drops part of the finger travel when a manipulation starts.
+* Every test starts with a reset of the global Windows input state (`ZoomBorderTestHelper.LoadAsync`).
+* `ZoomBorder` subclasses used by tests must be public top-level types listed in `TestTypes.xaml` of the WinUI test project, because WinUI only applies the default style to types it has XAML metadata for.
+* The engine embedded runner needs `Window.Current`, so the WinUI app uses `WinUITestRunner` (`PANANDZOOM_WINUI_TESTS` / `PANANDZOOM_WINUI_TESTS_OUTPUT`).
+
+The platform differences are tracked in `site/articles/advanced/uno-and-winui-differences.md`.

@@ -218,7 +218,7 @@ public sealed class TouchInjectionSession : IDisposable
     {
         Target = target;
         _injector = InputHelper.RawInjector;
-        _injector.InitializeTouchInjection(InjectedInputVisualizationMode.Default);
+        InputHelper.EnsureTouchInjection();
     }
 
     /// <summary>
@@ -333,7 +333,7 @@ public sealed class TouchInjectionSession : IDisposable
         }
         finally
         {
-            _injector.UninitializeTouchInjection();
+            InputHelper.UninitializeTouchInjection();
         }
     }
 
@@ -356,7 +356,7 @@ public sealed class TouchInjectionSession : IDisposable
             contacts[i].PointerInfo = contacts[i].PointerInfo with { TimeOffsetInMilliseconds = offset };
         }
 
-        _injector.InjectTouchInput(InjectionCoordinates.Prepare(contacts));
+        InputHelper.InjectTouch(contacts);
     }
 
     private InjectedInputTouchInfo Contact(uint id, Point position, InjectedInputPointerOptions options)
@@ -431,6 +431,8 @@ public sealed class TouchPointerRecorder : IDisposable
         {
             return false;
         }
+
+        id = InjectionCoordinates.ToLogicalPointerId(id, kind == "Pressed", e.GetCurrentPoint(null).Position);
 
         var point = e.GetCurrentPoint(_target);
         position = point.Position;

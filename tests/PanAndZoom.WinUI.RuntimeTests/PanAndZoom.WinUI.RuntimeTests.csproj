@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="..\PanAndZoom.Uno.RuntimeTests\**\*.cs" Exclude="..\PanAndZoom.Uno.RuntimeTests\bin\**;..\PanAndZoom.Uno.RuntimeTests\obj\**;..\PanAndZoom.Uno.RuntimeTests\Platforms\**" Link="%(RecursiveDir)%(Filename)%(Extension)" />
     <ApplicationDefinition Include="..\PanAndZoom.Uno.RuntimeTests\App.xaml" Link="App.xaml" />
+    <Page Include="TestTypes.xaml" />
   </ItemGroup>
 
   <!--

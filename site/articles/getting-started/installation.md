@@ -75,6 +75,16 @@ XAML namespace:
 xmlns:paz="using:PanAndZoom"
 ```
 
+## PanAndZoom.WinUI
+
+Install the native WinUI 3 (Windows App SDK) control package into a WinUI 3 app:
+
+```bash
+dotnet add package PanAndZoom.WinUI
+```
+
+`PanAndZoom.WinUI` targets `net10.0-windows10.0.19041.0` and is built from the same sources as `PanAndZoom.Uno`, so the namespaces, XAML and API are identical. The default style ships in the package (`PanAndZoom.WinUI/Themes/Generic.xbf` and the `.pri` resources). A `ZoomBorder` subclass needs XAML type metadata for the default style to apply, so use it in XAML (or reference it, for example as a `Style` `TargetType`) in the project that defines it.
+
 ## PanAndZoom.Core
 
 `PanAndZoom.Core` (`net8.0`, `net10.0`) is referenced transitively by both controls. Install it directly only when you want to drive the engine yourself, for example to write an adapter for another UI framework or to unit test pan and zoom math without a UI:

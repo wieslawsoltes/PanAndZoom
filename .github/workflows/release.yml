@@ -121,6 +121,9 @@ jobs:
         shell: pwsh
         run: msbuild src/PanAndZoom.Uno/PanAndZoom.Uno.csproj -t:Pack -r -m -p:Configuration=Release -p:PackageOutputPath="$env:GITHUB_WORKSPACE/artifacts/packages"
 
+      - name: Pack PanAndZoom.WinUI
+        run: dotnet pack src/PanAndZoom.WinUI -c Release -o artifacts/packages
+
       - name: Upload NuGet packages
         uses: actions/upload-artifact@v4
         with:

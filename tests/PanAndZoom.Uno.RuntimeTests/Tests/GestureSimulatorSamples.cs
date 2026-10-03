@@ -478,8 +478,8 @@ public class GestureSimulatorSamples
         // Step 3: Scroll/pan the content (scroll delta (50, 50) -> finger moves up-left by 50)
         await TouchDragAsync(center, new Point(center.X - 50, center.Y - 50), steps: 5);
         await ZoomBorderTestHelper.WaitForIdleAsync();
-        Assert.AreEqual(-50.0, control.OffsetX, 1.0);
-        Assert.AreEqual(-50.0, control.OffsetY, 1.0);
+        Assert.AreEqual(-50.0, control.OffsetX, ZoomBorderTestHelper.TouchPanTolerance());
+        Assert.AreEqual(-50.0, control.OffsetY, ZoomBorderTestHelper.TouchPanTolerance());
 
         // Step 4: Zoom out with pinch
         await PinchAsync(center, 150, 120, steps: 5);

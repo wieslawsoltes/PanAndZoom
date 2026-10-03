@@ -452,17 +452,4 @@ public class ZoomBorderContentBoundsTests
         Assert.AreEqual(new Size(400, 300), scrollable.Extent);
         Assert.AreEqual(new Point(0, 0), scrollable.ScrollOffset);
     }
-
-    private sealed class CustomBoundsZoomBorder : ZoomBorder
-    {
-        public Rect CustomBounds { get; set; }
-
-        public double MaximumAcceptedZoom { get; set; } = double.PositiveInfinity;
-
-        protected override Rect GetContentBounds() => CustomBounds;
-
-        protected override bool ValidateTransform(Matrix newMatrix) => newMatrix.M11 <= MaximumAcceptedZoom;
-
-        public void RefreshCustomBounds() => InvalidateContentBounds();
-    }
 }

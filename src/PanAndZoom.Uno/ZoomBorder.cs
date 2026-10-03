@@ -132,6 +132,9 @@ public partial class ZoomBorder : Control
     private bool _manipulationPinch;
     private bool _manipulationScroll;
     private bool _manipulationActive;
+    private ManipulationDelta _manipulationApplied;
+    private double _pinchBaseScale = 1.0;
+    private readonly HashSet<uint> _manipulationPointers = new();
     private Rect _lastElementRect;
 
     /// <summary>
@@ -608,9 +611,13 @@ public partial class ZoomBorder : Control
         StopTransition();
         _element.SizeChanged -= Element_SizeChanged;
 
-        if (_renderTransform != null && ReferenceEquals(_element.RenderTransform, _renderTransform))
+        // Like the Avalonia control, the render transform owned by the control is removed from the detached child.
+        // (Projected WinRT objects returned by property getters are not guaranteed to be the same managed instance,
+        // so do not rely on reference equality here.)
+        if (_renderTransform != null)
         {
-            _element.RenderTransform = null;
+            _element.ClearValue(UIElement.RenderTransformProperty);
+            _element.ClearValue(UIElement.RenderTransformOriginProperty);
         }
 
         _renderTransform = null;
@@ -638,12 +645,14 @@ public partial class ZoomBorder : Control
             return;
         }
 
-        if (_renderTransform == null || !ReferenceEquals(_element.RenderTransform, _renderTransform))
+        if (_renderTransform == null)
         {
             _renderTransform = new MatrixTransform { Matrix = _renderMatrix.ToUno() };
-            _element.RenderTransformOrigin = new Point(0, 0);
-            _element.RenderTransform = _renderTransform;
         }
+
+        // Assign every time (like the Avalonia control): setting the same transform again is a no-op.
+        _element.RenderTransformOrigin = new Point(0, 0);
+        _element.RenderTransform = _renderTransform;
 
         if (!skipTransitions && _engine.ShouldAnimate())
         {
@@ -849,6 +858,13 @@ public partial class ZoomBorder : Control
 
         if (IsTouchHandledByManipulations(e))
         {
+            _manipulationPointers.Add(e.Pointer.PointerId);
+#if !HAS_UNO
+            // Like the Avalonia control, keep receiving the touch pointer when it leaves the control.
+            // Uno manipulations capture it implicitly (an explicit capture changes the Uno tap
+            // recognition), WinUI manipulations do not.
+            CapturePointer(e.Pointer);
+#endif
             return;
         }
 
@@ -881,6 +897,7 @@ public partial class ZoomBorder : Control
 
         if (IsTouchHandledByManipulations(e))
         {
+            RemoveManipulationPointer(e.Pointer.PointerId);
             return;
         }
 
@@ -893,6 +910,7 @@ public partial class ZoomBorder : Control
     protected override void OnPointerCanceled(PointerRoutedEventArgs e)
     {
         base.OnPointerCanceled(e);
+        RemoveManipulationPointer(e.Pointer.PointerId);
         ClearUnreportedMiddleButton(e);
         _engine.ProcessPointerCaptureLost();
         ReleaseCapturedPointer();
@@ -902,10 +920,28 @@ public partial class ZoomBorder : Control
     protected override void OnPointerCaptureLost(PointerRoutedEventArgs e)
     {
         base.OnPointerCaptureLost(e);
+        RemoveManipulationPointer(e.Pointer.PointerId);
         ClearUnreportedMiddleButton(e);
         _capturedPointer = null;
         _engine.ProcessPointerCaptureLost();
         e.Handled = true;
+    }
+
+    private void RemoveManipulationPointer(uint pointerId)
+    {
+        if (!_manipulationPointers.Remove(pointerId))
+        {
+            return;
+        }
+
+        // Like Avalonia and Uno, a pinch ends when one of its fingers lifts (WinUI keeps the manipulation
+        // running until all fingers lifted). Later scale changes start a new pinch.
+        if (_manipulationActive && _manipulationPinch && _manipulationPointers.Count < 2)
+        {
+            _manipulationPinch = false;
+            _pinchBaseScale = _manipulationApplied.Scale > 0 ? _manipulationApplied.Scale : 1.0;
+            _engine.ProcessPinchEnded();
+        }
     }
 
     private void ReleaseCapturedPointer()
@@ -1002,9 +1038,11 @@ public partial class ZoomBorder : Control
             return;
         }
 
-        _manipulationActive = true;
-        _manipulationPinch = false;
-        _manipulationScroll = false;
+        HandleManipulationStarted();
+
+        // The distance travelled before the manipulation was recognized is only reported by the
+        // cumulative of ManipulationStarted (WinUI, and Uno since unoplatform/uno#20473).
+        ApplyManipulationCumulative(e.Position, e.Cumulative);
         e.Handled = true;
     }
 
@@ -1018,9 +1056,24 @@ public partial class ZoomBorder : Control
             return;
         }
 
-        var delta = e.Delta;
-        HandleManipulationDelta(e.Position, delta.Translation, delta.Scale, delta.Rotation, e.Cumulative.Scale);
+        ApplyManipulationCumulative(e.Position, e.Cumulative);
         e.Handled = true;
+    }
+
+    // Applies the change between the cumulative manipulation and what was already applied, so the
+    // translation reported by ManipulationStarted is not lost and is never applied twice.
+    private void ApplyManipulationCumulative(Point position, ManipulationDelta cumulative)
+    {
+        var applied = _manipulationApplied;
+        _manipulationApplied = cumulative;
+
+        var translation = new Point(
+            cumulative.Translation.X - applied.Translation.X,
+            cumulative.Translation.Y - applied.Translation.Y);
+        var scale = applied.Scale > 0 ? cumulative.Scale / applied.Scale : cumulative.Scale;
+        var rotation = cumulative.Rotation - applied.Rotation;
+
+        HandleManipulationDelta(position, translation, scale, rotation, cumulative.Scale / _pinchBaseScale);
     }
 
     /// <summary>
@@ -1087,6 +1140,7 @@ public partial class ZoomBorder : Control
     internal void HandleManipulationCompleted()
     {
         _manipulationActive = false;
+        _manipulationPointers.Clear();
 
         if (_manipulationPinch)
         {
@@ -1107,6 +1161,8 @@ public partial class ZoomBorder : Control
     /// </summary>
     internal void HandleManipulationStarted()
     {
+        _manipulationApplied = new ManipulationDelta { Scale = 1, Expansion = 0, Rotation = 0, Translation = default };
+        _pinchBaseScale = 1.0;
         _manipulationActive = true;
         _manipulationPinch = false;
         _manipulationScroll = false;

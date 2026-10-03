@@ -25,6 +25,16 @@ public static class InjectionCoordinates
     }
 
     /// <summary>
+    /// Gets the pointer time offset used for injected pointer frames (Windows rejects non-zero offsets
+    /// for touch and pen injection).
+    /// </summary>
+#if PANANDZOOM_WINUI
+    public const uint TimeOffsetInMilliseconds = 0;
+#else
+    public const uint TimeOffsetInMilliseconds = 1;
+#endif
+
+    /// <summary>
     /// Adjusts touch frames to the requirements of the platform injector.
     /// </summary>
     /// <remarks>
@@ -37,6 +47,13 @@ public static class InjectionCoordinates
         foreach (var info in frame)
         {
             var pointerInfo = info.PointerInfo;
+            if ((pointerInfo.PointerOptions & InjectedInputPointerOptions.PointerDown) != 0)
+            {
+                s_pendingPresses.Add((
+                    s_injectedToLogical.TryGetValue(pointerInfo.PointerId, out var logicalId) ? logicalId : pointerInfo.PointerId,
+                    new Point(pointerInfo.PixelLocation.PositionX, pointerInfo.PixelLocation.PositionY)));
+            }
+
             pointerInfo.TimeOffsetInMilliseconds = 0;
             info.PointerInfo = pointerInfo;
             info.TouchParameters = InjectedInputTouchParameters.Pressure | InjectedInputTouchParameters.Contact;
@@ -62,11 +79,70 @@ public static class InjectionCoordinates
     public static uint ToInjectedPointerId(uint id)
     {
 #if PANANDZOOM_WINUI
-        return id % 10;
+        var injectedId = id % 10;
+        s_injectedToLogical[injectedId] = id;
+        return injectedId;
 #else
         return id;
 #endif
     }
+
+    /// <summary>
+    /// Forgets the pointer id mapping (presses that were never received would otherwise shift it).
+    /// </summary>
+    public static void ResetPointerIds()
+    {
+#if PANANDZOOM_WINUI
+        s_injectedToLogical.Clear();
+        s_receivedToLogical.Clear();
+        s_pendingPresses.Clear();
+#endif
+    }
+
+    /// <summary>
+    /// Converts the pointer id received by an element back to the logical id used to inject it.
+    /// </summary>
+    /// <remarks>
+    /// Windows assigns its own pointer ids to injected touch contacts; a pressed contact is mapped to
+    /// the most recent injected press at its position. Uno keeps the injected ids.
+    /// </remarks>
+    /// <param name="receivedId">The pointer id reported by the pointer event.</param>
+    /// <param name="isPressed">True when called for a pointer pressed event.</param>
+    /// <param name="windowPosition">The pointer position in window coordinates.</param>
+    public static uint ToLogicalPointerId(uint receivedId, bool isPressed, Point windowPosition)
+    {
+#if PANANDZOOM_WINUI
+        if (isPressed && s_pendingPresses.Count > 0)
+        {
+            var screen = ToScreen(windowPosition);
+            var best = -1;
+            var bestDistance = double.MaxValue;
+            for (var i = s_pendingPresses.Count - 1; i >= 0; i--)
+            {
+                var location = s_pendingPresses[i].ScreenLocation;
+                var distance = Math.Abs(location.X - screen.X) + Math.Abs(location.Y - screen.Y);
+                if (distance < bestDistance - 0.5)
+                {
+                    best = i;
+                    bestDistance = distance;
+                }
+            }
+
+            s_receivedToLogical[receivedId] = s_pendingPresses[best].LogicalId;
+            s_pendingPresses.RemoveAt(best);
+        }
+
+        return s_receivedToLogical.TryGetValue(receivedId, out var logicalId) ? logicalId : receivedId;
+#else
+        return receivedId;
+#endif
+    }
+
+#if PANANDZOOM_WINUI
+    private static readonly Dictionary<uint, uint> s_injectedToLogical = new();
+    private static readonly Dictionary<uint, uint> s_receivedToLogical = new();
+    private static readonly List<(uint LogicalId, Point ScreenLocation)> s_pendingPresses = new();
+#endif
 
 #if PANANDZOOM_WINUI
     /// <summary>

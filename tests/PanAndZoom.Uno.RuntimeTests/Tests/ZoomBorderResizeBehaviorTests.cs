@@ -239,24 +239,4 @@ public class ZoomBorderResizeBehaviorTests
         Assert.AreEqual(new Size(400, 300), zoomBorder.LastOldSize);
         Assert.AreEqual(new Size(600, 450), zoomBorder.LastNewSize);
     }
-
-    /// <summary>
-    /// Testable ZoomBorder subclass for testing protected virtual methods.
-    /// </summary>
-    private sealed class TestableZoomBorder : ZoomBorder
-    {
-        public bool OnResizedCalled { get; private set; }
-
-        public Size? LastOldSize { get; private set; }
-
-        public Size? LastNewSize { get; private set; }
-
-        protected override void OnResized(Size oldSize, Size newSize)
-        {
-            OnResizedCalled = true;
-            LastOldSize = oldSize;
-            LastNewSize = newSize;
-            base.OnResized(oldSize, newSize);
-        }
-    }
 }

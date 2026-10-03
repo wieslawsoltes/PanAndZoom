@@ -36,6 +36,7 @@ public static class InputHelper
 
 #if PANANDZOOM_WINUI
     private static readonly HashSet<Windows.System.VirtualKey> s_pressedKeys = new();
+    private static Point? s_mousePosition;
 #endif
 
     /// <summary>
@@ -52,15 +53,172 @@ public static class InputHelper
             return;
         }
 
-        RawInjector.InjectKeyboardInput(release.Select(k => new InjectedInputKeyboardInfo { VirtualKey = (ushort)k, KeyOptions = InjectedInputKeyOptions.KeyUp }));
+        var keyUps = release.Select(k => new InjectedInputKeyboardInfo { VirtualKey = (ushort)k, KeyOptions = InjectedInputKeyOptions.KeyUp }).ToList();
+        WinUIInputPump.Post(() => RawInjector.InjectKeyboardInput(keyUps));
         s_pressedKeys.ExceptWith(release);
 #endif
+    }
+
+    private static bool s_touchInitialized;
+    private static bool s_penInitialized;
+
+    /// <summary>
+    /// Initializes touch injection if needed (Windows requires it before injecting touch input).
+    /// </summary>
+    public static void EnsureTouchInjection()
+    {
+#if PANANDZOOM_WINUI
+        WinUIInputPump.Post(EnsureTouchInjectionNow);
+#else
+        EnsureTouchInjectionNow();
+#endif
+    }
+
+    internal static void EnsureTouchInjectionNow()
+    {
+        if (!s_touchInitialized)
+        {
+            RawInjector.InitializeTouchInjection(InjectedInputVisualizationMode.Default);
+            s_touchInitialized = true;
+        }
+    }
+
+    /// <summary>
+    /// Initializes pen injection if needed (Windows requires it before injecting pen input).
+    /// </summary>
+    public static void EnsurePenInjection()
+    {
+#if PANANDZOOM_WINUI
+        WinUIInputPump.Post(EnsurePenInjectionNow);
+#else
+        EnsurePenInjectionNow();
+#endif
+    }
+
+    internal static void EnsurePenInjectionNow()
+    {
+        if (!s_penInitialized)
+        {
+            RawInjector.InitializePenInjection(InjectedInputVisualizationMode.Default);
+            s_penInitialized = true;
+        }
+    }
+
+    /// <summary>
+    /// Injects a touch frame. All touch injection of the test infrastructure goes through this method.
+    /// </summary>
+    /// <remarks>
+    /// Uno accepts frames describing only the contacts that changed. On native WinUI the frame is queued and
+    /// merged with the active contacts by <see cref="WinUIInputPump"/>, and a time offset longer than a frame
+    /// (for example a held tap) is turned into a real delay.
+    /// </remarks>
+    public static void InjectTouch(IEnumerable<InjectedInputTouchInfo> frame)
+    {
+#if PANANDZOOM_WINUI
+        var frameList = frame.ToList();
+        var offset = frameList.Count == 0 ? 0u : frameList.Max(info => info.PointerInfo.TimeOffsetInMilliseconds);
+        WinUIInputPump.PostDelay((int)offset);
+        WinUIInputPump.PostTouch(InjectionCoordinates.Prepare(frameList).ToList());
+#else
+        EnsureTouchInjectionNow();
+        RawInjector.InjectTouchInput(frame);
+#endif
+    }
+
+    /// <summary>
+    /// Injects a pen frame.
+    /// </summary>
+    public static void InjectPen(InjectedInputPenInfo info)
+    {
+#if PANANDZOOM_WINUI
+        WinUIInputPump.Post(() =>
+        {
+            EnsurePenInjectionNow();
+            RawInjector.InjectPenInput(info);
+        });
+#else
+        EnsurePenInjectionNow();
+        RawInjector.InjectPenInput(info);
+#endif
+    }
+
+    /// <summary>
+    /// Uninitializes touch and pen injection immediately (cancels any contact left pressed and, on native
+    /// WinUI, drops the queued input). Safe to call when not initialized.
+    /// </summary>
+    public static void ResetTouchAndPen()
+    {
+#if PANANDZOOM_WINUI
+        WinUIInputPump.Reset();
+        InjectionCoordinates.ResetPointerIds();
+#endif
+        UninitializeTouchInjectionNow();
+        UninitializePenInjectionNow();
+    }
+
+    /// <summary>
+    /// Uninitializes touch injection (after the queued input on native WinUI). Safe to call when not initialized.
+    /// </summary>
+    public static void UninitializeTouchInjection()
+    {
+#if PANANDZOOM_WINUI
+        WinUIInputPump.Post(UninitializeTouchInjectionNow);
+#else
+        UninitializeTouchInjectionNow();
+#endif
+    }
+
+    /// <summary>
+    /// Uninitializes pen injection (after the queued input on native WinUI). Safe to call when not initialized.
+    /// </summary>
+    public static void UninitializePenInjection()
+    {
+#if PANANDZOOM_WINUI
+        WinUIInputPump.Post(UninitializePenInjectionNow);
+#else
+        UninitializePenInjectionNow();
+#endif
+    }
+
+    private static void UninitializeTouchInjectionNow()
+    {
+        try
+        {
+            RawInjector.UninitializeTouchInjection();
+        }
+        catch (Exception)
+        {
+            // Not initialized.
+        }
+
+        s_touchInitialized = false;
+#if PANANDZOOM_WINUI
+        WinUIInputPump.ForgetTouchContacts();
+#endif
+    }
+
+    private static void UninitializePenInjectionNow()
+    {
+        try
+        {
+            RawInjector.UninitializePenInjection();
+        }
+        catch (Exception)
+        {
+            // Not initialized.
+        }
+
+        s_penInitialized = false;
     }
 
     private static void InjectMouse(IEnumerable<InjectedInputMouseInfo> input)
     {
 #if PANANDZOOM_WINUI
-        RawInjector.InjectMouseInput(input);
+        // One injected mouse event per frame (Windows coalesces bursts of input).
+        foreach (var info in input)
+        {
+            WinUIInputPump.Post(() => RawInjector.InjectMouseInput(new[] { info }));
+        }
 #else
         Injector.InjectMouseInput(input);
 #endif
@@ -91,7 +249,10 @@ public static class InputHelper
     public static Point GetMousePosition()
     {
 #if PANANDZOOM_WINUI
-        return InjectionCoordinates.GetCursorWindowPosition();
+        // While input is queued the cursor has not reached its injected position yet.
+        return s_mousePosition is { } position && !WinUIInputPump.IsIdle
+            ? position
+            : InjectionCoordinates.GetCursorWindowPosition();
 #else
         var mouse = typeof(InputInjector).GetProperty("Mouse", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(Injector.Injector)!;
         return (Point)mouse.GetType().GetProperty("Position", BindingFlags.Instance | BindingFlags.Public)!.GetValue(mouse)!;
@@ -117,6 +278,7 @@ public static class InputHelper
         }
 
         InjectMouse(absoluteMoves);
+        s_mousePosition = new Point(Math.Round(position.X), Math.Round(position.Y));
         return;
 #else
         var current = GetMousePosition();
@@ -233,7 +395,13 @@ public static class InputHelper
 
         ReleaseModifierKeys(except: keys);
         var newKeys = keys.Where(k => !s_pressedKeys.Contains(k)).ToList();
-        RawInjector.InjectKeyboardInput(newKeys.Select(k => new InjectedInputKeyboardInfo { VirtualKey = (ushort)k }));
+        if (newKeys.Count > 0)
+        {
+            // Windows rejects an empty keyboard input list.
+            var keyDowns = newKeys.Select(k => new InjectedInputKeyboardInfo { VirtualKey = (ushort)k }).ToList();
+            WinUIInputPump.Post(() => RawInjector.InjectKeyboardInput(keyDowns));
+        }
+
         s_pressedKeys.UnionWith(newKeys);
         InjectMouse(CreateWheel(delta, horizontal));
 #else
@@ -364,17 +532,16 @@ public static class InputHelper
 
     private static void Touch(IEnumerable<InjectedInputTouchInfo[]> frames)
     {
-        RawInjector.InitializeTouchInjection(InjectedInputVisualizationMode.Default);
         try
         {
             foreach (var frame in frames)
             {
-                RawInjector.InjectTouchInput(InjectionCoordinates.Prepare(frame));
+                InjectTouch(frame);
             }
         }
         finally
         {
-            RawInjector.UninitializeTouchInjection();
+            UninitializeTouchInjection();
         }
     }
 

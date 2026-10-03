@@ -52,7 +52,12 @@ public class ZoomBorderRotationTests
         var scale = Math.Sqrt(matrix.M11 * matrix.M11 + matrix.M12 * matrix.M12);
         Assert.AreEqual(degrees, angle, 1e-6, $"Rotation angle of {matrix}");
         Assert.AreEqual(zoomBorder.ZoomX, scale, 1e-6, $"Scale of {matrix}");
-        Assert.AreEqual(zoomBorder.RenderMatrix, matrix);
+        // Native WinUI stores MatrixTransform.Matrix in single precision, so compare with a float tolerance.
+        var expected = zoomBorder.RenderMatrix;
+        foreach (var (e, a) in new[] { (expected.M11, matrix.M11), (expected.M12, matrix.M12), (expected.M21, matrix.M21), (expected.M22, matrix.M22), (expected.OffsetX, matrix.OffsetX), (expected.OffsetY, matrix.OffsetY) })
+        {
+            Assert.AreEqual(e, a, 1e-5 * Math.Max(1.0, Math.Abs(e)), $"Render matrix {matrix} differs from {expected}");
+        }
     }
 
     [TestMethod]

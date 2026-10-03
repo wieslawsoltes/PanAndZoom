@@ -68,6 +68,7 @@ internal static class WinUITestRunner
 
         Log($"Runner configured (filter: {run}).");
         UnitTestsUIContentHelper.CurrentTestWindow = window;
+        s_window = window;
         testsControl.Loaded += async (_, _) =>
         {
             if (s_started)
@@ -100,12 +101,37 @@ internal static class WinUITestRunner
         };
     }
 
+    private static Window? s_window;
+
+    /// <summary>
+    /// Brings the test window back to the foreground when another window took it (injected input
+    /// goes to the foreground window). Called before every test.
+    /// </summary>
+    public static void EnsureForeground()
+    {
+        if (s_window == null)
+        {
+            return;
+        }
+
+        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(s_window);
+        var foreground = GetForegroundWindow();
+        if (foreground != hwnd)
+        {
+            Log($"The test window lost the foreground (to window 0x{foreground:X}), bringing it back.");
+            BringToFront(s_window);
+        }
+    }
+
     /// <summary>
     /// Injected mouse and touch input is delivered to the window under the cursor, so keep the test
     /// window maximized, on top and in the foreground while the tests run.
     /// </summary>
     private static void BringToFront(Window window)
     {
+        // Injected input is not delivered while the display sleeps: keep the display on during the run.
+        SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
+
         try
         {
             if (window.AppWindow.Presenter is Microsoft.UI.Windowing.OverlappedPresenter presenter)
@@ -124,5 +150,15 @@ internal static class WinUITestRunner
 
     [System.Runtime.InteropServices.DllImport("user32.dll")]
     private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern IntPtr GetForegroundWindow();
+
+    private const uint ES_CONTINUOUS = 0x80000000;
+    private const uint ES_SYSTEM_REQUIRED = 0x00000001;
+    private const uint ES_DISPLAY_REQUIRED = 0x00000002;
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+    private static extern uint SetThreadExecutionState(uint flags);
 }
 #endif

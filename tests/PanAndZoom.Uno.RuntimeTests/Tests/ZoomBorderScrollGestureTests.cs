@@ -53,7 +53,7 @@ public class ZoomBorderScrollGestureTests
         await ScrollAsync(zoomBorder, 50, 0);
 
         Assert.AreNotEqual(initialOffsetX, zoomBorder.OffsetX);
-        Assert.AreEqual(initialOffsetX - 50, zoomBorder.OffsetX, 1.0);
+        Assert.AreEqual(initialOffsetX - 50, zoomBorder.OffsetX, ZoomBorderTestHelper.TouchPanTolerance());
         // Uno adaptation: "handled" = the engine processed the scroll (GestureStarted "Scroll").
         Assert.IsTrue(recorder.Scrolls.Count > 0, "Scroll gesture should be handled");
     }
@@ -67,7 +67,7 @@ public class ZoomBorderScrollGestureTests
         await ScrollAsync(zoomBorder, -30, 0);
 
         Assert.AreNotEqual(initialOffsetX, zoomBorder.OffsetX);
-        Assert.AreEqual(initialOffsetX + 30, zoomBorder.OffsetX, 1.0);
+        Assert.AreEqual(initialOffsetX + 30, zoomBorder.OffsetX, ZoomBorderTestHelper.TouchPanTolerance());
         // Uno adaptation: "handled" = the engine processed the scroll (GestureStarted "Scroll").
         Assert.IsTrue(recorder.Scrolls.Count > 0, "Scroll gesture should be handled");
     }
@@ -81,7 +81,7 @@ public class ZoomBorderScrollGestureTests
         await ScrollAsync(zoomBorder, 0, -25);
 
         Assert.AreNotEqual(initialOffsetY, zoomBorder.OffsetY);
-        Assert.AreEqual(initialOffsetY + 25, zoomBorder.OffsetY, 1.0);
+        Assert.AreEqual(initialOffsetY + 25, zoomBorder.OffsetY, ZoomBorderTestHelper.TouchPanTolerance());
         // Uno adaptation: "handled" = the engine processed the scroll (GestureStarted "Scroll").
         Assert.IsTrue(recorder.Scrolls.Count > 0, "Scroll gesture should be handled");
     }
@@ -95,7 +95,7 @@ public class ZoomBorderScrollGestureTests
         await ScrollAsync(zoomBorder, 0, 40);
 
         Assert.AreNotEqual(initialOffsetY, zoomBorder.OffsetY);
-        Assert.AreEqual(initialOffsetY - 40, zoomBorder.OffsetY, 1.0);
+        Assert.AreEqual(initialOffsetY - 40, zoomBorder.OffsetY, ZoomBorderTestHelper.TouchPanTolerance());
         // Uno adaptation: "handled" = the engine processed the scroll (GestureStarted "Scroll").
         Assert.IsTrue(recorder.Scrolls.Count > 0, "Scroll gesture should be handled");
     }
@@ -111,8 +111,8 @@ public class ZoomBorderScrollGestureTests
 
         Assert.AreNotEqual(initialOffsetX, zoomBorder.OffsetX);
         Assert.AreNotEqual(initialOffsetY, zoomBorder.OffsetY);
-        Assert.AreEqual(initialOffsetX - 30, zoomBorder.OffsetX, 1.0);
-        Assert.AreEqual(initialOffsetY - 40, zoomBorder.OffsetY, 1.0);
+        Assert.AreEqual(initialOffsetX - 30, zoomBorder.OffsetX, ZoomBorderTestHelper.TouchPanTolerance());
+        Assert.AreEqual(initialOffsetY - 40, zoomBorder.OffsetY, ZoomBorderTestHelper.TouchPanTolerance());
         // Uno adaptation: "handled" = the engine processed the scroll (GestureStarted "Scroll").
         Assert.IsTrue(recorder.Scrolls.Count > 0, "Scroll gesture should be handled");
     }
@@ -187,7 +187,7 @@ public class ZoomBorderScrollGestureTests
 
         Assert.AreNotEqual(initialOffsetX, intermediateOffsetX);
         Assert.AreNotEqual(intermediateOffsetX, zoomBorder.OffsetX);
-        Assert.AreEqual(initialOffsetX - 50, zoomBorder.OffsetX, 1.0);
+        Assert.AreEqual(initialOffsetX - 50, zoomBorder.OffsetX, ZoomBorderTestHelper.TouchPanTolerance(1.0, drags: 2));
     }
 
     [TestMethod]

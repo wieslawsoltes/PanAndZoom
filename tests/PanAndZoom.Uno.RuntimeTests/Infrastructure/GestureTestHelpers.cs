@@ -47,8 +47,6 @@ public sealed class TestPointer
     /// </summary>
     public Point WindowPosition { get; private set; }
 
-    private static InputInjector Injector => InputHelper.RawInjector;
-
     /// <summary>
     /// Presses the pointer at a position of <paramref name="element"/>.
     /// </summary>
@@ -162,12 +160,12 @@ public sealed class TestPointer
             PointerId = InjectionCoordinates.ToInjectedPointerId(Id),
             PixelLocation = InjectionCoordinates.ToInjectedPoint(WindowPosition),
             PointerOptions = options,
-            TimeOffsetInMilliseconds = 1
+            TimeOffsetInMilliseconds = InjectionCoordinates.TimeOffsetInMilliseconds
         };
 
         if (PointerDeviceType == PointerDeviceType.Pen)
         {
-            Injector.InjectPenInput(new InjectedInputPenInfo
+            InputHelper.InjectPen(new InjectedInputPenInfo
             {
                 PointerInfo = pointerInfo,
                 PenParameters = InjectedInputPenParameters.Pressure,
@@ -176,7 +174,7 @@ public sealed class TestPointer
         }
         else
         {
-            Injector.InjectTouchInput(InjectionCoordinates.Prepare(new[]
+            InputHelper.InjectTouch(new[]
             {
                 new InjectedInputTouchInfo
                 {
@@ -184,7 +182,7 @@ public sealed class TestPointer
                     Contact = new InjectedInputRectangle { Left = 2, Top = 2, Right = 2, Bottom = 2 },
                     Pressure = 1.0
                 }
-            }));
+            });
         }
     }
 }
@@ -211,9 +209,7 @@ public static class GestureTestHelpers
     /// </summary>
     public static void ResetTouch()
     {
-        var injector = InputHelper.RawInjector;
-        injector.UninitializeTouchInjection();
-        injector.UninitializePenInjection();
+        InputHelper.ResetTouchAndPen();
     }
 
     /// <summary>

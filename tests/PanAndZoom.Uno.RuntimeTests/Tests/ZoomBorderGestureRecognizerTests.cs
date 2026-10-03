@@ -302,7 +302,7 @@ public class ZoomBorderGestureRecognizerTests
 
         // Avalonia leaves this unasserted; on Uno the horizontal drag must produce a purely horizontal pan.
         Assert.IsTrue(recorder.Scrolls.Count > 0, "Scroll gesture should be raised");
-        Assert.AreEqual(initialOffsetX + 200, zoomBorder.OffsetX, 1.0);
+        Assert.AreEqual(initialOffsetX + 200, zoomBorder.OffsetX, ZoomBorderTestHelper.TouchPanTolerance());
         Assert.AreEqual(initialOffsetY, zoomBorder.OffsetY, 1.0);
     }
 
@@ -323,7 +323,7 @@ public class ZoomBorderGestureRecognizerTests
         // Avalonia leaves this unasserted (and drags outside the 300px high control); on Uno the vertical drag must produce a purely vertical pan.
         Assert.IsTrue(recorder.Scrolls.Count > 0, "Scroll gesture should be raised");
         Assert.AreEqual(initialOffsetX, zoomBorder.OffsetX, 1.0);
-        Assert.AreEqual(initialOffsetY + 180, zoomBorder.OffsetY, 1.0);
+        Assert.AreEqual(initialOffsetY + 180, zoomBorder.OffsetY, ZoomBorderTestHelper.TouchPanTolerance());
     }
 
     [TestMethod]
@@ -548,7 +548,13 @@ public class ZoomBorderGestureRecognizerTests
 
         // Avalonia leaves this unasserted (scale should be close to 1.0). The injected fingers move one after the other,
         // which produces transient pinch updates, so only the net scale and the processed translation are asserted.
+#if PANANDZOOM_WINUI
+        // WinUI: the Windows manipulation processor smooths the scale of fingers moving one after the other,
+        // so the net scale is close to, but not exactly, 1.0.
+        Assert.AreEqual(initialZoom, zoomBorder.ZoomX, initialZoom * 0.03, "Two finger pan should keep the scale close to 1.0");
+#else
         Assert.AreEqual(initialZoom, zoomBorder.ZoomX, 1e-6, "Two finger pan should keep the scale close to 1.0");
+#endif
         Assert.IsTrue(recorder.Scrolls.Count > 0, "Two finger pan should be processed as translation");
     }
 

@@ -73,12 +73,31 @@ build/run-uno-runtime-tests.sh Debug "ZoomBorderConstraintTests | ZoomBorderTest
 
 The script builds the test app, runs it with `UNO_RUNTIME_TESTS_RUN_TESTS` and `UNO_RUNTIME_TESTS_OUTPUT_PATH`, writes NUnit XML results to `artifacts/test-results/uno-runtime-tests.xml`, and exits with a non-zero code when a test fails. Running the app without those environment variables shows the interactive runtime test UI. On Linux CI it needs `xvfb` and the X11/OpenGL libraries.
 
+## WinUI 3 (Windows Only)
+
+`PanAndZoom.WinUI.slnx` contains the native WinUI 3 projects. `src/PanAndZoom.WinUI`, `samples/WinUIDemo` and `tests/PanAndZoom.WinUI.RuntimeTests` link the sources of their Uno Platform counterparts, so both ports share the control, the sample and the tests. [Uno Platform and WinUI 3 Differences](advanced/uno-and-winui-differences.md) tracks where the platforms behave differently.
+
+Build and package:
+
+```bash
+dotnet build PanAndZoom.WinUI.slnx -c Release
+dotnet pack src/PanAndZoom.WinUI -c Release -o artifacts/packages
+```
+
+The WinUI runtime tests use real Windows input injection, so keep the test window in front and do not use the mouse while they run:
+
+```powershell
+build/run-winui-runtime-tests.ps1
+build/run-winui-runtime-tests.ps1 -Configuration Debug -Filter "SmokeTests"
+```
+
 ## Build The Sample Apps
 
 ```bash
 dotnet build samples/AvaloniaDemo.Desktop/AvaloniaDemo.Desktop.csproj -c Release
 dotnet build samples/UnoDemo -c Release -f net10.0-desktop
 dotnet publish samples/UnoDemo -c Release -f net10.0-browserwasm -o artifacts/unodemo-wasm
+dotnet build samples/WinUIDemo -c Release   # Windows only
 ```
 
 ## Build Documentation
@@ -100,6 +119,6 @@ Documentation output is written to `site/.lunet/build/www`. The API reference is
 
 ## CI
 
-- `build.yml` runs on pull requests and pushes to `master`/`main`/`release/**` (superseded runs are cancelled) with three jobs: `Test` on Linux, Windows, and macOS (builds and tests `PanAndZoom.slnx`, runs the Uno runtime tests, and on macOS builds the Uno library for iOS and Android), `Uno sample` on Linux (sample self-test and WebAssembly publish), and `Pack` on Windows (all NuGet packages; the WinAppSDK target of `PanAndZoom.Uno` needs msbuild)
+- `build.yml` runs on pull requests and pushes to `master`/`main`/`release/**` (superseded runs are cancelled) with three jobs: `Test` on Linux, Windows, and macOS (builds and tests `PanAndZoom.slnx`, runs the Uno runtime tests, and on macOS builds the Uno library for iOS and Android), `Uno sample` on Linux (sample self-test and WebAssembly publish), and `Pack` on Windows (all NuGet packages, the WinAppSDK target of `PanAndZoom.Uno` needs msbuild, and a build of `PanAndZoom.WinUI.slnx`)
 - `docs.yml` builds the Lunet site and publishes it to GitHub Pages
 - `release.yml` runs on `v*` tags (or manual dispatch): tests `PanAndZoom.slnx` and the Uno runtime tests, packs every package on Windows, and publishes them to NuGet

@@ -329,7 +329,7 @@ public class ZoomBorderAppiumTests
 
         // One finger touch pans the content (WinUI manipulation) with the finger.
         Assert.AreEqual(1.0, zoomBorder.ZoomX, 1e-9);
-        Assert.AreEqual(50.0, zoomBorder.OffsetX, 1.0);
+        Assert.AreEqual(50.0, zoomBorder.OffsetX, ZoomBorderTestHelper.TouchPanTolerance());
         Assert.AreEqual(0.0, zoomBorder.OffsetY, 1.0);
     }
 
@@ -343,7 +343,7 @@ public class ZoomBorderAppiumTests
         await TouchDragAsync(center, new Point(center.X + 100, center.Y));
         await ZoomBorderTestHelper.WaitForIdleAsync();
 
-        Assert.AreEqual(100.0, zoomBorder.OffsetX, 1.0);
+        Assert.AreEqual(100.0, zoomBorder.OffsetX, ZoomBorderTestHelper.TouchPanTolerance());
         Assert.AreEqual(0.0, zoomBorder.OffsetY, 1.0);
     }
 
@@ -389,7 +389,7 @@ public class ZoomBorderAppiumTests
         await ZoomBorderTestHelper.WaitForIdleAsync();
 
         Assert.AreEqual(0.0, zoomBorder.OffsetX, 1.0);
-        Assert.AreEqual(-50.0, zoomBorder.OffsetY, 1.0);
+        Assert.AreEqual(-50.0, zoomBorder.OffsetY, ZoomBorderTestHelper.TouchPanTolerance());
     }
 
     #endregion
@@ -996,7 +996,7 @@ public class ZoomBorderAppiumTests
 
         await ZoomBorderTestHelper.WaitForIdleAsync();
 
-        Assert.AreEqual(50.0, zoomBorder.OffsetX, 1.0);
+        Assert.AreEqual(50.0, zoomBorder.OffsetX, ZoomBorderTestHelper.TouchPanTolerance());
         Assert.AreEqual(0.0, zoomBorder.OffsetY, 1.0);
     }
 
@@ -1155,8 +1155,15 @@ public class ZoomBorderAppiumTests
         // The Uno gesture recognizer reports a DoubleTapped for every tap that follows a tap of the same pointer
         // (taps 2 and 3 of a triple tap). With the default double click zoom (ZoomInOut, factor 2) the first double
         // tap zooms in to 2 and the second one resets (zoom >= 1.5 threshold).
+#if PANANDZOOM_WINUI
+        // WinUI: the Windows gesture recognizer reports a single DoubleTapped for a triple tap (the third tap
+        // starts a new tap sequence), so the double click zoom zooms in once.
+        Assert.AreEqual(1, doubleTapped);
+        Assert.AreEqual(2.0, zoomBorder.ZoomX, 1e-9);
+#else
         Assert.AreEqual(2, doubleTapped);
         Assert.AreEqual(1.0, zoomBorder.ZoomX, 1e-9);
+#endif
     }
 
     [TestMethod]
@@ -1168,8 +1175,8 @@ public class ZoomBorderAppiumTests
         await TouchDragAsync(Window(zoomBorder, 100, 100), Window(zoomBorder, 200, 150), steps: 10, stepDelayMilliseconds: 30);
         await ZoomBorderTestHelper.WaitForIdleAsync();
 
-        Assert.AreEqual(100.0, zoomBorder.OffsetX, 1.0);
-        Assert.AreEqual(50.0, zoomBorder.OffsetY, 1.0);
+        Assert.AreEqual(100.0, zoomBorder.OffsetX, ZoomBorderTestHelper.TouchPanTolerance());
+        Assert.AreEqual(50.0, zoomBorder.OffsetY, ZoomBorderTestHelper.TouchPanTolerance());
     }
 
     #endregion

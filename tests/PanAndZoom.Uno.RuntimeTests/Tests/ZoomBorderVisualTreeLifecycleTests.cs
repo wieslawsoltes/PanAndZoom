@@ -28,15 +28,18 @@ public class ZoomBorderVisualTreeLifecycleTests
         });
     }
 
-    private static void PressLeft(ZoomBorder zoomBorder, Point point)
+    // Waits for the injected input to be dispatched (input injection is asynchronous on native WinUI).
+    private static async Task PressLeft(ZoomBorder zoomBorder, Point point)
     {
         InputHelper.MouseMoveTo(ZoomBorderTestHelper.ToWindow(zoomBorder, point));
         InputHelper.MouseDown(ButtonName.Left);
+        await ZoomBorderTestHelper.WaitForIdleAsync();
     }
 
-    private static void ReleaseLeft()
+    private static async Task ReleaseLeft()
     {
         InputHelper.MouseUp(ButtonName.Left);
+        await ZoomBorderTestHelper.WaitForIdleAsync();
     }
 
     private static bool HasGestureManipulations(ZoomBorder zoomBorder)
@@ -58,10 +61,10 @@ public class ZoomBorderVisualTreeLifecycleTests
 
         await ZoomBorderTestHelper.LoadAsync(zoomBorder);
 
-        PressLeft(zoomBorder, new Point(100, 75));
+        await PressLeft(zoomBorder, new Point(100, 75));
 
         Assert.IsTrue(zoomBorder.IsPanning, "Panning should be active after pointer pressed");
-        ReleaseLeft();
+        await ReleaseLeft();
     }
 
     [TestMethod]
@@ -76,14 +79,14 @@ public class ZoomBorderVisualTreeLifecycleTests
 
         await ZoomBorderTestHelper.LoadAsync(zoomBorder);
 
-        PressLeft(zoomBorder, new Point(100, 75));
+        await PressLeft(zoomBorder, new Point(100, 75));
         Assert.IsTrue(zoomBorder.IsPanning);
 
         // Detach from the visual tree
         await ZoomBorderTestHelper.UnloadAsync();
 
         // Releasing the button after detachment should not crash or cause issues
-        ReleaseLeft();
+        await ReleaseLeft();
         await ZoomBorderTestHelper.WaitForIdleAsync();
     }
 
@@ -101,10 +104,10 @@ public class ZoomBorderVisualTreeLifecycleTests
         {
             await ZoomBorderTestHelper.LoadAsync(zoomBorder);
 
-            PressLeft(zoomBorder, new Point(100, 75));
+            await PressLeft(zoomBorder, new Point(100, 75));
             Assert.IsTrue(zoomBorder.IsPanning, $"Panning should work on cycle {i + 1}");
 
-            ReleaseLeft();
+            await ReleaseLeft();
             Assert.IsFalse(zoomBorder.IsPanning, $"Panning should stop on cycle {i + 1}");
 
             await ZoomBorderTestHelper.UnloadAsync();
@@ -238,14 +241,14 @@ public class ZoomBorderVisualTreeLifecycleTests
         };
         await ZoomBorderTestHelper.WaitForIdleAsync();
 
-        PressLeft(zoomBorder, new Point(100, 75));
+        await PressLeft(zoomBorder, new Point(100, 75));
         Assert.IsTrue(zoomBorder.IsPanning);
 
         // Remove child
         zoomBorder.Child = null;
 
         // Should handle gracefully
-        ReleaseLeft();
+        await ReleaseLeft();
         await ZoomBorderTestHelper.WaitForIdleAsync();
     }
 }

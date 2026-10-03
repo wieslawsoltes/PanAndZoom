@@ -128,7 +128,7 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  # All NuGet packages. Windows is required for the WinAppSDK target of PanAndZoom.Uno,
+  # All NuGet packages and the native WinUI projects. Windows is required for the WinAppSDK target of PanAndZoom.Uno,
   # whose XAML can only be compiled by msbuild (UNOB0008). The Windows image already ships
   # the Android, iOS and WebAssembly workloads.
   pack:
@@ -164,6 +164,14 @@ jobs:
       - name: Pack PanAndZoom.Uno
         shell: pwsh
         run: msbuild src/PanAndZoom.Uno/PanAndZoom.Uno.csproj -t:Pack -r -m -p:Configuration=Release -p:VersionSuffix="${{ env.VERSION_SUFFIX }}" -p:PackageOutputPath="$env:GITHUB_WORKSPACE/artifacts/packages"
+
+      - name: Pack PanAndZoom.WinUI
+        run: dotnet pack src/PanAndZoom.WinUI -c Release -p:VersionSuffix="${{ env.VERSION_SUFFIX }}" -o artifacts/packages
+
+      # The WinUI runtime tests need an interactive desktop for real input injection, so CI only
+      # builds the WinUI sample and test app (build/run-winui-runtime-tests.ps1 runs them locally).
+      - name: Build WinUI sample and runtime tests
+        run: dotnet build PanAndZoom.WinUI.slnx -c Release
 
       - name: Upload NuGet packages
         uses: actions/upload-artifact@v4

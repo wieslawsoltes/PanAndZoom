@@ -409,13 +409,13 @@ public static class ScenarioTestHelpers
         internal TouchSession()
         {
             _injector = InputHelper.RawInjector;
-            _injector.InitializeTouchInjection(InjectedInputVisualizationMode.Default);
+            InputHelper.EnsureTouchInjection();
         }
 
         /// <summary>
         /// Injects one frame of touch contacts.
         /// </summary>
-        public void Inject(params InjectedInputTouchInfo[] contacts) => _injector.InjectTouchInput(InjectionCoordinates.Prepare(contacts));
+        public void Inject(params InjectedInputTouchInfo[] contacts) => InputHelper.InjectTouch(contacts);
 
         /// <summary>
         /// Creates a contact down.
@@ -449,7 +449,7 @@ public static class ScenarioTestHelpers
         }
 
         /// <inheritdoc/>
-        public void Dispose() => _injector.UninitializeTouchInjection();
+        public void Dispose() => InputHelper.UninitializeTouchInjection();
     }
 
     #endregion

@@ -8,11 +8,12 @@
 |---|---|---|
 | `PanAndZoom` (Avalonia) | [![NuGet](https://img.shields.io/nuget/v/PanAndZoom.svg)](https://www.nuget.org/packages/PanAndZoom) | [![NuGet](https://img.shields.io/nuget/dt/PanAndZoom.svg)](https://www.nuget.org/packages/PanAndZoom) |
 | `PanAndZoom.Uno` (Uno Platform) | [![NuGet](https://img.shields.io/nuget/v/PanAndZoom.Uno.svg)](https://www.nuget.org/packages/PanAndZoom.Uno) | [![NuGet](https://img.shields.io/nuget/dt/PanAndZoom.Uno.svg)](https://www.nuget.org/packages/PanAndZoom.Uno) |
+| `PanAndZoom.WinUI` (WinUI 3) | [![NuGet](https://img.shields.io/nuget/v/PanAndZoom.WinUI.svg)](https://www.nuget.org/packages/PanAndZoom.WinUI) | [![NuGet](https://img.shields.io/nuget/dt/PanAndZoom.WinUI.svg)](https://www.nuget.org/packages/PanAndZoom.WinUI) |
 | `PanAndZoom.Core` (shared engine) | [![NuGet](https://img.shields.io/nuget/v/PanAndZoom.Core.svg)](https://www.nuget.org/packages/PanAndZoom.Core) | [![NuGet](https://img.shields.io/nuget/dt/PanAndZoom.Core.svg)](https://www.nuget.org/packages/PanAndZoom.Core) |
 
 [![MyGet](https://img.shields.io/myget/panandzoom-nightly/vpre/PanAndZoom.svg?label=myget)](https://www.myget.org/gallery/panandzoom-nightly)
 
-PanAndZoom control for Avalonia and Uno Platform.
+PanAndZoom control for Avalonia, Uno Platform and WinUI 3.
 
 <a href='https://youtu.be/BFLF1WPZWCQ' target='_blank'>![](images/PanAndZoom.png)<a/>
 
@@ -22,13 +23,14 @@ PanAndZoom control for Avalonia and Uno Platform.
 |---|---|---|---|
 | [`PanAndZoom`](https://www.nuget.org/packages/PanAndZoom/) | `net8.0`, `net10.0` | `Avalonia.Controls.PanAndZoom` | The `ZoomBorder` control for Avalonia apps |
 | [`PanAndZoom.Uno`](https://www.nuget.org/packages/PanAndZoom.Uno/) | `net10.0`, `net10.0-desktop`, `net10.0-browserwasm`, `net10.0-android`, `net10.0-ios`, `net10.0-windows10.0.26100` | `PanAndZoom` | The `ZoomBorder` control for Uno Platform (WinUI) apps, Skia renderer |
+| [`PanAndZoom.WinUI`](https://www.nuget.org/packages/PanAndZoom.WinUI/) | `net10.0-windows10.0.19041.0` | `PanAndZoom` | The `ZoomBorder` control for native WinUI 3 (Windows App SDK) apps, built from the same sources as `PanAndZoom.Uno` |
 | [`PanAndZoom.Core`](https://www.nuget.org/packages/PanAndZoom.Core/) | `net8.0`, `net10.0` | `PanAndZoom`, `PanAndZoom.Core` | The UI framework independent engine and shared model types (referenced automatically by both controls) |
 
-Both controls expose the same feature set (pan, zoom, stretch modes, constraints, bounds modes, wheel and keyboard behaviors, double-click zoom, gestures, animations, view history, saved views, discrete zoom levels, grid and snap, rotation, state serialization and MVVM commands) because they share one implementation.
+All controls expose the same feature set (pan, zoom, stretch modes, constraints, bounds modes, wheel and keyboard behaviors, double-click zoom, gestures, animations, view history, saved views, discrete zoom levels, grid and snap, rotation, state serialization and MVVM commands) because they share one implementation.
 
 ## Architecture
 
-PanAndZoom is built as one engine and two thin UI adapters:
+PanAndZoom is built as one engine and thin UI adapters. The WinUI 3 package (`PanAndZoom.WinUI`) is compiled from the Uno Platform sources (Uno implements the WinUI API), so there are two adapter code bases:
 
 ```text
 +----------------------------------+      +----------------------------------+
@@ -55,7 +57,8 @@ PanAndZoom is built as one engine and two thin UI adapters:
 - `PanAndZoom.Core.IPanAndZoomHost` is implemented by each control: it reports viewport and child sizes, applies the computed render transform and forwards the virtual extension points (`GetContentBounds`, `ValidateTransform`, `OnResized`, `CalculateAutoZoomLimits`).
 - `PanAndZoom.Core.IPanAndZoomSettings` is implemented by each control on top of its bindable properties, so the engine always reads live property values. `PanAndZoomSettings` is a plain implementation initialized from `ZoomBorderDefaults`.
 - The controls translate native input (pointer, wheel, keyboard, gestures or manipulations) into engine calls and convert between native types (`Avalonia.Matrix`, `Microsoft.UI.Xaml.Media.Matrix`, ...) and the core primitives.
-- Both controls expose the engine through their `Engine` property.
+- All controls expose the engine through their `Engine` property.
+- `src/PanAndZoom.WinUI` links every source file and the default style of `src/PanAndZoom.Uno`; `samples/WinUIDemo` and `tests/PanAndZoom.WinUI.RuntimeTests` link the Uno sample and the Uno runtime tests the same way.
 
 ## Migrating from earlier versions
 
@@ -920,14 +923,25 @@ zoomBorder.ImportState(restoredState);
 - Implement undo/redo functionality
 - Session state management
 
+## Using PanAndZoom (WinUI 3)
+
+`PanAndZoom.WinUI` is the native WinUI 3 (Windows App SDK) build of the Uno Platform control: the API, XAML and behavior are identical to the [Uno Platform section](#using-panandzoom-uno-platform) (`xmlns:paz="using:PanAndZoom"`).
+
+```bash
+dotnet add package PanAndZoom.WinUI
+```
+
+The default style ships in the package (`PanAndZoom.WinUI/Themes/Generic.xbf` plus the `.pri` resources), so no resource dictionary has to be merged. As usual for WinUI custom controls, a `ZoomBorder` subclass needs XAML type metadata for the default style to apply: use the subclass in XAML (or reference it, for example as a `Style` `TargetType`) in the project that defines it.
+
 ## Building and Testing
 
-The repository uses the .NET 10 SDK (see `global.json`, which also pins `Uno.Sdk` 6.7.30) and two solutions:
+The repository uses the .NET 10 SDK (see `global.json`, which also pins `Uno.Sdk` 6.7.30) and three solutions:
 
 | Solution | Contents |
 |---|---|
 | `PanAndZoom.slnx` | `PanAndZoom.Core`, `PanAndZoom` (Avalonia), `HeadlessTestingFramework`, the Avalonia sample and the Avalonia/core unit tests |
 | `PanAndZoom.Uno.slnx` | `PanAndZoom.Core`, `PanAndZoom.Uno`, the Uno sample (`samples/UnoDemo`) and the Uno runtime tests |
+| `PanAndZoom.WinUI.slnx` (Windows only) | `PanAndZoom.Core`, `PanAndZoom.WinUI`, the WinUI sample (`samples/WinUIDemo`) and the WinUI runtime tests |
 
 ### Avalonia and core
 
@@ -986,6 +1000,25 @@ Uno sample (`samples/UnoDemo`, a port of the Avalonia demo for desktop, WebAssem
 ```bash
 dotnet run --project samples/UnoDemo -f net10.0-desktop
 dotnet publish samples/UnoDemo -c Release -f net10.0-browserwasm -o artifacts/unodemo-wasm
+```
+
+### WinUI 3 (Windows only)
+
+The WinUI projects are plain Windows App SDK projects (no workloads needed). The sample and the test app are unpackaged and self-contained:
+
+```bash
+dotnet build PanAndZoom.WinUI.slnx -c Release
+dotnet pack src/PanAndZoom.WinUI -c Release -o artifacts/packages
+
+# WinUI sample (set UNODEMO_SELFTEST=1 to visit every demo page and exit)
+dotnet run --project samples/WinUIDemo -c Release
+```
+
+The WinUI runtime tests run the same tests as the Uno runtime tests with real Windows input injection, so the test window must stay in front and the mouse must not be used while they run:
+
+```powershell
+build/run-winui-runtime-tests.ps1
+build/run-winui-runtime-tests.ps1 -Configuration Debug -Filter "ZoomBorderConstraintTests | ZoomBorderTests"
 ```
 
 ### CI

@@ -327,7 +327,14 @@ public class ZoomBorderTouchSimulatorTests
 
         var pressed = recorder.Events.First(e => e.Kind == "Pressed" && e.Id == touchId);
         var released = recorder.Events.First(e => e.Kind == "Released" && e.Id == touchId);
+#if PANANDZOOM_WINUI
+        // WinUI: Windows touch injection requires a zero time offset, so the advanced time is a real delay
+        // and the timestamps are the times Windows received the frames (at least 100ms apart).
+        var elapsed = released.Timestamp - pressed.Timestamp;
+        Assert.IsTrue(elapsed >= 90_000UL && elapsed < 300_000UL, $"Expected about 100ms between press and release, was {elapsed / 1000}ms");
+#else
         Assert.AreEqual(100_000UL, released.Timestamp - pressed.Timestamp);
+#endif
     }
 
     [TestMethod]
