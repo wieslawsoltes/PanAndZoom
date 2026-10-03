@@ -217,7 +217,7 @@ public sealed class TouchInjectionSession : IDisposable
     public TouchInjectionSession(UIElement target)
     {
         Target = target;
-        _injector = InputInjectorHelper.Current.Injector;
+        _injector = InputHelper.RawInjector;
         _injector.InitializeTouchInjection(InjectedInputVisualizationMode.Default);
     }
 
@@ -356,7 +356,7 @@ public sealed class TouchInjectionSession : IDisposable
             contacts[i].PointerInfo = contacts[i].PointerInfo with { TimeOffsetInMilliseconds = offset };
         }
 
-        _injector.InjectTouchInput(contacts);
+        _injector.InjectTouchInput(InjectionCoordinates.Prepare(contacts));
     }
 
     private InjectedInputTouchInfo Contact(uint id, Point position, InjectedInputPointerOptions options)
@@ -366,8 +366,8 @@ public sealed class TouchInjectionSession : IDisposable
         {
             PointerInfo = new InjectedInputPointerInfo
             {
-                PointerId = id,
-                PixelLocation = new InjectedInputPoint { PositionX = (int)Math.Round(window.X), PositionY = (int)Math.Round(window.Y) },
+                PointerId = InjectionCoordinates.ToInjectedPointerId(id),
+                PixelLocation = InjectionCoordinates.ToInjectedPoint(window),
                 PointerOptions = options,
                 TimeOffsetInMilliseconds = 1
             },

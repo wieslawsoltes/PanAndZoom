@@ -16,12 +16,73 @@ public static class InputHelper
 
     private static InputInjectorHelper Injector => InputInjectorHelper.Current;
 
+#if PANANDZOOM_WINUI
+    // The native WinUI app uses its own injector: the engine InputInjectorHelper.CleanupPointers()
+    // releases all buttons in a single event, which Windows rejects (X buttons need MouseData).
+    private static InputInjector? s_injector;
+    private static readonly HashSet<ButtonName> s_pressedButtons = new();
+
+    /// <summary>
+    /// Gets the input injector shared by the test infrastructure.
+    /// </summary>
+    public static InputInjector RawInjector => s_injector ??= InputInjector.TryCreate()
+        ?? throw new InvalidOperationException("Input injection is not available.");
+#else
+    /// <summary>
+    /// Gets the input injector shared by the test infrastructure.
+    /// </summary>
+    public static InputInjector RawInjector => Injector.Injector;
+#endif
+
+#if PANANDZOOM_WINUI
+    private static readonly HashSet<Windows.System.VirtualKey> s_pressedKeys = new();
+#endif
+
+    /// <summary>
+    /// Releases modifier keys left pressed by <see cref="MouseWheel(Point, int, VirtualKeyModifiers, bool)"/> (Windows only).
+    /// </summary>
+    /// <param name="except">Keys to keep pressed.</param>
+    public static void ReleaseModifierKeys(IEnumerable<Windows.System.VirtualKey>? except = null)
+    {
+#if PANANDZOOM_WINUI
+        var keep = except?.ToHashSet() ?? new HashSet<Windows.System.VirtualKey>();
+        var release = s_pressedKeys.Where(k => !keep.Contains(k)).ToList();
+        if (release.Count == 0)
+        {
+            return;
+        }
+
+        RawInjector.InjectKeyboardInput(release.Select(k => new InjectedInputKeyboardInfo { VirtualKey = (ushort)k, KeyOptions = InjectedInputKeyOptions.KeyUp }));
+        s_pressedKeys.ExceptWith(release);
+#endif
+    }
+
+    private static void InjectMouse(IEnumerable<InjectedInputMouseInfo> input)
+    {
+#if PANANDZOOM_WINUI
+        RawInjector.InjectMouseInput(input);
+#else
+        Injector.InjectMouseInput(input);
+#endif
+    }
+
+    private static void InjectMouse(InjectedInputMouseInfo input) => InjectMouse(new[] { input });
+
     /// <summary>
     /// Releases any pressed mouse button and moves the mouse to the window origin.
     /// </summary>
     public static void Reset()
     {
+#if PANANDZOOM_WINUI
+        foreach (var button in s_pressedButtons.ToArray())
+        {
+            MouseUp(button);
+        }
+
+        ReleaseModifierKeys();
+#else
         Injector.CleanupPointers();
+#endif
     }
 
     /// <summary>
@@ -29,8 +90,12 @@ public static class InputHelper
     /// </summary>
     public static Point GetMousePosition()
     {
+#if PANANDZOOM_WINUI
+        return InjectionCoordinates.GetCursorWindowPosition();
+#else
         var mouse = typeof(InputInjector).GetProperty("Mouse", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(Injector.Injector)!;
         return (Point)mouse.GetType().GetProperty("Position", BindingFlags.Instance | BindingFlags.Public)!.GetValue(mouse)!;
+#endif
     }
 
     /// <summary>
@@ -38,6 +103,22 @@ public static class InputHelper
     /// </summary>
     public static void MouseMoveTo(Point position, int? steps = null)
     {
+#if PANANDZOOM_WINUI
+        // Relative moves are subject to the Windows pointer acceleration, use absolute moves.
+        var start = GetMousePosition();
+        var count = Math.Max(1, steps ?? 1);
+        var absoluteMoves = new List<InjectedInputMouseInfo>();
+        for (var i = 1; i <= count; i++)
+        {
+            var t = i / (double)count;
+            absoluteMoves.Add(InjectionCoordinates.CreateAbsoluteMove(new Point(
+                Math.Round(start.X + (position.X - start.X) * t),
+                Math.Round(start.Y + (position.Y - start.Y) * t))));
+        }
+
+        InjectMouse(absoluteMoves);
+        return;
+#else
         var current = GetMousePosition();
         var totalX = (int)Math.Round(position.X - current.X);
         var totalY = (int)Math.Round(position.Y - current.Y);
@@ -60,7 +141,8 @@ public static class InputHelper
             }
         }
 
-        Injector.InjectMouseInput(moves);
+        InjectMouse(moves);
+#endif
     }
 
     /// <summary>
@@ -68,7 +150,7 @@ public static class InputHelper
     /// </summary>
     public static void MouseDown(ButtonName button)
     {
-        Injector.InjectMouseInput(new InjectedInputMouseInfo
+        InjectMouse(new InjectedInputMouseInfo
         {
             TimeOffsetInMilliseconds = 1,
             MouseOptions = button switch
@@ -78,6 +160,10 @@ public static class InputHelper
                 _ => InjectedInputMouseOptions.MiddleDown
             }
         });
+
+#if PANANDZOOM_WINUI
+        s_pressedButtons.Add(button);
+#endif
     }
 
     /// <summary>
@@ -85,7 +171,7 @@ public static class InputHelper
     /// </summary>
     public static void MouseUp(ButtonName button)
     {
-        Injector.InjectMouseInput(new InjectedInputMouseInfo
+        InjectMouse(new InjectedInputMouseInfo
         {
             TimeOffsetInMilliseconds = 1,
             MouseOptions = button switch
@@ -95,6 +181,10 @@ public static class InputHelper
                 _ => InjectedInputMouseOptions.MiddleUp
             }
         });
+
+#if PANANDZOOM_WINUI
+        s_pressedButtons.Remove(button);
+#endif
     }
 
     /// <summary>
@@ -118,7 +208,7 @@ public static class InputHelper
     public static void MouseWheel(Point position, int delta, bool horizontal = false)
     {
         MouseMoveTo(position);
-        Injector.InjectMouseInput(CreateWheel(delta, horizontal));
+        InjectMouse(CreateWheel(delta, horizontal));
     }
 
     /// <summary>
@@ -132,6 +222,21 @@ public static class InputHelper
     {
         MouseMoveTo(position);
 
+#if PANANDZOOM_WINUI
+        // Windows injects real modifier keys. WinUI reads the modifier state when it dispatches the
+        // wheel event (asynchronously), so the keys stay pressed until the input settled: they are
+        // released by ReleaseModifierKeys (called by ZoomBorderTestHelper.WaitForIdleAsync and Reset).
+        var keys = new List<Windows.System.VirtualKey>();
+        if ((modifiers & VirtualKeyModifiers.Control) != 0) keys.Add(Windows.System.VirtualKey.LeftControl);
+        if ((modifiers & VirtualKeyModifiers.Shift) != 0) keys.Add(Windows.System.VirtualKey.LeftShift);
+        if ((modifiers & VirtualKeyModifiers.Menu) != 0) keys.Add(Windows.System.VirtualKey.LeftMenu);
+
+        ReleaseModifierKeys(except: keys);
+        var newKeys = keys.Where(k => !s_pressedKeys.Contains(k)).ToList();
+        RawInjector.InjectKeyboardInput(newKeys.Select(k => new InjectedInputKeyboardInfo { VirtualKey = (ushort)k }));
+        s_pressedKeys.UnionWith(newKeys);
+        InjectMouse(CreateWheel(delta, horizontal));
+#else
         var method = typeof(InputInjector)
             .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
             .FirstOrDefault(m => m.Name == nameof(InputInjector.InjectMouseInput)
@@ -146,6 +251,7 @@ public static class InputHelper
 
         IEnumerable<(InjectedInputMouseInfo, VirtualKeyModifiers)> input = new[] { (CreateWheel(delta, horizontal), modifiers) };
         method.Invoke(Injector.Injector, new object[] { input });
+#endif
     }
 
     private static InjectedInputMouseInfo CreateWheel(int delta, bool horizontal)
@@ -155,8 +261,14 @@ public static class InputHelper
         {
             TimeOffsetInMilliseconds = 1,
             MouseData = unchecked((uint)delta),
+#if PANANDZOOM_WINUI
+            // Windows reads the wheel delta from MouseData only.
+            DeltaX = 0,
+            DeltaY = 0,
+#else
             DeltaX = horizontal ? delta : 0,
             DeltaY = horizontal ? 0 : delta,
+#endif
             MouseOptions = horizontal ? InjectedInputMouseOptions.HWheel : InjectedInputMouseOptions.Wheel
         };
     }
@@ -252,17 +364,17 @@ public static class InputHelper
 
     private static void Touch(IEnumerable<InjectedInputTouchInfo[]> frames)
     {
-        Injector.Injector.InitializeTouchInjection(InjectedInputVisualizationMode.Default);
+        RawInjector.InitializeTouchInjection(InjectedInputVisualizationMode.Default);
         try
         {
             foreach (var frame in frames)
             {
-                Injector.Injector.InjectTouchInput(frame);
+                RawInjector.InjectTouchInput(InjectionCoordinates.Prepare(frame));
             }
         }
         finally
         {
-            Injector.Injector.UninitializeTouchInjection();
+            RawInjector.UninitializeTouchInjection();
         }
     }
 
@@ -272,8 +384,8 @@ public static class InputHelper
         {
             PointerInfo = new InjectedInputPointerInfo
             {
-                PointerId = id,
-                PixelLocation = new InjectedInputPoint { PositionX = (int)Math.Round(position.X), PositionY = (int)Math.Round(position.Y) },
+                PointerId = InjectionCoordinates.ToInjectedPointerId(id),
+                PixelLocation = InjectionCoordinates.ToInjectedPoint(position),
                 PointerOptions = options,
                 TimeOffsetInMilliseconds = 1
             },

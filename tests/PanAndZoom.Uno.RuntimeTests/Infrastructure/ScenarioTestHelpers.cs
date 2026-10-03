@@ -408,14 +408,14 @@ public static class ScenarioTestHelpers
 
         internal TouchSession()
         {
-            _injector = InputInjectorHelper.Current.Injector;
+            _injector = InputHelper.RawInjector;
             _injector.InitializeTouchInjection(InjectedInputVisualizationMode.Default);
         }
 
         /// <summary>
         /// Injects one frame of touch contacts.
         /// </summary>
-        public void Inject(params InjectedInputTouchInfo[] contacts) => _injector.InjectTouchInput(contacts);
+        public void Inject(params InjectedInputTouchInfo[] contacts) => _injector.InjectTouchInput(InjectionCoordinates.Prepare(contacts));
 
         /// <summary>
         /// Creates a contact down.
@@ -438,8 +438,8 @@ public static class ScenarioTestHelpers
             {
                 PointerInfo = new InjectedInputPointerInfo
                 {
-                    PointerId = id,
-                    PixelLocation = new InjectedInputPoint { PositionX = (int)Math.Round(position.X), PositionY = (int)Math.Round(position.Y) },
+                    PointerId = InjectionCoordinates.ToInjectedPointerId(id),
+                    PixelLocation = InjectionCoordinates.ToInjectedPoint(position),
                     PointerOptions = options,
                     TimeOffsetInMilliseconds = 1
                 },

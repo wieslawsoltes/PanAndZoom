@@ -23,7 +23,8 @@ internal static class SelfTest
     private static int s_unhandledExceptions;
 
     /// <summary>
-    /// Gets a value indicating whether the self test is enabled.
+    /// Gets a value indicating whether the self test is enabled (<c>UNODEMO_SELFTEST=1</c>).
+    /// Set <c>UNODEMO_SELFTEST_LOG</c> to a file path to also write the log to a file.
     /// </summary>
     public static bool IsEnabled => Environment.GetEnvironmentVariable("UNODEMO_SELFTEST") == "1";
 
@@ -236,6 +237,20 @@ internal static class SelfTest
 
     private static void Log(string message)
     {
-        Console.WriteLine($"[SelfTest] {message}");
+        var line = $"[SelfTest] {message}";
+        Console.WriteLine(line);
+
+        // GUI subsystem apps (WinUI) have no console: optionally mirror the log to a file.
+        if (Environment.GetEnvironmentVariable("UNODEMO_SELFTEST_LOG") is { Length: > 0 } logPath)
+        {
+            try
+            {
+                System.IO.File.AppendAllText(logPath, line + Environment.NewLine);
+            }
+            catch (Exception)
+            {
+                // Logging to the file is best effort.
+            }
+        }
     }
 }

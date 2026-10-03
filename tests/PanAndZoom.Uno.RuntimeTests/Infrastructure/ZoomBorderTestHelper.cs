@@ -80,8 +80,22 @@ public static class ZoomBorderTestHelper
     /// </summary>
     public static async Task WaitForIdleAsync()
     {
+#if PANANDZOOM_WINUI
+        // Real Windows input injection is asynchronous (it goes through the OS input queue), so give
+        // the injected input time to be dispatched before waiting for the UI thread to be idle.
+        await Task.Delay(InputSettleDelayMilliseconds);
+        await UnitTestsUIContentHelper.WaitForIdle();
+        InputHelper.ReleaseModifierKeys();
+#endif
         await UnitTestsUIContentHelper.WaitForIdle();
     }
+
+#if PANANDZOOM_WINUI
+    /// <summary>
+    /// Time given to the Windows input queue to dispatch injected input.
+    /// </summary>
+    public const int InputSettleDelayMilliseconds = 150;
+#endif
 
     /// <summary>
     /// Waits until a condition is met (polling on the UI thread).

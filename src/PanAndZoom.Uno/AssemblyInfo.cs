@@ -3,3 +3,4 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("PanAndZoom.Uno.RuntimeTests")]
+[assembly: InternalsVisibleTo("PanAndZoom.WinUI.RuntimeTests")]

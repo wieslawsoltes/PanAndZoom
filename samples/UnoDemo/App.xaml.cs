@@ -1,6 +1,8 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+#if !PANANDZOOM_WINUI
 using Uno.Resizetizer;
+#endif
 
 namespace UnoDemo;
 
@@ -40,7 +42,9 @@ public partial class App : Application
         MainWindow.Content = mainPage;
 
         mainPage.Loaded += (_, _) => TryResizeWindow(MainWindow, mainPage.XamlRoot?.RasterizationScale ?? 1.0, 1400, 800);
+#if !PANANDZOOM_WINUI
         MainWindow.SetWindowIcon();
+#endif
         MainWindow.Activate();
 
         if (SelfTest.IsEnabled)
@@ -86,7 +90,7 @@ public partial class App : Application
     /// </summary>
     public static void InitializeLogging()
     {
-#if DEBUG
+#if DEBUG && !PANANDZOOM_WINUI
         // Logging is disabled by default for release builds, as it incurs a significant
         // initialization cost from Microsoft.Extensions.Logging setup.
         var factory = LoggerFactory.Create(builder =>

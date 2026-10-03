@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Native WinUI 3 (Windows App SDK) build of the PanAndZoom ZoomBorder.
+
+    The control sources and the default style are linked from src/PanAndZoom.Uno, so the Uno
+    Platform and the WinUI packages are built from exactly the same code (Uno implements the
+    WinUI API surface). The logic lives in the shared PanAndZoom.Core engine.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <UseWinUI>true</UseWinUI>
+    <OutputType>Library</OutputType>
+    <Nullable>enable</Nullable>
+    <RootNamespace>PanAndZoom</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>PanAndZoom.WinUI</PackageId>
+    <Description>Easily add pan and zoom functionality to your WinUI 3 (Windows App SDK) apps using the ZoomBorder control.</Description>
+    <PackageTags>WinUI;WinUI3;WindowsAppSDK;Pan;Zoom;Control;Xaml;Managed;C#</PackageTags>
+    <IsPackable>true</IsPackable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\Base.props" />
+  <Import Project="..\..\build\SourceLink.props" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PanAndZoom.Core\PanAndZoom.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Shared sources of the Uno Platform port. -->
+  <ItemGroup>
+    <Compile Include="..\PanAndZoom.Uno\**\*.cs" Exclude="..\PanAndZoom.Uno\bin\**;..\PanAndZoom.Uno\obj\**" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+    <Page Include="..\PanAndZoom.Uno\Themes\Generic.xaml" Link="Themes\Generic.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+</Project>

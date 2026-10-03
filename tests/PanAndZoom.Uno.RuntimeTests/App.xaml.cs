@@ -6,13 +6,17 @@ using Uno.UI.RuntimeTests;
 namespace PanAndZoom.Uno.RuntimeTests;
 
 /// <summary>
-/// Host application for the runtime tests. When started without the runtime test environment
+/// Host application for the runtime tests (Uno Platform, and native WinUI through
+/// tests/PanAndZoom.WinUI.RuntimeTests). When started without the runtime test environment
 /// variables the interactive test runner UI is shown.
 /// </summary>
 public partial class App : Application
 {
     public App()
     {
+#if PANANDZOOM_WINUI
+        WinUITestRunner.Initialize(this);
+#endif
         InitializeComponent();
     }
 
@@ -22,10 +26,25 @@ public partial class App : Application
     {
         MainWindow = new Window
         {
-            Title = "PanAndZoom Uno Runtime Tests"
+            Title = "PanAndZoom Runtime Tests"
         };
 
-        MainWindow.Content = new UnitTestsControl();
-        MainWindow.Activate();
+#if PANANDZOOM_WINUI
+        try
+        {
+#endif
+            var testsControl = new UnitTestsControl();
+            MainWindow.Content = testsControl;
+            MainWindow.Activate();
+
+#if PANANDZOOM_WINUI
+            WinUITestRunner.StartIfConfigured(MainWindow, testsControl);
+        }
+        catch (Exception ex)
+        {
+            WinUITestRunner.Log($"OnLaunched failed: {ex}");
+            throw;
+        }
+#endif
     }
 }
