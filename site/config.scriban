@@ -6,7 +6,7 @@ template_theme_default_mode = "system"
 site_project_baseurl = "https://wieslawsoltes.github.io"
 site_project_basepath = environment == "dev" ? "" : "/PanAndZoom"
 site_project_name = "PanAndZoom for Avalonia"
-site_project_description = "PanAndZoom provides a ZoomBorder control for Avalonia together with a headless testing toolkit for gesture, input, and visual verification workflows."
+site_project_description = "PanAndZoom provides a ZoomBorder control for Avalonia with pan, zoom, bounds management, and view-state workflows."
 site_project_logo_path = "/images/logo.svg"
 site_project_social_banner_path = "/images/panandzoom.png"
 site_project_package_id = "PanAndZoom"
@@ -76,10 +76,6 @@ with api.dotnet
         {
             name: "PanAndZoom",
             path: "../src/PanAndZoom/PanAndZoom.csproj"
-        },
-        {
-            name: "HeadlessTestingFramework",
-            path: "../src/HeadlessTestingFramework/HeadlessTestingFramework.csproj"
         }
     ]
     external_apis = [

@@ -34,30 +34,11 @@ XAML namespace:
 xmlns:paz="using:Avalonia.Controls.PanAndZoom"
 ```
 
-## HeadlessTestingFramework
+## Headless Testing
 
-Install the testing package:
+Use [ProTest](https://wieslawsoltes.github.io/ProTest/) for headless Avalonia tests. This repository's tests consume the stable `ProTest.Avalonia.Headless.XUnit.v3` **12.1.4** package with official Avalonia **12.1.4** dependencies.
 
-```bash
-dotnet add package HeadlessTestingFramework
-```
-
-For xUnit headless tests, you also need the standard Avalonia headless test packages used in this repository:
-
-```xml
-<ItemGroup>
-  <PackageReference Include="Avalonia.Headless.XUnit" Version="12.1.1" />
-  <PackageReference Include="Avalonia.Skia" Version="12.1.1" />
-</ItemGroup>
-```
-
-Namespaces:
-
-```csharp
-using Avalonia.HeadlessTestingFramework;
-using Avalonia.HeadlessTestingFramework.Appium;
-using Avalonia.HeadlessTestingFramework.Recording;
-```
+The [ProTest setup guide](https://wieslawsoltes.github.io/ProTest/getting-started/xunit) covers xUnit 3 and xUnit 4 project configuration and migration from the standalone testing framework.
 
 ## Sample App
 
@@ -71,4 +52,4 @@ That is the quickest way to confirm local environment setup before consuming the
 ## Related
 
 - [Quickstart: ZoomBorder](quickstart-zoom-border.md)
-- [Quickstart: Headless Testing](quickstart-headless-testing.md)
+- [ProTest setup guide](https://wieslawsoltes.github.io/ProTest/getting-started/xunit)

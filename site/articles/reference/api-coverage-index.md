@@ -8,15 +8,13 @@ This index maps the public surface to the primary narrative entry points in this
 
 ## Coverage Summary
 
-- packages documented: `2`
-- primary namespaces covered in reference pages: `4`
-- generated API pages: `PanAndZoom` and `HeadlessTestingFramework`
+- packages documented: `1`
+- primary namespaces covered in reference pages: `1`
+- generated API pages: `PanAndZoom`
 
 ## Namespace Entry Points
 
 - [Namespace: Avalonia.Controls.PanAndZoom](namespace-panandzoom.md)
-- [Namespace: Avalonia.HeadlessTestingFramework](namespace-headless-testingframework.md)
-- [Namespaces: Recording and Appium](namespace-recording-and-appium.md)
 
 ## Focus Area Mapping
 
@@ -27,10 +25,6 @@ This index maps the public surface to the primary narrative entry points in this
 | Commands and keyboard | [guides/commands-and-keyboard.md](../guides/commands-and-keyboard.md) | `ZoomInCommand`, `ResetCommand`, `NavigateBackCommand` |
 | Bounds and resize | [guides/bounds-wheel-and-resize.md](../guides/bounds-wheel-and-resize.md) | `BoundsMode`, `ResizeBehavior`, `AutoCalculateMinZoom` |
 | View persistence | [concepts/view-state-and-persistence.md](../concepts/view-state-and-persistence.md) | `SaveView(...)`, `ExportState()`, `Avalonia.Controls.PanAndZoom.ZoomBorderState` |
-| Touch and gesture simulation | [headless-testing/input-simulators.md](../headless-testing/input-simulators.md) | `Avalonia.HeadlessTestingFramework.TouchInputSimulator`, `Avalonia.HeadlessTestingFramework.GestureSimulator` |
-| Tree queries and assertions | [headless-testing/tree-helpers.md](../headless-testing/tree-helpers.md) | `Avalonia.HeadlessTestingFramework.ControlFinder`, `Avalonia.HeadlessTestingFramework.TreeValidator` |
-| Appium-style automation | [headless-testing/appium-like-api.md](../headless-testing/appium-like-api.md) | `Avalonia.HeadlessTestingFramework.Appium.AvaloniaDriver`, `Avalonia.HeadlessTestingFramework.Appium.By` |
-| Recording and video conversion | [headless-testing/recording-and-video.md](../headless-testing/recording-and-video.md) | `Avalonia.HeadlessTestingFramework.Recording.HeadlessScreenRecorder`, `Avalonia.HeadlessTestingFramework.Recording.VideoConverter` |
 
 ## Notes
 

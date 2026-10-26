@@ -5,14 +5,14 @@ og_type: website
 ---
 
 <div class="paz-hero">
-  <div class="paz-eyebrow"><i class="bi bi-bounding-box-circles" aria-hidden="true"></i> Avalonia Control and Testing Toolkit</div>
+  <div class="paz-eyebrow"><i class="bi bi-bounding-box-circles" aria-hidden="true"></i> Avalonia Pan-and-Zoom Control</div>
   <div class="paz-hero-split">
     <div>
       <h1>PanAndZoom for Avalonia</h1>
-      <p class="lead"><strong>PanAndZoom</strong> packages a production-ready <code>ZoomBorder</code> control for pan, zoom, bounds management, and view-state workflows, plus <strong>HeadlessTestingFramework</strong> for gesture simulation, tree inspection, Appium-style APIs, and visual recording in Avalonia tests.</p>
+      <p class="lead"><strong>PanAndZoom</strong> provides a <code>ZoomBorder</code> control for Avalonia with pan, zoom, bounds management, and view-state workflows.</p>
       <div class="paz-hero-actions">
         <a class="btn btn-primary btn-lg" href="articles/getting-started/overview"><i class="bi bi-rocket-takeoff" aria-hidden="true"></i> Start Getting Started</a>
-        <a class="btn btn-outline-secondary btn-lg" href="articles/headless-testing"><i class="bi bi-bezier2" aria-hidden="true"></i> Explore Testing APIs</a>
+        <a class="btn btn-outline-secondary btn-lg" href="https://wieslawsoltes.github.io/ProTest/"><i class="bi bi-bug" aria-hidden="true"></i> Testing with ProTest</a>
         <a class="btn btn-outline-secondary btn-lg" href="api"><i class="bi bi-braces-asterisk" aria-hidden="true"></i> Browse API</a>
       </div>
     </div>
@@ -27,41 +27,35 @@ og_type: website
 <div class="paz-link-grid">
   <a class="paz-link-card" href="articles/getting-started/installation">
     <span class="paz-link-card-title"><i class="bi bi-download" aria-hidden="true"></i> Installation</span>
-    <p>Package setup for both libraries, headless test prerequisites, and the first integration checks.</p>
+    <p>Install the control package and configure your Avalonia application.</p>
   </a>
   <a class="paz-link-card" href="articles/getting-started/quickstart-zoom-border">
     <span class="paz-link-card-title"><i class="bi bi-arrows-move" aria-hidden="true"></i> Quickstart: ZoomBorder</span>
     <p>Create a zoomable surface, bind commands, and wire pointer and keyboard interaction.</p>
   </a>
-  <a class="paz-link-card" href="articles/getting-started/quickstart-headless-testing">
-    <span class="paz-link-card-title"><i class="bi bi-bug" aria-hidden="true"></i> Quickstart: Headless Testing</span>
-    <p>Drive Avalonia controls with touch, keyboard, and Appium-style APIs inside headless tests.</p>
-  </a>
   <a class="paz-link-card" href="articles/samples">
     <span class="paz-link-card-title"><i class="bi bi-window-stack" aria-hidden="true"></i> Sample Walkthrough</span>
-    <p>Map the sample app tabs to concrete ZoomBorder features and testing scenarios.</p>
+    <p>Map the sample app tabs to concrete ZoomBorder features and interaction scenarios.</p>
   </a>
 </div>
 
-## Packages
+## Package
 
 <div class="paz-link-grid paz-link-grid--wide">
   <a class="paz-link-card" href="articles/intro">
     <span class="paz-link-card-title"><i class="bi bi-zoom-in" aria-hidden="true"></i> PanAndZoom</span>
     <p><code>ZoomBorder</code>, matrix helpers, commands, history, state persistence, bounds control, and advanced viewport utilities.</p>
   </a>
-  <a class="paz-link-card" href="articles/headless-testing">
-    <span class="paz-link-card-title"><i class="bi bi-camera-video" aria-hidden="true"></i> HeadlessTestingFramework</span>
-    <p>Input simulation, tree queries, template inspection, recording, video conversion, and Appium-like interaction layers.</p>
-  </a>
 </div>
+
+Headless testing helpers are maintained separately in [ProTest](https://wieslawsoltes.github.io/ProTest/), with stable NuGet packages for xUnit 3 and xUnit 4.
 
 ## Documentation Sections
 
 <div class="paz-link-grid paz-link-grid--wide">
   <a class="paz-link-card" href="articles/getting-started">
     <span class="paz-link-card-title"><i class="bi bi-signpost-split" aria-hidden="true"></i> Getting Started</span>
-    <p>Choose the right package, install it, and get your first sample or test working quickly.</p>
+    <p>Install PanAndZoom and build your first zoomable view.</p>
   </a>
   <a class="paz-link-card" href="articles/concepts">
     <span class="paz-link-card-title"><i class="bi bi-diagram-3" aria-hidden="true"></i> Concepts</span>
@@ -70,10 +64,6 @@ og_type: website
   <a class="paz-link-card" href="articles/guides">
     <span class="paz-link-card-title"><i class="bi bi-journal-code" aria-hidden="true"></i> Guides</span>
     <p>Scenario-driven recipes for bounds management, view history, keyboard control, zoom-to-rectangle, and more.</p>
-  </a>
-  <a class="paz-link-card" href="articles/headless-testing">
-    <span class="paz-link-card-title"><i class="bi bi-cpu" aria-hidden="true"></i> Headless Testing</span>
-    <p>Testing workflows spanning gesture simulation, tree introspection, Appium-like APIs, and recording.</p>
   </a>
   <a class="paz-link-card" href="articles/advanced">
     <span class="paz-link-card-title"><i class="bi bi-speedometer2" aria-hidden="true"></i> Advanced</span>

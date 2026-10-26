@@ -35,7 +35,22 @@ You can install the package for `Avalonia` based projects like this:
 * [GitHub source code repository.](https://github.com/wieslawsoltes/PanAndZoom)
 * [Documentation site.](https://wieslawsoltes.github.io/PanAndZoom)
 * [Articles home.](site/articles/readme.md)
-* [Headless testing docs.](site/articles/headless-testing/readme.md)
+* [Headless testing with ProTest.](https://wieslawsoltes.github.io/ProTest/)
+
+## Headless testing
+
+The headless testing helpers are now maintained in [ProTest](https://github.com/wieslawsoltes/ProTest). The standalone `HeadlessTestingFramework` project and its API documentation have been removed from this repository.
+
+For tests using **Avalonia 12.1.4**, install one of the stable **12.1.4** adapters:
+
+| Test framework | Package | NuGet |
+| --- | --- | --- |
+| xUnit 3 | [ProTest.Avalonia.Headless.XUnit.v3](https://www.nuget.org/packages/ProTest.Avalonia.Headless.XUnit.v3/12.1.4) | [![NuGet](https://img.shields.io/nuget/v/ProTest.Avalonia.Headless.XUnit.v3.svg)](https://www.nuget.org/packages/ProTest.Avalonia.Headless.XUnit.v3) |
+| xUnit 4 | [ProTest.Avalonia.Headless.XUnit.v4](https://www.nuget.org/packages/ProTest.Avalonia.Headless.XUnit.v4/12.1.4) | [![NuGet](https://img.shields.io/nuget/v/ProTest.Avalonia.Headless.XUnit.v4.svg)](https://www.nuget.org/packages/ProTest.Avalonia.Headless.XUnit.v4) |
+
+Both include the headless platform and helpers through `ProTest.Avalonia.Headless`. Existing `Avalonia.HeadlessTestingFramework` namespace imports remain valid. Remove the old framework project reference and official `Avalonia.Headless` / `Avalonia.Headless.XUnit` package references when migrating, and keep other Avalonia dependencies at **12.1.4**.
+
+See the [ProTest setup guide](https://wieslawsoltes.github.io/ProTest/getting-started/xunit) for complete test project configuration, and the [ProTest documentation](https://wieslawsoltes.github.io/ProTest/) for input simulation, tree inspection, automation, and recording.
 
 ## Using PanAndZoom
 
@@ -704,13 +719,13 @@ zoomBorder.ImportState(restoredState);
 
 ## Documentation
 
-The repository now includes a Lunet-based documentation site, modeled after the TreeDataGrid docs pipeline and tailored to `PanAndZoom` and `HeadlessTestingFramework`.
+The repository includes a Lunet-based documentation site for the `PanAndZoom` control, with usage guides and generated API reference.
 
 Key entry points:
 
 - [Docs home](site/readme.md)
 - [Getting Started](site/articles/getting-started/readme.md)
-- [Headless Testing](site/articles/headless-testing/readme.md)
+- [Headless testing with ProTest](https://wieslawsoltes.github.io/ProTest/)
 - [Reference](site/articles/reference/readme.md)
 
 Build docs locally:

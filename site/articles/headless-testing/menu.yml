@@ -1,6 +1,0 @@
-headless-testing:
-  - {path: readme.md, title: "Headless Testing"}
-  - {path: input-simulators.md, title: "Input Simulators"}
-  - {path: tree-helpers.md, title: "Tree Helpers"}
-  - {path: appium-like-api.md, title: "Appium-like API"}
-  - {path: recording-and-video.md, title: "Recording and Video"}
