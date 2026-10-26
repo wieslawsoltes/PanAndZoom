@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <AvaloniaVersion>12.1.1</AvaloniaVersion>
+    <AvaloniaVersion>12.1.4</AvaloniaVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,8 +9,7 @@
     <PackageVersion Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.Headless" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="ProTest.Avalonia.Headless.XUnit.v3" Version="12.1.4" />
     <PackageVersion Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
