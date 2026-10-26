@@ -12,13 +12,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@wieslawsoltes">
 <meta name="twitter:title" content="Lunet Docs Pipeline | PanAndZoom for Avalonia">
-<meta name="twitter:description" content="Lunet Docs Pipeline This repository uses the same Lunet-based documentation approach as the TreeDataGrid project, adapted for PanAndZoom and HeadlessTestingFramework. Site Structure site/config.scriban: Lunet config, project metadata, and .NET API generation site/menu.yml: top-level navigation site/readme.md: documentation home page site/articles/**: narrative documentation site/articles/**/menu.yml: section sidebars site/images/**: shared docs assets site/.lunet/css/template-main.css: precompiled template stylesheet...">
+<meta name="twitter:description" content="Lunet Docs Pipeline This repository uses Lunet to publish PanAndZoom guides and generated API reference. Site Structure site/config.scriban: Lunet config, project metadata, and .NET API generation site/menu.yml: top-level navigation site/readme.md: documentation home page site/articles/**: narrative documentation site/articles/**/menu.yml: section sidebars site/images/**: shared docs assets site/.lunet/css/template-main.css: precompiled template stylesheet site/.lunet/css/site-overrides.css...">
 <meta name="twitter:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
 <meta name="twitter:image:alt" content="Lunet Docs Pipeline | PanAndZoom for Avalonia">
 <meta property="og:title" content="Lunet Docs Pipeline | PanAndZoom for Avalonia">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://wieslawsoltes.github.io/PanAndZoom">
-<meta property="og:description" content="Lunet Docs Pipeline This repository uses the same Lunet-based documentation approach as the TreeDataGrid project, adapted for PanAndZoom and HeadlessTestingFramework. Site Structure site/config.scriban: Lunet config, project metadata, and .NET API generation site/menu.yml: top-level navigation site/readme.md: documentation home page site/articles/**: narrative documentation site/articles/**/menu.yml: section sidebars site/images/**: shared docs assets site/.lunet/css/template-main.css: precompiled template stylesheet...">
+<meta property="og:description" content="Lunet Docs Pipeline This repository uses Lunet to publish PanAndZoom guides and generated API reference. Site Structure site/config.scriban: Lunet config, project metadata, and .NET API generation site/menu.yml: top-level navigation site/readme.md: documentation home page site/articles/**: narrative documentation site/articles/**/menu.yml: section sidebars site/images/**: shared docs assets site/.lunet/css/template-main.css: precompiled template stylesheet site/.lunet/css/site-overrides.css...">
 <meta property="og:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
 <meta property="og:image:alt" content="Lunet Docs Pipeline | PanAndZoom for Avalonia">
   </head>
@@ -105,13 +105,9 @@
               <span class='menu-item-row'><a href='/PanAndZoom/articles/reference/api-coverage-index/' class='menu-link  '>API Coverage Index</a></span>  </li>
             <li id='menu-item-reference-3' class='menu-item '>
               <span class='menu-item-row'><a href='/PanAndZoom/articles/reference/namespace-panandzoom/' class='menu-link  '>Namespace Avalonia.Controls.PanAndZoom</a></span>  </li>
-            <li id='menu-item-reference-4' class='menu-item '>
-              <span class='menu-item-row'><a href='/PanAndZoom/articles/reference/namespace-headless-testingframework/' class='menu-link  '>Namespace Avalonia.HeadlessTestingFramework</a></span>  </li>
-            <li id='menu-item-reference-5' class='menu-item '>
-              <span class='menu-item-row'><a href='/PanAndZoom/articles/reference/namespace-recording-and-appium/' class='menu-link  '>Namespaces Recording and Appium</a></span>  </li>
-            <li id='menu-item-reference-6' class='menu-item  active'>
+            <li id='menu-item-reference-4' class='menu-item  active'>
               <span class='menu-item-row'><a href='/PanAndZoom/articles/reference/lunet-docs-pipeline/' class='menu-link  '>Lunet Docs Pipeline</a></span>  </li>
-            <li id='menu-item-reference-7' class='menu-item '>
+            <li id='menu-item-reference-5' class='menu-item '>
               <span class='menu-item-row'><a href='/PanAndZoom/articles/reference/license/' class='menu-link  '>License</a></span>  </li>
           </ol>
 
@@ -160,7 +156,7 @@
         </div>
 <!-- lunet:summarize -->
 <h1 id="lunet-docs-pipeline">Lunet Docs Pipeline</h1>
-<p>This repository uses the same Lunet-based documentation approach as the TreeDataGrid project, adapted for PanAndZoom and HeadlessTestingFramework.</p>
+<p>This repository uses Lunet to publish PanAndZoom guides and generated API reference.</p>
 <h2 id="site-structure">Site Structure</h2>
 <ul>
 <li><code>site/config.scriban</code>: Lunet config, project metadata, and <code>.NET API</code> generation</li>
@@ -176,7 +172,6 @@
 <p>The API site is generated from:</p>
 <ul>
 <li><code>../src/PanAndZoom/PanAndZoom.csproj</code></li>
-<li><code>../src/HeadlessTestingFramework/HeadlessTestingFramework.csproj</code></li>
 </ul>
 <p>The Lunet <code>api.dotnet</code> block builds the <code>net8.0</code> target and publishes generated API pages under <code>/api</code>.</p>
 <h2 id="styling-pipeline-note">Styling Pipeline Note</h2>

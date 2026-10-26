@@ -12,13 +12,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@wieslawsoltes">
 <meta name="twitter:title" content="Installation | PanAndZoom for Avalonia">
-<meta name="twitter:description" content="Installation PanAndZoom Install the control package: dotnet add package PanAndZoom Or add a package reference: &lt;ItemGroup> &lt;PackageReference Include=&quot;PanAndZoom&quot; Version=&quot;x.y.z&quot; /> &lt;/ItemGroup> ZoomBorder is a control, not a separate theme package, so there is no required StyleInclude step beyond your normal Avalonia application setup. Namespace: using Avalonia.Controls.PanAndZoom; XAML namespace: xmlns:paz=&quot;using:Avalonia.Controls.PanAndZoom&quot; HeadlessTestingFramework Install the testing package: dotnet add package HeadlessTestingFramework...">
+<meta name="twitter:description" content="Installation PanAndZoom Install the control package: dotnet add package PanAndZoom Or add a package reference: &lt;ItemGroup> &lt;PackageReference Include=&quot;PanAndZoom&quot; Version=&quot;x.y.z&quot; /> &lt;/ItemGroup> ZoomBorder is a control, not a separate theme package, so there is no required StyleInclude step beyond your normal Avalonia application setup. Namespace: using Avalonia.Controls.PanAndZoom; XAML namespace: xmlns:paz=&quot;using:Avalonia.Controls.PanAndZoom&quot; Headless Testing Use ProTest for headless Avalonia tests. This repository's tests consume the stable...">
 <meta name="twitter:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
 <meta name="twitter:image:alt" content="Installation | PanAndZoom for Avalonia">
 <meta property="og:title" content="Installation | PanAndZoom for Avalonia">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://wieslawsoltes.github.io/PanAndZoom">
-<meta property="og:description" content="Installation PanAndZoom Install the control package: dotnet add package PanAndZoom Or add a package reference: &lt;ItemGroup> &lt;PackageReference Include=&quot;PanAndZoom&quot; Version=&quot;x.y.z&quot; /> &lt;/ItemGroup> ZoomBorder is a control, not a separate theme package, so there is no required StyleInclude step beyond your normal Avalonia application setup. Namespace: using Avalonia.Controls.PanAndZoom; XAML namespace: xmlns:paz=&quot;using:Avalonia.Controls.PanAndZoom&quot; HeadlessTestingFramework Install the testing package: dotnet add package HeadlessTestingFramework...">
+<meta property="og:description" content="Installation PanAndZoom Install the control package: dotnet add package PanAndZoom Or add a package reference: &lt;ItemGroup> &lt;PackageReference Include=&quot;PanAndZoom&quot; Version=&quot;x.y.z&quot; /> &lt;/ItemGroup> ZoomBorder is a control, not a separate theme package, so there is no required StyleInclude step beyond your normal Avalonia application setup. Namespace: using Avalonia.Controls.PanAndZoom; XAML namespace: xmlns:paz=&quot;using:Avalonia.Controls.PanAndZoom&quot; Headless Testing Use ProTest for headless Avalonia tests. This repository's tests consume the stable...">
 <meta property="og:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
 <meta property="og:image:alt" content="Installation | PanAndZoom for Avalonia">
   </head>
@@ -107,8 +107,6 @@
               <span class='menu-item-row'><a href='/PanAndZoom/articles/getting-started/installation/' class='menu-link  '>Installation</a></span>  </li>
             <li id='menu-item-getting-started-4' class='menu-item '>
               <span class='menu-item-row'><a href='/PanAndZoom/articles/getting-started/quickstart-zoom-border/' class='menu-link  '>Quickstart: ZoomBorder</a></span>  </li>
-            <li id='menu-item-getting-started-5' class='menu-item '>
-              <span class='menu-item-row'><a href='/PanAndZoom/articles/getting-started/quickstart-headless-testing/' class='menu-link  '>Quickstart: Headless Testing</a></span>  </li>
           </ol>
 
         </div>
@@ -172,21 +170,9 @@
 <p>XAML namespace:</p>
 <pre><code class="language-xml">xmlns:paz=&quot;using:Avalonia.Controls.PanAndZoom&quot;
 </code></pre>
-<h2 id="headlesstestingframework">HeadlessTestingFramework</h2>
-<p>Install the testing package:</p>
-<pre><code class="language-bash">dotnet add package HeadlessTestingFramework
-</code></pre>
-<p>For xUnit headless tests, you also need the standard Avalonia headless test packages used in this repository:</p>
-<pre><code class="language-xml">&lt;ItemGroup&gt;
-  &lt;PackageReference Include=&quot;Avalonia.Headless.XUnit&quot; Version=&quot;12.1.1&quot; /&gt;
-  &lt;PackageReference Include=&quot;Avalonia.Skia&quot; Version=&quot;12.1.1&quot; /&gt;
-&lt;/ItemGroup&gt;
-</code></pre>
-<p>Namespaces:</p>
-<pre><code class="language-csharp">using Avalonia.HeadlessTestingFramework;
-using Avalonia.HeadlessTestingFramework.Appium;
-using Avalonia.HeadlessTestingFramework.Recording;
-</code></pre>
+<h2 id="headless-testing">Headless Testing</h2>
+<p>Use <a href="https://wieslawsoltes.github.io/ProTest/">ProTest</a> for headless Avalonia tests. This repository's tests consume the stable <code>ProTest.Avalonia.Headless.XUnit.v3</code> <strong>12.1.4</strong> package with official Avalonia <strong>12.1.4</strong> dependencies.</p>
+<p>The <a href="https://wieslawsoltes.github.io/ProTest/getting-started/xunit">ProTest setup guide</a> covers xUnit 3 and xUnit 4 project configuration and migration from the standalone testing framework.</p>
 <h2 id="sample-app">Sample App</h2>
 <p>The repository sample references the package directly from source:</p>
 <ul>
@@ -197,7 +183,7 @@ using Avalonia.HeadlessTestingFramework.Recording;
 <h2 id="related">Related</h2>
 <ul>
 <li><a href="/PanAndZoom/articles/getting-started/quickstart-zoom-border">Quickstart: ZoomBorder</a></li>
-<li><a href="/PanAndZoom/articles/getting-started/quickstart-headless-testing">Quickstart: Headless Testing</a></li>
+<li><a href="https://wieslawsoltes.github.io/ProTest/getting-started/xunit">ProTest setup guide</a></li>
 </ul>
 
       </div>

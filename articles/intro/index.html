@@ -12,13 +12,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@wieslawsoltes">
 <meta name="twitter:title" content="Introduction | PanAndZoom for Avalonia">
-<meta name="twitter:description" content="Introduction PanAndZoom is an Avalonia repository with two complementary libraries: PanAndZoom: the ZoomBorder control, matrix helpers, commands, bounds logic, and view-state APIs for pan-and-zoom experiences. HeadlessTestingFramework: input simulation, tree inspection, recording, and Appium-style helpers for validating Avalonia controls in automated tests. Together they cover both sides of interactive UI work: build zoomable, pannable canvases, diagram surfaces, and image viewers persist view state, expose keyboard shortcuts, and constrain viewport behavior...">
+<meta name="twitter:description" content="Introduction PanAndZoom provides the ZoomBorder control, matrix helpers, commands, bounds logic, and view-state APIs for Avalonia pan-and-zoom experiences. Use it to: build zoomable, pannable canvases, diagram surfaces, and image viewers persist view state and expose keyboard shortcuts constrain viewport behavior and support pointer, wheel, and touch gestures Start With Getting Started Overview for the control's capabilities Quickstart: ZoomBorder to wire the control into an Avalonia view...">
 <meta name="twitter:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
 <meta name="twitter:image:alt" content="Introduction | PanAndZoom for Avalonia">
 <meta property="og:title" content="Introduction | PanAndZoom for Avalonia">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://wieslawsoltes.github.io/PanAndZoom">
-<meta property="og:description" content="Introduction PanAndZoom is an Avalonia repository with two complementary libraries: PanAndZoom: the ZoomBorder control, matrix helpers, commands, bounds logic, and view-state APIs for pan-and-zoom experiences. HeadlessTestingFramework: input simulation, tree inspection, recording, and Appium-style helpers for validating Avalonia controls in automated tests. Together they cover both sides of interactive UI work: build zoomable, pannable canvases, diagram surfaces, and image viewers persist view state, expose keyboard shortcuts, and constrain viewport behavior...">
+<meta property="og:description" content="Introduction PanAndZoom provides the ZoomBorder control, matrix helpers, commands, bounds logic, and view-state APIs for Avalonia pan-and-zoom experiences. Use it to: build zoomable, pannable canvases, diagram surfaces, and image viewers persist view state and expose keyboard shortcuts constrain viewport behavior and support pointer, wheel, and touch gestures Start With Getting Started Overview for the control's capabilities Quickstart: ZoomBorder to wire the control into an Avalonia view...">
 <meta property="og:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
 <meta property="og:image:alt" content="Introduction | PanAndZoom for Avalonia">
   </head>
@@ -98,7 +98,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#docs-sidebar-menu" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-          <div class='lunet-menu-async' data-lunet-menu-partial='/PanAndZoom/partials/menus/menu-articles.cc674742a2e70f5638506766902ec953.html' data-lunet-menu-open='menu-id-articles-0' data-lunet-menu-active='menu-item-articles-2,menu-item-articles-0'><div class='menu-loading text-body-secondary small'>Loading menu…</div></div>
+          <div class='lunet-menu-async' data-lunet-menu-partial='/PanAndZoom/partials/menus/menu-articles.8a2f664fa64f35ee58feeb5095836953.html' data-lunet-menu-open='menu-id-articles-0' data-lunet-menu-active='menu-item-articles-2,menu-item-articles-0'><div class='menu-loading text-body-secondary small'>Loading menu…</div></div>
         </div>
       </nav>
       <!-- Right sidebar (TOC) - collapsible on mobile, visible sidebar on xxl+ -->
@@ -142,32 +142,25 @@
         </div>
 <!-- lunet:summarize -->
 <h1 id="introduction">Introduction</h1>
-<p><code>PanAndZoom</code> is an Avalonia repository with two complementary libraries:</p>
-<ul>
-<li><code>PanAndZoom</code>: the <code>ZoomBorder</code> control, matrix helpers, commands, bounds logic, and view-state APIs for pan-and-zoom experiences.</li>
-<li><code>HeadlessTestingFramework</code>: input simulation, tree inspection, recording, and Appium-style helpers for validating Avalonia controls in automated tests.</li>
-</ul>
-<p>Together they cover both sides of interactive UI work:</p>
+<p><code>PanAndZoom</code> provides the <code>ZoomBorder</code> control, matrix helpers, commands, bounds logic, and view-state APIs for Avalonia pan-and-zoom experiences.</p>
+<p>Use it to:</p>
 <ul>
 <li>build zoomable, pannable canvases, diagram surfaces, and image viewers</li>
-<li>persist view state, expose keyboard shortcuts, and constrain viewport behavior</li>
-<li>test touch, wheel, keyboard, and gesture scenarios without a full desktop session</li>
-<li>capture frames or turn headless recordings into video artifacts for diagnostics</li>
+<li>persist view state and expose keyboard shortcuts</li>
+<li>constrain viewport behavior and support pointer, wheel, and touch gestures</li>
 </ul>
 <h2 id="start-with">Start With</h2>
 <ul>
-<li><a href="/PanAndZoom/articles/getting-started/overview">Getting Started Overview</a> if you need a package-level entry point</li>
+<li><a href="/PanAndZoom/articles/getting-started/overview">Getting Started Overview</a> for the control's capabilities</li>
 <li><a href="/PanAndZoom/articles/getting-started/quickstart-zoom-border">Quickstart: ZoomBorder</a> to wire the control into an Avalonia view</li>
-<li><a href="/PanAndZoom/articles/getting-started/quickstart-headless-testing">Quickstart: Headless Testing</a> to drive gestures in <code>AvaloniaFact</code> tests</li>
 <li><a href="/PanAndZoom/api/index.md">API Documentation</a> for member-level lookup</li>
 </ul>
+<p>For automated UI testing, use the separately maintained <a href="https://wieslawsoltes.github.io/ProTest/">ProTest packages and documentation</a>.</p>
 <h2 id="repository-layout">Repository Layout</h2>
 <ul>
 <li><code>src/PanAndZoom</code>: shipping control package</li>
-<li><code>src/HeadlessTestingFramework</code>: shipping testing package</li>
 <li><code>samples/AvaloniaDemo.Base</code> and <code>samples/AvaloniaDemo.Desktop</code>: interactive sample app</li>
-<li><code>tests/Avalonia.Controls.PanAndZoom.UnitTests</code>: broad control and testing coverage</li>
-<li><code>tests/HeadlessTestingFramework.UnitTests</code>: focused framework-level tests</li>
+<li><code>tests/Avalonia.Controls.PanAndZoom.UnitTests</code>: control tests using ProTest from NuGet</li>
 </ul>
 
       </div>

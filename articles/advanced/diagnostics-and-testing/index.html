@@ -12,13 +12,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@wieslawsoltes">
 <meta name="twitter:title" content="Diagnostics and Testing | PanAndZoom for Avalonia">
-<meta name="twitter:description" content="Diagnostics and Testing This repository is already test-heavy, which makes the codebase a good reference for both usage and expected behavior. PanAndZoom Test Coverage Areas The main test project covers: pointer, wheel, keyboard, and gesture interaction bounds modes and dynamic zoom limits view history, saved views, and state serialization rotation, scale indicator, viewport culling, and ILogicalScrollable Appium-style APIs and recording workflows HeadlessTestingFramework Test Coverage Areas The second test project focuses...">
+<meta name="twitter:description" content="Diagnostics and Testing The Avalonia.Controls.PanAndZoom.UnitTests project verifies the control's behavior using the published ProTest headless testing packages. Test Coverage Areas pointer, wheel, keyboard, and gesture interaction bounds modes and dynamic zoom limits view history, saved views, and state serialization rotation, scale indicator, viewport culling, and ILogicalScrollable control integration with input simulation, tree inspection, automation, and recording The testing framework's implementation and standalone tests are maintained in...">
 <meta name="twitter:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
 <meta name="twitter:image:alt" content="Diagnostics and Testing | PanAndZoom for Avalonia">
 <meta property="og:title" content="Diagnostics and Testing | PanAndZoom for Avalonia">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://wieslawsoltes.github.io/PanAndZoom">
-<meta property="og:description" content="Diagnostics and Testing This repository is already test-heavy, which makes the codebase a good reference for both usage and expected behavior. PanAndZoom Test Coverage Areas The main test project covers: pointer, wheel, keyboard, and gesture interaction bounds modes and dynamic zoom limits view history, saved views, and state serialization rotation, scale indicator, viewport culling, and ILogicalScrollable Appium-style APIs and recording workflows HeadlessTestingFramework Test Coverage Areas The second test project focuses...">
+<meta property="og:description" content="Diagnostics and Testing The Avalonia.Controls.PanAndZoom.UnitTests project verifies the control's behavior using the published ProTest headless testing packages. Test Coverage Areas pointer, wheel, keyboard, and gesture interaction bounds modes and dynamic zoom limits view history, saved views, and state serialization rotation, scale indicator, viewport culling, and ILogicalScrollable control integration with input simulation, tree inspection, automation, and recording The testing framework's implementation and standalone tests are maintained in...">
 <meta property="og:image" content="https://wieslawsoltes.github.io/PanAndZoom/images/panandzoom.png">
 <meta property="og:image:alt" content="Diagnostics and Testing | PanAndZoom for Avalonia">
   </head>
@@ -154,34 +154,21 @@
         </div>
 <!-- lunet:summarize -->
 <h1 id="diagnostics-and-testing">Diagnostics and Testing</h1>
-<p>This repository is already test-heavy, which makes the codebase a good reference for both usage and expected behavior.</p>
-<h2 id="panandzoom-test-coverage-areas">PanAndZoom Test Coverage Areas</h2>
-<p>The main test project covers:</p>
+<p>The <code>Avalonia.Controls.PanAndZoom.UnitTests</code> project verifies the control's behavior using the published <a href="https://wieslawsoltes.github.io/ProTest/">ProTest</a> headless testing packages.</p>
+<h2 id="test-coverage-areas">Test Coverage Areas</h2>
 <ul>
 <li>pointer, wheel, keyboard, and gesture interaction</li>
 <li>bounds modes and dynamic zoom limits</li>
 <li>view history, saved views, and state serialization</li>
 <li>rotation, scale indicator, viewport culling, and <code>ILogicalScrollable</code></li>
-<li>Appium-style APIs and recording workflows</li>
+<li>control integration with input simulation, tree inspection, automation, and recording</li>
 </ul>
-<h2 id="headlesstestingframework-test-coverage-areas">HeadlessTestingFramework Test Coverage Areas</h2>
-<p>The second test project focuses on:</p>
-<ul>
-<li>touch simulation and gesture recognizer helpers</li>
-<li>tree validation, tree comparison, and XPath helpers</li>
-<li>recording infrastructure and multi-touch helper construction</li>
-</ul>
-<h2 id="useful-debug-artifacts">Useful Debug Artifacts</h2>
-<ul>
-<li>generated Lunet API docs under <code>site/.lunet/build/www/api</code></li>
-<li>recording output from <code>HeadlessScreenRecorder</code> or <code>RecordingSession</code></li>
-<li>tree and template comparison summaries from <code>TreeComparer</code> and <code>TemplateComparer</code></li>
-</ul>
+<p>The testing framework's implementation and standalone tests are maintained in <a href="https://github.com/wieslawsoltes/ProTest">the ProTest repository</a>. Its <a href="https://wieslawsoltes.github.io/ProTest/">documentation</a> covers helper APIs, recording artifacts, and test runner setup.</p>
 <h2 id="documentation-validation">Documentation Validation</h2>
 <p>Validate docs locally with:</p>
 <pre><code class="language-bash">./check-docs.sh
 </code></pre>
-<p>That rebuilds the Lunet site and API reference from the same sources used by CI.</p>
+<p>That rebuilds the Lunet site and PanAndZoom API reference from the same sources used by CI.</p>
 
       </div>
   </div>
