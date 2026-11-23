@@ -36,7 +36,7 @@ xmlns:paz="using:Avalonia.Controls.PanAndZoom"
 
 ## Headless Testing
 
-Use [ProTest](https://wieslawsoltes.github.io/ProTest/) for headless Avalonia tests. This repository's tests consume the stable `ProTest.Avalonia.Headless.XUnit.v3` **12.1.4** package with official Avalonia **12.1.4** dependencies.
+Use [ProTest](https://wieslawsoltes.github.io/ProTest/) for headless Avalonia tests. This repository's tests use `ProTest.Avalonia.Headless.XUnit.v3` **12.2.0** with Avalonia **12.2.0**.
 
 The [ProTest setup guide](https://wieslawsoltes.github.io/ProTest/getting-started/xunit) covers xUnit 3 and xUnit 4 project configuration and migration from the standalone testing framework.
 
