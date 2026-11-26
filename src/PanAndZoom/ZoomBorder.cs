@@ -376,7 +376,7 @@ public partial class ZoomBorder : Border
             if (!double.IsNaN(deltaScale) && !double.IsInfinity(deltaScale) && deltaScale > 0.0)
             {
                 Log($"[ZoomTo] factor: {deltaScale}, center: {zoomCenter.X}, {zoomCenter.Y}");
-                ZoomTo(deltaScale, zoomCenter.X, zoomCenter.Y);
+                ZoomTo(deltaScale, zoomCenter.X, zoomCenter.Y, true);
             }
         }
 
@@ -459,7 +459,7 @@ public partial class ZoomBorder : Border
         // scroll direction semantics (positive = scroll down/right), which is
         // opposite to direct manipulation (content following finger). Invert
         // it so the content moves with the finger on touch/gesture devices.
-        PanDelta(-e.Delta.X, -e.Delta.Y);
+        PanDelta(-e.Delta.X, -e.Delta.Y, true);
 
         e.Handled = true;
     }
